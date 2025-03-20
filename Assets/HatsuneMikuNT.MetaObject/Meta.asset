@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b589176a34b344b9ccbee2b7e7114a, type: 3}
+  m_Name: Meta
+  m_EditorClassIdentifier: 
+  ExporterVersion: UniVRM-0.81.0
+  Title: "\u6B62\u4E38\u5F0F\u521D\u97F3\u30DF\u30AFNT"
+  Version: 1.1
+  Author: "\u6B62\u4E38"
+  ContactInformation: twitter:@tomaru_o
+  Reference: 
+  Thumbnail: {fileID: 2800000, guid: 3579399e1e788cc45b20330a13c278a6, type: 3}
+  AllowedUser: 2
+  ViolentUssage: 0
+  SexualUssage: 0
+  CommercialUssage: 0
+  OtherPermissionUrl: https://piapro.jp/license/pcl
+  LicenseType: 0
+  OtherLicenseUrl: 
