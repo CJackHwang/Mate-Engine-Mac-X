@@ -10,11 +10,11 @@ public class AvatarAnimatorController : MonoBehaviour
     [Header("General Settings")]
     public Animator animator;
     public bool enableAudioDetection = true;
-    public float SOUND_THRESHOLD = 0.01f;
+    public float SOUND_THRESHOLD = 0.02f; // Slightly raised from 0.01
     public List<string> ignoredApps = new List<string> { "discord", "mateengine", "mateenginex", "chrome", "audiodg", "explorer" }; // No ".exe"
 
     [Header("Idle Animation Settings")]
-    public int totalIdleAnimations = 10; // We may delete that integer. We will not need it.
+    public int totalIdleAnimations = 10;
     public float IDLE_SWITCH_TIME = 12f;
     public float IDLE_TRANSITION_TIME = 3f;
 
@@ -45,7 +45,15 @@ public class AvatarAnimatorController : MonoBehaviour
             var enumerator = new MMDeviceEnumerator();
             defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
-        catch (System.Exception) { }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError("Failed to get default audio device: " + ex.Message);
+        }
+
+        if (defaultDevice == null)
+        {
+            UnityEngine.Debug.LogWarning("Default audio device is null after initialization!");
+        }
 
         StartCoroutine(CheckSoundContinuously());
     }
@@ -55,8 +63,25 @@ public class AvatarAnimatorController : MonoBehaviour
         while (true)
         {
             if (enableAudioDetection)
+            {
+                if (defaultDevice == null)
+                {
+                    try
+                    {
+                        var enumerator = new MMDeviceEnumerator();
+                        defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                        UnityEngine.Debug.Log("Reinitialized default audio device.");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        UnityEngine.Debug.LogError("Failed to reinitialize audio device: " + ex.Message);
+                    }
+                }
+
                 CheckForSound();
-            yield return null;
+            }
+
+            yield return new WaitForSeconds(SOUND_CHECK_INTERVAL);
         }
     }
 
@@ -64,7 +89,7 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         if (defaultDevice == null) return;
 
-        bool isValidSoundPlaying = IsValidAppPlaying(); // ✅ Fully ignores bad apps
+        bool isValidSoundPlaying = IsValidAppPlaying();
 
         if (!isDragging)
         {
@@ -74,14 +99,16 @@ public class AvatarAnimatorController : MonoBehaviour
                 {
                     isDancing = true;
                     animator.SetBool("isDancing", true);
+                    UnityEngine.Debug.Log("🎵 Dancing started.");
                 }
             }
-            else if (!isValidSoundPlaying) // ✅ Stops only if no valid app is playing
+            else if (!isValidSoundPlaying)
             {
                 if (isDancing)
                 {
                     isDancing = false;
                     animator.SetBool("isDancing", false);
+                    UnityEngine.Debug.Log("🛑 Dancing stopped.");
                 }
             }
         }
@@ -91,7 +118,7 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
         {
-            return isDancing; // ✅ If dancing, keep dancing until we properly check
+            return isDancing;
         }
 
         lastSoundCheckTime = Time.time;
@@ -100,6 +127,7 @@ public class AvatarAnimatorController : MonoBehaviour
         try
         {
             var sessions = defaultDevice.AudioSessionManager.Sessions;
+
             for (int i = 0; i < sessions.Count; i++)
             {
                 var session = sessions[i];
@@ -112,31 +140,36 @@ public class AvatarAnimatorController : MonoBehaviour
                         if (processId != 0)
                         {
                             Process process = Process.GetProcessById(processId);
-                            string processName = process.ProcessName.ToLower(); // No ".exe"
+                            string processName = process.ProcessName.ToLower();
 
                             if (!ignoredApps.Contains(processName) && !IsSubprocessIgnored(processName))
                             {
-                                validAppPlaying = true; // ✅ A valid app is playing sound
+                                validAppPlaying = true;
+                                UnityEngine.Debug.Log($"Valid audio source: {processName} 🎧");
                             }
                         }
                     }
-                    catch (System.Exception)
+                    catch (System.Exception ex)
                     {
+                        UnityEngine.Debug.LogWarning("Session process access failed: " + ex.Message);
                         continue;
                     }
                 }
             }
         }
-        catch (System.Exception) { }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError("Error while checking sessions: " + ex.Message);
+        }
 
-        return validAppPlaying; // ✅ True = keep dancing, False = stop dancing
+        return validAppPlaying;
     }
 
     bool IsSubprocessIgnored(string processName)
     {
         foreach (string ignoredApp in ignoredApps)
         {
-            if (processName.StartsWith(ignoredApp)) // ✅ Ensures sub-processes are caught
+            if (processName.StartsWith(ignoredApp))
             {
                 return true;
             }
@@ -161,21 +194,20 @@ public class AvatarAnimatorController : MonoBehaviour
             animator.SetBool("isDancing", isDancing);
         }
 
-        // Handle idle animation cycling in sequence every X seconds
         idleTimer += Time.deltaTime;
         if (idleTimer > IDLE_SWITCH_TIME)
         {
             if (idleState + 1 >= totalIdleAnimations)
             {
-                idleState = 0; // Jump to first motion without transition
-                animator.SetFloat("IdleIndex", idleState); // Instantly set first motion
+                idleState = 0;
+                animator.SetFloat("IdleIndex", idleState);
             }
             else
             {
-                idleState++; // Move to next motion normally
+                idleState++;
                 StartCoroutine(SmoothIdleTransition(idleState));
             }
-            idleTimer = 0f; // Reset timer
+            idleTimer = 0f;
         }
     }
 
@@ -192,7 +224,7 @@ public class AvatarAnimatorController : MonoBehaviour
             yield return null;
         }
 
-        animator.SetFloat("IdleIndex", newIdleState); // Ensure exact final value
+        animator.SetFloat("IdleIndex", newIdleState);
     }
 
     public void SetSitting(bool sitting)

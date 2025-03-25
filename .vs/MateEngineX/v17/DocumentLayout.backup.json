@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\MateEngineX\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|C:\\Users\\Johns\\MateEngineX\\assets\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|solutionrelative:assets\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|c:\\users\\johns\\mateenginex\\assets\\armaturelink.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|solutionrelative:assets\\armaturelink.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -21,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|C:\\Users\\Johns\\MateEngineX\\assets\\fpslimiter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|solutionrelative:assets\\fpslimiter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|C:\\Users\\Johns\\MateEngineX\\assets\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{50D099D6-74EF-03EC-FF81-8219340A03E7}|Assembly-CSharp.csproj|solutionrelative:assets\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{24AF9DB7-3C3D-DAA4-4B8E-F21D3CA2B09C}|UniGLTF.csproj|C:\\Users\\Johns\\MateEngineX\\assets\\unigltf\\runtime\\unigltf\\io\\glbimporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -78,11 +78,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ArmatureLink.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\ArmatureLink.cs",
               "RelativeDocumentMoniker": "Assets\\ArmatureLink.cs",
@@ -92,18 +92,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-09T13:17:01.508Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UniWindowController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "RelativeDocumentMoniker": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "ToolTip": "C:\\Users\\Johns\\MateEngineX\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "RelativeToolTip": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "ViewState": "AgIAAKwAAAAAAAAAAAAUwLcAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-05T23:56:58.243Z"
             },
             {
               "$type": "Document",
@@ -142,7 +130,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AvatarSettingsMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarSettingsMenu.cs",
               "RelativeDocumentMoniker": "Assets\\AvatarSettingsMenu.cs",
@@ -163,6 +151,31 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-02T13:23:53.709Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AvatarAnimatorController.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarAnimatorController.cs",
+              "RelativeDocumentMoniker": "Assets\\AvatarAnimatorController.cs",
+              "ToolTip": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarAnimatorController.cs",
+              "RelativeToolTip": "Assets\\AvatarAnimatorController.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAADwv9AAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-28T17:08:21.155Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UniWindowController.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
+              "RelativeDocumentMoniker": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
+              "ToolTip": "C:\\Users\\Johns\\MateEngineX\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
+              "RelativeToolTip": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAUwLcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-05T23:56:58.243Z"
             },
             {
               "$type": "Document",
@@ -190,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "FPSLimiter.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\FPSLimiter.cs",
               "RelativeDocumentMoniker": "Assets\\FPSLimiter.cs",
@@ -202,19 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AvatarAnimatorController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarAnimatorController.cs",
-              "RelativeDocumentMoniker": "Assets\\AvatarAnimatorController.cs",
-              "ToolTip": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarAnimatorController.cs",
-              "RelativeToolTip": "Assets\\AvatarAnimatorController.cs",
-              "ViewState": "AgIAAGEAAAAAAAAAAAAAAIUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-28T17:08:21.155Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AvatarControllerHeadTracking.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\MateEngineX\\Assets\\AvatarControllerHeadTracking.cs",
               "RelativeDocumentMoniker": "Assets\\AvatarControllerHeadTracking.cs",
