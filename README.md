@@ -12,6 +12,14 @@ Another reason for developing **Mate Engine** is that **Desktop Mate** removed m
 
 Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**, including support for custom VRM models!
 
+# Better Transitions!
+
+
+![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
+
+**MateEngine** features smoother transitions between animations compared to *Desktop Mate*—see for yourself! *Desktop Mate* often feels clunky, with glitchy transitions between different states. In contrast, **MateEngine** delivers seamless and fluid transitions, no matter the state.
+
+
 # Performance
 ![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
 
