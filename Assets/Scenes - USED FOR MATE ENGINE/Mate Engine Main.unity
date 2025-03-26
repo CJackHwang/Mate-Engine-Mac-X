@@ -11220,6 +11220,26 @@ PrefabInstance:
       propertyPath: m_AABB.m_Extent.z
       value: 0.09267454
       objectReference: {fileID: 0}
+    - target: {fileID: 7783119355347052907, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783119355347052907, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[0]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783119355347052907, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783119355347052907, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[20]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7783119355347052907, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: 'm_BlendShapeWeights.Array.data[36]'
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8367348208525516249, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
       propertyPath: m_DirtyAABB
       value: 0
@@ -13291,13 +13311,13 @@ MonoBehaviour:
   enableAudioDetection: 1
   SOUND_THRESHOLD: 0.2
   ignoredApps:
-  - steam
-  - discord
+  - mateenginex
+  - ovrserver_x64
   - blender
-  - audiodg
   - svchost
   - explorer
-  - mateenginex
+  - steam
+  - audiodg
   - unity
   totalIdleAnimations: 9
   IDLE_SWITCH_TIME: 10

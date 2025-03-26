@@ -33,6 +33,10 @@ public class AvatarAnimatorController : MonoBehaviour
     private float idleTimer = 0f;
     private int idleState = 0;
 
+    private Coroutine soundCheckCoroutine;
+    private MMDeviceEnumerator enumerator;
+
+
     void Start()
     {
         if (animator == null)
@@ -40,23 +44,12 @@ public class AvatarAnimatorController : MonoBehaviour
 
         Application.runInBackground = true;
 
-        try
-        {
-            var enumerator = new MMDeviceEnumerator();
-            defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-        }
-        catch (System.Exception ex)
-        {
-            UnityEngine.Debug.LogError("Failed to get default audio device: " + ex.Message);
-        }
+        enumerator = new MMDeviceEnumerator();
+        UpdateDefaultDevice();
 
-        if (defaultDevice == null)
-        {
-            UnityEngine.Debug.LogWarning("Default audio device is null after initialization!");
-        }
-
-        StartCoroutine(CheckSoundContinuously());
+        soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
+
 
     private IEnumerator CheckSoundContinuously()
     {
@@ -64,12 +57,13 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             if (enableAudioDetection)
             {
+                UpdateDefaultDevice();
+
                 if (defaultDevice == null)
                 {
                     try
                     {
-                        var enumerator = new MMDeviceEnumerator();
-                        defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                        UpdateDefaultDevice();
                         UnityEngine.Debug.Log("Reinitialized default audio device.");
                     }
                     catch (System.Exception ex)
@@ -84,6 +78,26 @@ public class AvatarAnimatorController : MonoBehaviour
             yield return new WaitForSeconds(SOUND_CHECK_INTERVAL);
         }
     }
+
+    void UpdateDefaultDevice()
+    {
+        try
+        {
+            if (defaultDevice != null)
+            {
+                defaultDevice.Dispose();
+                defaultDevice = null;
+            }
+
+            defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError("Failed to get default audio device: " + ex.Message);
+            defaultDevice = null;
+        }
+    }
+
 
     void CheckForSound()
     {
@@ -235,6 +249,33 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void OnDestroy()
     {
-        if (defaultDevice != null) defaultDevice.Dispose();
+        CleanupAudioResources();
     }
+
+    void OnApplicationQuit()
+    {
+        CleanupAudioResources();
+    }
+
+    void CleanupAudioResources()
+    {
+        if (soundCheckCoroutine != null)
+        {
+            StopCoroutine(soundCheckCoroutine);
+            soundCheckCoroutine = null;
+        }
+
+        if (defaultDevice != null)
+        {
+            defaultDevice.Dispose();
+            defaultDevice = null;
+        }
+
+        if (enumerator != null)
+        {
+            enumerator.Dispose();
+            enumerator = null;
+        }
+    }
+
 }
