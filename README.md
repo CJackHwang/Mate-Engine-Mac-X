@@ -14,6 +14,19 @@ Another reason for developing **Mate Engine** is that **Desktop Mate** removed m
 
 Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**, including support for custom VRM models!
 
+
+# Please Help me Publishing on Steam!
+
+
+![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
+
+In order to publish this app on Steam once it's stable, I need to pay a one-time fee of $100 USD. Since this project is completely free, I would truly appreciate any donations!
+
+I'm only collecting enough to cover the one-time fee—I don’t plan to accept anything beyond that.
+If you’d like to support the project, please send any amount you can spare to my PayPal: johnson@soultechno.de
+
+Be sure to include a note saying "MateEngine Donation" so I can keep things organized on my end. Thank you so much for your support!
+
 # Better Transitions!
 
 
