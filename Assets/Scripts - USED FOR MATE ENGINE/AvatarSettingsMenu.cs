@@ -2,29 +2,55 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using Kirurobo; // For UniWindowController
 
 public class AvatarSettingsMenu : MonoBehaviour
 {
     public GameObject menuPanel;
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, totalIdleAnimationsSlider, avatarSizeSlider, fpsLimitSlider;
     public Toggle enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle, enableHeadTrackingToggle;
+
+    // NEW FIELDS for UniWindowController and Is Topmost
+    public Toggle isTopmostToggle;
+    public GameObject uniWindowControllerObject;
+
     public Button applyButton, resetButton;
     public AudioSource audioSource;
     public List<AudioClip> uiSounds;
 
     private bool isSliderBeingDragged;
 
+    // We'll hold a reference to the actual UniWindowController
+    private UniWindowController uniWindowController;
+
     private void Start()
     {
         menuPanel?.SetActive(false);
+
+        // Initialize reference to UniWindowController if assigned
+        if (uniWindowControllerObject != null)
+        {
+            uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
+        }
+
         LoadSettings();
         ApplySettings();
+
         applyButton?.onClick.AddListener(() => { ApplySettings(); PlayUISound(); });
         resetButton?.onClick.AddListener(() => { ResetToDefaults(); PlayUISound(); });
+
         foreach (var slider in new[] { soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, totalIdleAnimationsSlider, avatarSizeSlider, fpsLimitSlider })
+        {
             AddSliderListeners(slider);
-        foreach (var toggle in new[] { enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle })
+        }
+
+        // Include isTopmostToggle in the toggles that produce a UI sound
+        foreach (var toggle in new[] { enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle, isTopmostToggle })
+        {
             toggle?.onValueChanged.AddListener(delegate { PlayUISound(); });
+        }
+
+        // Set up the FPS limit slider's range and default
         if (fpsLimitSlider != null)
         {
             fpsLimitSlider.minValue = 10;
@@ -34,12 +60,21 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
     }
 
-    private void Update() { if (Input.GetKeyDown(KeyCode.M)) { menuPanel?.SetActive(!menuPanel.activeSelf); PlayUISound(); } }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            menuPanel?.SetActive(!menuPanel.activeSelf);
+            PlayUISound();
+        }
+    }
 
     public void UpdateFPSLimit()
     {
         foreach (var fpsLimiter in FindObjectsOfType<FPSLimiter>())
+        {
             fpsLimiter.SetFPSLimit((int)fpsLimitSlider.value);
+        }
         PlayerPrefs.SetInt("FPSLimit", (int)fpsLimitSlider.value);
         PlayerPrefs.Save();
     }
@@ -60,6 +95,13 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (enableHeadTrackingToggle != null)
                 enableHeadTrackingToggle.isOn = PlayerPrefs.GetInt("EnableHeadTracking", 1) == 1;
         }
+
+        // Load and set the isTopmostToggle
+        if (isTopmostToggle != null)
+        {
+            // Default it to 1 (true)
+            isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
+        }
     }
 
     public void ApplySettings()
@@ -75,9 +117,20 @@ public class AvatarSettingsMenu : MonoBehaviour
             avatar.enableDragging = enableDraggingToggle?.isOn ?? avatar.enableDragging;
             avatar.enableDancing = enableDancingToggle?.isOn ?? avatar.enableDancing;
             if (enableHeadTrackingToggle != null)
+            {
                 foreach (var headTracker in avatar.GetComponentsInChildren<AvatarControllerHeadTracking>())
+                {
                     headTracker.enableHeadTracking = enableHeadTrackingToggle.isOn;
+                }
+            }
         }
+
+        // Apply the topmost setting to the UniWindowController
+        if (uniWindowController != null && isTopmostToggle != null)
+        {
+            uniWindowController.isTopmost = isTopmostToggle.isOn;
+        }
+
         UpdateFPSLimit();
         SaveSettings();
     }
@@ -94,6 +147,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDancingToggle?.SetIsOnWithoutNotify(true);
         enableHeadTrackingToggle?.SetIsOnWithoutNotify(true);
         fpsLimitSlider?.SetValueWithoutNotify(90);
+
+        // Also default IsTopmost to true
+        isTopmostToggle?.SetIsOnWithoutNotify(true);
+
         UpdateFPSLimit();
         SaveSettings();
     }
@@ -110,17 +167,33 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("EnableDancing", enableDancingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("EnableHeadTracking", enableHeadTrackingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("FPSLimit", (int)(fpsLimitSlider?.value ?? 90));
+
+        // Save the IsTopmost state
+        PlayerPrefs.SetInt("IsTopmost", isTopmostToggle?.isOn == true ? 1 : 0);
+
         PlayerPrefs.Save();
     }
 
-    private void PlayUISound() { if (audioSource != null && uiSounds.Count > 0) audioSource.PlayOneShot(uiSounds[Random.Range(0, uiSounds.Count)]); }
+    private void PlayUISound()
+    {
+        if (audioSource != null && uiSounds.Count > 0)
+        {
+            audioSource.PlayOneShot(uiSounds[Random.Range(0, uiSounds.Count)]);
+        }
+    }
 
     private void AddSliderListeners(Slider slider)
     {
         if (slider == null) return;
         var trigger = slider.gameObject.GetComponent<EventTrigger>() ?? slider.gameObject.AddComponent<EventTrigger>();
         trigger.triggers.Add(new EventTrigger.Entry { eventID = EventTriggerType.PointerDown, callback = new EventTrigger.TriggerEvent() });
-        trigger.triggers[0].callback.AddListener((eventData) => { if (!isSliderBeingDragged) { PlayUISound(); isSliderBeingDragged = true; } });
+        trigger.triggers[0].callback.AddListener((eventData) => {
+            if (!isSliderBeingDragged)
+            {
+                PlayUISound();
+                isSliderBeingDragged = true;
+            }
+        });
         trigger.triggers.Add(new EventTrigger.Entry { eventID = EventTriggerType.PointerUp, callback = new EventTrigger.TriggerEvent() });
         trigger.triggers[1].callback.AddListener((eventData) => isSliderBeingDragged = false);
     }
