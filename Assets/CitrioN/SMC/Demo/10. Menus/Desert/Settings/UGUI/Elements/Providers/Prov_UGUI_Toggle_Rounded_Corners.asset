@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 003ea495b91ccac4aaa5066cee61b9ea, type: 3}
+  m_Name: Prov_UGUI_Toggle_Rounded_Corners
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 4040773467177669839, guid: 6c292dc3d2edfbe4a823585f54486002, type: 3}
+  - {fileID: 4055447075910003746, guid: ef5dc83dfc3eca444b9228576a7fe3f6, type: 3}
+  transition: 0

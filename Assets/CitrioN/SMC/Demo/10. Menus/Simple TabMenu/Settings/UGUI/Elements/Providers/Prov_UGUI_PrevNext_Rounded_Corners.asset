@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a96f2a7438d7c4199010f36ac92de8, type: 3}
+  m_Name: Prov_UGUI_PrevNext_Rounded_Corners
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 5427795534993670962, guid: e0e2f4b1bcd8aec43af2f0d36e8240ae, type: 3}
+  - {fileID: 6995197716474012949, guid: d4cfbf813bbde56409750978b0c2e8f9, type: 3}
+  allowCycle: 1
+  representNoCycleOnButtons: 1
