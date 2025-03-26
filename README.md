@@ -39,7 +39,7 @@ Using models with lower texture memory will result in lower RAM usage. Overall, 
 - **Options Menu** – Click on the avatar and press `M` to open the **Mate Engine** options menu.
 
 ---
-## Future Updates (Pre-Release-1)
+## Future Updates (Pre-Release-2 up to 5)
 
 - **Always on Top** – Toggle whether the Desktop Pet stays on top of all windows or moves behind them when you focus on a new window.  
 - **Particle System** – Adds magical particle effects to your mouse or the pet itself for a more whimsical feel.  
