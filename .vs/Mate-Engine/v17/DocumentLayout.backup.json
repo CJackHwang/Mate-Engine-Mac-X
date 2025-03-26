@@ -3,20 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\scripts - used for mate engine\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts - used for mate engine\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\UIThemeApplier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\UIThemeApplier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C8A152FD-C40D-0A1A-A49B-74E031FCE26A}|Kirurobo.UniWindowController.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\kirurobo\\uniwindowcontroller\\runtime\\scripts\\uniwindowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C8A152FD-C40D-0A1A-A49B-74E031FCE26A}|Kirurobo.UniWindowController.csproj|solutionrelative:assets\\kirurobo\\uniwindowcontroller\\runtime\\scripts\\uniwindowcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\scripts - used for mate engine\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts - used for mate engine\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\filedrophandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\filedrophandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,50 +19,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AvatarAnimatorController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Scripts - USED FOR MATE ENGINE\\AvatarAnimatorController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts - USED FOR MATE ENGINE\\AvatarAnimatorController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Scripts - USED FOR MATE ENGINE\\AvatarAnimatorController.cs",
-              "RelativeToolTip": "Assets\\Scripts - USED FOR MATE ENGINE\\AvatarAnimatorController.cs",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAAswPEAAAABAAAAAAAAAA==",
+              "Title": "FileDropHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\FileDropHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\FileDropHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\FileDropHandler.cs",
+              "RelativeToolTip": "Assets\\FileDropHandler.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAqwF0AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T05:13:48.913Z",
+              "WhenOpened": "2025-03-26T07:43:05.633Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UniWindowController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "RelativeDocumentMoniker": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "RelativeToolTip": "Assets\\Kirurobo\\UniWindowController\\Runtime\\Scripts\\UniWindowController.cs",
-              "ViewState": "AgIAAGkEAAAAAAAAAAAUwIUEAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T03:57:46.769Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UIThemeApplier.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\UIThemeApplier.cs",
-              "RelativeDocumentMoniker": "Assets\\UIThemeApplier.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\UIThemeApplier.cs",
-              "RelativeToolTip": "Assets\\UIThemeApplier.cs",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T04:30:13.478Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AvatarSettingsMenu.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Scripts - USED FOR MATE ENGINE\\AvatarSettingsMenu.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts - USED FOR MATE ENGINE\\AvatarSettingsMenu.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Scripts - USED FOR MATE ENGINE\\AvatarSettingsMenu.cs",
-              "RelativeToolTip": "Assets\\Scripts - USED FOR MATE ENGINE\\AvatarSettingsMenu.cs",
-              "ViewState": "AgIAAKYAAAAAAAAAAAAiwL4AAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T03:55:16.035Z"
             }
           ]
         }

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿// This is an updated version of VRMLoader that includes support for PetVoiceReactionHandler
+
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +16,8 @@ public class VRMLoader : MonoBehaviour
     public FixedPosition fixedPositionScript;
     public AvatarControllerHeadTracking headTrackingScript;
     public AvatarAnimatorController avatarAnimatorScript;
+    public AvatarDragSoundHandler avatarDragSoundHandlerScript;
+    public PetVoiceReactionHandler voiceReactionHandlerScript; // NEW input field
 
     private GameObject currentModel;
     private bool isLoading = false;
@@ -97,8 +101,18 @@ public class VRMLoader : MonoBehaviour
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
             RenameHeadBone(currentModel);
+
+            // Bind PetVoiceReactionHandler
+            Animator animator = currentModel.GetComponentInChildren<Animator>();
+            if (voiceReactionHandlerScript != null && animator != null)
+            {
+                voiceReactionHandlerScript.SetAnimator(animator);
+            }
         }
-        catch (System.Exception) { }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
+        }
     }
 
     private void EnableSkinnedMeshRenderers(GameObject model)
@@ -149,6 +163,11 @@ public class VRMLoader : MonoBehaviour
         if (avatarAnimatorScript != null && model.GetComponent<AvatarAnimatorController>() == null)
         {
             model.AddComponent<AvatarAnimatorController>();
+        }
+
+        if (avatarDragSoundHandlerScript != null && model.GetComponent<AvatarDragSoundHandler>() == null)
+        {
+            model.AddComponent<AvatarDragSoundHandler>();
         }
     }
 
