@@ -20,7 +20,8 @@ Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**
 
 ![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
 
-Funds Raised 0,00 USD / 100,00 USD Date: 26th of March 2025
+Funds Raised 94,54 USD / 100,00 USD Date: 26th of March 2025
+Gra**** Ja***** You are the goat for this 88,62 Donation... you literally made it possible to buy a Steam License! thank you so much!
 
 In order to publish this app on Steam once it's stable, I need to pay a one-time fee of $100 USD. Since this project is completely free, I would truly appreciate any donations!
 
