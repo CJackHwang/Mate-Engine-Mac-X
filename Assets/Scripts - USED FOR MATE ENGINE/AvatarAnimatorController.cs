@@ -131,12 +131,9 @@ public class AvatarAnimatorController : MonoBehaviour
     bool IsValidAppPlaying()
     {
         if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
-        {
             return isDancing;
-        }
 
         lastSoundCheckTime = Time.time;
-        bool validAppPlaying = false;
 
         try
         {
@@ -146,38 +143,51 @@ public class AvatarAnimatorController : MonoBehaviour
             {
                 var session = sessions[i];
 
-                if (session.AudioMeterInformation.MasterPeakValue > SOUND_THRESHOLD)
+                float peak = session.AudioMeterInformation.MasterPeakValue;
+                if (peak > SOUND_THRESHOLD)
                 {
-                    try
-                    {
-                        int processId = (int)session.GetProcessID;
-                        if (processId != 0)
-                        {
-                            Process process = Process.GetProcessById(processId);
-                            string processName = process.ProcessName.ToLower();
+                    int processId = (int)session.GetProcessID;
 
-                            if (!ignoredApps.Contains(processName) && !IsSubprocessIgnored(processName))
-                            {
-                                validAppPlaying = true;
-                                UnityEngine.Debug.Log($"Valid audio source: {processName} 🎧");
-                            }
-                        }
-                    }
-                    catch (System.Exception ex)
+                    if (processId == 0)
                     {
-                        UnityEngine.Debug.LogWarning("Session process access failed: " + ex.Message);
+                        UnityEngine.Debug.Log("🔍 Skipping session with no valid process.");
                         continue;
                     }
+
+                    Process process = null;
+                    try
+                    {
+                        process = Process.GetProcessById(processId);
+                    }
+                    catch
+                    {
+                        UnityEngine.Debug.Log("⚠️ Could not get process for ID: " + processId);
+                        continue;
+                    }
+
+                    string processName = process.ProcessName.ToLowerInvariant();
+                    UnityEngine.Debug.Log($"🎧 Audio from: {processName} | Peak: {peak}");
+
+                    if (ignoredApps.Any(ignored => processName.StartsWith(ignored)))
+                    {
+                        UnityEngine.Debug.Log($"🚫 Ignored audio source: {processName}");
+                        continue;
+                    }
+
+                    // ✅ Passed all checks
+                    UnityEngine.Debug.Log($"✅ Valid audio source: {processName}");
+                    return true;
                 }
             }
         }
         catch (System.Exception ex)
         {
-            UnityEngine.Debug.LogError("Error while checking sessions: " + ex.Message);
+            UnityEngine.Debug.LogError("❌ Error checking audio sessions: " + ex.Message);
         }
 
-        return validAppPlaying;
+        return false;
     }
+
 
     bool IsSubprocessIgnored(string processName)
     {
