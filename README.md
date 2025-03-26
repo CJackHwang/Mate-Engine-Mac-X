@@ -39,6 +39,16 @@ Using models with lower texture memory will result in lower RAM usage. Overall, 
 - **Options Menu** – Click on the avatar and press `M` to open the **Mate Engine** options menu.
 
 ---
+## Future Updates (Pre-Release-1)
+
+- **Always on Top** – Toggle whether the Desktop Pet stays on top of all windows or moves behind them when you focus on a new window.  
+- **Particle System** – Adds magical particle effects to your mouse or the pet itself for a more whimsical feel.  
+- **Wallpaper Engine Integration** – Adds support for injecting the project into your Wallpaper Engine designs. You’ll be able to embed the entire Unity project directly into your wallpaper!  
+- **Window & Taskbar Sitting** – Not 100% confirmed yet, as it’s a bit tricky to implement—but potentially allows your pet to sit directly on windows or the taskbar, just like in Desktop Mate.  
+- **Menu Color Customization** – A fun little feature to let you personalize the menu colors—because who doesn’t love some flair?  
+- **Initial Avatar Loading** – In the future, a "ModAvatar" folder will let you place your VRM files inside. The pet will automatically load your VRM on startup, no more re-injecting each time!
+
+---
 ## Known Issues & Missing Features
 
 - **Re-injecting Custom Models** – Each time you launch **Mate Engine**, you need to re-inject your own model.
