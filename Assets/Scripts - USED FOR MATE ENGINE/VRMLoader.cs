@@ -27,14 +27,15 @@ public class VRMLoader : MonoBehaviour
 
     void Start()
     {
-        // EnsureVRMDependencies();     //Line commented because it makes unity not continue
-        // EnsureShadersAreIncluded();  //Line commented because it makes unity not continue
+        // EnsureVRMDependencies();     //Line commented because it makes unity not continue, causes GlbParseException
+        EnsureShadersAreIncluded();
 
-        if (loadVRMButton != null)
-        {
-            loadVRMButton.onClick.RemoveAllListeners();
-            loadVRMButton.onClick.AddListener(OpenFileDialogAndLoadVRM);
-        }
+        //Lines commented because make select vrm window appearing twice
+        //if (loadVRMButton != null)
+        //{
+        //    loadVRMButton.onClick.RemoveAllListeners();
+        //    loadVRMButton.onClick.AddListener(OpenFileDialogAndLoadVRM);
+        //}
 
         if (PlayerPrefs.HasKey(modelPathKey))
         {

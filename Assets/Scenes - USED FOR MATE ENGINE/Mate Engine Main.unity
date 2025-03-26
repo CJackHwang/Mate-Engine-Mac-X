@@ -19682,7 +19682,6 @@ GameObject:
   - component: {fileID: 1758352173}
   - component: {fileID: 1758352181}
   - component: {fileID: 1758352188}
-  - component: {fileID: 8924917334924735495}
   m_Layer: 0
   m_Name: INJECT_MODEL_HERE
   m_TagString: Untagged
@@ -28981,26 +28980,6 @@ MonoBehaviour:
   Head: {fileID: 0}
   m_yaw: 0
   m_pitch: 0
---- !u!114 &8924917334924735495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2411184301990817844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed54d147737b6c419723be7bfee333d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadVRMButton: {fileID: 0}
-  injectModelHere: {fileID: 0}
-  animatorController: {fileID: 0}
-  fixedPositionScript: {fileID: 0}
-  headTrackingScript: {fileID: 0}
-  avatarAnimatorScript: {fileID: 0}
-  avatarDragSoundHandlerScript: {fileID: 0}
-  voiceReactionHandlerScript: {fileID: 0}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
