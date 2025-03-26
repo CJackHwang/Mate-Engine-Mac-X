@@ -54,7 +54,6 @@ Thumbs.db
 desktop.ini
 
 # Git-specific
-.gitignore
 .gitattributes
 
 # Asset store tools
@@ -63,3 +62,5 @@ Assets/AssetStoreTools*
 # Collaborate / Plastic SCM
 .collabignore
 .plastic/
+
+.vs
