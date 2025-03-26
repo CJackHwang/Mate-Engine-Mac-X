@@ -70,6 +70,19 @@ Using models with lower texture memory will result in lower RAM usage. Overall, 
 - **Re-injecting Custom Models** – Each time you launch **Mate Engine**, you need to re-inject your own model.
 - **No Window or Taskbar Sitting** – This feature is disabled due to the risk of getting banned in games like **CS2, CSGO, League of Legends, and others**. If a safe workaround is found, it will be implemented in the future.
 
+## Frequeintly Asked
+**Q: The VRM doesn't inject, or my model doesn't work with your app!**
+
+**A:** This issue is not caused by the app itself but by your `.VRM` model file being invalid or improperly formatted. If you created the `.VRM` file yourself or received it from someone who converted an `.fbx`, `.obj`, or `.mmd` file to `.VRM`, please ensure the conversion was done correctly.
+
+For guidance on properly converting files into the `.VRM` format, you can follow tutorials available here:
+
+- [VRM Conversion Guide](https://vrm.dev/en/how_to_make_vrm/)
+
+Please note, assistance with converting models into `.VRM` files is outside the scope of support provided here.
+
+
+
 ---
 ## Developer Deployment
 
