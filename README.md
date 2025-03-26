@@ -39,21 +39,34 @@ Using models with lower texture memory will result in lower RAM usage. Overall, 
 - **Options Menu** – Click on the avatar and press `M` to open the **Mate Engine** options menu.
 
 ---
+## Future Updates (Pre-Release-1)
+
+- **Always on Top** – Toggle whether the Desktop Pet stays on top of all windows or moves behind them when you focus on a new window.  
+- **Particle System** – Adds magical particle effects to your mouse or the pet itself for a more whimsical feel.  
+- **Wallpaper Engine Integration** – Adds support for injecting the project into your Wallpaper Engine designs. You’ll be able to embed the entire Unity project directly into your wallpaper!  
+- **Window & Taskbar Sitting** – Not 100% confirmed yet, as it’s a bit tricky to implement—but potentially allows your pet to sit directly on windows or the taskbar, just like in Desktop Mate.  
+- **Menu Color Customization** – A fun little feature to let you personalize the menu colors—because who doesn’t love some flair?  
+- **Initial Avatar Loading** – In the future, a "ModAvatar" folder will let you place your VRM files inside. The pet will automatically load your VRM on startup, no more re-injecting each time!
+
+---
 ## Known Issues & Missing Features
 
 - **Re-injecting Custom Models** – Each time you launch **Mate Engine**, you need to re-inject your own model.
 - **No Window or Taskbar Sitting** – This feature is disabled due to the risk of getting banned in games like **CS2, CSGO, League of Legends, and others**. If a safe workaround is found, it will be implemented in the future.
 
 ---
-## I Need Your Help! :tools:
+## Developer Deployment
 
-If you have experience with **C#** or **Unity animations**, I would appreciate any help!
+Setting up to contribute to this project is super easy!
 
-- I am not a **C# expert**, so any **pull requests** or contributions are welcome.
-- If you're skilled in **Unity animations**, I need help creating **dragging, dancing, and idle animations**. I prefer to keep **Mate Engine** free, so I won’t be hiring paid artists—this is a community-driven project!
+1. Clone the GitHub repository and extract the project folder.  
+2. Open **Unity Hub** and click on **"Add project from disk"**.  
+3. Select the `Mate-Engine-BRANCH` folder.  
+4. Open the project in Unity Hub.  
+5. Once the project has loaded, go to the folder `Scenes - USED FOR MATE ENGINE` and open the scene **Mate Engine Main**.
 
-If you’re interested in helping, feel free to contribute! :rocket:
-
+Important
+Do **not** open any other scenes like *Mate Engine InDev*, as they belong to different branches. For contributions and development, always use **Mate Engine Main** only.
 ---
 ## Virus Detection Warning :warning:
 
