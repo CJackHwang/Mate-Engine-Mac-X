@@ -77,7 +77,7 @@ Using models with lower texture memory will result in lower RAM usage. Overall, 
 
 For guidance on properly converting files into the `.VRM` format, you can follow tutorials available here:
 
-- [VRM Conversion Guide](https://vrm.dev/en/how_to_make_vrm/)
+- [VRM Conversion Guide](https://vrm.dev/en/vrm/how_to_make_vrm/)
 
 Please note, assistance with converting models into `.VRM` files is outside the scope of support provided here.
 
