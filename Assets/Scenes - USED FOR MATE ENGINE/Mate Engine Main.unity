@@ -669,8 +669,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1408,7 +1408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6000887, g: 0.49261302, b: 0.7735849, a: 1}
+  m_Color: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2150,8 +2150,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294957029
-  m_fontColor: {r: 0.8980156, g: 0.8443396, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85736454, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2461,7 +2461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6000887, g: 0.49261302, b: 0.7735849, a: 1}
+  m_Color: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3017,10 +3017,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.82730883, g: 0.7783019, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.57010925, g: 0.4481132, b: 1, a: 1}
-    m_PressedColor: {r: 0.7088006, g: 0.6273585, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+    m_HighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+    m_PressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+    m_SelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3415,8 +3415,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4024,8 +4024,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4450,10 +4450,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
-    m_HighlightedColor: {r: 0.22352941, g: 0.18431373, b: 0.29411766, a: 1}
-    m_PressedColor: {r: 0.4745098, g: 0.39607844, b: 0.62352943, a: 1}
-    m_SelectedColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+    m_NormalColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_HighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_PressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4638,7 +4638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29897326, g: 0.24995552, b: 0.38679248, a: 1}
+  m_Color: {r: 0.12615699, g: 0.1566, b: 0.1981132, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5176,7 +5176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  m_Color: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5374,10 +5374,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
-    m_HighlightedColor: {r: 0.22352941, g: 0.18431373, b: 0.29411766, a: 1}
-    m_PressedColor: {r: 0.47402996, g: 0.3964934, b: 0.6226415, a: 1}
-    m_SelectedColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+    m_NormalColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_HighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_PressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -5966,7 +5966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6000887, g: 0.49261302, b: 0.7735849, a: 1}
+  m_Color: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6249,10 +6249,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-    m_PressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
+    m_HighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_PressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6707,7 +6707,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7095,8 +7095,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294957029
-  m_fontColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7513,7 +7513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  m_Color: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7810,7 +7810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6000887, g: 0.49261302, b: 0.7735849, a: 1}
+  m_Color: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8125,8 +8125,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294957029
-  m_fontColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8872,8 +8872,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9775,7 +9775,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  m_Color: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9850,7 +9850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6000887, g: 0.49261302, b: 0.7735849, a: 1}
+  m_Color: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10136,6 +10136,76 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1423088876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1423088878}
+  - component: {fileID: 1423088877}
+  m_Layer: 0
+  m_Name: Standard Purple Color
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1423088877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423088876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e5c54347ac4e74697992b8879ea120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundPanelColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+  menuPanel: {fileID: 563560417}
+  titleTextColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+  titleTextObject: {fileID: 195582416}
+  sliderNormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+  sliderHighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
+  sliderPressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
+  sliderSelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+  sliderDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  sliderLabelColor: {r: 0.92941177, g: 0.69411767, b: 1, a: 1}
+  sliderBackgroundColor: {r: 0.6, g: 0.49411765, b: 0.77254903, a: 1}
+  sliderFillColor: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  toggleNormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+  toggleHighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
+  togglePressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
+  toggleSelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+  toggleDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  toggleLabelColor: {r: 0.92941177, g: 0.69411767, b: 1, a: 1}
+  toggleBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  buttonNormalColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+  buttonHighlightedColor: {r: 0.22352941, g: 0.18431373, b: 0.29411766, a: 1}
+  buttonPressedColor: {r: 0.4745098, g: 0.39607844, b: 0.62352943, a: 1}
+  buttonSelectedColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+  buttonDisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  buttonTextColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+--- !u!4 &1423088878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423088876}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 881.4326, y: 310.1309, z: -331.16876}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1713358540}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1424809317
 GameObject:
   m_ObjectHideFlags: 0
@@ -10885,6 +10955,10 @@ PrefabInstance:
     - target: {fileID: 2411184303471137227, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
       propertyPath: m_Name
       value: INJECT_MODEL_HERE
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944604919636003431, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3944604919636003431, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
       propertyPath: m_DirtyAABB
@@ -11641,10 +11715,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.82730883, g: 0.7783019, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.57010925, g: 0.4481132, b: 1, a: 1}
-    m_PressedColor: {r: 0.7088006, g: 0.6273585, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+    m_HighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+    m_PressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+    m_SelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -11869,8 +11943,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294957029
-  m_fontColor: {r: 0.8980392, g: 0.84313726, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12069,8 +12143,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12205,8 +12279,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12380,10 +12454,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.82730883, g: 0.7783019, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.57010925, g: 0.4481132, b: 1, a: 1}
-    m_PressedColor: {r: 0.7088006, g: 0.6273585, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+    m_HighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+    m_PressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+    m_SelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -12768,6 +12842,75 @@ Transform:
   - {fileID: 1138090584}
   m_Father: {fileID: 1860896819}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1713358539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713358540}
+  - component: {fileID: 1713358541}
+  m_Layer: 0
+  m_Name: Grey Night Color
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1713358540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713358539}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1423088878}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1713358541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713358539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e5c54347ac4e74697992b8879ea120, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundPanelColor: {r: 0.12615699, g: 0.1566, b: 0.1981132, a: 1}
+  menuPanel: {fileID: 563560417}
+  titleTextColor: {r: 0.84313726, g: 0.85736454, b: 1, a: 1}
+  titleTextObject: {fileID: 195582416}
+  sliderNormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+  sliderHighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+  sliderPressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+  sliderSelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
+  sliderDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  sliderLabelColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
+  sliderBackgroundColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+  sliderFillColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
+  toggleNormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
+  toggleHighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+  togglePressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+  toggleSelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+  toggleDisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  toggleLabelColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
+  toggleBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  buttonNormalColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+  buttonHighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+  buttonPressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+  buttonSelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+  buttonDisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  buttonTextColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
 --- !u!1 &1714680719
 GameObject:
   m_ObjectHideFlags: 0
@@ -13251,7 +13394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  m_Color: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13335,10 +13478,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-    m_PressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
+    m_HighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_PressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -13620,8 +13763,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14218,10 +14361,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.82730883, g: 0.7783019, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.57010925, g: 0.4481132, b: 1, a: 1}
-    m_PressedColor: {r: 0.7088006, g: 0.6273585, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+    m_HighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+    m_PressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+    m_SelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -14616,10 +14759,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.82730883, g: 0.7783019, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.57010925, g: 0.4481132, b: 1, a: 1}
-    m_PressedColor: {r: 0.7088006, g: 0.6273585, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.54509807, g: 0.61960787, b: 0.7176471, a: 1}
+    m_HighlightedColor: {r: 0.11764707, g: 0.16078432, b: 0.21960786, a: 1}
+    m_PressedColor: {r: 0.20469919, g: 0.27774733, b: 0.3773585, a: 1}
+    m_SelectedColor: {r: 0.31367925, g: 0.39413598, b: 0.5, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -15115,10 +15258,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-    m_PressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
+    m_HighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_PressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -15208,8 +15351,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294947309
-  m_fontColor: {r: 0.93135417, g: 0.69411767, b: 1, a: 1}
+    rgba: 4294958039
+  m_fontColor: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15390,7 +15533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.69411767, b: 1, a: 1}
+  m_Color: {r: 0.84313726, g: 0.85882354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15453,10 +15596,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.5686275, g: 0.44705883, b: 1, a: 1}
-    m_PressedColor: {r: 0.70980394, g: 0.627451, b: 1, a: 1}
-    m_SelectedColor: {r: 0.827451, g: 0.7764706, b: 1, a: 1}
+    m_NormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
+    m_HighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_PressedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -15762,10 +15905,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
-    m_HighlightedColor: {r: 0.22352941, g: 0.18431373, b: 0.29411766, a: 1}
-    m_PressedColor: {r: 0.47402996, g: 0.3964934, b: 0.6226415, a: 1}
-    m_SelectedColor: {r: 0.29803923, g: 0.2509804, b: 0.3882353, a: 1}
+    m_NormalColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
+    m_HighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
+    m_PressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
+    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -15849,3 +15992,4 @@ SceneRoots:
   - {fileID: 14424278}
   - {fileID: 638481095}
   - {fileID: 503772294}
+  - {fileID: 1423088878}
