@@ -13,6 +13,7 @@ public class VRMLoader : MonoBehaviour
     public RuntimeAnimatorController animatorController;
     public FixedPosition fixedPositionScript;
     public AvatarControllerHeadTracking headTrackingScript;
+    public AvatarControllerEyeTracking eyeTrackingScript;
     public AvatarAnimatorController avatarAnimatorScript;
     public AvatarDragSoundHandler avatarDragSoundHandlerScript;
     public PetVoiceReactionHandler voiceReactionHandlerScript;
@@ -62,6 +63,7 @@ public class VRMLoader : MonoBehaviour
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
             RenameHeadBone(currentModel);
+            RenameEyeBone(currentModel);
 
             var animator = currentModel.GetComponentInChildren<Animator>();
             if (voiceReactionHandlerScript != null && animator != null)
@@ -116,6 +118,7 @@ public class VRMLoader : MonoBehaviour
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
             RenameHeadBone(currentModel);
+            RenameEyeBone(currentModel);
 
             var animator = currentModel.GetComponentInChildren<Animator>();
             if (voiceReactionHandlerScript != null && animator != null)
@@ -159,6 +162,9 @@ public class VRMLoader : MonoBehaviour
         if (headTrackingScript != null && model.GetComponent<AvatarControllerHeadTracking>() == null)
             model.AddComponent<AvatarControllerHeadTracking>();
 
+        if (eyeTrackingScript != null && model.GetComponent<AvatarControllerEyeTracking>() == null)
+            model.AddComponent<AvatarControllerEyeTracking>();
+
         if (avatarAnimatorScript != null && model.GetComponent<AvatarAnimatorController>() == null)
             model.AddComponent<AvatarAnimatorController>();
 
@@ -194,5 +200,18 @@ public class VRMLoader : MonoBehaviour
         if (animator == null || !animator.isHuman) return;
         var headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         if (headBone != null && headBone.name != "HEAD") headBone.name = "HEAD";
+    }
+
+    private void RenameEyeBone(GameObject model)
+    {
+        var animator = model.GetComponent<Animator>();
+        if (animator == null || !animator.isHuman) return;
+        var leftBone = animator.GetBoneTransform(HumanBodyBones.LeftEye);
+        var rightBone = animator.GetBoneTransform(HumanBodyBones.RightEye);
+        if ((leftBone !=  null && leftBone.name != "LEFT_EYE") || (rightBone != null && rightBone.name != "RIGHT_EYE"))
+        {
+            leftBone.name = "LEFT_EYE";
+            rightBone.name = "RIGHT_EYE";
+        }
     }
 }
