@@ -20,8 +20,19 @@ Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**
 
 ![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
 
-Funds Raised 94,54 USD / 100,00 USD Date: 26th of March 2025
-Gra**** Ja***** You are the goat for this 88,62 Donation... you literally made it possible to buy a Steam License! thank you so much!
+Funds Raised: 194.34 USD / 100.00 USD
+Date: 26th of March, 2025
+
+Legendary List – These amazing people made it possible to publish this game on Steam for just $3.99 and helped cover the license cost needed to distribute my app there.
+
+The app will cost $3.99 on Steam, but don’t worry — it will always be FREE here on GitHub!
+If you’d like to support future updates, feel free to grab it on Steam.
+And if money’s tight for any reason, no stress — you can always download the app for free from this GitHub page, and yes, it will always stay up-to-date!
+
+Supporters:
+- Gra**** Ja***** – $94.00
+- Co**** Da***** – $96.00
+- Dym**** Sk***** – $5.59
 
 In order to publish this app on Steam once it's stable, I need to pay a one-time fee of $100 USD. Since this project is completely free, I would truly appreciate any donations!
 
