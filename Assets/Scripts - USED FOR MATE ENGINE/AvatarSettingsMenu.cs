@@ -18,6 +18,9 @@ public class AvatarSettingsMenu : MonoBehaviour
     public AudioSource audioSource;
     public List<AudioClip> uiSounds;
 
+    public VRMLoader vrmLoader; // Drag your VRMLoader object in the Inspector
+
+
     private bool isSliderBeingDragged;
 
     // We'll hold a reference to the actual UniWindowController
@@ -153,7 +156,14 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         UpdateFPSLimit();
         SaveSettings();
+
+        // NEW: Re-inject the default model
+        if (vrmLoader != null)
+        {
+            vrmLoader.LoadDefaultModel();
+        }
     }
+
 
     private void SaveSettings()
     {

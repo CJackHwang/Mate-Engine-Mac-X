@@ -20,6 +20,11 @@ public class VRMLoader : MonoBehaviour
     public AvatarDragSoundHandler avatarDragSoundHandlerScript;
     public PetVoiceReactionHandler voiceReactionHandlerScript; // NEW input field
 
+    [Tooltip("Drag your default .vrm file here")]
+    public TextAsset defaultModelAsset;
+
+
+
     private GameObject currentModel;
     private bool isLoading = false;
 
@@ -46,6 +51,66 @@ public class VRMLoader : MonoBehaviour
             }
         }
     }
+
+    public async void LoadDefaultModel()
+    {
+        if (defaultModelAsset != null)
+        {
+            try
+            {
+                byte[] vrmData = defaultModelAsset.bytes;
+                using var gltfData = new GlbBinaryParser(vrmData, defaultModelAsset.name).Parse();
+                var vrmDataObj = new VRMData(gltfData);
+                var importer = new VRMImporterContext(vrmDataObj);
+                var instance = await importer.LoadAsync(new ImmediateCaller());
+
+                if (injectModelHere != null)
+                {
+                    foreach (Transform child in injectModelHere.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+
+                instance.Root.transform.SetParent(injectModelHere.transform, false);
+                instance.Root.transform.localPosition = Vector3.zero;
+                instance.Root.transform.localRotation = Quaternion.identity;
+                instance.Root.transform.localScale = Vector3.one;
+
+                currentModel = instance.Root;
+
+                EnableSkinnedMeshRenderers(currentModel);
+                FixMaterials(currentModel);
+                AssignAnimatorController(currentModel);
+                AddRequiredComponents(currentModel);
+                RenameHeadBone(currentModel);
+
+                // PetVoiceReactionHandler
+                Animator animator = currentModel.GetComponentInChildren<Animator>();
+                if (voiceReactionHandlerScript != null && animator != null)
+                {
+                    voiceReactionHandlerScript.SetAnimator(animator);
+                }
+
+                // ✅ Clear saved path to avoid loading old model on next launch
+                PlayerPrefs.DeleteKey(modelPathKey);
+                PlayerPrefs.Save();
+
+                Debug.Log("[VRMLoader] Default model loaded from TextAsset");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("[VRMLoader] Failed to load default model: " + ex.Message);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[VRMLoader] No default model asset assigned.");
+        }
+    }
+
+
+
 
     private void EnsureVRMDependencies()
     {

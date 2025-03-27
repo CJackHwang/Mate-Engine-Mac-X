@@ -186,6 +186,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
   - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
   - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  vrmLoader: {fileID: 14424281}
 --- !u!82 &14424280
 AudioSource:
   m_ObjectHideFlags: 0
@@ -303,6 +304,7 @@ MonoBehaviour:
   avatarAnimatorScript: {fileID: 1758352175}
   avatarDragSoundHandlerScript: {fileID: 1758352181}
   voiceReactionHandlerScript: {fileID: 1758352188}
+  defaultModelAsset: {fileID: 4900000, guid: ce35717e4ba18264b861a93aa752ddd3, type: 3}
 --- !u!1 &20746432
 GameObject:
   m_ObjectHideFlags: 0
