@@ -1744,7 +1744,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: 1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2819,24 +2819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47406d5f857a0b4caeb8728f48177cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableOptimization: 1
-  checkInterval: 5
-  enableCPUOptimizations: 1
-  limitPhysicsCalculations: 1
-  disableUnusedScripts: 1
-  enableObjectPooling: 0
-  reduceUpdateFrequency: 0
-  enableGPUOptimizations: 0
-  enableLODs: 0
-  enableFrustumCulling: 0
-  dynamicQualityScaling: 0
-  disableUnnecessaryPostProcessing: 0
-  optimizeShadowSettings: 0
-  enableRAMOptimizations: 1
-  enableGarbageCollection: 1
-  unloadUnusedAssets: 1
-  compressTextures: 0
-  limitAudioMemoryUsage: 1
 --- !u!4 &738234973
 Transform:
   m_ObjectHideFlags: 0
