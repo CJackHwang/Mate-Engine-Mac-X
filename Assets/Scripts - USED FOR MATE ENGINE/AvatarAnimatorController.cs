@@ -219,20 +219,26 @@ public class AvatarAnimatorController : MonoBehaviour
         }
 
         idleTimer += Time.deltaTime;
+        idleTimer += Time.deltaTime;
         if (idleTimer > IDLE_SWITCH_TIME)
         {
-            if (idleState + 1 >= totalIdleAnimations)
+            idleTimer = 0f;
+
+            int nextState = (idleState + 1) % totalIdleAnimations;
+
+            if (nextState == 0)
             {
-                idleState = 0;
-                animator.SetFloat("IdleIndex", idleState);
+                // No smooth transition from last to 0 — snap it immediately!
+                animator.SetFloat("IdleIndex", 0);
             }
             else
             {
-                idleState++;
-                StartCoroutine(SmoothIdleTransition(idleState));
+                StartCoroutine(SmoothIdleTransition(nextState));
             }
-            idleTimer = 0f;
+
+            idleState = nextState;
         }
+
     }
 
     private IEnumerator SmoothIdleTransition(int newIdleState)
