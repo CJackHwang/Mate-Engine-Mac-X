@@ -2,6 +2,7 @@
 
 using System.IO;
 using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using VRM;
@@ -22,15 +23,27 @@ public class VRMLoader : MonoBehaviour
     private GameObject currentModel;
     private bool isLoading = false;
 
+    private string modelPathKey = "SavedPathModel"; // Key to save the path of the last model used
+
     void Start()
     {
-        EnsureVRMDependencies();
+        // EnsureVRMDependencies();     //Line commented because it makes unity not continue, causes GlbParseException
         EnsureShadersAreIncluded();
 
-        if (loadVRMButton != null)
+        //Lines commented because make select vrm window appearing twice
+        //if (loadVRMButton != null)
+        //{
+        //    loadVRMButton.onClick.RemoveAllListeners();
+        //    loadVRMButton.onClick.AddListener(OpenFileDialogAndLoadVRM);
+        //}
+
+        if (PlayerPrefs.HasKey(modelPathKey))
         {
-            loadVRMButton.onClick.RemoveAllListeners();
-            loadVRMButton.onClick.AddListener(OpenFileDialogAndLoadVRM);
+            string savedPath = PlayerPrefs.GetString(modelPathKey);
+            if (!string.IsNullOrEmpty(savedPath))
+            {
+                StartCoroutine(LoadVRMWrapper(savedPath));
+            }
         }
     }
 
@@ -108,11 +121,21 @@ public class VRMLoader : MonoBehaviour
             {
                 voiceReactionHandlerScript.SetAnimator(animator);
             }
+
+            PlayerPrefs.SetString(modelPathKey, path);
+            PlayerPrefs.Save();
         }
+
         catch (System.Exception ex)
         {
             Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
         }
+    }
+
+    IEnumerator LoadVRMWrapper(string path)
+    {
+        LoadVRM(path);
+        yield return null;
     }
 
     private void EnableSkinnedMeshRenderers(GameObject model)
