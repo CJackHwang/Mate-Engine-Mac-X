@@ -13,6 +13,15 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public HumanBodyBones targetBone;
         public AnimationClip hoverAnimation;
 
+        [Header("Hover Object Settings (Per Region)")]
+        public bool enableHoverObject = false;
+        public GameObject hoverObject;
+        public bool bindHoverObjectToBone = false;
+
+        [Header("Layered Sound Settings (Per Region)")] // Replace Later
+        public bool enableLayeredSound = false;
+        public List<AudioClip> layeredVoiceClips = new List<AudioClip>();
+
         [HideInInspector] public bool wasHovering = false;
     }
 
@@ -27,6 +36,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     [Header("Voice Settings")]
     public AudioSource voiceAudioSource;
+    public AudioSource layeredAudioSource; // New secondary audio source for layered sounds
 
     [Header("Animator State Checks")]
     public string idleStateName = "Idle";
@@ -45,6 +55,9 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
         if (voiceAudioSource == null)
             voiceAudioSource = gameObject.AddComponent<AudioSource>();
+
+        if (layeredAudioSource == null)
+            layeredAudioSource = gameObject.AddComponent<AudioSource>();
 
         if (avatarAnimator != null)
         {
@@ -76,6 +89,13 @@ public class PetVoiceReactionHandler : MonoBehaviour
                     obj.transform.localRotation = Quaternion.identity;
                 }
             }
+
+            if (region.enableHoverObject && region.bindHoverObjectToBone && region.hoverObject != null)
+            {
+                region.hoverObject.transform.SetParent(bone, false);
+                region.hoverObject.transform.localPosition = Vector3.zero;
+                region.hoverObject.transform.localRotation = Quaternion.identity;
+            }
         }
     }
 
@@ -103,14 +123,24 @@ public class PetVoiceReactionHandler : MonoBehaviour
                 if (col.Raycast(ray, out RaycastHit hit, 100f))
                 {
                     hovering = true;
+
+                    if (!region.wasHovering && IsInIdleState())
+                    {
+                        PlayRandomVoice(region);
+                        TriggerHoverReaction(region, true);
+                    }
+
                     break;
                 }
             }
 
-            if (hovering && !region.wasHovering && IsInIdleState())
+            if (region.enableHoverObject && region.hoverObject != null)
             {
-                PlayRandomVoice(region);
-                TriggerHoverReaction(region, true);
+                region.hoverObject.SetActive(hovering);
+            }
+
+            if (hovering && !region.wasHovering)
+            {
                 region.wasHovering = true;
             }
             else if (!hovering && region.wasHovering)
@@ -151,14 +181,20 @@ public class PetVoiceReactionHandler : MonoBehaviour
         avatarAnimator.SetBool(hoverTriggerParam, state);
     }
 
-
     void PlayRandomVoice(VoiceRegion region)
     {
-        if (region.voiceClips.Count == 0) return;
-        if (voiceAudioSource.isPlaying) return;
+        if (region.voiceClips.Count > 0 && !voiceAudioSource.isPlaying)
+        {
+            AudioClip clip = region.voiceClips[Random.Range(0, region.voiceClips.Count)];
+            voiceAudioSource.clip = clip;
+            voiceAudioSource.Play();
+        }
 
-        AudioClip clip = region.voiceClips[Random.Range(0, region.voiceClips.Count)];
-        voiceAudioSource.clip = clip;
-        voiceAudioSource.Play();
+        // Play layered audio if enabled
+        if (region.enableLayeredSound && region.layeredVoiceClips.Count > 0)
+        {
+            AudioClip layeredClip = region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)];
+            layeredAudioSource.PlayOneShot(layeredClip);
+        }
     }
 }
