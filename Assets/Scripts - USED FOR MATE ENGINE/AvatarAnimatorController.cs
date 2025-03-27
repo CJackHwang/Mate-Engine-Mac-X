@@ -22,6 +22,10 @@ public class AvatarAnimatorController : MonoBehaviour
     public bool enableDragging = true;
     public bool enableDancing = true;
 
+    [Header("Debug Logging")]
+    [Tooltip("Enable or disable debug logs.")]
+    public bool enableDebugLogging = false;
+
     public bool isDragging = false;
     public bool isDancing = false;
 
@@ -37,7 +41,10 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Start()
     {
-        if (animator == null) animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
         Application.runInBackground = true;
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
@@ -53,8 +60,15 @@ public class AvatarAnimatorController : MonoBehaviour
                 UpdateDefaultDevice();
                 if (defaultDevice == null)
                 {
-                    try { UpdateDefaultDevice(); UnityEngine.Debug.Log("Reinitialized default audio device."); }
-                    catch (System.Exception ex) { UnityEngine.Debug.LogError("Failed to reinitialize audio device: " + ex.Message); }
+                    try
+                    {
+                        UpdateDefaultDevice();
+                        Log("Reinitialized default audio device.");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        LogError("Failed to reinitialize audio device: " + ex.Message);
+                    }
                 }
                 CheckForSound();
             }
@@ -75,7 +89,7 @@ public class AvatarAnimatorController : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            UnityEngine.Debug.LogError("Failed to get default audio device: " + ex.Message);
+            LogError("Failed to get default audio device: " + ex.Message);
             defaultDevice = null;
         }
     }
@@ -91,20 +105,23 @@ public class AvatarAnimatorController : MonoBehaviour
             {
                 isDancing = true;
                 animator.SetBool("isDancing", true);
-                UnityEngine.Debug.Log("🎵 Dancing started.");
+                Log("🎵 Dancing started.");
             }
             else if (!isValidSoundPlaying && isDancing)
             {
                 isDancing = false;
                 animator.SetBool("isDancing", false);
-                UnityEngine.Debug.Log("🛑 Dancing stopped.");
+                Log("🛑 Dancing stopped.");
             }
         }
     }
 
     bool IsValidAppPlaying()
     {
-        if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL) return isDancing;
+        if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
+        {
+            return isDancing;
+        }
         lastSoundCheckTime = Time.time;
 
         try
@@ -117,22 +134,40 @@ public class AvatarAnimatorController : MonoBehaviour
                 if (peak <= SOUND_THRESHOLD) continue;
 
                 int processId = (int)session.GetProcessID;
-                if (processId == 0) { UnityEngine.Debug.Log("🔍 Skipping session with no valid process."); continue; }
+                if (processId == 0)
+                {
+                    Log("🔍 Skipping session with no valid process.");
+                    continue;
+                }
 
                 Process process = null;
-                try { process = Process.GetProcessById(processId); }
-                catch { UnityEngine.Debug.Log("⚠️ Could not get process for ID: " + processId); continue; }
+                try
+                {
+                    process = Process.GetProcessById(processId);
+                }
+                catch
+                {
+                    Log("⚠️ Could not get process for ID: " + processId);
+                    continue;
+                }
 
                 string processName = process.ProcessName.ToLowerInvariant();
-                UnityEngine.Debug.Log($"🎧 Audio from: {processName} | Peak: {peak}");
+                Log($"🎧 Audio from: {processName} | Peak: {peak}");
 
-                if (ignoredApps.Any(ignored => processName.StartsWith(ignored))) { UnityEngine.Debug.Log($"🚫 Ignored audio source: {processName}"); continue; }
+                if (ignoredApps.Any(ignored => processName.StartsWith(ignored)))
+                {
+                    Log($"🚫 Ignored audio source: {processName}");
+                    continue;
+                }
 
-                UnityEngine.Debug.Log($"✅ Valid audio source: {processName}");
+                Log($"✅ Valid audio source: {processName}");
                 return true;
             }
         }
-        catch (System.Exception ex) { UnityEngine.Debug.LogError("❌ Error checking audio sessions: " + ex.Message); }
+        catch (System.Exception ex)
+        {
+            LogError("❌ Error checking audio sessions: " + ex.Message);
+        }
 
         return false;
     }
@@ -159,15 +194,23 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             idleTimer = 0f;
             int nextState = (idleState + 1) % totalIdleAnimations;
-            if (nextState == 0) animator.SetFloat("IdleIndex", 0);
-            else StartCoroutine(SmoothIdleTransition(nextState));
+            if (nextState == 0)
+            {
+                animator.SetFloat("IdleIndex", 0);
+            }
+            else
+            {
+                StartCoroutine(SmoothIdleTransition(nextState));
+            }
             idleState = nextState;
         }
     }
 
     private IEnumerator SmoothIdleTransition(int newIdleState)
     {
-        float elapsedTime = 0f, startValue = animator.GetFloat("IdleIndex");
+        float elapsedTime = 0f;
+        float startValue = animator.GetFloat("IdleIndex");
+
         while (elapsedTime < IDLE_TRANSITION_TIME)
         {
             elapsedTime += Time.deltaTime;
@@ -177,13 +220,55 @@ public class AvatarAnimatorController : MonoBehaviour
         animator.SetFloat("IdleIndex", newIdleState);
     }
 
-    void OnDestroy() => CleanupAudioResources();
-    void OnApplicationQuit() => CleanupAudioResources();
+    void OnDestroy()
+    {
+        CleanupAudioResources();
+    }
+
+    void OnApplicationQuit()
+    {
+        CleanupAudioResources();
+    }
 
     void CleanupAudioResources()
     {
-        if (soundCheckCoroutine != null) { StopCoroutine(soundCheckCoroutine); soundCheckCoroutine = null; }
-        if (defaultDevice != null) { defaultDevice.Dispose(); defaultDevice = null; }
-        if (enumerator != null) { enumerator.Dispose(); enumerator = null; }
+        if (soundCheckCoroutine != null)
+        {
+            StopCoroutine(soundCheckCoroutine);
+            soundCheckCoroutine = null;
+        }
+        if (defaultDevice != null)
+        {
+            defaultDevice.Dispose();
+            defaultDevice = null;
+        }
+        if (enumerator != null)
+        {
+            enumerator.Dispose();
+            enumerator = null;
+        }
+    }
+
+    // ---------------------------------------------------
+    // HELPER METHODS FOR CONTROLLED LOGGING
+    // ---------------------------------------------------
+
+    private void Log(string message)
+    {
+        if (!enableDebugLogging) return;
+        UnityEngine.Debug.Log("[AvatarAnimatorController] " + message);
+    }
+
+    private void LogWarning(string message)
+    {
+        if (!enableDebugLogging) return;
+        UnityEngine.Debug.LogWarning("[AvatarAnimatorController] " + message);
+    }
+
+    private void LogError(string message)
+    {
+        // Typically errors are always logged, but if you want to silence them as well, check here:
+        if (!enableDebugLogging) return;
+        UnityEngine.Debug.LogError("[AvatarAnimatorController] " + message);
     }
 }
