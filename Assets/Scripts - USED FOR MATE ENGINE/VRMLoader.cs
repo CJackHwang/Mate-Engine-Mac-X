@@ -1,8 +1,5 @@
-﻿// This is an updated version of VRMLoader that includes support for PetVoiceReactionHandler
-
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using VRM;
@@ -18,154 +15,41 @@ public class VRMLoader : MonoBehaviour
     public AvatarControllerHeadTracking headTrackingScript;
     public AvatarAnimatorController avatarAnimatorScript;
     public AvatarDragSoundHandler avatarDragSoundHandlerScript;
-    public PetVoiceReactionHandler voiceReactionHandlerScript; // NEW input field
-
+    public PetVoiceReactionHandler voiceReactionHandlerScript;
+    public HandHolder handHolderScript;
     [Tooltip("Drag your default .vrm file here")]
     public TextAsset defaultModelAsset;
 
-
-
     private GameObject currentModel;
     private bool isLoading = false;
-
-    private string modelPathKey = "SavedPathModel"; // Key to save the path of the last model used
+    private string modelPathKey = "SavedPathModel";
 
     void Start()
     {
-        // EnsureVRMDependencies();     //Line commented because it makes unity not continue, causes GlbParseException
         EnsureShadersAreIncluded();
-
-        //Lines commented because make select vrm window appearing twice
-        //if (loadVRMButton != null)
-        //{
-        //    loadVRMButton.onClick.RemoveAllListeners();
-        //    loadVRMButton.onClick.AddListener(OpenFileDialogAndLoadVRM);
-        //}
-
         if (PlayerPrefs.HasKey(modelPathKey))
         {
             string savedPath = PlayerPrefs.GetString(modelPathKey);
-            if (!string.IsNullOrEmpty(savedPath))
-            {
-                StartCoroutine(LoadVRMWrapper(savedPath));
-            }
+            if (!string.IsNullOrEmpty(savedPath)) LoadVRM(savedPath);
         }
     }
 
     public async void LoadDefaultModel()
     {
-        if (defaultModelAsset != null)
-        {
-            try
-            {
-                byte[] vrmData = defaultModelAsset.bytes;
-                using var gltfData = new GlbBinaryParser(vrmData, defaultModelAsset.name).Parse();
-                var vrmDataObj = new VRMData(gltfData);
-                var importer = new VRMImporterContext(vrmDataObj);
-                var instance = await importer.LoadAsync(new ImmediateCaller());
-
-                if (injectModelHere != null)
-                {
-                    foreach (Transform child in injectModelHere.transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                }
-
-                instance.Root.transform.SetParent(injectModelHere.transform, false);
-                instance.Root.transform.localPosition = Vector3.zero;
-                instance.Root.transform.localRotation = Quaternion.identity;
-                instance.Root.transform.localScale = Vector3.one;
-
-                currentModel = instance.Root;
-
-                EnableSkinnedMeshRenderers(currentModel);
-                FixMaterials(currentModel);
-                AssignAnimatorController(currentModel);
-                AddRequiredComponents(currentModel);
-                RenameHeadBone(currentModel);
-
-                // PetVoiceReactionHandler
-                Animator animator = currentModel.GetComponentInChildren<Animator>();
-                if (voiceReactionHandlerScript != null && animator != null)
-                {
-                    voiceReactionHandlerScript.SetAnimator(animator);
-                }
-
-                // ✅ Clear saved path to avoid loading old model on next launch
-                PlayerPrefs.DeleteKey(modelPathKey);
-                PlayerPrefs.Save();
-
-                Debug.Log("[VRMLoader] Default model loaded from TextAsset");
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogError("[VRMLoader] Failed to load default model: " + ex.Message);
-            }
-        }
-        else
+        if (defaultModelAsset == null)
         {
             Debug.LogWarning("[VRMLoader] No default model asset assigned.");
+            return;
         }
-    }
-
-
-
-
-    private void EnsureVRMDependencies()
-    {
-        var importer = new VRMImporterContext(new VRMData(new GlbBinaryParser(new byte[0], "").Parse()));
-    }
-
-    private void EnsureShadersAreIncluded()
-    {
-        Shader.Find("VRM/MToon");
-    }
-
-    public void OpenFileDialogAndLoadVRM()
-    {
-        if (!isLoading)
-        {
-            isLoading = true;
-            OpenFileExplorer();
-            isLoading = false;
-        }
-    }
-
-    void OpenFileExplorer()
-    {
-        var extensions = new[] { new ExtensionFilter("VRM Files", "vrm") };
-        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select VRM Model", "", extensions, false);
-
-        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
-        {
-            LoadVRM(paths[0]);
-        }
-    }
-
-    public async void LoadVRM(string path)
-    {
-        if (!File.Exists(path)) return;
-
         try
         {
-            byte[] vrmData = await Task.Run(() => File.ReadAllBytes(path));
-            if (vrmData == null || vrmData.Length == 0) return;
-
-            using var gltfData = new GlbBinaryParser(vrmData, path).Parse();
-            var vrmDataObj = new VRMData(gltfData);
-            var importer = new VRMImporterContext(vrmDataObj);
+            byte[] vrmData = defaultModelAsset.bytes;
+            using var gltfData = new GlbBinaryParser(vrmData, defaultModelAsset.name).Parse();
+            var importer = new VRMImporterContext(new VRMData(gltfData));
             var instance = await importer.LoadAsync(new ImmediateCaller());
 
-            if (instance.Root == null) return;
-
             if (injectModelHere != null)
-            {
-                foreach (Transform child in injectModelHere.transform)
-                {
-                    Destroy(child.gameObject);
-                }
-            }
+                foreach (Transform child in injectModelHere.transform) Destroy(child.gameObject);
 
             instance.Root.transform.SetParent(injectModelHere.transform, false);
             instance.Root.transform.localPosition = Vector3.zero;
@@ -173,101 +57,142 @@ public class VRMLoader : MonoBehaviour
             instance.Root.transform.localScale = Vector3.one;
 
             currentModel = instance.Root;
-
             EnableSkinnedMeshRenderers(currentModel);
             FixMaterials(currentModel);
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
             RenameHeadBone(currentModel);
 
-            // Bind PetVoiceReactionHandler
-            Animator animator = currentModel.GetComponentInChildren<Animator>();
+            var animator = currentModel.GetComponentInChildren<Animator>();
             if (voiceReactionHandlerScript != null && animator != null)
-            {
                 voiceReactionHandlerScript.SetAnimator(animator);
-            }
+
+            PlayerPrefs.DeleteKey(modelPathKey);
+            PlayerPrefs.Save();
+            Debug.Log("[VRMLoader] Default model loaded from TextAsset");
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("[VRMLoader] Failed to load default model: " + ex.Message);
+        }
+    }
+
+    private void EnsureShadersAreIncluded() => Shader.Find("VRM/MToon");
+
+    public void OpenFileDialogAndLoadVRM()
+    {
+        if (isLoading) return;
+        isLoading = true;
+        var extensions = new[] { new ExtensionFilter("VRM Files", "vrm") };
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select VRM Model", "", extensions, false);
+        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0])) LoadVRM(paths[0]);
+        isLoading = false;
+    }
+
+    public async void LoadVRM(string path)
+    {
+        if (!File.Exists(path)) return;
+        try
+        {
+            byte[] vrmData = await Task.Run(() => File.ReadAllBytes(path));
+            if (vrmData == null || vrmData.Length == 0) return;
+
+            using var gltfData = new GlbBinaryParser(vrmData, path).Parse();
+            var importer = new VRMImporterContext(new VRMData(gltfData));
+            var instance = await importer.LoadAsync(new ImmediateCaller());
+            if (instance.Root == null) return;
+
+            if (injectModelHere != null)
+                foreach (Transform child in injectModelHere.transform) Destroy(child.gameObject);
+
+            instance.Root.transform.SetParent(injectModelHere.transform, false);
+            instance.Root.transform.localPosition = Vector3.zero;
+            instance.Root.transform.localRotation = Quaternion.identity;
+            instance.Root.transform.localScale = Vector3.one;
+
+            currentModel = instance.Root;
+            EnableSkinnedMeshRenderers(currentModel);
+            FixMaterials(currentModel);
+            AssignAnimatorController(currentModel);
+            AddRequiredComponents(currentModel);
+            RenameHeadBone(currentModel);
+
+            var animator = currentModel.GetComponentInChildren<Animator>();
+            if (voiceReactionHandlerScript != null && animator != null)
+                voiceReactionHandlerScript.SetAnimator(animator);
 
             PlayerPrefs.SetString(modelPathKey, path);
             PlayerPrefs.Save();
         }
-
         catch (System.Exception ex)
         {
             Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
         }
     }
 
-    IEnumerator LoadVRMWrapper(string path)
-    {
-        LoadVRM(path);
-        yield return null;
-    }
-
     private void EnableSkinnedMeshRenderers(GameObject model)
     {
-        SkinnedMeshRenderer[] skinnedMeshes = model.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-        foreach (var skinnedMesh in skinnedMeshes)
-        {
+        foreach (var skinnedMesh in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             skinnedMesh.enabled = true;
-        }
     }
 
     private void FixMaterials(GameObject model)
     {
-        Renderer[] renderers = model.GetComponentsInChildren<Renderer>();
-        foreach (var renderer in renderers)
-        {
-            foreach (var mat in renderer.sharedMaterials)
-            {
+        foreach (var r in model.GetComponentsInChildren<Renderer>())
+            foreach (var mat in r.sharedMaterials)
                 if (mat != null && mat.shader.name != "VRM/MToon")
-                {
                     mat.shader = Shader.Find("VRM/MToon");
-                }
-            }
-        }
     }
 
     private void AssignAnimatorController(GameObject model)
     {
-        Animator animator = model.GetComponentInChildren<Animator>();
+        var animator = model.GetComponentInChildren<Animator>();
         if (animator != null && animatorController != null)
-        {
             animator.runtimeAnimatorController = animatorController;
-        }
     }
 
     private void AddRequiredComponents(GameObject model)
     {
         if (fixedPositionScript != null && model.GetComponent<FixedPosition>() == null)
-        {
             model.AddComponent<FixedPosition>();
-        }
 
         if (headTrackingScript != null && model.GetComponent<AvatarControllerHeadTracking>() == null)
-        {
             model.AddComponent<AvatarControllerHeadTracking>();
-        }
 
         if (avatarAnimatorScript != null && model.GetComponent<AvatarAnimatorController>() == null)
-        {
             model.AddComponent<AvatarAnimatorController>();
-        }
 
         if (avatarDragSoundHandlerScript != null && model.GetComponent<AvatarDragSoundHandler>() == null)
-        {
             model.AddComponent<AvatarDragSoundHandler>();
+
+        if (handHolderScript != null && model.GetComponent<HandHolder>() == null)
+        {
+            var newHandHolder = model.AddComponent<HandHolder>();
+            var anim = model.GetComponentInChildren<Animator>();
+            if (anim != null) newHandHolder.SetAnimator(anim);
+
+            newHandHolder.interactionRadius = handHolderScript.interactionRadius;
+            newHandHolder.hysteresisBuffer = handHolderScript.hysteresisBuffer;
+            newHandHolder.followSpeed = handHolderScript.followSpeed;
+            newHandHolder.maxIKWeight = handHolderScript.maxIKWeight;
+            newHandHolder.blendInTime = handHolderScript.blendInTime;
+            newHandHolder.blendOutTime = handHolderScript.blendOutTime;
+            newHandHolder.maxHandDistance = handHolderScript.maxHandDistance;
+            newHandHolder.handZOffset = handHolderScript.handZOffset;
+            newHandHolder.elbowHintOffset = handHolderScript.elbowHintOffset;
+            newHandHolder.isDancingParam = handHolderScript.isDancingParam;
+            newHandHolder.isDraggingParam = handHolderScript.isDraggingParam;
+            newHandHolder.hoverTriggerParam = handHolderScript.hoverTriggerParam;
+            newHandHolder.showDebugGizmos = handHolderScript.showDebugGizmos;
+            newHandHolder.gizmoColor = handHolderScript.gizmoColor;
         }
     }
 
     private void RenameHeadBone(GameObject model)
     {
-        Animator animator = model.GetComponent<Animator>();
+        var animator = model.GetComponent<Animator>();
         if (animator == null || !animator.isHuman) return;
-
-        Transform headBone = animator.GetBoneTransform(HumanBodyBones.Head);
-        if (headBone != null && headBone.name != "HEAD")
-        {
-            headBone.name = "HEAD";
-        }
+        var headBone = animator.GetBoneTransform(HumanBodyBones.Head);
+        if (headBone != null && headBone.name != "HEAD") headBone.name = "HEAD";
     }
 }

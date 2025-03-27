@@ -304,7 +304,8 @@ MonoBehaviour:
   avatarAnimatorScript: {fileID: 1758352175}
   avatarDragSoundHandlerScript: {fileID: 1758352181}
   voiceReactionHandlerScript: {fileID: 1758352188}
-  defaultModelAsset: {fileID: 4900000, guid: ce35717e4ba18264b861a93aa752ddd3, type: 3}
+  handHolderScript: {fileID: 8924917334924735495}
+  defaultModelAsset: {fileID: 4900000, guid: 2c58477e778ec5b4e8f0190f89d524f4, type: 3}
 --- !u!1 &20746432
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,6 +2402,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583768848}
   m_CullTransparentMesh: 1
+--- !u!1 &584327576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 584327578}
+  - component: {fileID: 584327577}
+  m_Layer: 0
+  m_Name: SaveGameLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &584327577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584327576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03fdec3bb455d7d40a12ddd7bf247838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &584327578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584327576}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.18072984, y: 1.5816411, z: 1.7054739}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589794182
 GameObject:
   m_ObjectHideFlags: 0
@@ -15501,6 +15546,7 @@ GameObject:
   - component: {fileID: 1758352173}
   - component: {fileID: 1758352181}
   - component: {fileID: 1758352188}
+  - component: {fileID: 8924917334924735495}
   m_Layer: 0
   m_Name: INJECT_MODEL_HERE
   m_TagString: Untagged
@@ -39760,6 +39806,33 @@ MonoBehaviour:
   Head: {fileID: 0}
   m_yaw: 0
   m_pitch: 0
+--- !u!114 &8924917334924735495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 0.25
+  hysteresisBuffer: 0.05
+  followSpeed: 5
+  maxIKWeight: 1
+  blendInTime: 0.2
+  blendOutTime: 0.4
+  maxHandDistance: 1.75
+  handZOffset: 0.05
+  elbowHintOffset: {x: -0.2, y: -0.1, z: 0.2}
+  isDancingParam: isDancing
+  isDraggingParam: isDragging
+  hoverTriggerParam: HoverTrigger
+  avatarAnimator: {fileID: 5823227879768727422}
+  showDebugGizmos: 1
+  gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
@@ -40234,3 +40307,4 @@ SceneRoots:
   - {fileID: 1391787993}
   - {fileID: 919112466}
   - {fileID: 1164786775}
+  - {fileID: 584327578}
