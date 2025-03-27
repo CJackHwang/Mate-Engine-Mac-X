@@ -10,8 +10,8 @@ public class AvatarAnimatorController : MonoBehaviour
     [Header("General Settings")]
     public Animator animator;
     public bool enableAudioDetection = true;
-    public float SOUND_THRESHOLD = 0.02f; // Slightly raised from 0.01
-    public List<string> ignoredApps = new List<string> { "discord", "mateengine", "mateenginex", "chrome", "audiodg", "explorer" }; // No ".exe"
+    public float SOUND_THRESHOLD = 0.02f;
+    public List<string> ignoredApps = new List<string> { "discord", "mateengine", "mateenginex", "chrome", "audiodg", "explorer" };
 
     [Header("Idle Animation Settings")]
     public int totalIdleAnimations = 10;
@@ -23,7 +23,6 @@ public class AvatarAnimatorController : MonoBehaviour
     public bool enableDancing = true;
 
     public bool isDragging = false;
-    public bool isSitting = false;
     public bool isDancing = false;
 
     private MMDevice defaultDevice;
@@ -49,7 +48,6 @@ public class AvatarAnimatorController : MonoBehaviour
 
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
-
 
     private IEnumerator CheckSoundContinuously()
     {
@@ -97,7 +95,6 @@ public class AvatarAnimatorController : MonoBehaviour
             defaultDevice = null;
         }
     }
-
 
     void CheckForSound()
     {
@@ -174,7 +171,6 @@ public class AvatarAnimatorController : MonoBehaviour
                         continue;
                     }
 
-                    // ✅ Passed all checks
                     UnityEngine.Debug.Log($"✅ Valid audio source: {processName}");
                     return true;
                 }
@@ -185,19 +181,6 @@ public class AvatarAnimatorController : MonoBehaviour
             UnityEngine.Debug.LogError("❌ Error checking audio sessions: " + ex.Message);
         }
 
-        return false;
-    }
-
-
-    bool IsSubprocessIgnored(string processName)
-    {
-        foreach (string ignoredApp in ignoredApps)
-        {
-            if (processName.StartsWith(ignoredApp))
-            {
-                return true;
-            }
-        }
         return false;
     }
 
@@ -219,7 +202,6 @@ public class AvatarAnimatorController : MonoBehaviour
         }
 
         idleTimer += Time.deltaTime;
-        idleTimer += Time.deltaTime;
         if (idleTimer > IDLE_SWITCH_TIME)
         {
             idleTimer = 0f;
@@ -228,7 +210,6 @@ public class AvatarAnimatorController : MonoBehaviour
 
             if (nextState == 0)
             {
-                // No smooth transition from last to 0 — snap it immediately!
                 animator.SetFloat("IdleIndex", 0);
             }
             else
@@ -238,7 +219,6 @@ public class AvatarAnimatorController : MonoBehaviour
 
             idleState = nextState;
         }
-
     }
 
     private IEnumerator SmoothIdleTransition(int newIdleState)
@@ -255,12 +235,6 @@ public class AvatarAnimatorController : MonoBehaviour
         }
 
         animator.SetFloat("IdleIndex", newIdleState);
-    }
-
-    public void SetSitting(bool sitting)
-    {
-        isSitting = sitting;
-        animator.SetBool("isSitting", sitting);
     }
 
     void OnDestroy()
@@ -293,5 +267,4 @@ public class AvatarAnimatorController : MonoBehaviour
             enumerator = null;
         }
     }
-
 }
