@@ -302,7 +302,7 @@ MonoBehaviour:
   animatorController: {fileID: 9100000, guid: f2a0cbc640bd53e47844a24c5b28028f, type: 2}
   fixedPositionScript: {fileID: 1758352174}
   headTrackingScript: {fileID: 1758352173}
-  eyeTrackingScript: {fileID: 0}
+  eyeTrackingScript: {fileID: 8924917334924735496}
   avatarAnimatorScript: {fileID: 1758352175}
   avatarDragSoundHandlerScript: {fileID: 1758352181}
   voiceReactionHandlerScript: {fileID: 1758352188}
@@ -8154,7 +8154,7 @@ GameObject:
   - component: {fileID: 5172264307451015546}
   - component: {fileID: 1676195514451508882}
   m_Layer: 0
-  m_Name: HEAD
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

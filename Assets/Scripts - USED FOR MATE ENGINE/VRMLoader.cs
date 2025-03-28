@@ -28,6 +28,8 @@ public class VRMLoader : MonoBehaviour
     void Start()
     {
         EnsureShadersAreIncluded();
+
+        // Load previously selected model if path is saved
         if (PlayerPrefs.HasKey(modelPathKey))
         {
             string savedPath = PlayerPrefs.GetString(modelPathKey);
@@ -42,6 +44,7 @@ public class VRMLoader : MonoBehaviour
             Debug.LogWarning("[VRMLoader] No default model asset assigned.");
             return;
         }
+
         try
         {
             byte[] vrmData = defaultModelAsset.bytes;
@@ -49,8 +52,7 @@ public class VRMLoader : MonoBehaviour
             var importer = new VRMImporterContext(new VRMData(gltfData));
             var instance = await importer.LoadAsync(new ImmediateCaller());
 
-            if (injectModelHere != null)
-                foreach (Transform child in injectModelHere.transform) Destroy(child.gameObject);
+            ClearPreviousModel();
 
             instance.Root.transform.SetParent(injectModelHere.transform, false);
             instance.Root.transform.localPosition = Vector3.zero;
@@ -58,12 +60,11 @@ public class VRMLoader : MonoBehaviour
             instance.Root.transform.localScale = Vector3.one;
 
             currentModel = instance.Root;
+
             EnableSkinnedMeshRenderers(currentModel);
             FixMaterials(currentModel);
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
-            RenameHeadBone(currentModel);
-            RenameEyeBone(currentModel);
 
             var animator = currentModel.GetComponentInChildren<Animator>();
             if (voiceReactionHandlerScript != null && animator != null)
@@ -71,7 +72,6 @@ public class VRMLoader : MonoBehaviour
 
             PlayerPrefs.DeleteKey(modelPathKey);
             PlayerPrefs.Save();
-            Debug.Log("[VRMLoader] Default model loaded from TextAsset");
         }
         catch (System.Exception ex)
         {
@@ -79,21 +79,31 @@ public class VRMLoader : MonoBehaviour
         }
     }
 
-    private void EnsureShadersAreIncluded() => Shader.Find("VRM/MToon");
+    private void EnsureShadersAreIncluded()
+    {
+        Shader.Find("VRM/MToon");
+    }
 
     public void OpenFileDialogAndLoadVRM()
     {
         if (isLoading) return;
+
         isLoading = true;
         var extensions = new[] { new ExtensionFilter("VRM Files", "vrm") };
         string[] paths = StandaloneFileBrowser.OpenFilePanel("Select VRM Model", "", extensions, false);
-        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0])) LoadVRM(paths[0]);
+
+        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
+        {
+            LoadVRM(paths[0]);
+        }
+
         isLoading = false;
     }
 
     public async void LoadVRM(string path)
     {
         if (!File.Exists(path)) return;
+
         try
         {
             byte[] vrmData = await Task.Run(() => File.ReadAllBytes(path));
@@ -102,10 +112,10 @@ public class VRMLoader : MonoBehaviour
             using var gltfData = new GlbBinaryParser(vrmData, path).Parse();
             var importer = new VRMImporterContext(new VRMData(gltfData));
             var instance = await importer.LoadAsync(new ImmediateCaller());
+
             if (instance.Root == null) return;
 
-            if (injectModelHere != null)
-                foreach (Transform child in injectModelHere.transform) Destroy(child.gameObject);
+            ClearPreviousModel();
 
             instance.Root.transform.SetParent(injectModelHere.transform, false);
             instance.Root.transform.localPosition = Vector3.zero;
@@ -113,12 +123,11 @@ public class VRMLoader : MonoBehaviour
             instance.Root.transform.localScale = Vector3.one;
 
             currentModel = instance.Root;
+
             EnableSkinnedMeshRenderers(currentModel);
             FixMaterials(currentModel);
             AssignAnimatorController(currentModel);
             AddRequiredComponents(currentModel);
-            RenameHeadBone(currentModel);
-            RenameEyeBone(currentModel);
 
             var animator = currentModel.GetComponentInChildren<Animator>();
             if (voiceReactionHandlerScript != null && animator != null)
@@ -133,6 +142,15 @@ public class VRMLoader : MonoBehaviour
         }
     }
 
+    private void ClearPreviousModel()
+    {
+        if (injectModelHere != null)
+        {
+            foreach (Transform child in injectModelHere.transform)
+                Destroy(child.gameObject);
+        }
+    }
+
     private void EnableSkinnedMeshRenderers(GameObject model)
     {
         foreach (var skinnedMesh in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
@@ -142,9 +160,13 @@ public class VRMLoader : MonoBehaviour
     private void FixMaterials(GameObject model)
     {
         foreach (var r in model.GetComponentsInChildren<Renderer>())
+        {
             foreach (var mat in r.sharedMaterials)
+            {
                 if (mat != null && mat.shader.name != "VRM/MToon")
                     mat.shader = Shader.Find("VRM/MToon");
+            }
+        }
     }
 
     private void AssignAnimatorController(GameObject model)
@@ -177,6 +199,7 @@ public class VRMLoader : MonoBehaviour
             var anim = model.GetComponentInChildren<Animator>();
             if (anim != null) newHandHolder.SetAnimator(anim);
 
+            // Copy settings from template
             newHandHolder.interactionRadius = handHolderScript.interactionRadius;
             newHandHolder.hysteresisBuffer = handHolderScript.hysteresisBuffer;
             newHandHolder.followSpeed = handHolderScript.followSpeed;
@@ -191,27 +214,6 @@ public class VRMLoader : MonoBehaviour
             newHandHolder.hoverTriggerParam = handHolderScript.hoverTriggerParam;
             newHandHolder.showDebugGizmos = handHolderScript.showDebugGizmos;
             newHandHolder.gizmoColor = handHolderScript.gizmoColor;
-        }
-    }
-
-    private void RenameHeadBone(GameObject model)
-    {
-        var animator = model.GetComponent<Animator>();
-        if (animator == null || !animator.isHuman) return;
-        var headBone = animator.GetBoneTransform(HumanBodyBones.Head);
-        if (headBone != null && headBone.name != "HEAD") headBone.name = "HEAD";
-    }
-
-    private void RenameEyeBone(GameObject model)
-    {
-        var animator = model.GetComponent<Animator>();
-        if (animator == null || !animator.isHuman) return;
-        var leftBone = animator.GetBoneTransform(HumanBodyBones.LeftEye);
-        var rightBone = animator.GetBoneTransform(HumanBodyBones.RightEye);
-        if ((leftBone !=  null && leftBone.name != "LEFT_EYE") || (rightBone != null && rightBone.name != "RIGHT_EYE"))
-        {
-            leftBone.name = "LEFT_EYE";
-            rightBone.name = "RIGHT_EYE";
         }
     }
 }
