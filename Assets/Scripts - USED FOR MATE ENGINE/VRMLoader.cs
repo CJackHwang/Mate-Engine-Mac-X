@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using VRM;
 using UniGLTF;
 using SFB;
+using System.Collections.Generic;
+
 
 public class VRMLoader : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class VRMLoader : MonoBehaviour
     public AvatarDragSoundHandler avatarDragSoundHandlerScript;
     public PetVoiceReactionHandler voiceReactionHandlerScript;
     public HandHolder handHolderScript;
+    public ChibiToggle chibiToggleTemplate;
+
     [Tooltip("Drag your default .vrm file here")]
     public TextAsset defaultModelAsset;
 
@@ -193,14 +197,34 @@ public class VRMLoader : MonoBehaviour
         if (avatarDragSoundHandlerScript != null && model.GetComponent<AvatarDragSoundHandler>() == null)
             model.AddComponent<AvatarDragSoundHandler>();
 
+        // Hand Holder Setup
         if (handHolderScript != null && model.GetComponent<HandHolder>() == null)
         {
             var newHandHolder = model.AddComponent<HandHolder>();
             var anim = model.GetComponentInChildren<Animator>();
             if (anim != null) newHandHolder.SetAnimator(anim);
-
-
         }
 
+        // Chibi Toggle Setup
+        if (chibiToggleTemplate != null && model.GetComponent<ChibiToggle>() == null)
+        {
+            var newChibi = model.AddComponent<ChibiToggle>();
+
+            // Copy all relevant fields
+            newChibi.chibiArmatureScale = chibiToggleTemplate.chibiArmatureScale;
+            newChibi.chibiHeadScale = chibiToggleTemplate.chibiHeadScale;
+            newChibi.screenInteractionRadius = chibiToggleTemplate.screenInteractionRadius;
+            newChibi.holdDuration = chibiToggleTemplate.holdDuration;
+            newChibi.showDebugGizmos = chibiToggleTemplate.showDebugGizmos;
+            newChibi.gizmoColor = chibiToggleTemplate.gizmoColor;
+
+            newChibi.audioSource = chibiToggleTemplate.audioSource;
+            newChibi.chibiEnterSounds = new List<AudioClip>(chibiToggleTemplate.chibiEnterSounds);
+            newChibi.chibiExitSounds = new List<AudioClip>(chibiToggleTemplate.chibiExitSounds);
+
+            newChibi.particleEffectObject = chibiToggleTemplate.particleEffectObject;
+            newChibi.particleDuration = chibiToggleTemplate.particleDuration;
+        }
     }
+
 }
