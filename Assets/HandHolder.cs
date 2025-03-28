@@ -1,36 +1,38 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(Animator))]
 public class HandHolder : MonoBehaviour
 {
-    [Header("Interaction Settings")]
-    [Tooltip("Radius around hand where interaction starts")]
-    public float interactionRadius = 0.25f;
-    [Tooltip("Extra buffer zone before deactivation to prevent flickering")]
-    public float hysteresisBuffer = 0.05f;
-    [Tooltip("How quickly the hand moves toward the mouse target")]
+    [Header("Screen-Space Interaction")]
+    [Tooltip("Main radius (pixels) for full IK grabbing.")]
+    public float screenInteractionRadius = 30f;
+
+    [Tooltip("Extra margin (pixels) for partial IK fade-out beyond main radius.")]
+    public float preZoneMargin = 30f;
+
+    [Tooltip("Speed for the hand to follow the mouse target.")]
     public float followSpeed = 5f;
 
     [Header("Blending")]
-    [Tooltip("Max weight for IK blending")]
     public float maxIKWeight = 1f;
-    [Tooltip("Time to fully blend in IK after activation")]
-    public float blendInTime = 0.2f;
-    [Tooltip("Time to fully blend out IK after deactivation")]
-    public float blendOutTime = 0.4f;
+    public float blendInTime = 1f;
+    public float blendOutTime = 1f;
 
-    [Header("Positioning")]
-    [Tooltip("Max distance in front of the chest the hand can move")]
-    public float maxHandDistance = 0.6f;
-    [Tooltip("How far in front (or behind) the body hands are allowed to move (positive = front, negative = behind)")]
-    public float handZOffset = 0.05f;
-    [Tooltip("Offset to guide elbow direction (pole vector)")]
-    public Vector3 elbowHintOffset = new Vector3(-0.2f, -0.1f, 0.2f);
+    [Header("Forward Reach Settings")]
+    public float maxHandDistance = 0.8f;
+    public float minForwardOffset = 0.2f;
+    public float verticalOffset = 0.05f;
 
-    [Header("Animator Flags")]
-    public string isDancingParam = "isDancing";
-    public string isDraggingParam = "isDragging";
-    public string hoverTriggerParam = "HoverTrigger";
+    [Header("Elbow Hint Settings (Outward Bend)")]
+    public float elbowHintDistance = 0.25f;
+    public float elbowHintBackOffset = 0.1f;
+    public float elbowHintHeightOffset = -0.05f;
+
+    [Header("Allowed Animator States")]
+    [Tooltip("Any animator states in this list will allow hand IK.")]
+    public List<string> allowedStates = new List<string> { "Idle", "HoverReaction" };
 
     [Header("Animator Source")]
     public Animator avatarAnimator;
@@ -40,10 +42,13 @@ public class HandHolder : MonoBehaviour
     public Color gizmoColor = new Color(0.2f, 0.7f, 1f, 0.2f);
 
     private Camera mainCam;
-    private Transform leftHand, rightHand, chest;
+    private Transform leftHand, rightHand, chest, leftShoulder, rightShoulder;
     private Vector3 leftTargetPos, rightTargetPos;
     private float leftIKWeight = 0f, rightIKWeight = 0f;
-    private bool leftWantsIK = false, rightWantsIK = false;
+
+    // Exclusive control: only one hand can be grabbed at once
+    private bool leftIsActive = false;
+    private bool rightIsActive = false;
 
     void Start()
     {
@@ -53,7 +58,10 @@ public class HandHolder : MonoBehaviour
         mainCam = Camera.main;
         leftHand = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
         rightHand = avatarAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest) ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
+        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest)
+                      ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
+        leftShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
+        rightShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.RightUpperArm);
     }
 
     public void SetAnimator(Animator newAnimator)
@@ -62,93 +70,97 @@ public class HandHolder : MonoBehaviour
         mainCam = Camera.main;
         leftHand = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
         rightHand = avatarAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest) ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
+        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest)
+                      ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
+        leftShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
+        rightShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.RightUpperArm);
     }
 
     void Update()
     {
-        if (avatarAnimator == null || leftHand == null || rightHand == null || chest == null)
-            return;
+        if (!IsValid()) return;
 
-        bool isDancing = avatarAnimator.GetBool(isDancingParam);
-        bool isDragging = avatarAnimator.GetBool(isDraggingParam);
-        bool isHovering = avatarAnimator.GetBool(hoverTriggerParam);
-
-        if (isDancing || isDragging || isHovering)
+        // Check if current animator state is in the allowed list
+        if (!IsInAllowedState())
         {
-            leftWantsIK = false;
-            rightWantsIK = false;
+            // Fade out both hands
+            leftIKWeight = Mathf.MoveTowards(leftIKWeight, 0f, Time.deltaTime / blendOutTime);
+            rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
             return;
         }
 
-        Vector3 mouseWorld = GetClampedMouseTarget();
+        // Convert each hand's world position to screen coords
+        Vector2 leftScreenPos = mainCam.WorldToScreenPoint(leftHand.position);
+        Vector2 rightScreenPos = mainCam.WorldToScreenPoint(rightHand.position);
+        Vector2 mousePos = Input.mousePosition;
 
-        float distLeft = Vector3.Distance(mouseWorld, leftHand.position);
-        float distRight = Vector3.Distance(mouseWorld, rightHand.position);
+        // We'll compute a desired weight for each hand
+        float leftDesiredWeight = ComputeScreenWeight(Vector2.Distance(mousePos, leftScreenPos));
+        float rightDesiredWeight = ComputeScreenWeight(Vector2.Distance(mousePos, rightScreenPos));
 
-        float triggerIn = interactionRadius;
-        float triggerOut = interactionRadius + hysteresisBuffer;
-
-        // If already holding left and enter right zone, switch to right
-        if (leftWantsIK && distRight < triggerIn)
+        // EXCLUSIVE control
+        if (leftDesiredWeight > rightDesiredWeight)
         {
-            leftWantsIK = false;
-            rightWantsIK = true;
-        }
-        else if (rightWantsIK && distLeft < triggerIn)
-        {
-            rightWantsIK = false;
-            leftWantsIK = true;
+            leftIsActive = leftDesiredWeight > 0f;
+            rightIsActive = false;
+            rightDesiredWeight = 0f;
         }
         else
         {
-            // Otherwise, apply hysteresis-based toggling
-            leftWantsIK = leftWantsIK ? distLeft < triggerOut : distLeft < triggerIn;
-            rightWantsIK = rightWantsIK ? distRight < triggerOut : distRight < triggerIn;
-
-            // Ensure exclusivity: if one activates, deactivate the other
-            if (leftWantsIK) rightWantsIK = false;
-            else if (rightWantsIK) leftWantsIK = false;
+            rightIsActive = rightDesiredWeight > 0f;
+            leftIsActive = false;
+            leftDesiredWeight = 0f;
         }
 
+        float dt = Time.deltaTime;
+        leftIKWeight = Mathf.MoveTowards(leftIKWeight, leftDesiredWeight, dt / (leftDesiredWeight > leftIKWeight ? blendInTime : blendOutTime));
+        rightIKWeight = Mathf.MoveTowards(rightIKWeight, rightDesiredWeight, dt / (rightDesiredWeight > rightIKWeight ? blendInTime : blendOutTime));
 
-        if (leftWantsIK)
-            leftTargetPos = Vector3.Lerp(leftTargetPos, mouseWorld, Time.deltaTime * followSpeed);
+        Vector3 worldTarget = GetProjectedMouseTarget();
+        if (leftIsActive)
+            leftTargetPos = Vector3.Lerp(leftTargetPos, worldTarget, dt * followSpeed);
+        if (rightIsActive)
+            rightTargetPos = Vector3.Lerp(rightTargetPos, worldTarget, dt * followSpeed);
+    }
 
-        if (rightWantsIK)
-            rightTargetPos = Vector3.Lerp(rightTargetPos, mouseWorld, Time.deltaTime * followSpeed);
+    bool IsInAllowedState()
+    {
+        if (avatarAnimator == null || allowedStates.Count == 0) return false;
 
-        float inSpeed = 1f / Mathf.Max(blendInTime, 0.01f);
-        float outSpeed = 1f / Mathf.Max(blendOutTime, 0.01f);
+        var currentInfo = avatarAnimator.GetCurrentAnimatorStateInfo(0);
 
-        leftIKWeight = Mathf.MoveTowards(leftIKWeight, leftWantsIK ? maxIKWeight : 0f, Time.deltaTime * (leftWantsIK ? inSpeed : outSpeed));
-        rightIKWeight = Mathf.MoveTowards(rightIKWeight, rightWantsIK ? maxIKWeight : 0f, Time.deltaTime * (rightWantsIK ? inSpeed : outSpeed));
+        // Check if the current state's name matches any item in allowedStates
+        // (This requires the exact state name in your Animator)
+        return allowedStates.Any(stateName => currentInfo.IsName(stateName));
+    }
+
+    private float ComputeScreenWeight(float distPixels)
+    {
+        float mainZone = screenInteractionRadius;
+        float outerZone = screenInteractionRadius + preZoneMargin;
+
+        if (distPixels <= mainZone)
+            return maxIKWeight;
+        if (distPixels >= outerZone)
+            return 0f;
+
+        float t = (distPixels - mainZone) / (outerZone - mainZone);
+        return Mathf.Lerp(maxIKWeight, 0f, t);
     }
 
     void OnAnimatorIK(int layerIndex)
     {
-        if (avatarAnimator == null) return;
+        if (!IsValid()) return;
 
-        bool isDancing = avatarAnimator.GetBool(isDancingParam);
-        bool isDragging = avatarAnimator.GetBool(isDraggingParam);
-        bool isHovering = avatarAnimator.GetBool(hoverTriggerParam);
-
-        if (isDancing || isDragging || isHovering)
+        if (!IsInAllowedState())
         {
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
-
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0f);
+            ResetIK();
             return;
         }
 
-        Vector3 bodyForward = avatarAnimator.transform.forward;
-        Vector3 bodyUp = avatarAnimator.transform.up;
-        Quaternion naturalRotation = Quaternion.LookRotation(bodyForward, bodyUp);
+        Quaternion naturalRotation = Quaternion.LookRotation(avatarAnimator.transform.forward, avatarAnimator.transform.up);
 
+        // LEFT
         if (leftIKWeight > 0f)
         {
             avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, leftIKWeight);
@@ -156,9 +168,9 @@ public class HandHolder : MonoBehaviour
             avatarAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftTargetPos);
             avatarAnimator.SetIKRotation(AvatarIKGoal.LeftHand, naturalRotation);
 
-            Vector3 leftHint = leftHand.position + avatarAnimator.transform.TransformDirection(elbowHintOffset);
+            Vector3 hint = GetElbowHint(leftShoulder, leftTargetPos, true);
             avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, leftIKWeight);
-            avatarAnimator.SetIKHintPosition(AvatarIKHint.LeftElbow, leftHint);
+            avatarAnimator.SetIKHintPosition(AvatarIKHint.LeftElbow, hint);
         }
         else
         {
@@ -167,6 +179,7 @@ public class HandHolder : MonoBehaviour
             avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
         }
 
+        // RIGHT
         if (rightIKWeight > 0f)
         {
             avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, rightIKWeight);
@@ -174,9 +187,9 @@ public class HandHolder : MonoBehaviour
             avatarAnimator.SetIKPosition(AvatarIKGoal.RightHand, rightTargetPos);
             avatarAnimator.SetIKRotation(AvatarIKGoal.RightHand, naturalRotation);
 
-            Vector3 rightHint = rightHand.position + avatarAnimator.transform.TransformDirection(new Vector3(-elbowHintOffset.x, elbowHintOffset.y, elbowHintOffset.z));
+            Vector3 hint = GetElbowHint(rightShoulder, rightTargetPos, false);
             avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, rightIKWeight);
-            avatarAnimator.SetIKHintPosition(AvatarIKHint.RightElbow, rightHint);
+            avatarAnimator.SetIKHintPosition(AvatarIKHint.RightElbow, hint);
         }
         else
         {
@@ -186,30 +199,72 @@ public class HandHolder : MonoBehaviour
         }
     }
 
-    Vector3 GetMouseWorldPosition()
+    private Vector3 GetElbowHint(Transform shoulder, Vector3 target, bool isLeft)
     {
-        Vector3 mouse = Input.mousePosition;
-        mouse.z = Mathf.Abs(mainCam.transform.position.z);
-        return mainCam.ScreenToWorldPoint(mouse);
+        Vector3 toTarget = (target - shoulder.position).normalized;
+        Vector3 up = avatarAnimator.transform.up;
+
+        // Flip cross so arm always bends outward
+        Vector3 bendDir = Vector3.Cross(toTarget, up).normalized;
+        if (!isLeft) bendDir = -bendDir;
+
+        return shoulder.position
+            + bendDir * elbowHintDistance
+            - avatarAnimator.transform.forward * elbowHintBackOffset
+            + avatarAnimator.transform.up * elbowHintHeightOffset;
     }
 
-    Vector3 GetClampedMouseTarget()
+    private Vector3 GetProjectedMouseTarget()
     {
-        Vector3 worldPos = GetMouseWorldPosition();
-        if (chest == null) return worldPos;
+        Vector3 mouse = Input.mousePosition;
+        mouse.z = mainCam.WorldToScreenPoint(chest.position).z;
+        Vector3 world = mainCam.ScreenToWorldPoint(mouse);
 
-        Vector3 local = avatarAnimator.transform.InverseTransformPoint(worldPos);
-        local.z = Mathf.Max(handZOffset, local.z);
-        local = Vector3.ClampMagnitude(local, maxHandDistance);
+        Vector3 local = avatarAnimator.transform.InverseTransformPoint(world);
+        local.z = Mathf.Clamp(local.z, minForwardOffset, maxHandDistance);
+        local.y += verticalOffset;
         return avatarAnimator.transform.TransformPoint(local);
     }
 
+    private bool IsValid()
+    {
+        return avatarAnimator && leftHand && rightHand && chest && leftShoulder && rightShoulder;
+    }
+
+    private void ResetIK()
+    {
+        avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
+        avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
+        avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
+
+        avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
+        avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
+        avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0f);
+    }
+
+    // Same screen gizmo logic as before
     void OnDrawGizmos()
     {
-        if (!showDebugGizmos || !Application.isPlaying) return;
-
+        if (!showDebugGizmos || !Application.isPlaying || !mainCam) return;
         Gizmos.color = gizmoColor;
-        if (leftHand) Gizmos.DrawWireSphere(leftHand.position, interactionRadius);
-        if (rightHand) Gizmos.DrawWireSphere(rightHand.position, interactionRadius);
+
+        DrawScreenRadiusSphere(leftHand, screenInteractionRadius);
+        DrawScreenRadiusSphere(leftHand, screenInteractionRadius + preZoneMargin);
+
+        DrawScreenRadiusSphere(rightHand, screenInteractionRadius);
+        DrawScreenRadiusSphere(rightHand, screenInteractionRadius + preZoneMargin);
+    }
+
+    private void DrawScreenRadiusSphere(Transform hand, float screenRadius)
+    {
+        if (hand == null) return;
+        Vector3 screenPos = mainCam.WorldToScreenPoint(hand.position);
+        if (screenPos.z < 0f) return; // behind camera
+
+        Vector3 offsetScreen = screenPos + new Vector3(screenRadius, 0f, 0f);
+        Vector3 offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
+
+        float radiusWorld = Vector3.Distance(hand.position, offsetWorld);
+        Gizmos.DrawWireSphere(hand.position, radiusWorld);
     }
 }

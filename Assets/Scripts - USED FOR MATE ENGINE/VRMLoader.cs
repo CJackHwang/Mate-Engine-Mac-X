@@ -199,21 +199,8 @@ public class VRMLoader : MonoBehaviour
             var anim = model.GetComponentInChildren<Animator>();
             if (anim != null) newHandHolder.SetAnimator(anim);
 
-            // Copy settings from template
-            newHandHolder.interactionRadius = handHolderScript.interactionRadius;
-            newHandHolder.hysteresisBuffer = handHolderScript.hysteresisBuffer;
-            newHandHolder.followSpeed = handHolderScript.followSpeed;
-            newHandHolder.maxIKWeight = handHolderScript.maxIKWeight;
-            newHandHolder.blendInTime = handHolderScript.blendInTime;
-            newHandHolder.blendOutTime = handHolderScript.blendOutTime;
-            newHandHolder.maxHandDistance = handHolderScript.maxHandDistance;
-            newHandHolder.handZOffset = handHolderScript.handZOffset;
-            newHandHolder.elbowHintOffset = handHolderScript.elbowHintOffset;
-            newHandHolder.isDancingParam = handHolderScript.isDancingParam;
-            newHandHolder.isDraggingParam = handHolderScript.isDraggingParam;
-            newHandHolder.hoverTriggerParam = handHolderScript.hoverTriggerParam;
-            newHandHolder.showDebugGizmos = handHolderScript.showDebugGizmos;
-            newHandHolder.gizmoColor = handHolderScript.gizmoColor;
+
         }
+
     }
 }

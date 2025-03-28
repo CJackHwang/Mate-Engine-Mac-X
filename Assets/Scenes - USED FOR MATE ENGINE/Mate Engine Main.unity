@@ -5617,6 +5617,7 @@ MonoBehaviour:
   enableDebugLogging: 0
   isDragging: 0
   isDancing: 0
+  isIdle: 0
 --- !u!114 &1758352181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39778,18 +39779,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRadius: 0.25
-  hysteresisBuffer: 0.05
+  screenInteractionRadius: 30
+  preZoneMargin: 30
   followSpeed: 5
   maxIKWeight: 1
   blendInTime: 0.2
   blendOutTime: 0.4
   maxHandDistance: 1.75
-  handZOffset: 0.05
-  elbowHintOffset: {x: -0.2, y: -0.1, z: 0.2}
-  isDancingParam: isDancing
-  isDraggingParam: isDragging
-  hoverTriggerParam: HoverTrigger
+  minForwardOffset: 0.2
+  verticalOffset: 0.05
+  elbowHintDistance: 0.25
+  elbowHintBackOffset: 0.1
+  elbowHintHeightOffset: -0.05
+  allowedStates:
+  - Idle
+  - HoverReaction
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
   gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}

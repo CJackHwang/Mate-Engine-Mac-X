@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using NAudio.CoreAudioApi;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Diagnostics;
 using System.Collections;
 
 public class AvatarAnimatorController : MonoBehaviour
@@ -23,11 +23,11 @@ public class AvatarAnimatorController : MonoBehaviour
     public bool enableDancing = true;
 
     [Header("Debug Logging")]
-    [Tooltip("Enable or disable debug logs.")]
     public bool enableDebugLogging = false;
 
     public bool isDragging = false;
     public bool isDancing = false;
+    public bool isIdle = false;
 
     private MMDevice defaultDevice;
     private float lastSoundCheckTime = 0f;
@@ -39,15 +39,18 @@ public class AvatarAnimatorController : MonoBehaviour
     private Coroutine soundCheckCoroutine;
     private MMDeviceEnumerator enumerator;
 
+    private static readonly int isIdleParam = Animator.StringToHash("isIdle");
+
     void Start()
     {
         if (animator == null)
-        {
             animator = GetComponent<Animator>();
-        }
+
         Application.runInBackground = true;
+
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
+
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
 
@@ -58,6 +61,7 @@ public class AvatarAnimatorController : MonoBehaviour
             if (enableAudioDetection)
             {
                 UpdateDefaultDevice();
+
                 if (defaultDevice == null)
                 {
                     try
@@ -70,8 +74,10 @@ public class AvatarAnimatorController : MonoBehaviour
                         LogError("Failed to reinitialize audio device: " + ex.Message);
                     }
                 }
+
                 CheckForSound();
             }
+
             yield return new WaitForSeconds(SOUND_CHECK_INTERVAL);
         }
     }
@@ -80,11 +86,7 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         try
         {
-            if (defaultDevice != null)
-            {
-                defaultDevice.Dispose();
-                defaultDevice = null;
-            }
+            defaultDevice?.Dispose();
             defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
         catch (System.Exception ex)
@@ -97,6 +99,7 @@ public class AvatarAnimatorController : MonoBehaviour
     void CheckForSound()
     {
         if (defaultDevice == null) return;
+
         bool isValidSoundPlaying = IsValidAppPlaying();
 
         if (!isDragging)
@@ -105,13 +108,13 @@ public class AvatarAnimatorController : MonoBehaviour
             {
                 isDancing = true;
                 animator.SetBool("isDancing", true);
-                Log("🎵 Dancing started.");
+                Log("Started dancing.");
             }
             else if (!isValidSoundPlaying && isDancing)
             {
                 isDancing = false;
                 animator.SetBool("isDancing", false);
-                Log("🛑 Dancing stopped.");
+                Log("Stopped dancing.");
             }
         }
     }
@@ -119,9 +122,8 @@ public class AvatarAnimatorController : MonoBehaviour
     bool IsValidAppPlaying()
     {
         if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
-        {
             return isDancing;
-        }
+
         lastSoundCheckTime = Time.time;
 
         try
@@ -134,11 +136,7 @@ public class AvatarAnimatorController : MonoBehaviour
                 if (peak <= SOUND_THRESHOLD) continue;
 
                 int processId = (int)session.GetProcessID;
-                if (processId == 0)
-                {
-                    Log("🔍 Skipping session with no valid process.");
-                    continue;
-                }
+                if (processId == 0) continue;
 
                 Process process = null;
                 try
@@ -147,26 +145,19 @@ public class AvatarAnimatorController : MonoBehaviour
                 }
                 catch
                 {
-                    Log("⚠️ Could not get process for ID: " + processId);
                     continue;
                 }
 
                 string processName = process.ProcessName.ToLowerInvariant();
-                Log($"🎧 Audio from: {processName} | Peak: {peak}");
-
                 if (ignoredApps.Any(ignored => processName.StartsWith(ignored)))
-                {
-                    Log($"🚫 Ignored audio source: {processName}");
                     continue;
-                }
 
-                Log($"✅ Valid audio source: {processName}");
                 return true;
             }
         }
         catch (System.Exception ex)
         {
-            LogError("❌ Error checking audio sessions: " + ex.Message);
+            LogError("Error checking audio sessions: " + ex.Message);
         }
 
         return false;
@@ -204,6 +195,23 @@ public class AvatarAnimatorController : MonoBehaviour
             }
             idleState = nextState;
         }
+
+        UpdateIdleStatus();
+    }
+
+    private void UpdateIdleStatus()
+    {
+        if (animator == null) return;
+
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        bool inIdle = state.IsName("Idle");
+
+        if (isIdle != inIdle)
+        {
+            isIdle = inIdle;
+            animator.SetBool(isIdleParam, isIdle);
+            Log($"Animator state is now: {(isIdle ? "Idle" : "Not Idle")}");
+        }
     }
 
     private IEnumerator SmoothIdleTransition(int newIdleState)
@@ -217,18 +225,14 @@ public class AvatarAnimatorController : MonoBehaviour
             animator.SetFloat("IdleIndex", Mathf.Lerp(startValue, newIdleState, elapsedTime / IDLE_TRANSITION_TIME));
             yield return null;
         }
+
         animator.SetFloat("IdleIndex", newIdleState);
     }
 
-    void OnDestroy()
-    {
-        CleanupAudioResources();
-    }
+    public bool IsInIdleState() => isIdle;
 
-    void OnApplicationQuit()
-    {
-        CleanupAudioResources();
-    }
+    void OnDestroy() => CleanupAudioResources();
+    void OnApplicationQuit() => CleanupAudioResources();
 
     void CleanupAudioResources()
     {
@@ -237,21 +241,13 @@ public class AvatarAnimatorController : MonoBehaviour
             StopCoroutine(soundCheckCoroutine);
             soundCheckCoroutine = null;
         }
-        if (defaultDevice != null)
-        {
-            defaultDevice.Dispose();
-            defaultDevice = null;
-        }
-        if (enumerator != null)
-        {
-            enumerator.Dispose();
-            enumerator = null;
-        }
-    }
 
-    // ---------------------------------------------------
-    // HELPER METHODS FOR CONTROLLED LOGGING
-    // ---------------------------------------------------
+        defaultDevice?.Dispose();
+        defaultDevice = null;
+
+        enumerator?.Dispose();
+        enumerator = null;
+    }
 
     private void Log(string message)
     {
@@ -259,15 +255,8 @@ public class AvatarAnimatorController : MonoBehaviour
         UnityEngine.Debug.Log("[AvatarAnimatorController] " + message);
     }
 
-    private void LogWarning(string message)
-    {
-        if (!enableDebugLogging) return;
-        UnityEngine.Debug.LogWarning("[AvatarAnimatorController] " + message);
-    }
-
     private void LogError(string message)
     {
-        // Typically errors are always logged, but if you want to silence them as well, check here:
         if (!enableDebugLogging) return;
         UnityEngine.Debug.LogError("[AvatarAnimatorController] " + message);
     }
