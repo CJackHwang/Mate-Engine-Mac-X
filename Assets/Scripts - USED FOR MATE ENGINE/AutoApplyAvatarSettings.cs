@@ -12,7 +12,7 @@ public class AutoApplyAvatarSettings : MonoBehaviour
     {
         yield return null; // Wait one frame
 
-        AvatarSettingsMenu settingsMenu = FindObjectOfType<AvatarSettingsMenu>();
+        AvatarSettingsMenu settingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
         if (settingsMenu != null)
         {
             Debug.Log("[AutoApplyAvatarSettings] Applying settings on startup...");

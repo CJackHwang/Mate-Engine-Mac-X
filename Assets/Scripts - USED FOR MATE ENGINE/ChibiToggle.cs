@@ -11,7 +11,7 @@ public class ChibiToggle : MonoBehaviour
 
     [Header("Gizmo Interaction")]
     public float screenInteractionRadius = 30f; // In pixels
-    public float holdDuration = 5f;
+    public float holdDuration = 2f;
     public bool showDebugGizmos = true;
     public Color gizmoColor = new Color(1f, 0.5f, 0.7f, 0.25f);
 

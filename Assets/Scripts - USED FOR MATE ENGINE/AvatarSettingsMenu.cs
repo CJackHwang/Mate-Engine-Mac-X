@@ -74,7 +74,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public void UpdateFPSLimit()
     {
-        foreach (var fpsLimiter in FindObjectsOfType<FPSLimiter>())
+        foreach (var fpsLimiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
         {
             fpsLimiter.SetFPSLimit((int)fpsLimitSlider.value);
         }
@@ -82,9 +82,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+
     public void LoadSettings()
     {
-        foreach (var avatar in FindObjectsOfType<AvatarAnimatorController>())
+        foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
         {
             if (soundThresholdSlider != null) soundThresholdSlider.value = PlayerPrefs.GetFloat("SoundThreshold", avatar.SOUND_THRESHOLD);
             if (idleSwitchTimeSlider != null) idleSwitchTimeSlider.value = PlayerPrefs.GetFloat("IdleSwitchTime", avatar.IDLE_SWITCH_TIME);
@@ -101,17 +102,16 @@ public class AvatarSettingsMenu : MonoBehaviour
                 enableEyeTrackingToggle.isOn = PlayerPrefs.GetInt("EnableEyeTracking", 1) == 1;
         }
 
-        // Load and set the isTopmostToggle
         if (isTopmostToggle != null)
         {
-            // Default it to 1 (true)
             isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
         }
     }
 
+
     public void ApplySettings()
     {
-        foreach (var avatar in FindObjectsOfType<AvatarAnimatorController>())
+        foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
         {
             avatar.SOUND_THRESHOLD = soundThresholdSlider?.value ?? avatar.SOUND_THRESHOLD;
             avatar.IDLE_SWITCH_TIME = idleSwitchTimeSlider?.value ?? avatar.IDLE_SWITCH_TIME;
@@ -137,7 +137,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             }
         }
 
-        // Apply the topmost setting to the UniWindowController
         if (uniWindowController != null && isTopmostToggle != null)
         {
             uniWindowController.isTopmost = isTopmostToggle.isOn;
@@ -146,6 +145,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         UpdateFPSLimit();
         SaveSettings();
     }
+
 
     public void ResetToDefaults()
     {

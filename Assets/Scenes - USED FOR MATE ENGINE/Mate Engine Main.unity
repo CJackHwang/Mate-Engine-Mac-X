@@ -22073,6 +22073,51 @@ RectTransform:
   m_AnchoredPosition: {x: -175, y: -20}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2109244524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2109244526}
+  - component: {fileID: 2109244525}
+  m_Layer: 0
+  m_Name: LogDumper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2109244525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109244524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883b80e01ea832d47bde802014e05886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockSentisWarnings: 1
+--- !u!4 &2109244526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109244524}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1269397, y: 1.0991256, z: -4.9392843}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2126056074
 GameObject:
   m_ObjectHideFlags: 0
@@ -59793,7 +59838,7 @@ MonoBehaviour:
   chibiArmatureScale: {x: 0.3, y: 0.3, z: 0.3}
   chibiHeadScale: {x: 2.7, y: 2.7, z: 2.7}
   screenInteractionRadius: 30
-  holdDuration: 3
+  holdDuration: 2
   showDebugGizmos: 1
   gizmoColor: {r: 1, g: 0.5, b: 0.7, a: 0.25}
   audioSource: {fileID: 927620806}
@@ -60278,3 +60323,4 @@ SceneRoots:
   - {fileID: 1164786775}
   - {fileID: 584327578}
   - {fileID: 1784656521}
+  - {fileID: 2109244526}
