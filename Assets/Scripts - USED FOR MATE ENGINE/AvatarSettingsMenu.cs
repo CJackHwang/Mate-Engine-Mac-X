@@ -8,7 +8,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 {
     public GameObject menuPanel;
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, totalIdleAnimationsSlider, avatarSizeSlider, fpsLimitSlider;
-    public Toggle enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle, enableHeadTrackingToggle;
+    public Toggle enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle, enableHeadTrackingToggle, enableEyeTrackingToggle;
 
     // NEW FIELDS for UniWindowController and Is Topmost
     public Toggle isTopmostToggle;
@@ -97,6 +97,8 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (enableDancingToggle != null) enableDancingToggle.isOn = PlayerPrefs.GetInt("EnableDancing", avatar.enableDancing ? 1 : 0) == 1;
             if (enableHeadTrackingToggle != null)
                 enableHeadTrackingToggle.isOn = PlayerPrefs.GetInt("EnableHeadTracking", 1) == 1;
+            if (enableEyeTrackingToggle != null)
+                enableEyeTrackingToggle.isOn = PlayerPrefs.GetInt("EnableEyeTracking", 1) == 1;
         }
 
         // Load and set the isTopmostToggle
@@ -126,6 +128,13 @@ public class AvatarSettingsMenu : MonoBehaviour
                     headTracker.enableHeadTracking = enableHeadTrackingToggle.isOn;
                 }
             }
+            if (enableEyeTrackingToggle != null)
+            {
+                foreach (var eyeTracker in avatar.GetComponentsInChildren<AvatarControllerEyeTracking>())
+                {
+                    eyeTracker.enableEyeTracking = enableEyeTrackingToggle.isOn;
+                }
+            }
         }
 
         // Apply the topmost setting to the UniWindowController
@@ -149,6 +158,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDraggingToggle?.SetIsOnWithoutNotify(false);
         enableDancingToggle?.SetIsOnWithoutNotify(true);
         enableHeadTrackingToggle?.SetIsOnWithoutNotify(true);
+        enableEyeTrackingToggle?.SetIsOnWithoutNotify(true);
         fpsLimitSlider?.SetValueWithoutNotify(90);
 
         // Also default IsTopmost to true
@@ -176,6 +186,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("EnableDragging", enableDraggingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("EnableDancing", enableDancingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("EnableHeadTracking", enableHeadTrackingToggle?.isOn == true ? 1 : 0);
+        PlayerPrefs.SetInt("EnableEyeTracking", enableEyeTrackingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("FPSLimit", (int)(fpsLimitSlider?.value ?? 90));
 
         // Save the IsTopmost state
