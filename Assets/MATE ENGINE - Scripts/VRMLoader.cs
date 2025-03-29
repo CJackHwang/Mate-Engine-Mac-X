@@ -6,7 +6,6 @@ using VRM;
 using UniGLTF;
 using SFB;
 using System.Collections.Generic;
-using UniVRM10;
 
 
 public class VRMLoader : MonoBehaviour
@@ -113,25 +112,11 @@ public class VRMLoader : MonoBehaviour
 
         try
         {
-            byte[] fileData = await Task.Run(() => File.ReadAllBytes(path));
-            if (fileData == null || fileData.Length == 0) return;
+            byte[] vrmData = await Task.Run(() => File.ReadAllBytes(path));
+            if (vrmData == null || vrmData.Length == 0) return;
 
-            var glbData = new GlbFileParser(path).Parse();
-            var vrm10Data = Vrm10Data.Parse(glbData);
-
-            // Attempt migration if VRM 1.0 parsing fails
-            if (vrm10Data == null)
-            {
-                Vrm10Data.Migrate(glbData, out vrm10Data, out _);
-
-                if (vrm10Data == null)
-                {
-                    return;
-                }
-
-            }
-
-            using var importer = new Vrm10Importer(vrm10Data);
+            using var gltfData = new GlbBinaryParser(vrmData, path).Parse();
+            var importer = new VRMImporterContext(new VRMData(gltfData));
             var instance = await importer.LoadAsync(new ImmediateCaller());
 
             if (instance.Root == null) return;
