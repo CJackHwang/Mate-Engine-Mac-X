@@ -17,19 +17,20 @@ public class AvatarSettingsMenu : MonoBehaviour
     public List<AudioClip> uiSounds;
     public VRMLoader vrmLoader; // Drag your VRMLoader object in the Inspector
     private bool isSliderBeingDragged;
+    public static bool IsMenuOpen { get; private set; }
+
 
     // We'll hold a reference to the actual UniWindowController
     private UniWindowController uniWindowController;
 
     private void Start()
     {
-        menuPanel?.SetActive(false);
-
-        // Initialize reference to UniWindowController if assigned
-        if (uniWindowControllerObject != null)
+        if (menuPanel != null)
         {
-            uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
+            menuPanel.SetActive(false);
+            IsMenuOpen = false;
         }
+
 
         LoadSettings();
         ApplySettings();
@@ -59,12 +60,15 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M) || Input.GetMouseButtonDown(1)) // M key OR Right-click
+        if ((Input.GetKeyDown(KeyCode.M) || Input.GetMouseButtonDown(1)) && menuPanel != null)
         {
-            menuPanel?.SetActive(!menuPanel.activeSelf);
+            bool newState = !menuPanel.activeSelf;
+            menuPanel.SetActive(newState);
+            IsMenuOpen = newState;
             PlayUISound();
         }
     }
+
 
     public void UpdateFPSLimit()
     {

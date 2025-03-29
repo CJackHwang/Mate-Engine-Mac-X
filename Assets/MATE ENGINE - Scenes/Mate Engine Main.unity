@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 14424279}
   - component: {fileID: 14424280}
   - component: {fileID: 14424281}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2051,7 +2051,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 503772294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UniGLTF UnityThreadScheduler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3562,7 +3562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 940738567}
   - component: {fileID: 940738566}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: FPS Lock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

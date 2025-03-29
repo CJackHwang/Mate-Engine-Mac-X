@@ -196,6 +196,13 @@ public class AvatarAnimatorController : MonoBehaviour
             idleState = nextState;
         }
 
+        if (AvatarSettingsMenu.IsMenuOpen)
+        {
+            animator.SetBool("isDragging", false);
+            return;
+        }
+
+
         UpdateIdleStatus();
     }
 
