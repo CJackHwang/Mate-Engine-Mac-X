@@ -308,7 +308,7 @@ MonoBehaviour:
   voiceReactionHandlerScript: {fileID: 1758352188}
   handHolderScript: {fileID: 8924917334924735495}
   chibiToggleTemplate: {fileID: 8924917334924735497}
-  defaultModelAsset: {fileID: 4900000, guid: 2c58477e778ec5b4e8f0190f89d524f4, type: 3}
+  defaultModelAsset: {fileID: 4900000, guid: 95537a71bb848694c8ea0d79a66a945c, type: 3}
 --- !u!1 &20746432
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 13.7, y: -13.76}
+  m_AnchoredPosition: {x: 13.699997, y: -13.76}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &66553074
@@ -15618,7 +15618,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -16289,7 +16289,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 13.7, y: -13.76}
+  m_AnchoredPosition: {x: 13.699997, y: -13.76}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1905516566
@@ -16501,7 +16501,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 13.7, y: -13.76}
+  m_AnchoredPosition: {x: 13.699997, y: -13.76}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1989404499
@@ -16706,7 +16706,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 13.7, y: -13.76}
+  m_AnchoredPosition: {x: 13.699997, y: -13.76}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2018041415
