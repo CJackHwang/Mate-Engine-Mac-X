@@ -9,18 +9,13 @@ public class AvatarSettingsMenu : MonoBehaviour
     public GameObject menuPanel;
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, totalIdleAnimationsSlider, avatarSizeSlider, fpsLimitSlider;
     public Toggle enableAudioDetectionToggle, enableDraggingToggle, enableDancingToggle, enableHeadTrackingToggle, enableEyeTrackingToggle;
-
     // NEW FIELDS for UniWindowController and Is Topmost
     public Toggle isTopmostToggle;
     public GameObject uniWindowControllerObject;
-
     public Button applyButton, resetButton;
     public AudioSource audioSource;
     public List<AudioClip> uiSounds;
-
     public VRMLoader vrmLoader; // Drag your VRMLoader object in the Inspector
-
-
     private bool isSliderBeingDragged;
 
     // We'll hold a reference to the actual UniWindowController
@@ -38,7 +33,6 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         LoadSettings();
         ApplySettings();
-
         applyButton?.onClick.AddListener(() => { ApplySettings(); PlayUISound(); });
         resetButton?.onClick.AddListener(() => { ResetToDefaults(); PlayUISound(); });
 
@@ -65,7 +59,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M) || Input.GetMouseButtonDown(1)) // M key OR Right-click
         {
             menuPanel?.SetActive(!menuPanel.activeSelf);
             PlayUISound();
@@ -81,8 +75,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("FPSLimit", (int)fpsLimitSlider.value);
         PlayerPrefs.Save();
     }
-
-
     public void LoadSettings()
     {
         foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
@@ -107,8 +99,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
         }
     }
-
-
     public void ApplySettings()
     {
         foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
@@ -145,8 +135,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         UpdateFPSLimit();
         SaveSettings();
     }
-
-
     public void ResetToDefaults()
     {
         soundThresholdSlider?.SetValueWithoutNotify(0.2f);
@@ -174,7 +162,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
     }
 
-
     private void SaveSettings()
     {
         PlayerPrefs.SetFloat("SoundThreshold", soundThresholdSlider?.value ?? 0.2f);
@@ -188,10 +175,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("EnableHeadTracking", enableHeadTrackingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("EnableEyeTracking", enableEyeTrackingToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.SetInt("FPSLimit", (int)(fpsLimitSlider?.value ?? 90));
-
         // Save the IsTopmost state
         PlayerPrefs.SetInt("IsTopmost", isTopmostToggle?.isOn == true ? 1 : 0);
-
         PlayerPrefs.Save();
     }
 
