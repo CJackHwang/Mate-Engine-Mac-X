@@ -308,6 +308,7 @@ MonoBehaviour:
   voiceReactionHandlerScript: {fileID: 1758352188}
   handHolderScript: {fileID: 8924917334924735495}
   chibiToggleTemplate: {fileID: 8924917334924735497}
+  spineControllerTemplate: {fileID: 8924917334924735498}
   defaultModelAsset: {fileID: 4900000, guid: 95537a71bb848694c8ea0d79a66a945c, type: 3}
 --- !u!1 &20746432
 GameObject:
@@ -35485,6 +35486,7 @@ GameObject:
   - component: {fileID: 8924917334924735495}
   - component: {fileID: 8924917334924735496}
   - component: {fileID: 8924917334924735497}
+  - component: {fileID: 8924917334924735498}
   m_Layer: 0
   m_Name: INJECT_MODEL_HERE
   m_TagString: Untagged
@@ -38494,7 +38496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8448665822511148899}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.028080463, z: 0.0072177844}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -59818,6 +59820,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: af7b961a19df09d41bd6114009ee5a0a, type: 3}
   particleEffectObject: {fileID: 1104080579}
   particleDuration: 4
+--- !u!114 &8924917334924735498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e6170c5931d5d4992bb7dd0531999d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableSpineTracking: 1
+  minRotation: -15
+  maxRotation: 15
+  smoothness: 25
+  resetSmoothness: 10
+  allowedStates:
+  - Idle
+  - HoverReaction
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
@@ -60280,12 +60302,12 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 330585546}
+  - {fileID: 14424278}
   - {fileID: 638481095}
   - {fileID: 773190229}
   - {fileID: 133393615}
   - {fileID: 1520083670}
   - {fileID: 940738567}
-  - {fileID: 14424278}
   - {fileID: 503772294}
   - {fileID: 1423088878}
   - {fileID: 1391787993}

@@ -21,6 +21,8 @@ public class VRMLoader : MonoBehaviour
     public PetVoiceReactionHandler voiceReactionHandlerScript;
     public HandHolder handHolderScript;
     public ChibiToggle chibiToggleTemplate;
+    public AvatarSpineController spineControllerTemplate;
+
 
     [Tooltip("Drag your default .vrm file here")]
     public TextAsset defaultModelAsset;
@@ -224,6 +226,20 @@ public class VRMLoader : MonoBehaviour
 
             newChibi.particleEffectObject = chibiToggleTemplate.particleEffectObject;
             newChibi.particleDuration = chibiToggleTemplate.particleDuration;
+        }
+
+        // Spine Controller Setup
+        if (spineControllerTemplate != null && model.GetComponent<AvatarSpineController>() == null)
+        {
+            var newSpineController = model.AddComponent<AvatarSpineController>();
+
+            // Copy settings from template
+            newSpineController.enableSpineTracking = spineControllerTemplate.enableSpineTracking;
+            newSpineController.minRotation = spineControllerTemplate.minRotation;
+            newSpineController.maxRotation = spineControllerTemplate.maxRotation;
+            newSpineController.smoothness = spineControllerTemplate.smoothness;
+            newSpineController.resetSmoothness = spineControllerTemplate.resetSmoothness;
+            newSpineController.allowedStates = new List<string>(spineControllerTemplate.allowedStates);
         }
     }
 
