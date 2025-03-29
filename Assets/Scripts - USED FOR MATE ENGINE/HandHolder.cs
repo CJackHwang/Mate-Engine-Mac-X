@@ -13,7 +13,7 @@ public class HandHolder : MonoBehaviour
     public float preZoneMargin = 30f;
 
     [Tooltip("Speed for the hand to follow the mouse target.")]
-    public float followSpeed = 5f;
+    public float followSpeed = 10f;
 
     [Header("Blending")]
     public float maxIKWeight = 1f;

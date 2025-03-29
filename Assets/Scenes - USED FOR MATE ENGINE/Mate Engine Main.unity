@@ -59758,7 +59758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenInteractionRadius: 30
   preZoneMargin: 30
-  followSpeed: 5
+  followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.2
   blendOutTime: 0.4
@@ -59773,7 +59773,7 @@ MonoBehaviour:
   - HoverReaction
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
-  gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
+  gizmoColor: {r: 0, g: 0.892854, b: 1, a: 1}
 --- !u!114 &8924917334924735496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59810,7 +59810,7 @@ MonoBehaviour:
   screenInteractionRadius: 30
   holdDuration: 2
   showDebugGizmos: 1
-  gizmoColor: {r: 1, g: 0.5, b: 0.7, a: 0.25}
+  gizmoColor: {r: 1, g: 0.57801723, b: 0, a: 1}
   audioSource: {fileID: 927620806}
   chibiEnterSounds:
   - {fileID: 8300000, guid: dda77c5cbb241e049bc4f40abfdf181b, type: 3}
