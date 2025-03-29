@@ -8,6 +8,7 @@ public class ChibiToggle : MonoBehaviour
     [Header("Chibi Scale Settings")]
     public Vector3 chibiArmatureScale = new Vector3(0.3f, 0.3f, 0.3f);
     public Vector3 chibiHeadScale = new Vector3(2.7f, 2.7f, 2.7f);
+    public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f); // New: UpperLeg Scale
 
     [Header("Gizmo Interaction")]
     public float screenInteractionRadius = 30f; // In pixels
@@ -26,6 +27,7 @@ public class ChibiToggle : MonoBehaviour
 
     private Animator anim;
     private Transform armatureRoot, head, leftFoot, rightFoot;
+    private Transform leftUpperLeg, rightUpperLeg; // New: UpperLeg transforms
 
     private bool isChibi = false;
     private float holdTimer = 0f;
@@ -40,6 +42,8 @@ public class ChibiToggle : MonoBehaviour
         head = anim.GetBoneTransform(HumanBodyBones.Head);
         leftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
         rightFoot = anim.GetBoneTransform(HumanBodyBones.RightFoot);
+        leftUpperLeg = anim.GetBoneTransform(HumanBodyBones.LeftUpperLeg); // New
+        rightUpperLeg = anim.GetBoneTransform(HumanBodyBones.RightUpperLeg); // New
 
         if (hips != null)
         {
@@ -88,6 +92,10 @@ public class ChibiToggle : MonoBehaviour
         armatureRoot.localScale = becomingChibi ? chibiArmatureScale : Vector3.one;
         head.localScale = becomingChibi ? chibiHeadScale : Vector3.one;
 
+        // Apply upper leg scaling
+        if (leftUpperLeg) leftUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
+        if (rightUpperLeg) rightUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
+
         PlayRandomSound(becomingChibi);
         TriggerParticles();
 
@@ -127,6 +135,9 @@ public class ChibiToggle : MonoBehaviour
         Gizmos.color = gizmoColor;
         DrawScreenRadiusSphere(leftFoot, screenInteractionRadius);
         DrawScreenRadiusSphere(rightFoot, screenInteractionRadius);
+
+        DrawScreenRadiusSphere(leftUpperLeg, screenInteractionRadius);
+        DrawScreenRadiusSphere(rightUpperLeg, screenInteractionRadius);
     }
 
     private void DrawScreenRadiusSphere(Transform bone, float screenRadius)

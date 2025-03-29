@@ -59806,6 +59806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chibiArmatureScale: {x: 0.3, y: 0.3, z: 0.3}
   chibiHeadScale: {x: 2.7, y: 2.7, z: 2.7}
+  chibiUpperLegScale: {x: 0.6, y: 0.6, z: 0.6}
   screenInteractionRadius: 30
   holdDuration: 2
   showDebugGizmos: 1
