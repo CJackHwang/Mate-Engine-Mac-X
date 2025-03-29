@@ -59833,6 +59833,7 @@ MonoBehaviour:
   allowedStates:
   - Idle
   - HoverReaction
+  - Drag
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
   gizmoColor: {r: 0, g: 0.892854, b: 1, a: 1}
