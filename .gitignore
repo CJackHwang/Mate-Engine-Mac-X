@@ -1,4 +1,3 @@
-
 # Unity generated folders
 [Ll]ibrary/
 [Tt]emp/
@@ -31,11 +30,9 @@ sysinfo.txt
 .vscode/
 *.code-workspace
 
-# Unity cache and meta files
+# Unity cache and packages
 *.apk
 *.unitypackage
-*.asset
-*.pidb.meta
 
 # Builds
 *.exe
