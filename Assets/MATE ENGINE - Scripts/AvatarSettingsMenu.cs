@@ -31,9 +31,19 @@ public class AvatarSettingsMenu : MonoBehaviour
             IsMenuOpen = false;
         }
 
+        // Initialize the UniWindowController reference
+        if (uniWindowControllerObject != null)
+        {
+            uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
+        }
+        else
+        {
+            uniWindowController = FindObjectOfType<UniWindowController>();
+        }
 
         LoadSettings();
         ApplySettings();
+
         applyButton?.onClick.AddListener(() => { ApplySettings(); PlayUISound(); });
         resetButton?.onClick.AddListener(() => { ResetToDefaults(); PlayUISound(); });
 
@@ -57,6 +67,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             fpsLimitSlider.onValueChanged.AddListener(delegate { UpdateFPSLimit(); PlayUISound(); });
         }
     }
+
 
     private void Update()
     {
