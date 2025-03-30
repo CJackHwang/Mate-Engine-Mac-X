@@ -2,7 +2,7 @@
 
 public class FPSLimiter : MonoBehaviour
 {
-    [Range(10, 240)] // Slider in Inspector (Min: 10 FPS, Max: 240 FPS)
+    [Range(15, 120)] // Slider in Inspector (Min: 10 FPS, Max: 240 FPS)
     public int targetFPS = 60;
 
     private int previousFPS;

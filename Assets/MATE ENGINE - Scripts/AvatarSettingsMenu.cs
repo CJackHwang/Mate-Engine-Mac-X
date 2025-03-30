@@ -61,8 +61,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         // Set up the FPS limit slider's range and default
         if (fpsLimitSlider != null)
         {
-            fpsLimitSlider.minValue = 10;
-            fpsLimitSlider.maxValue = 240;
+            fpsLimitSlider.minValue = 15;
+            fpsLimitSlider.maxValue = 120;
             fpsLimitSlider.value = PlayerPrefs.GetInt("FPSLimit", 90);
             fpsLimitSlider.onValueChanged.AddListener(delegate { UpdateFPSLimit(); PlayUISound(); });
         }
