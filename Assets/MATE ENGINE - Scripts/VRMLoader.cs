@@ -139,6 +139,14 @@ public class VRMLoader : MonoBehaviour
             if (voiceReactionHandlerScript != null && animator != null)
                 voiceReactionHandlerScript.SetAnimator(animator);
 
+            // Call Avatar Settings Menu to apply settings
+            var avatarSettingsMenu = FindObjectOfType<AvatarSettingsMenu>();
+            if (avatarSettingsMenu != null)
+            {
+                avatarSettingsMenu.LoadSettings();
+                avatarSettingsMenu.ApplySettings();
+            }
+
             PlayerPrefs.SetString(modelPathKey, path);
             PlayerPrefs.Save();
         }
@@ -147,6 +155,7 @@ public class VRMLoader : MonoBehaviour
             Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
         }
     }
+
 
     private void ClearPreviousModel()
     {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Animations;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PetVoiceReactionHandler : MonoBehaviour
 {
@@ -136,7 +137,15 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
             if (region.enableHoverObject && region.hoverObject != null)
             {
-                region.hoverObject.SetActive(hovering);
+                if (hovering)
+                {
+                    region.hoverObject.SetActive(true);
+                    StopCoroutine(DisableHoverObject(region));
+                }
+                else if (region.wasHovering)
+                {
+                    StartCoroutine(DisableHoverObject(region));
+                }
             }
 
             if (hovering && !region.wasHovering)
@@ -150,6 +159,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
             }
         }
     }
+
+    IEnumerator DisableHoverObject(VoiceRegion region)
+    {
+        yield return new WaitForSeconds(4f);
+        if (!region.wasHovering && region.hoverObject != null)
+        {
+            region.hoverObject.SetActive(false);
+        }
+    }
+
 
     bool IsInIdleState()
     {
