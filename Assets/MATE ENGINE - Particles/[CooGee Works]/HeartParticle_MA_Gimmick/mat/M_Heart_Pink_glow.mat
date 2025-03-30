@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Heart_Pink_glow
-  m_Shader: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 1a97144e4ad27a04aafd70f7b915cedb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -17,9 +17,8 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - GRABPASS
   m_LockedProperties: 
@@ -70,7 +69,35 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OutlineWidthTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ReceiveShadowTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RimTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadingGradeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SphereAdd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _UvAnimMaskTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -80,6 +107,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaToMask: 0
+    - _BlendMode: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _CameraFadingEnabled: 0
@@ -89,6 +118,7 @@ Material:
     - _Cull: 2
     - _CullMode: 0
     - _Cutoff: 0.5
+    - _DebugMode: 0
     - _DetailNormalMapScale: 1
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
@@ -102,13 +132,29 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Glow: 4
+    - _IndirectLightIntensity: 0.1
     - _InvFade: 1
+    - _LightColorAttenuation: 0
     - _LightingEnabled: 0
+    - _MToonVersion: 39
     - _Metallic: 0
     - _Mode: 4
     - _OcclusionStrength: 1
     - _Opacity: 1
+    - _OutlineColorMode: 0
+    - _OutlineCullMode: 1
+    - _OutlineLightingMix: 1
+    - _OutlineScaledMaxDistance: 1
+    - _OutlineWidth: 0.5
+    - _OutlineWidthMode: 0
     - _Parallax: 0.02
+    - _ReceiveShadowRate: 1
+    - _RimFresnelPower: 1
+    - _RimLift: 0
+    - _RimLightingMix: 0
+    - _ShadeShift: 0
+    - _ShadeToony: 0.9
+    - _ShadingGradeRate: 1
     - _SmoothnessTextureChannel: 0
     - _SoftParticlesEnabled: 0
     - _SoftParticlesFarFadeDistance: 1
@@ -117,6 +163,9 @@ Material:
     - _SrcBlend: 5
     - _UVSec: 0
     - _Usecenterglow: 0
+    - _UvAnimRotation: 0
+    - _UvAnimScrollX: 0
+    - _UvAnimScrollY: 0
     - _ZWrite: 0
     m_Colors:
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
@@ -124,7 +173,11 @@ Material:
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
     - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 3.4258614, g: 1.9012635, b: 0, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadeColor: {r: 0.96999997, g: 0.81, b: 0.86, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
