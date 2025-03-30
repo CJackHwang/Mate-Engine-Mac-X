@@ -1,22 +1,39 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class FPSLimiter : MonoBehaviour
 {
-    [Range(15, 120)] // Slider in Inspector (Min: 10 FPS, Max: 240 FPS)
+    [Range(15, 120)]
     public int targetFPS = 60;
+
+    [Header("UI References")]
+    public Slider fpsSlider;
+    public TextMeshProUGUI fpsLabel;
 
     private int previousFPS;
 
     void Start()
     {
-        // Load FPS from PlayerPrefs
-        targetFPS = PlayerPrefs.GetInt("FPSLimit", 60);
+        // Load saved FPS limit
+        targetFPS = PlayerPrefs.GetInt("FPSLimit", targetFPS);
+
+        // Setup slider
+        if (fpsSlider)
+        {
+            fpsSlider.minValue = 15;
+            fpsSlider.maxValue = 120;
+            fpsSlider.value = targetFPS;
+            fpsSlider.onValueChanged.AddListener(SetFPSLimit);
+        }
+
         ApplyFPSLimit();
+        UpdateFPSLabel(targetFPS);
     }
 
     void Update()
     {
-        if (targetFPS != previousFPS) // Detect changes in Inspector
+        if (targetFPS != previousFPS)
         {
             ApplyFPSLimit();
         }
@@ -25,17 +42,27 @@ public class FPSLimiter : MonoBehaviour
     public void ApplyFPSLimit()
     {
         Application.targetFrameRate = targetFPS;
-        QualitySettings.vSyncCount = 0; // Disable VSync to enforce FPS cap
+        QualitySettings.vSyncCount = 0;
         previousFPS = targetFPS;
+
         PlayerPrefs.SetInt("FPSLimit", targetFPS);
         PlayerPrefs.Save();
+
+        UpdateFPSLabel(targetFPS);
         Debug.Log("FPS set to: " + targetFPS);
     }
 
-    // New public method for AvatarSettingsMenu to change FPS dynamically
-    public void SetFPSLimit(int fps)
+    public void SetFPSLimit(float fps)
     {
-        targetFPS = Mathf.Clamp(fps, 10, 240);
+        targetFPS = Mathf.RoundToInt(Mathf.Clamp(fps, 15, 120));
         ApplyFPSLimit();
+    }
+
+    private void UpdateFPSLabel(int fpsValue)
+    {
+        if (fpsLabel)
+        {
+            fpsLabel.text = $"{fpsValue}";
+        }
     }
 }
