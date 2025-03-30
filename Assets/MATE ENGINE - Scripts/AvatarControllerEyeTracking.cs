@@ -8,8 +8,8 @@ public class AvatarControllerEyeTracking : MonoBehaviour
 
     [SerializeField] private Transform leftEyeBone;
     [SerializeField] private Transform rightEyeBone;
-    [SerializeField, Range(0f, 90f)] private float eyeYawLimit = 45f;
-    [SerializeField, Range(0f, 90f)] private float eyePitchLimit = 30f;
+    [SerializeField, Range(0f, 90f)] private float eyeYawLimit = 12f;
+    [SerializeField, Range(0f, 90f)] private float eyePitchLimit = 12f;
     [SerializeField, Range(1f, 20f)] private float smoothness = 10f;
 
     private Transform eyeCenter;

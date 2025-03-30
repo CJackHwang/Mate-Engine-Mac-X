@@ -59865,8 +59865,8 @@ MonoBehaviour:
   enableEyeTracking: 1
   leftEyeBone: {fileID: 0}
   rightEyeBone: {fileID: 0}
-  eyeYawLimit: 45
-  eyePitchLimit: 30
+  eyeYawLimit: 12
+  eyePitchLimit: 12
   smoothness: 10
 --- !u!114 &8924917334924735497
 MonoBehaviour:
