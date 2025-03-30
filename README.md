@@ -5,6 +5,11 @@ A free Desktop Mate alternative with a lightweight interface and custom VRM supp
 - APP LICENSE: Creative Commons Attribution-NonCommercial 4.0 International
 - DEFAULT AVATAR LICENSE: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/) — *Do not redistribute this model in your own builds!*
 
+![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
+# Hatsune Miku For Free
+[Download The VRM For Free](https://booth.pm/en/items/3226395)
+
+
 
 # About the project
 
