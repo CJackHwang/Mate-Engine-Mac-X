@@ -42,6 +42,7 @@ Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**
 | 🆓 Native VRM Loader (Any Model Support)            | ❌                | ✅              |
 | 🛠️ Native Modding Support                          | ❌                | ✅              |
 | 🧩 Open Source                                      | ❌                | ✅              |
+| 🎀 Chibi Mode                                       | ❌                | ✅              |
 
 ---
 
