@@ -5,12 +5,6 @@ A free Desktop Mate alternative with a lightweight interface and custom VRM supp
 - APP LICENSE: Creative Commons Attribution-NonCommercial 4.0 International
 - DEFAULT AVATAR LICENSE: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/) — *Do not redistribute this model in your own builds!*
 
-![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
-# Hatsune Miku For Free
-[Download The VRM For Free](https://booth.pm/en/items/3226395)
-
-
-
 # About the project
 
 Mate Engine is a free alternative to the app **Desktop Mate**. This project exists because of the high price of Desktop Mate models, which range from **$10 to $25 USD**. Considering that full games are available at these prices on Steam and other platforms, paying **$20 to $25 USD** for a simple idle model feels unfair to many users.
@@ -19,6 +13,38 @@ Another reason for developing **Mate Engine** is that **Desktop Mate** removed m
 
 Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**, including support for custom VRM models!
 
+![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
+# Hatsune Miku For Free
+[Download The VRM For Free](https://booth.pm/en/items/3226395)
+
+---
+
+### **Feature Comparison: Desktop Mates vs. Mate Engine**
+
+| Feature                                             | **Desktop Mates** | **Mate Engine** |
+|-----------------------------------------------------|-------------------|-----------------|
+| 🪟 Windows / Taskbar Sitting                        | ✅                | ❌              |
+| 🖱️ Dragging Animation                               | ✅                | ✅              |
+| 😴 Idle Animation                                   | ✅                | ✅              |
+| 🫥 Hiding on Left/Right Side of Screen              | ✅                | ❌              |
+| 🙂 Head Movement                                    | ✅                | ✅              |
+| 👀 Eye Movement                                     | ❌                | ✅              |
+| 🦴 Spine Movement                                   | ❌                | ✅              |
+| ✋ Hand Movement                                    | ✅                | ✅              |
+| ⏰ Alarm Clock / Animation                          | ✅                | ❌              |
+| 💃 Dance Animation                                  | ❌                | ✅              |
+| 🫳 Touch Regions (Head and Sensitive Part)          | ❌                | ✅              |
+| 🔊 Sound Effects                                    | ❌                | ✅              |
+| ✨ Particle Effects                                 | ❌                | ✅              |
+| 🔁 Fluent Transitions Between Animations            | ❌                | ✅              |
+| 🎞️ FPS Change                                       | ❌                | ✅              |
+| 📌 Always in Front Toggle Button                    | ❌                | ✅              |
+| 🆓 Native VRM Loader (Any Model Support)            | ❌                | ✅              |
+| 🛠️ Native Modding Support                          | ❌                | ✅              |
+| 🧩 Open Source                                      | ❌                | ✅              |
+| 🎀 Chibi Mode                                       | ❌                | ✅              |
+
+---
 
 # Please Help me Publishing on Steam!
 
