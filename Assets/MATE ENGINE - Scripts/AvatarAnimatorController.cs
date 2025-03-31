@@ -41,7 +41,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     private static readonly int isIdleParam = Animator.StringToHash("isIdle");
 
-    void Start()
+    void OnEnable()
     {
         if (animator == null)
             animator = GetComponent<Animator>();
@@ -51,7 +51,23 @@ public class AvatarAnimatorController : MonoBehaviour
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
 
-        soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
+        if (soundCheckCoroutine == null)
+            soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
+    }
+
+    void OnDisable()
+    {
+        if (soundCheckCoroutine != null)
+        {
+            StopCoroutine(soundCheckCoroutine);
+            soundCheckCoroutine = null;
+        }
+
+        defaultDevice?.Dispose();
+        defaultDevice = null;
+
+        enumerator?.Dispose();
+        enumerator = null;
     }
 
     private IEnumerator CheckSoundContinuously()
