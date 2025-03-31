@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Kirurobo;
+using System.Linq;
 
 public class AvatarSettingsMenu : MonoBehaviour
 {
@@ -62,7 +63,19 @@ public class AvatarSettingsMenu : MonoBehaviour
             menuPanel.SetActive(newState);
             IsMenuOpen = newState;
             PlayUISound();
+
+            if (newState)
+            {
+                // Live-refresh the dropdown when menu opens
+                var appManager = FindObjectOfType<AllowedAppsManager>();
+                if (appManager != null)
+                {
+                    appManager.RefreshUI();
+                }
+            }
         }
+
+
     }
 
     public void UpdateFPSLimit()
@@ -87,10 +100,23 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (enableDancingToggle != null) enableDancingToggle.isOn = PlayerPrefs.GetInt("EnableDancing", avatar.enableDancing ? 1 : 0) == 1;
             if (enableMouseTrackingToggle != null)
                 enableMouseTrackingToggle.isOn = PlayerPrefs.GetInt("EnableMouseTracking", 1) == 1;
+
+            if (PlayerPrefs.HasKey("AllowedAppsList"))
+            {
+                string json = PlayerPrefs.GetString("AllowedAppsList");
+                AllowedAppListWrapper wrapper = JsonUtility.FromJson<AllowedAppListWrapper>(json);
+                if (wrapper != null && wrapper.list != null)
+                    avatar.allowedApps = wrapper.list.Distinct().ToList();
+            }
+
+
         }
+
 
         if (isTopmostToggle != null)
             isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
+
+
     }
 
     public void ApplySettings()
@@ -141,6 +167,16 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private void SaveSettings()
     {
+
+        var avatar = FindFirstAvatar();
+        if (avatar != null)
+        {
+            AllowedAppListWrapper wrapper = new AllowedAppListWrapper { list = avatar.allowedApps };
+            string json = JsonUtility.ToJson(wrapper);
+            PlayerPrefs.SetString("AllowedAppsList", json);
+        }
+
+
         PlayerPrefs.SetFloat("SoundThreshold", soundThresholdSlider?.value ?? 0.2f);
         PlayerPrefs.SetFloat("IdleSwitchTime", idleSwitchTimeSlider?.value ?? 10f);
         PlayerPrefs.SetFloat("IdleTransitionTime", idleTransitionTimeSlider?.value ?? 1f);
@@ -152,6 +188,12 @@ public class AvatarSettingsMenu : MonoBehaviour
         PlayerPrefs.SetInt("IsTopmost", isTopmostToggle?.isOn == true ? 1 : 0);
         PlayerPrefs.Save();
     }
+
+    private AvatarAnimatorController FindFirstAvatar()
+    {
+        return FindObjectOfType<AvatarAnimatorController>();
+    }
+
 
     private void PlayUISound()
     {
@@ -175,3 +217,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         trigger.triggers[1].callback.AddListener((eventData) => isSliderBeingDragged = false);
     }
 }
+
+
+[System.Serializable]
+public class AllowedAppListWrapper
+{
+    public List<string> list;
+}
+

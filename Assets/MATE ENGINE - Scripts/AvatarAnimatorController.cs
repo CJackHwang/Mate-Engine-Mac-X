@@ -11,7 +11,7 @@ public class AvatarAnimatorController : MonoBehaviour
     public Animator animator;
     public bool enableAudioDetection = true;
     public float SOUND_THRESHOLD = 0.02f;
-    public List<string> ignoredApps = new List<string> { "discord", "mateengine", "mateenginex", "chrome", "audiodg", "explorer" };
+    public List<string> allowedApps = new List<string> { "spotify", "firefox", "chrome", "opera" };
 
     [Header("Idle Animation Settings")]
     public int totalIdleAnimations = 10;
@@ -149,10 +149,9 @@ public class AvatarAnimatorController : MonoBehaviour
                 }
 
                 string processName = process.ProcessName.ToLowerInvariant();
-                if (ignoredApps.Any(ignored => processName.StartsWith(ignored)))
-                    continue;
+                if (allowedApps.Any(allowed => processName.StartsWith(allowed)))
+                    return true;
 
-                return true;
             }
         }
         catch (System.Exception ex)

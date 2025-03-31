@@ -39,6 +39,27 @@ public class UIThemeApplier : MonoBehaviour
     public Color buttonDisabledColor = Color.gray;
     public Color buttonTextColor = Color.white;
 
+    [Header("========== SCROLLBAR COLORS ==========")]
+    public Color scrollbarNormalColor = Color.magenta;
+    public Color scrollbarHighlightedColor = Color.white;
+    public Color scrollbarPressedColor = Color.white;
+    public Color scrollbarSelectedColor = Color.white;
+    public Color scrollbarDisabledColor = Color.gray;
+    public Color scrollbarHandleColor = new Color(0.8f, 0.6f, 1f, 1f);
+    public Color scrollbarBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
+
+    [Header("========== DROPDOWN COLORS ==========")]
+    public Color dropdownNormalColor = Color.magenta;
+    public Color dropdownHighlightedColor = Color.white;
+    public Color dropdownPressedColor = Color.white;
+    public Color dropdownSelectedColor = Color.white;
+    public Color dropdownDisabledColor = Color.gray;
+    public Color dropdownBackgroundColor = new Color(0.3f, 0.2f, 0.4f, 1f);
+    public Color dropdownTextColor = Color.white;
+
+
+
+
     [ContextMenu("Apply Theme Colors")]
     public void ApplyTheme()
     {
@@ -126,6 +147,57 @@ public class UIThemeApplier : MonoBehaviour
             if (text != null)
                 text.color = buttonTextColor;
         }
+
+        // Scrollbars
+        foreach (Scrollbar scrollbar in menuPanel.GetComponentsInChildren<Scrollbar>(true))
+        {
+            var colors = scrollbar.colors;
+            colors.normalColor = scrollbarNormalColor;
+            colors.highlightedColor = scrollbarHighlightedColor;
+            colors.pressedColor = scrollbarPressedColor;
+            colors.selectedColor = scrollbarSelectedColor;
+            colors.disabledColor = scrollbarDisabledColor;
+            scrollbar.colors = colors;
+
+            // Handle
+            var handle = scrollbar.transform.Find("Sliding Area/Handle")?.GetComponent<Image>();
+            if (handle != null)
+                handle.color = scrollbarHandleColor;
+
+            // Background
+            var background = scrollbar.GetComponent<Image>();
+            if (background != null)
+                background.color = scrollbarBackgroundColor;
+        }
+
+        // TMP Dropdowns
+        foreach (TMP_Dropdown dropdown in menuPanel.GetComponentsInChildren<TMP_Dropdown>(true))
+        {
+            var colors = dropdown.colors;
+            colors.normalColor = dropdownNormalColor;
+            colors.highlightedColor = dropdownHighlightedColor;
+            colors.pressedColor = dropdownPressedColor;
+            colors.selectedColor = dropdownSelectedColor;
+            colors.disabledColor = dropdownDisabledColor;
+            dropdown.colors = colors;
+
+            // Label text
+            var label = dropdown.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+            if (label != null)
+                label.color = dropdownTextColor;
+
+            // Background
+            var background = dropdown.GetComponent<Image>();
+            if (background != null)
+                background.color = dropdownBackgroundColor;
+
+            // Arrow (optional)
+            var arrow = dropdown.transform.Find("Arrow")?.GetComponent<Image>();
+            if (arrow != null)
+                arrow.color = dropdownTextColor;
+        }
+
+
 
         Debug.Log("✔ All UI theme colors applied!");
     }
