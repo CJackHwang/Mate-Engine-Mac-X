@@ -3,20 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\fpslimiter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\fpslimiter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\fpsdisplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\fpsdisplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avatardragsoundhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatardragsoundhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\petvoicereactionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,28 +27,26 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "FPSDisplay.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\FPSDisplay.cs",
-              "RelativeDocumentMoniker": "Assets\\FPSDisplay.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\FPSDisplay.cs",
-              "RelativeToolTip": "Assets\\FPSDisplay.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Title": "PetVoiceReactionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "ViewState": "AgIAAMIAAAAAAAAAAAAmwMoAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-30T17:31:07.369Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-31T08:43:50.808Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FPSLimiter.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\FPSLimiter.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\FPSLimiter.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\FPSLimiter.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\FPSLimiter.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAuwEAAAAAeAAAAAAAAAA==",
+              "Title": "AvatarDragSoundHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarDragSoundHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarDragSoundHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarDragSoundHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarDragSoundHandler.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAIwEIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-30T17:20:16.16Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-31T08:43:39.381Z"
             },
             {
               "$type": "Document",
@@ -66,34 +56,10 @@
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAAAEIAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAAAIoAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-30T17:19:50.368Z",
+              "WhenOpened": "2025-03-31T07:39:57.14Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AvatarAnimatorController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-30T17:13:28.977Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PetVoiceReactionHandler.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
-              "ViewState": "AgIAALAAAAAAAAAAAAAmwNsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-30T17:09:45.287Z"
             }
           ]
         }
