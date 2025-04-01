@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class PetVoiceReactionHandler : MonoBehaviour
 {
@@ -9,25 +10,32 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public class VoiceRegion
     {
         public string name;
-        public List<GameObject> colliderObjects = new List<GameObject>();
-        public List<AudioClip> voiceClips = new List<AudioClip>();
         public HumanBodyBones targetBone;
+
+        [Tooltip("Local offset from bone")]
+        public Vector3 offset = Vector3.zero;
+
+        [Tooltip("World offset (added after local offset)")]
+        public Vector3 worldOffset = Vector3.zero;
+
+        [Tooltip("Base hover radius (will scale with model)")]
+        public float hoverRadius = 50f;
+
+        public Color gizmoColor = new Color(1f, 0.5f, 0f, 0.25f);
+        public List<AudioClip> voiceClips = new List<AudioClip>();
         public AnimationClip hoverAnimation;
 
-        [Header("Hover Object Settings (Per Region)")]
+        [Header("Hover Object Settings")]
         public bool enableHoverObject = false;
         public GameObject hoverObject;
         public bool bindHoverObjectToBone = false;
 
-        [Header("Layered Sound Settings (Per Region)")] // Replace Later
+        [Header("Layered Sound Settings")]
         public bool enableLayeredSound = false;
         public List<AudioClip> layeredVoiceClips = new List<AudioClip>();
 
         [HideInInspector] public bool wasHovering = false;
     }
-
-    [Header("Main Camera")]
-    public Camera mainCamera;
 
     [Header("Animator Source")]
     public Animator avatarAnimator;
@@ -37,7 +45,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     [Header("Voice Settings")]
     public AudioSource voiceAudioSource;
-    public AudioSource layeredAudioSource; // New secondary audio source for layered sounds
+    public AudioSource layeredAudioSource;
 
     [Header("Animator State Checks")]
     public string idleStateName = "Idle";
@@ -45,15 +53,14 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public string danceStateName = "isDancing";
     public string hoverTriggerParam = "HoverTrigger";
 
+    [Header("Debug Settings")]
+    public bool showDebugGizmos = true;
+
     private AnimatorOverrideController animatorOverrideController;
-    private string hoverReactionStateName = "HoverReaction";
     private string hoverReactionClipName = "HoverReaction";
 
     void Start()
     {
-        if (mainCamera == null)
-            mainCamera = Camera.main;
-
         if (voiceAudioSource == null)
             voiceAudioSource = gameObject.AddComponent<AudioSource>();
 
@@ -62,7 +69,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
         if (avatarAnimator != null)
         {
-            BindCollidersToBones();
+            BindHoverObjects();
             SetupAnimatorOverrideController();
         }
     }
@@ -70,26 +77,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public void SetAnimator(Animator newAnimator)
     {
         avatarAnimator = newAnimator;
-        BindCollidersToBones();
+        BindHoverObjects();
         SetupAnimatorOverrideController();
     }
 
-    void BindCollidersToBones()
+    void BindHoverObjects()
     {
         foreach (var region in regions)
         {
             Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
             if (bone == null) continue;
-
-            foreach (var obj in region.colliderObjects)
-            {
-                if (obj != null)
-                {
-                    obj.transform.SetParent(bone, false);
-                    obj.transform.localPosition = Vector3.zero;
-                    obj.transform.localRotation = Quaternion.identity;
-                }
-            }
 
             if (region.enableHoverObject && region.bindHoverObjectToBone && region.hoverObject != null)
             {
@@ -110,29 +107,36 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     void Update()
     {
+        if (Camera.main == null || avatarAnimator == null) return;
+
         foreach (var region in regions)
         {
-            bool hovering = false;
+            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
+            if (bone == null) continue;
 
-            foreach (var obj in region.colliderObjects)
+            // World-space center of the hover zone
+            Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
+
+            // Convert world point to screen position
+            Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPoint);
+
+            // Scale the world radius based on model's current scale
+            float scaleFactor = bone.lossyScale.magnitude;
+            float scaledWorldRadius = region.hoverRadius * scaleFactor;
+
+            // Convert scaled world radius to screen space for distance comparison
+            Vector3 worldOffsetPos = worldPoint + Camera.main.transform.right * scaledWorldRadius;
+            Vector2 screenOffsetPos = Camera.main.WorldToScreenPoint(worldOffsetPos);
+            float screenRadius = Vector2.Distance(screenPoint, screenOffsetPos);
+
+            // Compare screen distance
+            float distance = Vector2.Distance(Input.mousePosition, screenPoint);
+            bool hovering = distance < screenRadius;
+
+            if (hovering && !region.wasHovering && IsInIdleState())
             {
-                if (obj == null) continue;
-                Collider col = obj.GetComponent<Collider>();
-                if (col == null) continue;
-
-                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (col.Raycast(ray, out RaycastHit hit, 100f))
-                {
-                    hovering = true;
-
-                    if (!region.wasHovering && IsInIdleState())
-                    {
-                        PlayRandomVoice(region);
-                        TriggerHoverReaction(region, true);
-                    }
-
-                    break;
-                }
+                PlayRandomVoice(region);
+                TriggerHoverReaction(region, true);
             }
 
             if (region.enableHoverObject && region.hoverObject != null)
@@ -160,6 +164,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
     }
 
+
     IEnumerator DisableHoverObject(VoiceRegion region)
     {
         yield return new WaitForSeconds(4f);
@@ -168,7 +173,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
             region.hoverObject.SetActive(false);
         }
     }
-
 
     bool IsInIdleState()
     {
@@ -209,11 +213,31 @@ public class PetVoiceReactionHandler : MonoBehaviour
             voiceAudioSource.Play();
         }
 
-        // Play layered audio if enabled
         if (region.enableLayeredSound && region.layeredVoiceClips.Count > 0)
         {
             AudioClip layeredClip = region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)];
             layeredAudioSource.PlayOneShot(layeredClip);
         }
     }
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        if (!showDebugGizmos || !Application.isPlaying || Camera.main == null || avatarAnimator == null) return;
+
+        foreach (var region in regions)
+        {
+            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
+            if (bone == null) continue;
+
+            float scaleFactor = bone.lossyScale.magnitude;
+            float scaledRadius = region.hoverRadius * scaleFactor;
+
+            Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
+
+            Gizmos.color = region.gizmoColor;
+            Gizmos.DrawWireSphere(worldPoint, scaledRadius);
+        }
+    }
+#endif
 }

@@ -15,6 +15,7 @@ public class MEModLoader : MonoBehaviour
     // Chibi Mode paths
     private string enterFolder;
     private string exitFolder;
+    private string chibiSettingsPath;
 
     // Drag Mode paths
     private string dragFolder;
@@ -26,6 +27,7 @@ public class MEModLoader : MonoBehaviour
         string chibiBase = Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode/Sounds");
         enterFolder = Path.Combine(chibiBase, "Enter Sounds");
         exitFolder = Path.Combine(chibiBase, "Exit Sounds");
+        chibiSettingsPath = Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode/settings.json");
 
         // Drag Mode folders
         string dragBase = Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Drag Mode/Sounds");
@@ -36,15 +38,13 @@ public class MEModLoader : MonoBehaviour
 
         StartCoroutine(LoadChibiSounds());
         StartCoroutine(LoadDragSounds());
+        StartCoroutine(ApplyChibiSettings());
     }
 
     private void EnsureFolderStructure()
     {
-        // Chibi folders
         TryCreateDirectory(enterFolder);
         TryCreateDirectory(exitFolder);
-
-        // Drag folders
         TryCreateDirectory(dragFolder);
         TryCreateDirectory(placeFolder);
     }
@@ -108,8 +108,6 @@ public class MEModLoader : MonoBehaviour
         soundObj.transform.SetParent(this.transform);
         AudioSource source = soundObj.AddComponent<AudioSource>();
         source.playOnAwake = false;
-
-        // Play a new random clip every time before playing
         StartCoroutine(RandomizeClipEveryFrame(source, clips));
         return source;
     }
@@ -155,4 +153,50 @@ public class MEModLoader : MonoBehaviour
             default: return AudioType.UNKNOWN;
         }
     }
+
+    IEnumerator ApplyChibiSettings()
+    {
+        if (!File.Exists(chibiSettingsPath))
+        {
+            Debug.Log("[MEModLoader] No Chibi settings.json found, skipping.");
+            yield break;
+        }
+
+        string json = File.ReadAllText(chibiSettingsPath);
+        if (string.IsNullOrEmpty(json)) yield break;
+
+        ChibiSettingsData settings;
+        try
+        {
+            settings = JsonUtility.FromJson<ChibiSettingsData>(json);
+        }
+        catch
+        {
+            Debug.LogWarning("[MEModLoader] Failed to parse Chibi settings.json.");
+            yield break;
+        }
+
+        if (chibiToggle != null)
+        {
+            chibiToggle.chibiArmatureScale = settings.chibiArmatureScale;
+            chibiToggle.chibiHeadScale = settings.chibiHeadScale;
+            chibiToggle.chibiUpperLegScale = settings.chibiUpperLegScale;
+            chibiToggle.chibiYOffset = settings.chibiYOffset;
+            chibiToggle.screenInteractionRadius = settings.screenInteractionRadius;
+            chibiToggle.holdDuration = settings.holdDuration;
+
+            Debug.Log("[MEModLoader] Applied Chibi settings from JSON.");
+        }
+    }
+}
+
+[System.Serializable]
+public class ChibiSettingsData
+{
+    public Vector3 chibiArmatureScale = new Vector3(0.3f, 0.3f, 0.3f);
+    public Vector3 chibiHeadScale = new Vector3(2.7f, 2.7f, 2.7f);
+    public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f);
+    public float chibiYOffset = 0.5f;
+    public float screenInteractionRadius = 30f;
+    public float holdDuration = 2f;
 }

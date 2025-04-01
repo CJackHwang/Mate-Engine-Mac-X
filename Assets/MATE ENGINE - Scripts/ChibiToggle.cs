@@ -8,10 +8,13 @@ public class ChibiToggle : MonoBehaviour
     [Header("Chibi Scale Settings")]
     public Vector3 chibiArmatureScale = new Vector3(0.3f, 0.3f, 0.3f);
     public Vector3 chibiHeadScale = new Vector3(2.7f, 2.7f, 2.7f);
-    public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f); // Scale for upper legs
+    public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f);
+
+    [Header("Chibi Position Offset")]
+    public float chibiYOffset = 0.5f;
 
     [Header("Gizmo Interaction")]
-    public float screenInteractionRadius = 30f; // In pixels
+    public float screenInteractionRadius = 30f;
     public float holdDuration = 2f;
     public bool showDebugGizmos = true;
     public Color gizmoColor = new Color(1f, 0.5f, 0.7f, 0.25f);
@@ -27,15 +30,19 @@ public class ChibiToggle : MonoBehaviour
 
     private Animator anim;
     private Transform armatureRoot, head, leftFoot, rightFoot;
-    private Transform leftUpperLeg, rightUpperLeg; // Upper leg transforms
+    private Transform leftUpperLeg, rightUpperLeg;
 
     private bool isChibi = false;
     private float holdTimer = 0f;
     private Camera mainCam;
 
+    private Vector3 originalArmaturePosition;
+    private Vector3 chibiArmaturePosition;
+
     void Start()
     {
         anim = GetComponent<Animator>();
+        anim.applyRootMotion = false;
         mainCam = Camera.main;
 
         Transform hips = anim.GetBoneTransform(HumanBodyBones.Hips);
@@ -52,6 +59,9 @@ public class ChibiToggle : MonoBehaviour
             {
                 armatureRoot = armatureRoot.parent;
             }
+
+            originalArmaturePosition = armatureRoot.localPosition;
+            chibiArmaturePosition = originalArmaturePosition + new Vector3(0f, chibiYOffset, 0f);
         }
     }
 
@@ -83,6 +93,12 @@ public class ChibiToggle : MonoBehaviour
         }
     }
 
+    void LateUpdate()
+    {
+        if (!armatureRoot) return;
+        armatureRoot.localPosition = isChibi ? chibiArmaturePosition : originalArmaturePosition;
+    }
+
     void ToggleChibiMode()
     {
         if (!armatureRoot || !head) return;
@@ -92,7 +108,6 @@ public class ChibiToggle : MonoBehaviour
         armatureRoot.localScale = becomingChibi ? chibiArmatureScale : Vector3.one;
         head.localScale = becomingChibi ? chibiHeadScale : Vector3.one;
 
-        // Apply upper leg scaling
         if (leftUpperLeg) leftUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
         if (rightUpperLeg) rightUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
 
