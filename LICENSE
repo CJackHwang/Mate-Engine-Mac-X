@@ -1,17 +1,48 @@
-Creative Commons Attribution-NonCommercial 4.0 International
+Project License
+AGPL & COPYRIGHTED LICENSE
+PLEASE READ CAREFULLY
+===============
 
-This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
+Assets (Audio, Visual, etc.)
+----------------------------
+All assets included in this project, including but not limited to:
 
-To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+- Audio files  
+- Visual assets (images, models, textures, animations)  
+- Fonts, icons, and UI elements  
 
-You are free to:
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material
+are © 2025 Shiny and are **copyrighted**.
 
-Under the following terms:
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- NonCommercial — You may not use the material for commercial purposes.
+These assets are **not licensed for commercial use** in any form.  
+You **may not** use them in commercial projects, redistribute them separately, or resell them.
 
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+Personal, educational, or non-commercial use is allowed, but attribution to the original author ("Shiny") is required.
 
-Full license text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+If you wish to license these assets for commercial use, please contact the author for permission.
+
+---
+
+Code
+----
+All code in this project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+This means:
+- You may use, modify, and share the code freely.
+- If you distribute or deploy software that includes this code (even over a network), you **must provide access to the full source code** of your modified version under the same license.
+
+See the full license here: https://www.gnu.org/licenses/agpl-3.0.html
+
+---
+
+Contributions and Contributor Rights
+------------------------------------
+By contributing to this project, contributors agree to the following:
+
+- Any code contributions that are accepted and merged into the project become part of the project and will remain licensed under **AGPL-3.0**.
+- Contributors retain **copyright** over their own code.
+- Contributors are granted a **perpetual license** to freely use **their own contributions** in other projects, including commercial projects, **without being required to open-source** those separate projects.  
+  - In other words: contributors are not bound by AGPL when reusing **their own** code elsewhere.
+- However, the **code within this project** remains AGPL-licensed and must be used accordingly.
+- **Non-contributors** (users who did not submit accepted code) must fully respect the AGPL-3.0 license and **are not granted special permissions**.
+
+© 2025 Shiny and individual contributors. All rights reserved.
