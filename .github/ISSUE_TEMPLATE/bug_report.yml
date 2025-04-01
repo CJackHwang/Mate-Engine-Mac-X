@@ -35,3 +35,14 @@ body:
         - "Below 1.0.0"
     validations:
       required: true
+
+  - type: dropdown
+    id: store-edition
+    attributes:
+      label: Store Edition
+      description: Where did you get this version of the app?
+      options:
+        - "GitHub Edition"
+        - "Steam Edition"
+    validations:
+      required: true
