@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UniVRM10;
+using System;
 
 public class VRMLoader : MonoBehaviour
 {
@@ -64,40 +65,47 @@ public class VRMLoader : MonoBehaviour
 
             GameObject loadedModel = null;
 
-            // Attempt VRM 1.0 parsing
+            // First, try parsing as VRM 1.0
             try
             {
                 var glbData = new GlbFileParser(path).Parse();
                 var vrm10Data = Vrm10Data.Parse(glbData);
 
-                if (vrm10Data == null)
+                if (vrm10Data != null)
                 {
-                    Debug.Log("VRM 1.0 parsing failed. Attempting VRM 0.X migration...");
-                    Vrm10Data.Migrate(glbData, out vrm10Data, out _);
-                    if (vrm10Data == null)
+                    using var importer10 = new Vrm10Importer(vrm10Data);
+                    var instance10 = await importer10.LoadAsync(new ImmediateCaller());
+
+                    if (instance10.Root != null)
                     {
-                        Debug.LogError("VRM migration failed. File might be corrupted.");
-                        return;
+                        loadedModel = instance10.Root;
                     }
-
-                    Debug.Log("VRM 0.X successfully migrated to VRM 1.0!");
                 }
-
-                using var importer10 = new Vrm10Importer(vrm10Data);
-                var instance10 = await importer10.LoadAsync(new ImmediateCaller());
-
-                if (instance10.Root == null) return;
-                loadedModel = instance10.Root;
             }
-            catch
+            catch (Exception e)
             {
-                // Fallback to VRM 0.x
-                using var gltfData = new GlbBinaryParser(fileData, path).Parse();
-                var importer = new VRMImporterContext(new VRMData(gltfData));
-                var instance = await importer.LoadAsync(new ImmediateCaller());
+                Debug.LogWarning("[VRMLoader] VRM 1.0 parsing failed, trying VRM 0.x loader: " + e.Message);
+            }
 
-                if (instance.Root == null) return;
-                loadedModel = instance.Root;
+            // If not 1.0, fallback to 0.x
+            if (loadedModel == null)
+            {
+                try
+                {
+                    using var gltfData = new GlbBinaryParser(fileData, path).Parse();
+                    var importer = new VRMImporterContext(new VRMData(gltfData));
+                    var instance = await importer.LoadAsync(new ImmediateCaller());
+
+                    if (instance.Root != null)
+                    {
+                        loadedModel = instance.Root;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("[VRMLoader] VRM 0.x loading failed: " + ex.Message);
+                    return;
+                }
             }
 
             if (loadedModel == null) return;
@@ -133,6 +141,7 @@ public class VRMLoader : MonoBehaviour
             Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
         }
     }
+
 
     public void ResetModel()
     {
@@ -193,17 +202,18 @@ public class VRMLoader : MonoBehaviour
         if (prefabTemplate == null || targetModel == null) return;
 
         var templateObj = Instantiate(prefabTemplate);
+        var animator = targetModel.GetComponentInChildren<Animator>();
+
         foreach (var templateComp in templateObj.GetComponents<MonoBehaviour>())
         {
             var type = templateComp.GetType();
             if (targetModel.GetComponent(type) != null)
-                continue; // Already exists
+                continue; // Skip if already exists
 
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
-            // Automatically rebind Animator if field exists
-            var animator = targetModel.GetComponentInChildren<Animator>();
+            // Call SetAnimator(animator) if available
             if (animator != null)
             {
                 var setAnimMethod = type.GetMethod("SetAnimator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -218,6 +228,7 @@ public class VRMLoader : MonoBehaviour
 
         Destroy(templateObj);
     }
+
 
     private void CopyComponentValues(Component source, Component destination)
     {
