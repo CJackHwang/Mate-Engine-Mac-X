@@ -8,6 +8,7 @@ using SFB;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UniVRM10;
 
 public class VRMLoader : MonoBehaviour
 {
@@ -58,27 +59,60 @@ public class VRMLoader : MonoBehaviour
 
         try
         {
-            byte[] vrmData = await Task.Run(() => File.ReadAllBytes(path));
-            if (vrmData == null || vrmData.Length == 0) return;
+            byte[] fileData = await Task.Run(() => File.ReadAllBytes(path));
+            if (fileData == null || fileData.Length == 0) return;
 
-            using var gltfData = new GlbBinaryParser(vrmData, path).Parse();
-            var importer = new VRMImporterContext(new VRMData(gltfData));
-            var instance = await importer.LoadAsync(new ImmediateCaller());
+            GameObject loadedModel = null;
 
-            if (instance.Root == null) return;
+            // Attempt VRM 1.0 parsing
+            try
+            {
+                var glbData = new GlbFileParser(path).Parse();
+                var vrm10Data = Vrm10Data.Parse(glbData);
+
+                if (vrm10Data == null)
+                {
+                    Debug.Log("VRM 1.0 parsing failed. Attempting VRM 0.X migration...");
+                    Vrm10Data.Migrate(glbData, out vrm10Data, out _);
+                    if (vrm10Data == null)
+                    {
+                        Debug.LogError("VRM migration failed. File might be corrupted.");
+                        return;
+                    }
+
+                    Debug.Log("VRM 0.X successfully migrated to VRM 1.0!");
+                }
+
+                using var importer10 = new Vrm10Importer(vrm10Data);
+                var instance10 = await importer10.LoadAsync(new ImmediateCaller());
+
+                if (instance10.Root == null) return;
+                loadedModel = instance10.Root;
+            }
+            catch
+            {
+                // Fallback to VRM 0.x
+                using var gltfData = new GlbBinaryParser(fileData, path).Parse();
+                var importer = new VRMImporterContext(new VRMData(gltfData));
+                var instance = await importer.LoadAsync(new ImmediateCaller());
+
+                if (instance.Root == null) return;
+                loadedModel = instance.Root;
+            }
+
+            if (loadedModel == null) return;
 
             DisableMainModel();
             ClearPreviousCustomModel();
 
-            instance.Root.transform.SetParent(customModelOutput.transform, false);
-            instance.Root.transform.localPosition = Vector3.zero;
-            instance.Root.transform.localRotation = Quaternion.identity;
-            instance.Root.transform.localScale = Vector3.one;
+            loadedModel.transform.SetParent(customModelOutput.transform, false);
+            loadedModel.transform.localPosition = Vector3.zero;
+            loadedModel.transform.localRotation = Quaternion.identity;
+            loadedModel.transform.localScale = Vector3.one;
 
-            currentModel = instance.Root;
+            currentModel = loadedModel;
 
             EnableSkinnedMeshRenderers(currentModel);
-            FixMaterials(currentModel);
             AssignAnimatorController(currentModel);
             InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
@@ -145,18 +179,6 @@ public class VRMLoader : MonoBehaviour
     {
         foreach (var skinnedMesh in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             skinnedMesh.enabled = true;
-    }
-
-    private void FixMaterials(GameObject model)
-    {
-        foreach (var r in model.GetComponentsInChildren<Renderer>())
-        {
-            foreach (var mat in r.sharedMaterials)
-            {
-                if (mat != null && mat.shader.name != "VRM/MToon")
-                    mat.shader = Shader.Find("VRM/MToon");
-            }
-        }
     }
 
     private void AssignAnimatorController(GameObject model)
