@@ -193,17 +193,18 @@ public class VRMLoader : MonoBehaviour
         if (prefabTemplate == null || targetModel == null) return;
 
         var templateObj = Instantiate(prefabTemplate);
+        var animator = targetModel.GetComponentInChildren<Animator>();
+
         foreach (var templateComp in templateObj.GetComponents<MonoBehaviour>())
         {
             var type = templateComp.GetType();
             if (targetModel.GetComponent(type) != null)
-                continue; // Already exists
+                continue; // Skip if already exists
 
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
-            // Automatically rebind Animator if field exists
-            var animator = targetModel.GetComponentInChildren<Animator>();
+            // Call SetAnimator(animator) if available
             if (animator != null)
             {
                 var setAnimMethod = type.GetMethod("SetAnimator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -218,6 +219,7 @@ public class VRMLoader : MonoBehaviour
 
         Destroy(templateObj);
     }
+
 
     private void CopyComponentValues(Component source, Component destination)
     {
