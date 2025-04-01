@@ -97,6 +97,12 @@ public class AvatarMouseTracking : MonoBehaviour
 
     void InitializeEyeTracking()
     {
+        // Cleanup old eye drivers if reinitializing
+        Destroy(leftEyeDriver?.gameObject);
+        Destroy(rightEyeDriver?.gameObject);
+        Destroy(eyeCenter?.gameObject);
+        leftEyeDriver = rightEyeDriver = eyeCenter = null;
+
         leftEyeBone = animator.GetBoneTransform(HumanBodyBones.LeftEye);
         rightEyeBone = animator.GetBoneTransform(HumanBodyBones.RightEye);
         vrm10.LookAtTargetType = VRM10ObjectLookAt.LookAtTargetTypes.YawPitchValue;
@@ -115,6 +121,7 @@ public class AvatarMouseTracking : MonoBehaviour
         // Fallback bone search
         if (!leftEyeBone || !rightEyeBone)
         {
+            // Try to find by name as fallback
             foreach (Transform t in animator.GetComponentsInChildren<Transform>())
             {
                 string name = t.name.ToLower();
@@ -141,11 +148,17 @@ public class AvatarMouseTracking : MonoBehaviour
             rightEyeDriver.localPosition = rightEyeBone.localPosition;
             rightEyeDriver.localRotation = rightEyeBone.localRotation;
         }
-        else Debug.LogWarning("Eye bones not found!");
+        else
+        {
+            Debug.LogWarning("[AvatarMouseTracking] Eye bones not found. Eye tracking disabled.");
+        }
     }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6fd94efdd81eadbd3e461350cae28620f675799d
     void LateUpdate()
     {
         if (!enableMouseTracking) return;
@@ -253,4 +266,28 @@ public class AvatarMouseTracking : MonoBehaviour
         Destroy(rightEyeDriver?.gameObject);
         Destroy(eyeCenter?.gameObject);
     }
+
+    public void SetAnimator(Animator newAnimator)
+    {
+        animator = newAnimator;
+        mainCam = Camera.main;
+
+        InitializeHeadTracking();
+        InitializeSpineTracking();
+        InitializeEyeTracking();
+    }
+
+
+    private void CleanupDrivers()
+    {
+        Destroy(headDriver?.gameObject);
+        Destroy(spineDriver?.gameObject);
+        Destroy(leftEyeDriver?.gameObject);
+        Destroy(rightEyeDriver?.gameObject);
+        Destroy(eyeCenter?.gameObject);
+
+        headDriver = spineDriver = leftEyeDriver = rightEyeDriver = eyeCenter = null;
+    }
+
+
 }
