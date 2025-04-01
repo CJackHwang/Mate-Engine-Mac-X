@@ -1,48 +1,50 @@
-Project License
-AGPL & COPYRIGHTED LICENSE
-PLEASE READ CAREFULLY
-===============
+PROJECT LICENSE  
+AGPL & COPYRIGHTED LICENSE  
+PLEASE READ CAREFULLY  
+=========================
 
-Assets (Audio, Visual, etc.)
+ASSETS (Audio, Visual, etc.)
 ----------------------------
 All assets included in this project, including but not limited to:
 
-- Audio files  
-- Visual assets (images, models, textures, animations)  
-- Fonts, icons, and UI elements  
+• Audio files  
+• Visual assets (images, models, textures, animations)  
+• Fonts, icons, and UI elements  
 
-are © 2025 Shiny and are **copyrighted**.
+are © 2025 Shiny and are strictly COPYRIGHTED.
 
-These assets are **not licensed for commercial use** in any form.  
-You **may not** use them in commercial projects, redistribute them separately, or resell them.
+These assets are NOT licensed for commercial use in any form.  
+You may NOT use them in commercial projects, redistribute them separately, or resell them.
 
 Personal, educational, or non-commercial use is allowed, but attribution to the original author ("Shiny") is required.
 
-If you wish to license these assets for commercial use, please contact the author for permission.
+If you wish to license these assets for commercial use, you must contact the author directly for permission.
 
----
+------------------------------------------------------------
 
-Code
-----
-All code in this project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+CODE (AGPL-3.0 License)
+-----------------------
+All code in this project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 
 This means:
-- You may use, modify, and share the code freely.
-- If you distribute or deploy software that includes this code (even over a network), you **must provide access to the full source code** of your modified version under the same license.
+• You may use, modify, and share the code freely.  
+• If you distribute or deploy software that includes this code (even over a network), you MUST provide access to the full source code of your modified version under the same AGPL license.
 
-See the full license here: https://www.gnu.org/licenses/agpl-3.0.html
+Full license text available at: https://www.gnu.org/licenses/agpl-3.0.html
 
----
+------------------------------------------------------------
 
-Contributions and Contributor Rights
+CONTRIBUTIONS AND CONTRIBUTOR RIGHTS
 ------------------------------------
-By contributing to this project, contributors agree to the following:
+By contributing code to this project, contributors agree to the following terms:
 
-- Any code contributions that are accepted and merged into the project become part of the project and will remain licensed under **AGPL-3.0**.
-- Contributors retain **copyright** over their own code.
-- Contributors are granted a **perpetual license** to freely use **their own contributions** in other projects, including commercial projects, **without being required to open-source** those separate projects.  
-  - In other words: contributors are not bound by AGPL when reusing **their own** code elsewhere.
-- However, the **code within this project** remains AGPL-licensed and must be used accordingly.
-- **Non-contributors** (users who did not submit accepted code) must fully respect the AGPL-3.0 license and **are not granted special permissions**.
+• Code contributions that are accepted and merged into the project become part of the project and remain licensed under AGPL-3.0.  
+• Contributors retain COPYRIGHT over their own code.  
+• Contributors are granted a perpetual license to reuse THEIR OWN CONTRIBUTIONS in other projects (including commercial ones) without being required to open-source those separate projects.  
+• In other words: contributors are NOT bound by AGPL when reusing THEIR OWN code outside of this project.  
+• The combined codebase within this project remains AGPL-licensed and must be treated accordingly.  
+• NON-CONTRIBUTORS (users who did not submit accepted code) must fully comply with the AGPL-3.0 license and are not granted special permissions.
+
+------------------------------------------------------------
 
 © 2025 Shiny and individual contributors. All rights reserved.
