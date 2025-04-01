@@ -1,0 +1,17 @@
+name: Feature Request
+description: Suggest a new idea or enhancement.
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature
+    attributes:
+      label: Describe your idea
+      description: What would you like to see added or changed?
+      placeholder: "It would be great if..."
+    validations:
+      required: true
+  - type: input
+    id: benefit
+    attributes:
+      label: Why is this useful?

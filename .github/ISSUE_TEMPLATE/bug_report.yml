@@ -1,0 +1,23 @@
+name: Report Bug
+description: Report something that's broken or not working right.
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the issue in detail.
+      placeholder: "It crashed when I clicked X..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we replicate the bug?
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: "e.g. v1.0.3"
