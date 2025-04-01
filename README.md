@@ -2,7 +2,8 @@
 
 # Mate-Engine
 A free Desktop Mate alternative with a lightweight interface and custom VRM support, though with fewer features.
-- APP LICENSE: Creative Commons Attribution-NonCommercial 4.0 International
+- APP LICENSE: MIXED - GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007 and Copyrighted Software - Please read the license carefully!
+
 - DEFAULT AVATAR LICENSE: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/) — *Do not redistribute this model in your own builds!*
 
 # About the project
