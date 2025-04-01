@@ -13,8 +13,6 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Toggle isTopmostToggle;
     public GameObject uniWindowControllerObject;
     public Button applyButton, resetButton;
-    public AudioSource audioSource;
-    public List<AudioClip> uiSounds;
     public VRMLoader vrmLoader;
     private bool isSliderBeingDragged;
     public static bool IsMenuOpen { get; private set; }
@@ -37,21 +35,21 @@ public class AvatarSettingsMenu : MonoBehaviour
         LoadSettings();
         ApplySettings();
 
-        applyButton?.onClick.AddListener(() => { ApplySettings(); PlayUISound(); });
-        resetButton?.onClick.AddListener(() => { ResetToDefaults(); PlayUISound(); });
+        applyButton?.onClick.AddListener(() => { ApplySettings(); });
+        resetButton?.onClick.AddListener(() => { ResetToDefaults(); });
 
         foreach (var slider in new[] { soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider })
             AddSliderListeners(slider);
 
         foreach (var toggle in new[] { enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle })
-            toggle?.onValueChanged.AddListener(delegate { PlayUISound(); });
+            toggle?.onValueChanged.AddListener(delegate { });
 
         if (fpsLimitSlider != null)
         {
             fpsLimitSlider.minValue = 15;
             fpsLimitSlider.maxValue = 120;
             fpsLimitSlider.value = PlayerPrefs.GetInt("FPSLimit", 90);
-            fpsLimitSlider.onValueChanged.AddListener(delegate { UpdateFPSLimit(); PlayUISound(); });
+            fpsLimitSlider.onValueChanged.AddListener(delegate { UpdateFPSLimit(); });
         }
     }
 
@@ -62,11 +60,9 @@ public class AvatarSettingsMenu : MonoBehaviour
             bool newState = !menuPanel.activeSelf;
             menuPanel.SetActive(newState);
             IsMenuOpen = newState;
-            PlayUISound();
 
             if (newState)
             {
-                // Live-refresh the dropdown when menu opens
                 var appManager = FindObjectOfType<AllowedAppsManager>();
                 if (appManager != null)
                 {
@@ -74,8 +70,6 @@ public class AvatarSettingsMenu : MonoBehaviour
                 }
             }
         }
-
-
     }
 
     public void UpdateFPSLimit()
@@ -108,15 +102,10 @@ public class AvatarSettingsMenu : MonoBehaviour
                 if (wrapper != null && wrapper.list != null)
                     avatar.allowedApps = wrapper.list.Distinct().ToList();
             }
-
-
         }
-
 
         if (isTopmostToggle != null)
             isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
-
-
     }
 
     public void ApplySettings()
@@ -162,12 +151,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (vrmLoader != null)
             vrmLoader.ResetModel();
 
-        ApplySettings(); // Loads The Default Settings
+        ApplySettings();
     }
 
     private void SaveSettings()
     {
-
         var avatar = FindFirstAvatar();
         if (avatar != null)
         {
@@ -175,7 +163,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             string json = JsonUtility.ToJson(wrapper);
             PlayerPrefs.SetString("AllowedAppsList", json);
         }
-
 
         PlayerPrefs.SetFloat("SoundThreshold", soundThresholdSlider?.value ?? 0.2f);
         PlayerPrefs.SetFloat("IdleSwitchTime", idleSwitchTimeSlider?.value ?? 10f);
@@ -194,13 +181,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         return FindObjectOfType<AvatarAnimatorController>();
     }
 
-
-    private void PlayUISound()
-    {
-        if (audioSource != null && uiSounds.Count > 0)
-            audioSource.PlayOneShot(uiSounds[Random.Range(0, uiSounds.Count)]);
-    }
-
     private void AddSliderListeners(Slider slider)
     {
         if (slider == null) return;
@@ -209,7 +189,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         trigger.triggers[0].callback.AddListener((eventData) => {
             if (!isSliderBeingDragged)
             {
-                PlayUISound();
                 isSliderBeingDragged = true;
             }
         });
@@ -218,10 +197,8 @@ public class AvatarSettingsMenu : MonoBehaviour
     }
 }
 
-
 [System.Serializable]
 public class AllowedAppListWrapper
 {
     public List<string> list;
 }
-

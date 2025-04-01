@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 14424279}
   - component: {fileID: 14424281}
   - component: {fileID: 14424282}
+  - component: {fileID: 14424283}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -180,11 +181,6 @@ MonoBehaviour:
   uniWindowControllerObject: {fileID: 2416199871966935625}
   applyButton: {fileID: 2140286348}
   resetButton: {fileID: 553627897}
-  audioSource: {fileID: 1420561495}
-  uiSounds:
-  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
-  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
-  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
   vrmLoader: {fileID: 14424281}
 --- !u!114 &14424281
 MonoBehaviour:
@@ -219,6 +215,67 @@ MonoBehaviour:
   addToAllowedListButton: {fileID: 103879917}
   allowedAppsListContent: {fileID: 54588813}
   allowedAppItemPrefab: {fileID: 6010814463555197334, guid: 95edbf1bc994abe42b98b61b4c80148a, type: 3}
+--- !u!114 &14424283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14424276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f653f1dd104e864a8fa4906dacd2768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 1420561495}
+  disableDelay: 1
+  startupSounds:
+  - {fileID: 8300000, guid: 74af360ad5148b04ab54b92807e9406a, type: 3}
+  startupPitchMin: 0.5
+  startupPitchMax: 1
+  startupVolume: 0.25
+  openMenuSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  openMenuPitchMin: 0.7
+  openMenuPitchMax: 1
+  openMenuVolume: 0.5
+  closeMenuSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  closeMenuPitchMin: 0.7
+  closeMenuPitchMax: 1
+  closeMenuVolume: 0.5
+  buttonSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  buttonPitchMin: 0.7
+  buttonPitchMax: 1
+  buttonVolume: 0.5
+  toggleSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  togglePitchMin: 0.7
+  togglePitchMax: 1
+  toggleVolume: 0.5
+  sliderSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  sliderPitchMin: 0.7
+  sliderPitchMax: 1
+  sliderVolume: 0.5
+  dropdownSounds:
+  - {fileID: 8300000, guid: 9c0b25213ac9bc14bab2b7edca5a9ec3, type: 3}
+  - {fileID: 8300000, guid: 042f8f6bdaf73654c9959c96fda612ac, type: 3}
+  - {fileID: 8300000, guid: 04cdec02684cff340b9c80c685ac4cc6, type: 3}
+  dropdownPitchMin: 0.7
+  dropdownPitchMax: 1
+  dropdownVolume: 0.5
 --- !u!1 &20746432
 GameObject:
   m_ObjectHideFlags: 0
@@ -16296,7 +16353,7 @@ GameObject:
   - component: {fileID: 1420561494}
   - component: {fileID: 1420561495}
   m_Layer: 0
-  m_Name: Buttons
+  m_Name: UI Sounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
