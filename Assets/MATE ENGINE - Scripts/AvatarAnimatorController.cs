@@ -128,10 +128,19 @@ public class AvatarAnimatorController : MonoBehaviour
             }
             else if (!isValidSoundPlaying && isDancing)
             {
-                isDancing = false;
-                animator.SetBool("isDancing", false);
-                Log("Stopped dancing.");
+                // Check if we're no longer fully in dancing state or transitioning out
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                bool isInDanceState = stateInfo.IsName("Dancing"); // <-- match exact name of your dance state
+                bool isTransitioning = animator.IsInTransition(0);
+
+                if (!isInDanceState && !isTransitioning)
+                {
+                    isDancing = false;
+                    animator.SetBool("isDancing", false);
+                    Log("Stopped dancing (fully exited state).");
+                }
             }
+
         }
     }
 
@@ -180,6 +189,24 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
+        // Settings menu override: block all interactive states while open
+        if (AvatarSettingsMenu.IsMenuOpen)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                animator.SetBool("isDragging", false);
+            }
+
+            if (isDancing)
+            {
+                isDancing = false;
+                animator.SetBool("isDancing", false);
+            }
+
+            return;
+        }
+
         if (enableDragging && Input.GetMouseButtonDown(0))
         {
             isDragging = true;
@@ -210,13 +237,6 @@ public class AvatarAnimatorController : MonoBehaviour
             }
             idleState = nextState;
         }
-
-        if (AvatarSettingsMenu.IsMenuOpen)
-        {
-            animator.SetBool("isDragging", false);
-            return;
-        }
-
 
         UpdateIdleStatus();
     }
