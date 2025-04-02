@@ -15,6 +15,15 @@ public class AvatarSettingsMenu : MonoBehaviour
     public bool resetAlsoClearsAllowedApps = false;
     public VRMLoader vrmLoader;
 
+    public Toggle fakeHDRToggle;
+    public Toggle bloomToggle;
+    public Toggle dayNightToggle;
+
+    public GameObject fakeHDRObject;
+    public GameObject bloomObject;
+    public GameObject dayNightObject;
+
+
     private bool isSliderBeingDragged;
     public static bool IsMenuOpen { get; private set; }
 
@@ -78,6 +87,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDancingToggle?.SetIsOnWithoutNotify(data.enableDancing);
         enableMouseTrackingToggle?.SetIsOnWithoutNotify(data.enableMouseTracking);
         isTopmostToggle?.SetIsOnWithoutNotify(data.isTopmost);
+        fakeHDRToggle?.SetIsOnWithoutNotify(data.fakeHDR);
+        bloomToggle?.SetIsOnWithoutNotify(data.bloom);
+        dayNightToggle?.SetIsOnWithoutNotify(data.dayNight);
+
     }
 
     public void ApplySettings()
@@ -93,6 +106,15 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.enableDancing = enableDancingToggle?.isOn ?? true;
         data.enableMouseTracking = enableMouseTrackingToggle?.isOn ?? true;
         data.isTopmost = isTopmostToggle?.isOn ?? true;
+
+        data.fakeHDR = fakeHDRToggle?.isOn ?? true;
+        data.bloom = bloomToggle?.isOn ?? true;
+        data.dayNight = dayNightToggle?.isOn ?? true;
+
+        if (fakeHDRObject != null) fakeHDRObject.SetActive(data.fakeHDR);
+        if (bloomObject != null) bloomObject.SetActive(data.bloom);
+        if (dayNightObject != null) dayNightObject.SetActive(data.dayNight);
+
 
         if (uniWindowController != null)
             uniWindowController.isTopmost = data.isTopmost;

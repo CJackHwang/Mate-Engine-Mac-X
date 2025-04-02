@@ -79,7 +79,14 @@ public class SaveLoadHandler : MonoBehaviour
         public bool isTopmost = true;
 
         public List<string> allowedApps = new List<string>();
+
+        // These are OFF by default
+        public bool fakeHDR = false;
+        public bool bloom = false;
+        public bool dayNight = false;
     }
+
+
 
     public static void SyncAllowedAppsToAllAvatars()
     {
