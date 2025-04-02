@@ -12266,7 +12266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chibiToggle: {fileID: 8924917334924735497}
   dragSoundHandler: {fileID: 1758352181}
-  petVoiceHandler: {fileID: 1758352188}
+  petVoiceHandler: {fileID: 0}
 --- !u!4 &1157679955
 Transform:
   m_ObjectHideFlags: 0

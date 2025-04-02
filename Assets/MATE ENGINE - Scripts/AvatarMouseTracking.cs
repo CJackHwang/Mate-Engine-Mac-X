@@ -212,7 +212,7 @@ public class AvatarMouseTracking : MonoBehaviour
 
             var (rawYaw, rawPitch) = eyeMatrix.CalcYawPitch(worldMousePos);
 
-            float clampedYaw = Mathf.Clamp(rawYaw, -eyeYawLimit, eyeYawLimit);
+            float clampedYaw = Mathf.Clamp(-rawYaw, -eyeYawLimit, eyeYawLimit); // Invert horizontal
             float clampedPitch = Mathf.Clamp(rawPitch, -eyePitchLimit, eyePitchLimit);
 
             // Step 3: Smooth the LookAtTarget rotation (yaw/pitch)
@@ -229,7 +229,7 @@ public class AvatarMouseTracking : MonoBehaviour
 
         eyeCenter.position = (leftEyeBone.position + rightEyeBone.position) / 2f;
         Vector3 localDir = eyeCenter.parent.InverseTransformDirection((worldMousePos - eyeCenter.position).normalized);
-        float yawFallback = Mathf.Clamp(Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg, -eyeYawLimit, eyeYawLimit);
+        float yawFallback = Mathf.Clamp(-Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg, -eyeYawLimit, eyeYawLimit); // Invert horizontal
         float pitchFallback = Mathf.Clamp(Mathf.Asin(localDir.y) * Mathf.Rad2Deg, -eyePitchLimit, eyePitchLimit);
         Quaternion eyeRot = Quaternion.Euler(-pitchFallback, yawFallback, 0f);
 
