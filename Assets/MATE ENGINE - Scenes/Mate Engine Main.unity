@@ -19777,6 +19777,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480576063}
   m_CullTransparentMesh: 1
+--- !u!1 &1500589407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1500589408}
+  m_Layer: 0
+  m_Name: Gravity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1500589408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500589407}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7402605, y: -1.0630383, z: 4.403647}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -43197,6 +43228,8 @@ GameObject:
   - component: {fileID: 8924917334924735497}
   - component: {fileID: 8924917334924735499}
   - component: {fileID: 8924917334924735500}
+  - component: {fileID: 8924917334924735501}
+  - component: {fileID: 8924917334924735502}
   m_Layer: 0
   m_Name: VRMModel
   m_TagString: Untagged
@@ -67632,6 +67665,39 @@ MonoBehaviour:
   Angry: 0
   Sorrow: 0
   Fun: 0
+--- !u!114 &8924917334924735501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf9cc991ba8ec540a2f8cc6ca4d0b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarAnimator: {fileID: 5823227879768727422}
+  detectionBone: 0
+  detectionRadius: 0.54
+  showDebugGizmo: 1
+  taskbarGizmoColor: {r: 0.4, g: 0.49019608, b: 1, a: 1}
+  detectionGizmoColor: {r: 0.4009434, g: 0.48972332, b: 1, a: 1}
+--- !u!114 &8924917334924735502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93afcb74408dcc44a7a3d5f147d3126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactMultiplier: 0.35
+  showDebugForce: 0
+  debugColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
@@ -68292,6 +68358,7 @@ SceneRoots:
   - {fileID: 2130317091}
   - {fileID: 638481095}
   - {fileID: 1391787993}
+  - {fileID: 1500589408}
   - {fileID: 919112466}
   - {fileID: 294741431}
   - {fileID: 794148441}
