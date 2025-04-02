@@ -114,22 +114,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
             Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
             if (bone == null) continue;
 
-            // World-space center of the hover zone
             Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
-
-            // Convert world point to screen position
             Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPoint);
 
-            // Scale the world radius based on model's current scale
             float scaleFactor = bone.lossyScale.magnitude;
             float scaledWorldRadius = region.hoverRadius * scaleFactor;
 
-            // Convert scaled world radius to screen space for distance comparison
             Vector3 worldOffsetPos = worldPoint + Camera.main.transform.right * scaledWorldRadius;
             Vector2 screenOffsetPos = Camera.main.WorldToScreenPoint(worldOffsetPos);
             float screenRadius = Vector2.Distance(screenPoint, screenOffsetPos);
 
-            // Compare screen distance
             float distance = Vector2.Distance(Input.mousePosition, screenPoint);
             bool hovering = distance < screenRadius;
 
@@ -163,7 +157,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
             }
         }
     }
-
 
     IEnumerator DisableHoverObject(VoiceRegion region)
     {

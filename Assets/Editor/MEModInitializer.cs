@@ -10,9 +10,13 @@ public static class MEModInitializer
 
     static MEModInitializer()
     {
+        // Chibi folders
         CreateFolderWithKeep(Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode/Sounds/Enter Sounds"));
         CreateFolderWithKeep(Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode/Sounds/Exit Sounds"));
         CreateFolderWithKeep(Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode"));
+
+        // Hover Reactions base folder
+        CreateFolderWithKeep(Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Hover Reactions"));
 
 #if UNITY_EDITOR
         EditorApplication.delayCall += TryGenerateSettingsFromReference;

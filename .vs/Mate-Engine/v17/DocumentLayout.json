@@ -3,15 +3,27 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\universalblendshapes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\memodloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\memodloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\petvoicereactionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\petvoicereactionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\editor\\memodinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\memodinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\universalblendshapes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\universalblendshapes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - packages\\vrm\\runtime\\blendshape\\vrmblendshapeproxy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - packages\\vrm\\runtime\\blendshape\\vrmblendshapeproxy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\blendshape\\vrmblendshapeproxy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarsettingsmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -42,7 +54,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "AvatarSettingsMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
@@ -51,12 +63,49 @@
               "ViewState": "AgIAAHYAAAAAAAAAAAAwwHwAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-02T09:52:38.996Z",
-              "IsPinned": true,
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MEModInitializer.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEModInitializer.cs",
+              "RelativeDocumentMoniker": "Assets\\Editor\\MEModInitializer.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEModInitializer.cs",
+              "RelativeToolTip": "Assets\\Editor\\MEModInitializer.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-02T15:16:45.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MEModLoader.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
+              "ViewState": "AgIAAHgAAAAAAAAAAADwv4sAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-02T15:16:34.542Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "PetVoiceReactionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\PetVoiceReactionHandler.cs",
+              "ViewState": "AgIAAM4AAAAAAAAAAAAAwOwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-02T15:12:07.478Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "VRMBlendShapeProxy.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\BlendShape\\VRMBlendShapeProxy.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\BlendShape\\VRMBlendShapeProxy.cs",
@@ -64,12 +113,11 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\BlendShape\\VRMBlendShapeProxy.cs",
               "ViewState": "AgIAALsAAAAAAAAAAAAuwMcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T13:28:20.273Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-02T13:28:20.273Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "UniversalBlendshapes.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\UniversalBlendshapes.cs",
               "RelativeDocumentMoniker": "Assets\\UniversalBlendshapes.cs",
@@ -77,12 +125,11 @@
               "RelativeToolTip": "Assets\\UniversalBlendshapes.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T12:58:51.612Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-02T12:58:51.612Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
@@ -94,7 +141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "AvatarAnimatorController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
@@ -106,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "AutoApplyAvatarSettings.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AutoApplyAvatarSettings.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AutoApplyAvatarSettings.cs",
@@ -118,7 +165,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "IgnoredAppsManager.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\IgnoredAppsManager.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\IgnoredAppsManager.cs",
