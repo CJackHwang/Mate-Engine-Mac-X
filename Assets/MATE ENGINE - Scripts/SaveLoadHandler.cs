@@ -83,7 +83,7 @@ public class SaveLoadHandler : MonoBehaviour
         // These are OFF by default
         public bool fakeHDR = false;
         public bool bloom = false;
-        public bool dayNight = false;
+        public bool dayNight = true;
     }
 
 
