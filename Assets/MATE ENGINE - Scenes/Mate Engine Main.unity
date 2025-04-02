@@ -4805,6 +4805,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 2, z: 1}
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!1 &648911294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 648911295}
+  m_Layer: 0
+  m_Name: BlendShapeAnimator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &648911295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648911294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.2214882, y: 0.31690347, z: 1.9336945}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &677977177
 GameObject:
   m_ObjectHideFlags: 0
@@ -43164,6 +43195,7 @@ GameObject:
   - component: {fileID: 8924917334924735495}
   - component: {fileID: 8924917334924735497}
   - component: {fileID: 8924917334924735499}
+  - component: {fileID: 8924917334924735500}
   m_Layer: 0
   m_Name: VRMModel
   m_TagString: Untagged
@@ -67570,6 +67602,35 @@ MonoBehaviour:
   eyeYawLimit: 12
   eyePitchLimit: 12
   eyeSmoothness: 10
+--- !u!114 &8924917334924735500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11e9eb032e6bd2f4aa91f9c1ff666c1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Blink: 0
+  Blink_L: 0
+  Blink_R: 0
+  LookUp: 0
+  LookDown: 0
+  LookLeft: 0
+  LookRight: 0
+  Neutral: 0
+  A: 0
+  I: 0
+  U: 0
+  E: 0
+  O: 0
+  Joy: 0
+  Angry: 0
+  Sorrow: 0
+  Fun: 0
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
@@ -68242,3 +68303,4 @@ SceneRoots:
   - {fileID: 936017546}
   - {fileID: 958588316}
   - {fileID: 1157679955}
+  - {fileID: 648911295}
