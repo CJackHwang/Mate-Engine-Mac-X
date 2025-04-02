@@ -17,9 +17,9 @@ public class AllowedAppsManager : MonoBehaviour
     private MMDevice defaultDevice;
 
     private List<string> currentRunningAppNames = new List<string>();
-    private List<string> allowedApps => FindFirstAvatar()?.allowedApps;
+    private List<string> allowedApps => SaveLoadHandler.Instance.data.allowedApps;
 
-    void Start()
+    private void Start()
     {
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
@@ -33,20 +33,23 @@ public class AllowedAppsManager : MonoBehaviour
             {
                 allowedApps.Add(selectedApp);
                 UpdateAllowedListUI();
+                SaveLoadHandler.Instance.SaveToDisk();
+                SaveLoadHandler.SyncAllowedAppsToAllAvatars();
             }
         });
 
         RefreshRunningAppsDropdown();
         UpdateAllowedListUI();
+        SaveLoadHandler.SyncAllowedAppsToAllAvatars(); // Initial sync on load
     }
 
-    void UpdateDefaultDevice()
+    private void UpdateDefaultDevice()
     {
         defaultDevice?.Dispose();
         defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
     }
 
-    void RefreshRunningAppsDropdown()
+    private void RefreshRunningAppsDropdown()
     {
         currentRunningAppNames = GetRunningAudioAppNames();
         runningAppsDropdown.ClearOptions();
@@ -55,7 +58,7 @@ public class AllowedAppsManager : MonoBehaviour
         );
     }
 
-    void UpdateAllowedListUI()
+    private void UpdateAllowedListUI()
     {
         foreach (Transform child in allowedAppsListContent)
             Destroy(child.gameObject);
@@ -75,12 +78,14 @@ public class AllowedAppsManager : MonoBehaviour
                 {
                     allowedApps.Remove(app);
                     UpdateAllowedListUI();
+                    SaveLoadHandler.Instance.SaveToDisk();
+                    SaveLoadHandler.SyncAllowedAppsToAllAvatars();
                 });
             }
         }
     }
 
-    List<string> GetRunningAudioAppNames()
+    private List<string> GetRunningAudioAppNames()
     {
         var appNames = new HashSet<string>();
         try
@@ -106,12 +111,7 @@ public class AllowedAppsManager : MonoBehaviour
         return appNames.OrderBy(n => n).ToList();
     }
 
-    AvatarAnimatorController FindFirstAvatar()
-    {
-        return FindObjectOfType<AvatarAnimatorController>();
-    }
-
-    void OnDestroy()
+    private void OnDestroy()
     {
         enumerator?.Dispose();
         defaultDevice?.Dispose();
@@ -121,17 +121,14 @@ public class AllowedAppsManager : MonoBehaviour
     {
         RefreshRunningAppsDropdown();
         UpdateAllowedListUI();
+        SaveLoadHandler.SyncAllowedAppsToAllAvatars();
     }
-
 
     public void RefreshUI()
     {
-        UpdateDefaultDevice();               // Make sure device is current
-        RefreshRunningAppsDropdown();       // Refresh dropdown entries
-        UpdateAllowedListUI();              // Refresh the visible list
+        UpdateDefaultDevice();
+        RefreshRunningAppsDropdown();
+        UpdateAllowedListUI();
+        SaveLoadHandler.SyncAllowedAppsToAllAvatars();
     }
-
-
 }
-
-

@@ -11,7 +11,7 @@ public class AvatarAnimatorController : MonoBehaviour
     public Animator animator;
     public bool enableAudioDetection = true;
     public float SOUND_THRESHOLD = 0.02f;
-    public List<string> allowedApps = new List<string> { "spotify", "firefox", "chrome", "opera" };
+    public List<string> allowedApps = new List<string>();
 
     [Header("Idle Animation Settings")]
     public int totalIdleAnimations = 10;
@@ -114,6 +114,18 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void CheckForSound()
     {
+        if (AvatarSettingsMenu.IsMenuOpen)
+        {
+            // Fully block and reset dancing when menu is open
+            if (isDancing)
+            {
+                isDancing = false;
+                animator.SetBool("isDancing", false);
+                Log("Stopped dancing due to open settings menu.");
+            }
+            return;
+        }
+
         if (defaultDevice == null) return;
 
         bool isValidSoundPlaying = IsValidAppPlaying();
@@ -128,9 +140,8 @@ public class AvatarAnimatorController : MonoBehaviour
             }
             else if (!isValidSoundPlaying && isDancing)
             {
-                // Check if we're no longer fully in dancing state or transitioning out
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                bool isInDanceState = stateInfo.IsName("Dancing"); // <-- match exact name of your dance state
+                bool isInDanceState = stateInfo.IsName("Dancing"); // Adjust name if needed
                 bool isTransitioning = animator.IsInTransition(0);
 
                 if (!isInDanceState && !isTransitioning)
@@ -140,9 +151,9 @@ public class AvatarAnimatorController : MonoBehaviour
                     Log("Stopped dancing (fully exited state).");
                 }
             }
-
         }
     }
+
 
     bool IsValidAppPlaying()
     {

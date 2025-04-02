@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Kirurobo;
-using System.Linq;
 
 public class AvatarSettingsMenu : MonoBehaviour
 {
@@ -13,7 +12,9 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Toggle isTopmostToggle;
     public GameObject uniWindowControllerObject;
     public Button applyButton, resetButton;
+    public bool resetAlsoClearsAllowedApps = false;
     public VRMLoader vrmLoader;
+
     private bool isSliderBeingDragged;
     public static bool IsMenuOpen { get; private set; }
 
@@ -35,22 +36,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         LoadSettings();
         ApplySettings();
 
-        applyButton?.onClick.AddListener(() => { ApplySettings(); });
-        resetButton?.onClick.AddListener(() => { ResetToDefaults(); });
+        applyButton?.onClick.AddListener(ApplySettings);
+        resetButton?.onClick.AddListener(ResetToDefaults);
 
         foreach (var slider in new[] { soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider })
             AddSliderListeners(slider);
 
         foreach (var toggle in new[] { enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle })
             toggle?.onValueChanged.AddListener(delegate { });
-
-        if (fpsLimitSlider != null)
-        {
-            fpsLimitSlider.minValue = 15;
-            fpsLimitSlider.maxValue = 120;
-            fpsLimitSlider.value = PlayerPrefs.GetInt("FPSLimit", 90);
-            fpsLimitSlider.onValueChanged.AddListener(delegate { UpdateFPSLimit(); });
-        }
     }
 
     private void Update()
@@ -72,133 +65,73 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
     }
 
-    public void UpdateFPSLimit()
-    {
-        foreach (var fpsLimiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
-            fpsLimiter.SetFPSLimit((int)fpsLimitSlider.value);
-
-        PlayerPrefs.SetInt("FPSLimit", (int)fpsLimitSlider.value);
-        PlayerPrefs.Save();
-    }
-
     public void LoadSettings()
     {
-        foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
-        {
-            if (soundThresholdSlider != null) soundThresholdSlider.value = PlayerPrefs.GetFloat("SoundThreshold", avatar.SOUND_THRESHOLD);
-            if (idleSwitchTimeSlider != null) idleSwitchTimeSlider.value = PlayerPrefs.GetFloat("IdleSwitchTime", avatar.IDLE_SWITCH_TIME);
-            if (idleTransitionTimeSlider != null) idleTransitionTimeSlider.value = PlayerPrefs.GetFloat("IdleTransitionTime", avatar.IDLE_TRANSITION_TIME);
-            if (avatarSizeSlider != null) avatarSizeSlider.value = PlayerPrefs.GetFloat("AvatarSize", avatar.transform.localScale.x);
-            if (fpsLimitSlider != null) fpsLimitSlider.value = PlayerPrefs.GetInt("FPSLimit", 90);
-            if (enableAudioDetectionToggle != null) enableAudioDetectionToggle.isOn = PlayerPrefs.GetInt("EnableAudioDetection", avatar.enableAudioDetection ? 1 : 0) == 1;
-            if (enableDancingToggle != null) enableDancingToggle.isOn = PlayerPrefs.GetInt("EnableDancing", avatar.enableDancing ? 1 : 0) == 1;
-            if (enableMouseTrackingToggle != null)
-                enableMouseTrackingToggle.isOn = PlayerPrefs.GetInt("EnableMouseTracking", 1) == 1;
+        var data = SaveLoadHandler.Instance.data;
 
-            if (PlayerPrefs.HasKey("AllowedAppsList"))
-            {
-                string json = PlayerPrefs.GetString("AllowedAppsList");
-                AllowedAppListWrapper wrapper = JsonUtility.FromJson<AllowedAppListWrapper>(json);
-                if (wrapper != null && wrapper.list != null)
-                    avatar.allowedApps = wrapper.list.Distinct().ToList();
-            }
-        }
-
-        if (isTopmostToggle != null)
-            isTopmostToggle.isOn = PlayerPrefs.GetInt("IsTopmost", 1) == 1;
+        soundThresholdSlider?.SetValueWithoutNotify(data.soundThreshold);
+        idleSwitchTimeSlider?.SetValueWithoutNotify(data.idleSwitchTime);
+        idleTransitionTimeSlider?.SetValueWithoutNotify(data.idleTransitionTime);
+        avatarSizeSlider?.SetValueWithoutNotify(data.avatarSize);
+        fpsLimitSlider?.SetValueWithoutNotify(data.fpsLimit);
+        enableAudioDetectionToggle?.SetIsOnWithoutNotify(data.enableAudioDetection);
+        enableDancingToggle?.SetIsOnWithoutNotify(data.enableDancing);
+        enableMouseTrackingToggle?.SetIsOnWithoutNotify(data.enableMouseTracking);
+        isTopmostToggle?.SetIsOnWithoutNotify(data.isTopmost);
     }
 
     public void ApplySettings()
     {
-        foreach (var avatar in FindObjectsByType<AvatarAnimatorController>(FindObjectsSortMode.None))
-        {
-            avatar.SOUND_THRESHOLD = soundThresholdSlider?.value ?? avatar.SOUND_THRESHOLD;
-            avatar.IDLE_SWITCH_TIME = idleSwitchTimeSlider?.value ?? avatar.IDLE_SWITCH_TIME;
-            avatar.IDLE_TRANSITION_TIME = idleTransitionTimeSlider?.value ?? avatar.IDLE_TRANSITION_TIME;
-            if (avatarSizeSlider != null) avatar.transform.localScale = Vector3.one * avatarSizeSlider.value;
-            avatar.enableAudioDetection = enableAudioDetectionToggle?.isOn ?? avatar.enableAudioDetection;
-            avatar.enableDancing = enableDancingToggle?.isOn ?? avatar.enableDancing;
+        var data = SaveLoadHandler.Instance.data;
 
-            if (enableMouseTrackingToggle != null)
-            {
-                foreach (var mouseTracker in avatar.GetComponentsInChildren<AvatarMouseTracking>())
-                    mouseTracker.enableMouseTracking = enableMouseTrackingToggle.isOn;
-            }
-        }
+        data.soundThreshold = soundThresholdSlider?.value ?? 0.2f;
+        data.idleSwitchTime = idleSwitchTimeSlider?.value ?? 10f;
+        data.idleTransitionTime = idleTransitionTimeSlider?.value ?? 1f;
+        data.avatarSize = avatarSizeSlider?.value ?? 1.0f;
+        data.fpsLimit = (int)(fpsLimitSlider?.value ?? 90);
+        data.enableAudioDetection = enableAudioDetectionToggle?.isOn ?? true;
+        data.enableDancing = enableDancingToggle?.isOn ?? true;
+        data.enableMouseTracking = enableMouseTrackingToggle?.isOn ?? true;
+        data.isTopmost = isTopmostToggle?.isOn ?? true;
 
-        if (uniWindowController != null && isTopmostToggle != null)
-            uniWindowController.isTopmost = isTopmostToggle.isOn;
+        if (uniWindowController != null)
+            uniWindowController.isTopmost = data.isTopmost;
 
-        UpdateFPSLimit();
-        SaveSettings();
+        foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
+            limiter.SetFPSLimit(data.fpsLimit);
+
+        SaveLoadHandler.Instance.SaveToDisk();
+        SaveLoadHandler.ApplyAllSettingsToAllAvatars(); // Apply globally
     }
 
     public void ResetToDefaults()
     {
-        soundThresholdSlider?.SetValueWithoutNotify(0.2f);
-        idleSwitchTimeSlider?.SetValueWithoutNotify(10f);
-        idleTransitionTimeSlider?.SetValueWithoutNotify(1f);
-        avatarSizeSlider?.SetValueWithoutNotify(1.0f);
-        enableAudioDetectionToggle?.SetIsOnWithoutNotify(true);
-        enableDancingToggle?.SetIsOnWithoutNotify(true);
-        enableMouseTrackingToggle?.SetIsOnWithoutNotify(true);
-        fpsLimitSlider?.SetValueWithoutNotify(90);
-        isTopmostToggle?.SetIsOnWithoutNotify(true);
+        var data = new SaveLoadHandler.SettingsData();
 
-        UpdateFPSLimit();
-        SaveSettings();
+        if (!resetAlsoClearsAllowedApps)
+            data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps); // preserve list
+
+        SaveLoadHandler.Instance.data = data;
+
+        LoadSettings();
+        ApplySettings();
 
         if (vrmLoader != null)
             vrmLoader.ResetModel();
-
-        ApplySettings();
-    }
-
-    private void SaveSettings()
-    {
-        var avatar = FindFirstAvatar();
-        if (avatar != null)
-        {
-            AllowedAppListWrapper wrapper = new AllowedAppListWrapper { list = avatar.allowedApps };
-            string json = JsonUtility.ToJson(wrapper);
-            PlayerPrefs.SetString("AllowedAppsList", json);
-        }
-
-        PlayerPrefs.SetFloat("SoundThreshold", soundThresholdSlider?.value ?? 0.2f);
-        PlayerPrefs.SetFloat("IdleSwitchTime", idleSwitchTimeSlider?.value ?? 10f);
-        PlayerPrefs.SetFloat("IdleTransitionTime", idleTransitionTimeSlider?.value ?? 1f);
-        PlayerPrefs.SetFloat("AvatarSize", avatarSizeSlider?.value ?? 1.0f);
-        PlayerPrefs.SetInt("EnableAudioDetection", enableAudioDetectionToggle?.isOn == true ? 1 : 0);
-        PlayerPrefs.SetInt("EnableDancing", enableDancingToggle?.isOn == true ? 1 : 0);
-        PlayerPrefs.SetInt("EnableMouseTracking", enableMouseTrackingToggle?.isOn == true ? 1 : 0);
-        PlayerPrefs.SetInt("FPSLimit", (int)(fpsLimitSlider?.value ?? 90));
-        PlayerPrefs.SetInt("IsTopmost", isTopmostToggle?.isOn == true ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    private AvatarAnimatorController FindFirstAvatar()
-    {
-        return FindObjectOfType<AvatarAnimatorController>();
     }
 
     private void AddSliderListeners(Slider slider)
     {
         if (slider == null) return;
-        var trigger = slider.gameObject.GetComponent<EventTrigger>() ?? slider.gameObject.AddComponent<EventTrigger>();
-        trigger.triggers.Add(new EventTrigger.Entry { eventID = EventTriggerType.PointerDown, callback = new EventTrigger.TriggerEvent() });
-        trigger.triggers[0].callback.AddListener((eventData) => {
-            if (!isSliderBeingDragged)
-            {
-                isSliderBeingDragged = true;
-            }
-        });
-        trigger.triggers.Add(new EventTrigger.Entry { eventID = EventTriggerType.PointerUp, callback = new EventTrigger.TriggerEvent() });
-        trigger.triggers[1].callback.AddListener((eventData) => isSliderBeingDragged = false);
-    }
-}
 
-[System.Serializable]
-public class AllowedAppListWrapper
-{
-    public List<string> list;
+        var trigger = slider.gameObject.GetComponent<EventTrigger>() ?? slider.gameObject.AddComponent<EventTrigger>();
+
+        var down = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+        down.callback.AddListener((eventData) => isSliderBeingDragged = true);
+        trigger.triggers.Add(down);
+
+        var up = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+        up.callback.AddListener((eventData) => isSliderBeingDragged = false);
+        trigger.triggers.Add(up);
+    }
 }
