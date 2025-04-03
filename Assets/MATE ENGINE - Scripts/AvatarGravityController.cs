@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using VRM;
+using UniVRM10;
 
 public class AvatarGravityController : MonoBehaviour
 {
@@ -16,12 +17,23 @@ public class AvatarGravityController : MonoBehaviour
 
     private Vector2Int previousWindowPos;
     private Vector3 currentForce;
+
     private List<VRMSpringBone> springBones = new();
+    private List<VRM10SpringBoneJoint> springBoneJoints = new();
+    private Vrm10Instance vrm10Instance;
 
     void Start()
     {
         previousWindowPos = GetWindowPosition();
-        springBones.AddRange(GetComponentsInChildren<VRMSpringBone>());
+
+        // VRM0 spring bones
+        springBones.AddRange(GetComponentsInChildren<VRMSpringBone>(true));
+
+        // VRM1 spring joints
+        springBoneJoints.AddRange(GetComponentsInChildren<VRM10SpringBoneJoint>(true));
+
+        // VRM1 runtime handler
+        vrm10Instance = GetComponentInParent<Vrm10Instance>();
     }
 
     void Update()
@@ -29,11 +41,9 @@ public class AvatarGravityController : MonoBehaviour
         Vector2Int currentWindowPos = GetWindowPosition();
         Vector2Int delta = currentWindowPos - previousWindowPos;
 
-        // Calculate impact vector from window drag
         if (delta != Vector2Int.zero)
         {
             Vector3 impact = new Vector3(-delta.x, delta.y, 0).normalized * impactMultiplier;
-
             currentForce = impact;
         }
         else
@@ -41,9 +51,26 @@ public class AvatarGravityController : MonoBehaviour
             currentForce = Vector3.zero;
         }
 
+        // VRM0: set external force
         foreach (var spring in springBones)
         {
-            spring.ExternalForce = currentForce;
+            if (spring != null)
+                spring.ExternalForce = currentForce;
+        }
+
+        // VRM1: apply gravity dir/power and notify runtime
+        foreach (var joint in springBoneJoints)
+        {
+            if (joint == null) continue;
+
+            joint.m_gravityDir = currentForce.normalized;
+            joint.m_gravityPower = currentForce.magnitude;
+
+            // notify the runtime for this joint
+            if (vrm10Instance != null && vrm10Instance.Runtime != null)
+            {
+                vrm10Instance.Runtime.SpringBone.SetJointLevel(joint.transform, joint.Blittable);
+            }
         }
 
         previousWindowPos = currentWindowPos;
