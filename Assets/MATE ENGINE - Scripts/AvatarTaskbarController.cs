@@ -12,10 +12,23 @@ public class AvatarTaskbarController : MonoBehaviour
     public HumanBodyBones detectionBone = HumanBodyBones.Hips;
     public float detectionRadius = 0.2f;
 
+    [Header("Attach Settings")]
+    public GameObject attachTarget;
+    public HumanBodyBones attachBone = HumanBodyBones.Head;
+    [Tooltip("If true, the object will follow the bone's position but keep its own rotation.")]
+    public bool keepOriginalRotation = false;
+
     [Header("Debug")]
     public bool showDebugGizmo = true;
     public Color taskbarGizmoColor = Color.green;
     public Color detectionGizmoColor = Color.yellow;
+
+    [Header("Spawn / Despawn Animation")]
+    [Tooltip("Time it takes to grow from 0 to full scale.")]
+    public float spawnScaleTime = 0.2f;
+
+    [Tooltip("Time it takes to shrink from full scale to 0.")]
+    public float despawnScaleTime = 0.2f;
 
     private Vector2Int unityWindowPosition;
     private Rect taskbarScreenRect;
@@ -24,16 +37,30 @@ public class AvatarTaskbarController : MonoBehaviour
 
     private static readonly int IsSitting = Animator.StringToHash("isSitting");
 
+    private Vector3 originalScale = Vector3.one;
+    private float scaleLerpT = 0f;
+    private bool isScaling = false;
+    private bool scalingUp = false;
+
+    private bool wasSittingProximity = false;
+    private bool wasSittingAnimator = false;
+    private Transform attachBoneTransform;
+    private Transform originalAttachParent;
+
     void Start()
     {
         if (avatarAnimator == null)
             avatarAnimator = GetComponentInChildren<Animator>();
 
+        if (attachTarget != null)
+        {
+            originalScale = attachTarget.transform.localScale;
+            originalAttachParent = attachTarget.transform.parent;
+            attachTarget.SetActive(false);
+        }
+
         UpdateTaskbarRect();
     }
-
-
-    private bool wasSitting = false;
 
     void Update()
     {
@@ -49,8 +76,7 @@ public class AvatarTaskbarController : MonoBehaviour
 
         if (!Application.isFocused)
         {
-            // Maintain previous state while unfocused
-            avatarAnimator.SetBool(IsSitting, wasSitting);
+            avatarAnimator.SetBool(IsSitting, wasSittingProximity);
             return;
         }
 
@@ -65,9 +91,89 @@ public class AvatarTaskbarController : MonoBehaviour
 
         bool shouldSit = distance <= detectionRadius;
         avatarAnimator.SetBool(IsSitting, shouldSit);
-        wasSitting = shouldSit;
-    }
+        wasSittingProximity = shouldSit;
 
+        bool animatorSitting = avatarAnimator.GetBool(IsSitting);
+
+        // Prevent premature activation until Animator has actually updated the state
+        bool allowSpawn = animatorSitting && wasSittingAnimator;
+
+        if (attachTarget != null)
+        {
+            if (avatarAnimator != null && attachBoneTransform == null)
+                attachBoneTransform = avatarAnimator.GetBoneTransform(attachBone);
+
+            if (allowSpawn)
+            {
+                if (keepOriginalRotation)
+                {
+                    if (!attachTarget.activeSelf)
+                    {
+                        attachTarget.SetActive(true);
+                        attachTarget.transform.localScale = Vector3.zero;
+                        scaleLerpT = 0f;
+                        scalingUp = true;
+                        isScaling = true;
+                    }
+
+                    if (attachBoneTransform != null)
+                        attachTarget.transform.position = attachBoneTransform.position;
+                }
+                else
+                {
+                    if (attachTarget.transform.parent != attachBoneTransform && attachBoneTransform != null)
+                        attachTarget.transform.SetParent(attachBoneTransform, false);
+
+                    if (!attachTarget.activeSelf)
+                    {
+                        attachTarget.SetActive(true);
+                        attachTarget.transform.localScale = Vector3.zero;
+                        scaleLerpT = 0f;
+                        scalingUp = true;
+                        isScaling = true;
+                    }
+                }
+            }
+            else
+            {
+                if (!keepOriginalRotation && attachTarget.transform.parent != originalAttachParent)
+                    attachTarget.transform.SetParent(originalAttachParent, false);
+
+                if (attachTarget.activeSelf && !isScaling)
+                {
+                    scalingUp = false;
+                    isScaling = true;
+                    scaleLerpT = 0f;
+                }
+            }
+
+            // Animate scale
+            if (isScaling && attachTarget.activeSelf)
+            {
+                float duration = scalingUp ? spawnScaleTime : despawnScaleTime;
+                scaleLerpT += Time.deltaTime / Mathf.Max(duration, 0.0001f);
+                float t = Mathf.Clamp01(scaleLerpT);
+                Vector3 from = scalingUp ? Vector3.zero : originalScale;
+                Vector3 to = scalingUp ? originalScale : Vector3.zero;
+
+                attachTarget.transform.localScale = Vector3.Lerp(from, to, t);
+
+                if (t >= 1f)
+                {
+                    isScaling = false;
+
+                    if (!scalingUp)
+                    {
+                        attachTarget.SetActive(false);
+                        attachTarget.transform.localScale = originalScale;
+                    }
+                }
+            }
+        }
+
+        // Save last frame's animator bool
+        wasSittingAnimator = animatorSitting;
+    }
 
     void OnDrawGizmos()
     {
@@ -172,7 +278,6 @@ public class AvatarTaskbarController : MonoBehaviour
 
         return rectCenter + local;
     }
-
 
     #endregion
 }

@@ -3,24 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\avatargravitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatargravitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarmousetracking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarmousetracking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\avatartaskbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatartaskbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - packages\\vrm\\runtime\\springbone\\vrmspringbone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\springbone\\vrmspringbone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\vrmloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\vrmloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\chibitoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\chibitoggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avatargravitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatargravitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,64 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AvatarGravityController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarGravityController.cs",
-              "RelativeDocumentMoniker": "Assets\\AvatarGravityController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarGravityController.cs",
-              "RelativeToolTip": "Assets\\AvatarGravityController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAjwCMAAAAAAAAAAAAAAA==",
+              "Title": "AvatarMouseTracking.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarMouseTracking.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarMouseTracking.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarMouseTracking.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarMouseTracking.cs",
+              "ViewState": "AgIAAPYAAAAAAAAAAAAUwBQBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T21:51:02.47Z",
+              "WhenOpened": "2025-04-03T11:20:53.799Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AvatarTaskbarController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarTaskbarController.cs",
-              "RelativeDocumentMoniker": "Assets\\AvatarTaskbarController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarTaskbarController.cs",
-              "RelativeToolTip": "Assets\\AvatarTaskbarController.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAA3wC8AAAATAAAAAAAAAA==",
+              "Title": "AvatarGravityController.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAiwG0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T20:52:15.23Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "VRMSpringBone.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAUwLAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T19:42:53.923Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "VRMLoader.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAqwFEAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T19:38:15.94Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ChibiToggle.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAIBJwCwAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T18:01:42.342Z"
+              "WhenOpened": "2025-04-03T10:42:01.368Z"
             }
           ]
         }

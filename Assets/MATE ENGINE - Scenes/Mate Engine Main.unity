@@ -5895,6 +5895,7 @@ Transform:
   m_Children:
   - {fileID: 1104080580}
   - {fileID: 9089294556818478065}
+  - {fileID: 2120684537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &919337822
@@ -6392,37 +6393,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 945791059}
   m_CullTransparentMesh: 1
---- !u!1 &947886439
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 947886441}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &947886441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947886439}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7261522, y: -0.6693449, z: 1.5796037}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952099916
 GameObject:
   m_ObjectHideFlags: 0
@@ -12297,7 +12267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chibiToggle: {fileID: 8924917334924735497}
   dragSoundHandler: {fileID: 1758352181}
-  petVoiceHandler: {fileID: 0}
+  petVoiceHandler: {fileID: 1758352188}
 --- !u!4 &1157679955
 Transform:
   m_ObjectHideFlags: 0
@@ -20973,6 +20943,94 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1638567367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1638567368}
+  - component: {fileID: 1638567370}
+  - component: {fileID: 1638567369}
+  m_Layer: 0
+  m_Name: Macaroon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1638567368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638567367}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.04704531, y: -0.98841196, z: -0.058016464, w: -0.13214646}
+  m_LocalPosition: {x: -0.092, y: -0.351, z: 0.196}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2120684537}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1638567369
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638567367}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 618349b86075ef24f9b990220f44e7ed, type: 2}
+  - {fileID: 2100000, guid: ddfb8cd469332d441adddc91fa995957, type: 2}
+  - {fileID: 2100000, guid: b3ec35c79c26ad9448f379667110f004, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1638567370
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638567367}
+  m_Mesh: {fileID: 8044479141124936664, guid: b7e09b90c02cb2045bc96be6d0bbf8ae, type: 3}
 --- !u!1 &1649219301
 GameObject:
   m_ObjectHideFlags: 0
@@ -29723,6 +29781,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 794148441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2120684536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2120684537}
+  m_Layer: 0
+  m_Name: BarObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2120684537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120684536}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1638567368}
+  m_Father: {fileID: 919112466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2121947336
 GameObject:
@@ -67623,18 +67713,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableMouseTracking: 1
+  trackingPermissions:
+  - stateOrParameterName: Idle
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 1
+    allowEye: 1
+  - stateOrParameterName: HoverReaction
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 1
+    allowEye: 1
+  - stateOrParameterName: Drag
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 1
+    allowEye: 1
+  - stateOrParameterName: Dance
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 1
+    allowEye: 1
+  - stateOrParameterName: Sitting
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 0
+    allowEye: 1
   headYawLimit: 45
   headPitchLimit: 30
   headSmoothness: 10
   spineMinRotation: -15
   spineMaxRotation: 15
-  spineSmoothness: 25
-  spineResetSmoothness: 10
-  allowedStates:
-  - Idle
-  - HoverReaction
-  eyeYawLimit: 12
-  eyePitchLimit: 12
+  spineSmoothness: 20
+  spineFadeSpeed: 5
+  eyeYawLimit: 20
+  eyePitchLimit: 20
   eyeSmoothness: 10
 --- !u!114 &8924917334924735500
 MonoBehaviour:
@@ -67679,10 +67792,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarAnimator: {fileID: 5823227879768727422}
   detectionBone: 0
-  detectionRadius: 0.54
+  detectionRadius: 0.6
+  attachTarget: {fileID: 2120684536}
+  attachBone: 15
+  keepOriginalRotation: 1
   showDebugGizmo: 1
   taskbarGizmoColor: {r: 0.4, g: 0.49019608, b: 1, a: 1}
   detectionGizmoColor: {r: 0.4009434, g: 0.48972332, b: 1, a: 1}
+  spawnScaleTime: 0.25
+  despawnScaleTime: 0.25
 --- !u!114 &8924917334924735502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68371,4 +68489,3 @@ SceneRoots:
   - {fileID: 958588316}
   - {fileID: 1157679955}
   - {fileID: 648911295}
-  - {fileID: 947886441}
