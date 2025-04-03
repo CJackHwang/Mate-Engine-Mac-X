@@ -74,29 +74,29 @@ public class AvatarTaskbarController : MonoBehaviour
         if (Camera.main == null)
             return;
 
-        if (!Application.isFocused)
-        {
-            avatarAnimator.SetBool(IsSitting, wasSittingProximity);
-            return;
-        }
-
         Transform bone = avatarAnimator.GetBoneTransform(detectionBone);
         if (bone == null) return;
 
-        UpdateUnityWindowPosition();
-        UpdateTaskbarWorldPosition();
+        bool shouldSit = wasSittingProximity;
 
-        Vector3 closestPoint = GetClosestPointOnRect(taskbarWorldPosition, taskbarSize, bone.position);
-        float distance = Vector3.Distance(bone.position, closestPoint);
+        if (Application.isFocused && Screen.width > 0 && Screen.height > 0)
+        {
+            UpdateUnityWindowPosition();
+            UpdateTaskbarWorldPosition();
 
-        bool shouldSit = distance <= detectionRadius;
+            Vector3 closestPoint = GetClosestPointOnRect(taskbarWorldPosition, taskbarSize, bone.position);
+            float distance = Vector3.Distance(bone.position, closestPoint);
+
+            shouldSit = distance <= detectionRadius;
+            wasSittingProximity = shouldSit;
+        }
+
         avatarAnimator.SetBool(IsSitting, shouldSit);
-        wasSittingProximity = shouldSit;
-
         bool animatorSitting = avatarAnimator.GetBool(IsSitting);
+        AnimatorStateInfo currentState = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        bool isInSittingState = currentState.IsName("Sitting");
+        bool allowSpawn = animatorSitting && wasSittingAnimator && isInSittingState;
 
-        // Prevent premature activation until Animator has actually updated the state
-        bool allowSpawn = animatorSitting && wasSittingAnimator;
 
         if (attachTarget != null)
         {
@@ -169,9 +169,12 @@ public class AvatarTaskbarController : MonoBehaviour
                     }
                 }
             }
+
+            // Always update bone-following position even when unfocused
+            if (attachTarget.activeSelf && keepOriginalRotation && attachBoneTransform != null)
+                attachTarget.transform.position = attachBoneTransform.position;
         }
 
-        // Save last frame's animator bool
         wasSittingAnimator = animatorSitting;
     }
 
