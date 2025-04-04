@@ -22073,7 +22073,7 @@ MonoBehaviour:
     targetBone: 17
     offset: {x: 0, y: 0, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
-    hoverRadius: 0.13
+    hoverRadius: 0.1
     gizmoColor: {r: 0.7192278, g: 0, b: 1, a: 1}
     voiceClips:
     - {fileID: 8300000, guid: 915617829e3fe354ab0fae7dc1cdcd86, type: 3}
@@ -22091,7 +22091,7 @@ MonoBehaviour:
     targetBone: 18
     offset: {x: 0, y: 0, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
-    hoverRadius: 0.13
+    hoverRadius: 0.1
     gizmoColor: {r: 0.7192278, g: 0, b: 1, a: 1}
     voiceClips:
     - {fileID: 8300000, guid: 915617829e3fe354ab0fae7dc1cdcd86, type: 3}
@@ -43678,7 +43678,6 @@ GameObject:
   - component: {fileID: 8924917334924735500}
   - component: {fileID: 8924917334924735501}
   - component: {fileID: 8924917334924735502}
-  - component: {fileID: 8924917334924735503}
   m_Layer: 0
   m_Name: VRMModel
   m_TagString: Untagged
@@ -68013,8 +68012,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenInteractionRadius: 30
-  preZoneMargin: 30
+  screenInteractionRadius: 25
+  preZoneMargin: 25
   followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.2
@@ -68178,19 +68177,6 @@ MonoBehaviour:
   impactMultiplier: 0.35
   showDebugForce: 0
   debugColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &8924917334924735503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2411184301990817844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fb19e5a4f942f0439ad11339b63ea15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5823227879768727422}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
