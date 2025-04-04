@@ -23,6 +23,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public GameObject bloomObject;
     public GameObject dayNightObject;
 
+    public Button windowSizeButton;
 
     private bool isSliderBeingDragged;
     public static bool IsMenuOpen { get; private set; }
@@ -36,6 +37,8 @@ public class AvatarSettingsMenu : MonoBehaviour
             menuPanel.SetActive(false);
             IsMenuOpen = false;
         }
+
+        windowSizeButton?.onClick.AddListener(CycleWindowSize);
 
         if (uniWindowControllerObject != null)
             uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
@@ -53,7 +56,37 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         foreach (var toggle in new[] { enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle })
             toggle?.onValueChanged.AddListener(delegate { });
+
+        RestoreWindowSize();
+
     }
+
+    private void CycleWindowSize()
+    {
+        var data = SaveLoadHandler.Instance.data;
+        var controller = uniWindowController ?? UniWindowController.current;
+
+        switch (data.windowSizeState)
+        {
+            case SaveLoadHandler.SettingsData.WindowSizeState.Normal:
+                data.windowSizeState = SaveLoadHandler.SettingsData.WindowSizeState.Big;
+                controller.windowSize = new Vector2(2048, 1536);
+                break;
+
+            case SaveLoadHandler.SettingsData.WindowSizeState.Big:
+                data.windowSizeState = SaveLoadHandler.SettingsData.WindowSizeState.Small;
+                controller.windowSize = new Vector2(768, 512);
+                break;
+
+            case SaveLoadHandler.SettingsData.WindowSizeState.Small:
+                data.windowSizeState = SaveLoadHandler.SettingsData.WindowSizeState.Normal;
+                controller.windowSize = new Vector2(1536, 1024);
+                break;
+        }
+
+        SaveLoadHandler.Instance.SaveToDisk();
+    }
+
 
     private void Update()
     {
@@ -90,7 +123,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         fakeHDRToggle?.SetIsOnWithoutNotify(data.fakeHDR);
         bloomToggle?.SetIsOnWithoutNotify(data.bloom);
         dayNightToggle?.SetIsOnWithoutNotify(data.dayNight);
-
+        RestoreWindowSize();
     }
 
     public void ApplySettings()
@@ -124,11 +157,35 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars(); // Apply globally
+        RestoreWindowSize();
     }
+
+    private void RestoreWindowSize()
+    {
+        var data = SaveLoadHandler.Instance.data;
+        var controller = uniWindowController ?? UniWindowController.current;
+
+        switch (data.windowSizeState)
+        {
+            case SaveLoadHandler.SettingsData.WindowSizeState.Small:
+                controller.windowSize = new Vector2(768, 512);
+                break;
+            case SaveLoadHandler.SettingsData.WindowSizeState.Big:
+                controller.windowSize = new Vector2(2048, 1536);
+                break;
+            default:
+                controller.windowSize = new Vector2(1536, 1024);
+                break;
+        }
+    }
+
 
     public void ResetToDefaults()
     {
+        var oldSizeState = SaveLoadHandler.Instance.data.windowSizeState;
         var data = new SaveLoadHandler.SettingsData();
+        data.windowSizeState = oldSizeState;
+
 
         if (!resetAlsoClearsAllowedApps)
             data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps); // preserve list

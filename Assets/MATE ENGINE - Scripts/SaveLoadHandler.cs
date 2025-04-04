@@ -68,6 +68,9 @@ public class SaveLoadHandler : MonoBehaviour
     [System.Serializable]
     public class SettingsData
     {
+        public enum WindowSizeState { Normal, Big, Small }
+        public WindowSizeState windowSizeState = WindowSizeState.Normal;
+
         public float soundThreshold = 0.2f;
         public float idleSwitchTime = 10f;
         public float idleTransitionTime = 1f;
@@ -85,8 +88,6 @@ public class SaveLoadHandler : MonoBehaviour
         public bool bloom = false;
         public bool dayNight = true;
     }
-
-
 
     public static void SyncAllowedAppsToAllAvatars()
     {
@@ -131,7 +132,4 @@ public class SaveLoadHandler : MonoBehaviour
             }
         }
     }
-
-
-
 }
