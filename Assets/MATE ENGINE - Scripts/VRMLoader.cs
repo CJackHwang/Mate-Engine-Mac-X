@@ -131,6 +131,8 @@ public class VRMLoader : MonoBehaviour
                 avatarSettingsMenu.ApplySettings();
             }
 
+            StartCoroutine(DelayedRefreshStats());
+
             PlayerPrefs.SetString(modelPathKey, path);
             PlayerPrefs.Save();
 
@@ -254,4 +256,17 @@ public class VRMLoader : MonoBehaviour
             catch { }
         }
     }
+
+    private System.Collections.IEnumerator DelayedRefreshStats()
+    {
+        yield return null; // wait 1 frame
+
+        var stats = FindObjectOfType<RuntimeModelStats>();
+        if (stats != null)
+        {
+            Debug.Log("[VRMLoader] Delayed refresh of RuntimeModelStats.");
+            stats.RefreshNow();
+        }
+    }
+
 }
