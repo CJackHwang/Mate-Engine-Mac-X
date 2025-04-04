@@ -33,9 +33,11 @@ public class AllowedAppsManager : MonoBehaviour
             {
                 allowedApps.Add(selectedApp);
                 UpdateAllowedListUI();
+                RefreshRunningAppsDropdown(); // ← this is the key fix
                 SaveLoadHandler.Instance.SaveToDisk();
                 SaveLoadHandler.SyncAllowedAppsToAllAvatars();
             }
+
         });
 
         RefreshRunningAppsDropdown();
@@ -51,11 +53,28 @@ public class AllowedAppsManager : MonoBehaviour
 
     private void RefreshRunningAppsDropdown()
     {
+        UpdateDefaultDevice(); // Ensure defaultDevice is fresh
+
         currentRunningAppNames = GetRunningAudioAppNames();
+
+        var filteredAppNames = currentRunningAppNames
+            .Where(app => !allowedApps.Contains(app))
+            .OrderBy(app => app)
+            .ToList();
+
         runningAppsDropdown.ClearOptions();
         runningAppsDropdown.AddOptions(
-            currentRunningAppNames.Select(app => new TMP_Dropdown.OptionData(app)).ToList()
+            filteredAppNames.Select(app => new TMP_Dropdown.OptionData(app)).ToList()
         );
+
+        // Reset dropdown index if empty
+        if (filteredAppNames.Count == 0)
+            runningAppsDropdown.value = 0;
+    }
+
+    public void OnDropdownOpened()
+    {
+        RefreshRunningAppsDropdown();
     }
 
     private void UpdateAllowedListUI()

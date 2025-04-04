@@ -25,6 +25,10 @@ public class AvatarAnimatorController : MonoBehaviour
     [Header("Debug Logging")]
     public bool enableDebugLogging = false;
 
+    [Header("Dance BlendTree Settings")]
+    public int DANCE_CLIP_COUNT = 5; // Set this to the number of clips in the blend tree
+    private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
+
     public bool isDragging = false;
     public bool isDancing = false;
     public bool isIdle = false;
@@ -53,6 +57,17 @@ public class AvatarAnimatorController : MonoBehaviour
 
         if (soundCheckCoroutine == null)
             soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
+    }
+
+    private void StartDancing()
+    {
+        isDancing = true;
+        animator.SetBool("isDancing", true);
+
+        int randomDanceIndex = Random.Range(0, DANCE_CLIP_COUNT);
+        animator.SetFloat(danceIndexParam, randomDanceIndex);
+
+        Log($"Started dancing with index: {randomDanceIndex}");
     }
 
     void OnDisable()
@@ -134,9 +149,7 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             if (isValidSoundPlaying && enableDancing && !isDancing)
             {
-                isDancing = true;
-                animator.SetBool("isDancing", true);
-                Log("Started dancing.");
+                StartDancing();
             }
             else if (!isValidSoundPlaying && isDancing)
             {
@@ -153,6 +166,7 @@ public class AvatarAnimatorController : MonoBehaviour
             }
         }
     }
+
 
 
     bool IsValidAppPlaying()
