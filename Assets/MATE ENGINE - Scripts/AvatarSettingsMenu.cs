@@ -10,6 +10,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider;
     public Toggle enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle;
     public Toggle isTopmostToggle;
+    public Toggle enableParticlesToggle; // NEW
     public GameObject uniWindowControllerObject;
     public Button applyButton, resetButton;
     public bool resetAlsoClearsAllowedApps = false;
@@ -29,6 +30,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public static bool IsMenuOpen { get; private set; }
 
     private UniWindowController uniWindowController;
+    private AvatarParticleHandler currentParticleHandler; // NEW
 
     private void Start()
     {
@@ -45,6 +47,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         else
             uniWindowController = FindObjectOfType<UniWindowController>();
 
+        currentParticleHandler = FindObjectOfType<AvatarParticleHandler>(true); // Find active avatar handler
+
         LoadSettings();
         ApplySettings();
 
@@ -54,11 +58,13 @@ public class AvatarSettingsMenu : MonoBehaviour
         foreach (var slider in new[] { soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider })
             AddSliderListeners(slider);
 
-        foreach (var toggle in new[] { enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle })
+        foreach (var toggle in new[] {
+            enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle,
+            isTopmostToggle, enableParticlesToggle
+        })
             toggle?.onValueChanged.AddListener(delegate { });
 
         RestoreWindowSize();
-
     }
 
     private void CycleWindowSize()
@@ -86,7 +92,6 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         SaveLoadHandler.Instance.SaveToDisk();
     }
-
 
     private void Update()
     {
@@ -120,9 +125,12 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDancingToggle?.SetIsOnWithoutNotify(data.enableDancing);
         enableMouseTrackingToggle?.SetIsOnWithoutNotify(data.enableMouseTracking);
         isTopmostToggle?.SetIsOnWithoutNotify(data.isTopmost);
+        enableParticlesToggle?.SetIsOnWithoutNotify(data.enableParticles); // NEW
+
         fakeHDRToggle?.SetIsOnWithoutNotify(data.fakeHDR);
         bloomToggle?.SetIsOnWithoutNotify(data.bloom);
         dayNightToggle?.SetIsOnWithoutNotify(data.dayNight);
+
         RestoreWindowSize();
     }
 
@@ -139,6 +147,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.enableDancing = enableDancingToggle?.isOn ?? true;
         data.enableMouseTracking = enableMouseTrackingToggle?.isOn ?? true;
         data.isTopmost = isTopmostToggle?.isOn ?? true;
+        data.enableParticles = enableParticlesToggle?.isOn ?? true; // NEW
 
         data.fakeHDR = fakeHDRToggle?.isOn ?? true;
         data.bloom = bloomToggle?.isOn ?? true;
@@ -148,6 +157,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (bloomObject != null) bloomObject.SetActive(data.bloom);
         if (dayNightObject != null) dayNightObject.SetActive(data.dayNight);
 
+        if (currentParticleHandler == null)
+            currentParticleHandler = FindObjectOfType<AvatarParticleHandler>(true);
+
+        if (currentParticleHandler != null)
+        {
+            currentParticleHandler.featureEnabled = data.enableParticles;
+            currentParticleHandler.enabled = data.enableParticles;
+        }
 
         if (uniWindowController != null)
             uniWindowController.isTopmost = data.isTopmost;
@@ -156,7 +173,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             limiter.SetFPSLimit(data.fpsLimit);
 
         SaveLoadHandler.Instance.SaveToDisk();
-        SaveLoadHandler.ApplyAllSettingsToAllAvatars(); // Apply globally
+        SaveLoadHandler.ApplyAllSettingsToAllAvatars();
         RestoreWindowSize();
     }
 
@@ -179,16 +196,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
     }
 
-
     public void ResetToDefaults()
     {
         var oldSizeState = SaveLoadHandler.Instance.data.windowSizeState;
         var data = new SaveLoadHandler.SettingsData();
         data.windowSizeState = oldSizeState;
 
-
         if (!resetAlsoClearsAllowedApps)
-            data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps); // preserve list
+            data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps);
 
         SaveLoadHandler.Instance.data = data;
 

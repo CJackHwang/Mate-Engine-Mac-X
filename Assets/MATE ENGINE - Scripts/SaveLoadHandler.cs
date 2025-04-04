@@ -83,10 +83,12 @@ public class SaveLoadHandler : MonoBehaviour
 
         public List<string> allowedApps = new List<string>();
 
-        // These are OFF by default
         public bool fakeHDR = false;
         public bool bloom = false;
         public bool dayNight = true;
+
+        // NEW: Toggle for particles
+        public bool enableParticles = true;
     }
 
     public static void SyncAllowedAppsToAllAvatars()
@@ -120,13 +122,16 @@ public class SaveLoadHandler : MonoBehaviour
                 tracker.enableMouseTracking = data.enableMouseTracking;
             }
 
-            // Force animator to sync with updated state
+            foreach (var handler in avatar.GetComponentsInChildren<AvatarParticleHandler>(true))
+            {
+                handler.featureEnabled = data.enableParticles;
+                handler.enabled = data.enableParticles;
+            }
+
             if (avatar.animator != null)
             {
                 avatar.animator.SetBool("isDancing", false);
                 avatar.animator.SetBool("isDragging", false);
-
-                // Trigger re-check on next Update()
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }

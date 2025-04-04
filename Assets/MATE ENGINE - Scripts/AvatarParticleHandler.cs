@@ -15,6 +15,8 @@ public class AvatarParticleHandler : MonoBehaviour
     public Animator animator;
     public List<ParticleRule> rules = new List<ParticleRule>();
 
+    public bool featureEnabled = true; // NEW
+
     private Dictionary<ParticleRule, Transform> boneTargets = new Dictionary<ParticleRule, Transform>();
 
     void Start()
@@ -44,6 +46,8 @@ public class AvatarParticleHandler : MonoBehaviour
 
     void Update()
     {
+        if (!featureEnabled) return; // NEW: Respect toggle
+
         foreach (var rule in rules)
         {
             bool shouldBeActive = false;
