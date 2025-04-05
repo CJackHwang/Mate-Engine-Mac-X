@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
@@ -23,6 +23,13 @@ public class SaveLoadHandler : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadFromDisk();
+        ApplyAllSettingsToAllAvatars(); // Load Save on (Start)
+        var limiters = FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None);
+        foreach (var limiter in limiters)
+        {
+            limiter.targetFPS = data.fpsLimit;
+            limiter.ApplyFPSLimit();
+        }
     }
 
     public void SaveToDisk()
@@ -87,7 +94,6 @@ public class SaveLoadHandler : MonoBehaviour
         public bool bloom = false;
         public bool dayNight = true;
 
-        // NEW: Toggle for particles
         public bool enableParticles = true;
     }
 
