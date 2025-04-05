@@ -10,7 +10,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider;
     public Toggle enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle;
     public Toggle isTopmostToggle;
-    public Toggle enableParticlesToggle; // NEW
+    public Toggle enableParticlesToggle;
     public GameObject uniWindowControllerObject;
     public Button applyButton, resetButton;
     public bool resetAlsoClearsAllowedApps = false;
@@ -26,11 +26,10 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public Button windowSizeButton;
 
-    private bool isSliderBeingDragged;
     public static bool IsMenuOpen { get; private set; }
 
     private UniWindowController uniWindowController;
-    private AvatarParticleHandler currentParticleHandler; // NEW
+    private AvatarParticleHandler currentParticleHandler;
 
     private void Start()
     {
@@ -45,9 +44,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (uniWindowControllerObject != null)
             uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
         else
-            uniWindowController = FindObjectOfType<UniWindowController>();
+            uniWindowController = FindFirstObjectByType<UniWindowController>();
 
-        currentParticleHandler = FindObjectOfType<AvatarParticleHandler>(true); // Find active avatar handler
+        var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
 
         LoadSettings();
         ApplySettings();
@@ -103,7 +103,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
             if (newState)
             {
-                var appManager = FindObjectOfType<AllowedAppsManager>();
+                var appManager = FindFirstObjectByType<AllowedAppsManager>();
                 if (appManager != null)
                 {
                     appManager.RefreshUI();
@@ -125,7 +125,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDancingToggle?.SetIsOnWithoutNotify(data.enableDancing);
         enableMouseTrackingToggle?.SetIsOnWithoutNotify(data.enableMouseTracking);
         isTopmostToggle?.SetIsOnWithoutNotify(data.isTopmost);
-        enableParticlesToggle?.SetIsOnWithoutNotify(data.enableParticles); // NEW
+        enableParticlesToggle?.SetIsOnWithoutNotify(data.enableParticles);
 
         fakeHDRToggle?.SetIsOnWithoutNotify(data.fakeHDR);
         bloomToggle?.SetIsOnWithoutNotify(data.bloom);
@@ -147,7 +147,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.enableDancing = enableDancingToggle?.isOn ?? true;
         data.enableMouseTracking = enableMouseTrackingToggle?.isOn ?? true;
         data.isTopmost = isTopmostToggle?.isOn ?? true;
-        data.enableParticles = enableParticlesToggle?.isOn ?? true; // NEW
+        data.enableParticles = enableParticlesToggle?.isOn ?? true;
 
         data.fakeHDR = fakeHDRToggle?.isOn ?? true;
         data.bloom = bloomToggle?.isOn ?? true;
@@ -158,7 +158,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (dayNightObject != null) dayNightObject.SetActive(data.dayNight);
 
         if (currentParticleHandler == null)
-            currentParticleHandler = FindObjectOfType<AvatarParticleHandler>(true);
+        {
+            var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
+        }
 
         if (currentParticleHandler != null)
         {
@@ -221,11 +224,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         var trigger = slider.gameObject.GetComponent<EventTrigger>() ?? slider.gameObject.AddComponent<EventTrigger>();
 
         var down = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-        down.callback.AddListener((eventData) => isSliderBeingDragged = true);
+        down.callback.AddListener((eventData) => { });
         trigger.triggers.Add(down);
 
         var up = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
-        up.callback.AddListener((eventData) => isSliderBeingDragged = false);
+        up.callback.AddListener((eventData) => { });
         trigger.triggers.Add(up);
     }
 }

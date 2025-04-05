@@ -1,14 +1,14 @@
-using System.Text;
 using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using SFB;
 
 [RequireComponent(typeof(Button))]
-public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
+public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler
+{
     public Text output;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -18,12 +18,14 @@ public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
     [DllImport("__Internal")]
     private static extern void UploadFile(string gameObjectName, string methodName, string filter, bool multiple);
 
-    public void OnPointerDown(PointerEventData eventData) {
+    public void OnPointerDown(PointerEventData eventData)
+    {
         UploadFile(gameObject.name, "OnFileUpload", ".txt", false);
     }
 
     // Called from browser
-    public void OnFileUpload(string url) {
+    public void OnFileUpload(string url)
+    {
         StartCoroutine(OutputRoutine(url));
     }
 #else
@@ -32,22 +34,34 @@ public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
     //
     public void OnPointerDown(PointerEventData eventData) { }
 
-    void Start() {
+    void Start()
+    {
         var button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
 
-    private void OnClick() {
+    private void OnClick()
+    {
         var paths = StandaloneFileBrowser.OpenFilePanel("Title", "", "txt", false);
-        if (paths.Length > 0) {
+        if (paths.Length > 0)
+        {
             StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
         }
     }
 #endif
 
-    private IEnumerator OutputRoutine(string url) {
-        var loader = new WWW(url);
-        yield return loader;
-        output.text = loader.text;
+    private IEnumerator OutputRoutine(string url)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            output.text = request.downloadHandler.text;
+        }
+        else
+        {
+            Debug.LogError("[CanvasSampleOpenFileText] Failed to load text: " + request.error);
+        }
     }
 }

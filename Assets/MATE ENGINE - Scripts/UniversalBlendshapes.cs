@@ -85,7 +85,9 @@ public class UniversalBlendshapes : MonoBehaviour
         // Immediately apply all the blendshape values.
         foreach (var kv in states)
         {
-            proxy.ImmediatelySetValue(kv.Key, kv.Value.value);
+            var key = BlendShapeKey.CreateFromPreset(kv.Key);
+            proxy.ImmediatelySetValue(key, kv.Value.value);
+
         }
 
         proxy.Apply();

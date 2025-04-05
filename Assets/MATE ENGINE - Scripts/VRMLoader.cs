@@ -25,8 +25,6 @@ public class VRMLoader : MonoBehaviour
 
     void Start()
     {
-        EnsureShadersAreIncluded();
-
         if (PlayerPrefs.HasKey(modelPathKey))
         {
             string savedPath = PlayerPrefs.GetString(modelPathKey);
@@ -34,12 +32,6 @@ public class VRMLoader : MonoBehaviour
                 LoadVRM(savedPath);
         }
     }
-
-    private void EnsureShadersAreIncluded()
-    {
-        Shader.Find("VRM/MToon");
-    }
-
     public void OpenFileDialogAndLoadVRM()
     {
         if (isLoading) return;
@@ -47,7 +39,6 @@ public class VRMLoader : MonoBehaviour
         isLoading = true;
         var extensions = new[] { new ExtensionFilter("VRM Files", "vrm") };
         string[] paths = StandaloneFileBrowser.OpenFilePanel("Select VRM Model", "", extensions, false);
-
         if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
             LoadVRM(paths[0]);
 
@@ -117,14 +108,13 @@ public class VRMLoader : MonoBehaviour
             loadedModel.transform.localPosition = Vector3.zero;
             loadedModel.transform.localRotation = Quaternion.identity;
             loadedModel.transform.localScale = Vector3.one;
-
             currentModel = loadedModel;
 
             EnableSkinnedMeshRenderers(currentModel);
             AssignAnimatorController(currentModel);
             InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
-            var avatarSettingsMenu = FindObjectOfType<AvatarSettingsMenu>();
+            var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
             if (avatarSettingsMenu != null)
             {
                 avatarSettingsMenu.LoadSettings();
@@ -156,7 +146,6 @@ public class VRMLoader : MonoBehaviour
 
         ClearPreviousCustomModel();
         EnableMainModel();
-
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
     }
@@ -211,7 +200,6 @@ public class VRMLoader : MonoBehaviour
             var type = templateComp.GetType();
             if (targetModel.GetComponent(type) != null)
                 continue; // Skip if already exists
-
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
@@ -260,8 +248,7 @@ public class VRMLoader : MonoBehaviour
     private System.Collections.IEnumerator DelayedRefreshStats()
     {
         yield return null; // wait 1 frame
-
-        var stats = FindObjectOfType<RuntimeModelStats>();
+        var stats = FindFirstObjectByType<RuntimeModelStats>();
         if (stats != null)
         {
             Debug.Log("[VRMLoader] Delayed refresh of RuntimeModelStats.");
