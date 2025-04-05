@@ -7,7 +7,10 @@ body:
     id: what-happened
     attributes:
       label: What happened?
-      description: Describe the issue in detail.
+      description: |
+        Describe the issue in detail.
+
+        ⚠️ Please report only **one** bug per issue. Submitting multiple bugs will make the report invalid and it may be ignored or deleted.
       placeholder: "It crashed when I clicked X..."
     validations:
       required: true
@@ -46,3 +49,11 @@ body:
         - "Steam Edition"
     validations:
       required: true
+
+  - type: checkboxes
+    id: read_note
+    attributes:
+      label: Confirmation
+      description: Confirm you've read the guideline above.
+      options:
+        - label: I confirm this report includes **only one** bug.
