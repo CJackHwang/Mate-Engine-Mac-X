@@ -57,3 +57,5 @@ body:
       description: Confirm you've read the guideline above.
       options:
         - label: I confirm this report includes **only one** bug.
+    validations:
+      required: true

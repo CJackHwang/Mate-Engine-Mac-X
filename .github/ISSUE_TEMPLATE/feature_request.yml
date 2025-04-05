@@ -19,6 +19,8 @@ body:
     id: benefit
     attributes:
       label: Why is this useful?
+    validations:
+      required: true
 
   - type: checkboxes
     id: read_note
@@ -27,3 +29,5 @@ body:
       description: Confirm you've read the guideline above.
       options:
         - label: I confirm this request includes **only one** feature.
+    validations:
+      required: true
