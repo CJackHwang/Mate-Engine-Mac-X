@@ -3,6 +3,14 @@ description: Report something that's broken or not working right.
 title: "[BUG] "
 labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        **Note:**
+        Please only one bug per issue!
+        Do **not** include multiple bugs in a single report.
+        If you do, the bug report will be marked invalid and **ignored or deleted**.
+
   - type: textarea
     id: what-happened
     attributes:
@@ -46,3 +54,11 @@ body:
         - "Steam Edition"
     validations:
       required: true
+
+  - type: checkbox
+    id: read_note
+    attributes:
+      label: Confirmation
+      description: I have read the note above and confirm this report only includes **one** bug.
+      options:
+        - label: I confirm

@@ -3,6 +3,14 @@ description: Suggest a new idea or enhancement.
 title: "[FEATURE] "
 labels: ["enhancement"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        **Note:**
+        Please only one feature per request!
+        Do **not** add multiple features inside one request.
+        If you do, the feature request will be marked invalid and **ignored or deleted**.
+
   - type: textarea
     id: feature
     attributes:
@@ -11,7 +19,16 @@ body:
       placeholder: "It would be great if..."
     validations:
       required: true
+
   - type: input
     id: benefit
     attributes:
       label: Why is this useful?
+
+  - type: checkbox
+    id: read_note
+    attributes:
+      label: Confirmation
+      description: I have read the note above and confirm this request only includes **one** feature.
+      options:
+        - label: I confirm
