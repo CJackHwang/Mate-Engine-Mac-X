@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\windowsnapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\windowsnapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - shaders\\shadowonly.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - shaders\\shadowonly.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FC9F63-C588-95A1-7748-9ED25CB95F22}|lilToon.Editor.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - shaders\\jp.lilxyzw.liltoon-1.8.5\\editor\\liltoonsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FC9F63-C588-95A1-7748-9ED25CB95F22}|lilToon.Editor.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - shaders\\jp.lilxyzw.liltoon-1.8.5\\editor\\liltoonsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FC9F63-C588-95A1-7748-9ED25CB95F22}|lilToon.Editor.csproj|solutionrelative:assets\\mate engine - shaders\\jp.lilxyzw.liltoon-1.8.5\\editor\\liltoonsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -47,6 +55,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "WindowSnapper.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\WindowSnapper.cs",
+              "RelativeDocumentMoniker": "Assets\\WindowSnapper.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\WindowSnapper.cs",
+              "RelativeToolTip": "Assets\\WindowSnapper.cs",
+              "ViewState": "AgIAAPcAAAAAAAAAAAAQwAcBAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-06T00:54:32.597Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ShadowOnly.shader",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Shaders\\ShadowOnly.shader",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Shaders\\ShadowOnly.shader",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Shaders\\ShadowOnly.shader",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Shaders\\ShadowOnly.shader",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
+              "WhenOpened": "2025-04-05T13:30:16.677Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
@@ -54,12 +88,11 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T13:19:12.665Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T13:19:12.665Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "lilToonSetting.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Shaders\\jp.lilxyzw.liltoon-1.8.5\\Editor\\lilToonSetting.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Shaders\\jp.lilxyzw.liltoon-1.8.5\\Editor\\lilToonSetting.cs",
@@ -67,12 +100,11 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Shaders\\jp.lilxyzw.liltoon-1.8.5\\Editor\\lilToonSetting.cs",
               "ViewState": "AgIAAOoBAAAAAAAAAAAEwAUCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-05T12:19:46.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-05T12:19:46.634Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "CanvasSampleOpenFileTextMultiple.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileTextMultiple.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileTextMultiple.cs",
@@ -84,7 +116,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "CanvasSampleOpenFileText.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileText.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileText.cs",
@@ -96,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "CanvasSampleOpenFileImage.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileImage.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\StandaloneFileBrowser\\Sample\\CanvasSampleOpenFileImage.cs",
@@ -108,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "UniversalBlendshapes.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\UniversalBlendshapes.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\UniversalBlendshapes.cs",
@@ -120,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "AvatarSettingsMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
@@ -132,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "VRMLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
