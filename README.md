@@ -1,7 +1,7 @@
 # 🌐 Language / 言語選択
 
-- [English](English)
-- [日本語](Japanese)
+- [English](#English)
+- [日本語](#Japanese)
 
 ---
 
