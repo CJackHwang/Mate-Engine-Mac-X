@@ -1,151 +1,171 @@
 ![Mate Engine Preview](https://i.imgur.com/5cHHH8c.jpeg)
 
-# Mate-Engine
-A free Desktop Mate alternative with a lightweight interface and custom VRM support, though with fewer features.
-- APP LICENSE: MIXED - GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007 and Copyrighted Software - Please read the license carefully!
+# Mate Engine
 
-- DEFAULT AVATAR LICENSE: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/) — *Do not redistribute this model in your own builds!*
+A free, lightweight alternative to **Desktop Mate** with custom VRM support and modding. Fewer limitations, more freedom.
 
-# About the project
+- **App License**: Mixed — GNU AGPL v3 & Copyrighted Components  
+  *Please read the license terms carefully.*
+- **Default Avatar License**: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/)  
+  *Do not redistribute this model in your builds.*
 
-Mate Engine is a free alternative to the app **Desktop Mate**. This project exists because of the high price of Desktop Mate models, which range from **$10 to $25 USD**. Considering that full games are available at these prices on Steam and other platforms, paying **$20 to $25 USD** for a simple idle model feels unfair to many users.
+---
 
-Another reason for developing **Mate Engine** is that **Desktop Mate** removed mod support, making it difficult to add custom VRM models. 
+## About the Project
 
-Now, with **Mate Engine**, you get most of what Desktop Mate offers **for free**, including support for custom VRM models!
+**Mate Engine** was created as a free alternative to **Desktop Mate**.
+
+Why? Because **Desktop Mate** charges **$10–$25 USD** for single character models—prices comparable to full games on Steam. On top of that, modding and custom models were disabled in later versions.
+
+**Mate Engine** solves both problems:
+
+- It's **completely free**
+- It supports **custom VRM avatars**
+- It’s **open-source and moddable**
 
 ![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
-# Hatsune Miku For Free
-[Download The VRM For Free](https://booth.pm/en/items/3226395)
 
 ---
 
-### **Feature Comparison: Desktop Mates vs. Mate Engine**
+## Free Hatsune Miku Support
 
-| Feature                                             | **Desktop Mates** | **Mate Engine** |
-|-----------------------------------------------------|-------------------|-----------------|
-| 🪟 Windows / Taskbar Sitting                        | ✅                | ❌              |
-| 🖱️ Dragging Animation                               | ✅                | ✅              |
-| 😴 Idle Animation                                   | ✅                | ✅              |
-| 🫥 Hiding on Left/Right Side of Screen              | ✅                | ❌              |
-| 🙂 Head Movement                                    | ✅                | ✅              |
-| 👀 Eye Movement                                     | ❌                | ✅              |
-| 🦴 Spine Movement                                   | ❌                | ✅              |
-| ✋ Hand Movement                                    | ✅                | ✅              |
-| ⏰ Alarm Clock / Animation                          | ✅                | ❌              |
-| 💃 Dance Animation                                  | ❌                | ✅              |
-| 🫳 Touch Regions (Head and Sensitive Part)          | ❌                | ✅              |
-| 🔊 Sound Effects                                    | ❌                | ✅              |
-| ✨ Particle Effects                                 | ❌                | ✅              |
-| 🔁 Fluent Transitions Between Animations            | ❌                | ✅              |
-| 🎞️ FPS Change                                       | ❌                | ✅              |
-| 📌 Always in Front Toggle Button                    | ❌                | ✅              |
-| 🆓 Native VRM Loader (Any Model Support)            | ❌                | ✅              |
-| 🛠️ Native Modding Support                          | ❌                | ✅              |
-| 🧩 Open Source                                      | ❌                | ✅              |
-| 🎀 Chibi Mode                                       | ❌                | ✅              |
+Want to try with a free model?  
+[Download Hatsune Miku VRM](https://booth.pm/en/items/3226395)
 
 ---
 
-# Please Help me Publishing on Steam!
+## Feature Comparison
 
+| Feature                                      | Desktop Mate | Mate Engine |
+|----------------------------------------------|--------------|-------------|
+| Window / Taskbar Sitting                     | ✅           | ❌ (planned)|
+| Dragging Animation                            | ✅           | ✅          |
+| Idle Animation                                | ✅           | ✅          |
+| Hiding on Edge of Screen                      | ✅           | ❌          |
+| Head Movement                                 | ✅           | ✅          |
+| Eye Movement                                  | ❌           | ✅          |
+| Spine Movement                                | ❌           | ✅          |
+| Hand Movement                                 | ✅           | ✅          |
+| Alarm / Timed Animation                       | ✅           | ❌          |
+| Dance Animation                               | ❌           | ✅          |
+| Touch Reactions (Head / Sensitive Area)       | ❌           | ✅          |
+| Sound Effects                                 | ❌           | ✅          |
+| Particle Effects                              | ❌           | ✅          |
+| Smooth Animation Transitions                  | ❌           | ✅          |
+| FPS Control                                   | ❌           | ✅          |
+| Always-on-Top Toggle                          | ❌           | ✅          |
+| Native VRM Loader (Any Model Support)         | ❌           | ✅          |
+| Native Modding Support                        | ❌           | ✅          |
+| Open Source                                   | ❌           | ✅          |
+| Chibi Mode                                    | ❌           | ✅          |
+
+---
+
+## Steam Release Support
 
 ![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
 
-Funds Raised: 239.34 USD / 100.00 USD
-Date: 26th of March, 2025
+**Funding Progress:** $239.34 / $100  
+**Target Date:** March 26, 2025
 
-Legendary List – These amazing people made it possible to publish this game on Steam for just $3.99 and helped cover the license cost needed to distribute my app there.
+Thanks to the amazing support of the community, **Mate Engine** will be released on Steam for **$3.99** — but it will always remain **free on GitHub**.
 
-The app will cost $3.99 on Steam, but don’t worry — it will always be FREE here on GitHub!
-If you’d like to support future updates, feel free to grab it on Steam.
-And if money’s tight for any reason, no stress — you can always download the app for free from this GitHub page, and yes, it will always stay up-to-date!
+**Top Supporters:**
+- Gra**** Ja***** – $94.00  
+- Co**** Da***** – $96.00  
+- Dym**** Sk***** – $5.59  
+- Dreezer – $45.00
 
-Supporters:
-- Gra**** Ja***** – $94.00
-- Co**** Da***** – $96.00
-- Dym**** Sk***** – $5.59
-- Dreezer - $45.00
+If you’d like to help with future updates or cover Steam fees, you can donate via **PayPal**:  
+**johnson@soultechno.de**  
+(*Please add a note: “MateEngine Donation”*)
 
-In order to publish this app on Steam once it's stable, I need to pay a one-time fee of $100 USD. Since this project is completely free, I would truly appreciate any donations!
+---
 
-I'm only collecting enough to cover the one-time fee—I don’t plan to accept anything beyond that.
-If you’d like to support the project, please send any amount you can spare to my PayPal: johnson@soultechno.de
-
-Be sure to include a note saying "MateEngine Donation" so I can keep things organized on my end. Thank you so much for your support!
-
-# Better Transitions!
-
+## Smoother Transitions
 
 ![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
 
-**MateEngine** features smoother transitions between animations compared to *Desktop Mate*—see for yourself! *Desktop Mate* often feels clunky, with glitchy transitions between different states. In contrast, **MateEngine** delivers seamless and fluid transitions, no matter the state.
+Mate Engine offers smoother animation transitions than Desktop Mate, avoiding the glitchy, abrupt changes often found in commercial alternatives.
 
+---
 
-# Performance
+## Performance
+
 ![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
 
-**MateEngine** is more lightweight compared to Desktop Mate in terms of CPU and GPU usage. Depending on the model you use, RAM usage may increase or decrease.  
-In the example model "Alice", we use a high-quality model with around **190MB** of texture memory, which is why the program consumes approximately **200MB** of RAM in the example image.  
-Using models with lower texture memory will result in lower RAM usage. Overall, **MateEngine** is slightly more performant and lightweight.
-
+**Mate Engine** is lightweight and efficient. RAM usage depends on the avatar’s texture size. For example, the high-quality "Alice" model uses ~190MB of texture memory, leading to ~200MB total RAM usage. Using lighter models will reduce this further.
 
 ---
-## Features
 
-- **Idle Animations** – The avatar will play looping idle animations while staying on your desktop.
-- **Drag Animation** – The avatar will float when you move it around.
-- **Dance Animation (Experimental)** – The avatar will dance when you play music on **Spotify, Mozilla Firefox**, and other apps.
-- **Inject Mode** – You can inject your own custom model as long as it's a **.VRM** model that is correctly rigged and has valid bone names.
-- **Options Menu** – Click on the avatar and press `M` to open the **Mate Engine** options menu.
+## Key Features
 
----
-## Future Updates (Pre-Release-5 up to 10)
-
-- **Wallpaper Engine Integration** – Adds support for injecting the project into your Wallpaper Engine designs. You’ll be able to embed the entire Unity project directly into your wallpaper!  
-- **Window & Taskbar Sitting** – Not 100% confirmed yet, as it’s a bit tricky to implement—but potentially allows your pet to sit directly on windows or the taskbar, just like in Desktop Mate.  
-- **Menu Color Customization** – A fun little feature to let you personalize the menu colors—because who doesn’t love some flair?  
+- **Idle Animations** – Loops while resting on your desktop  
+- **Drag Animation** – Floats while being moved  
+- **Dance Animation (Experimental)** – Reacts to music from Spotify, Firefox, etc.  
+- **VRM Loader** – Supports any valid `.VRM` model  
+- **Touch Regions** – Supports face/head interaction  
+- **Custom Modding** – Drop in effects, sounds, and more  
+- **Options Menu** – Right-click or press `M` to open the settings  
+- **Always-on-Top Toggle**, **FPS Control**, **Chibi Mode**, and more
 
 ---
-## Known Issues & Missing Features
 
-- **Re-injecting Custom Models** – Each time you launch **Mate Engine**, you need to re-inject your own model.
-- **No Window or Taskbar Sitting** – This feature is disabled due to the risk of getting banned in games like **CS2, CSGO, League of Legends, and others**. If a safe workaround is found, it will be implemented in the future.
+## Upcoming Features (Pre-Release 5–10)
 
-## Frequeintly Asked
-**Q: The VRM doesn't inject, or my model doesn't work with your app!**
-
-**A:** This issue is not caused by the app itself but by your `.VRM` model file being invalid or improperly formatted. If you created the `.VRM` file yourself or received it from someone who converted an `.fbx`, `.obj`, or `.mmd` file to `.VRM`, please ensure the conversion was done correctly.
-
-For guidance on properly converting files into the `.VRM` format, you can follow tutorials available here:
-
-- [VRM Conversion Guide](https://vrm.dev/en/vrm/how_to_make_vrm/)
-
-Please note, assistance with converting models into `.VRM` files is outside the scope of support provided here.
-
-
+- **Wallpaper Engine Integration** – Embed the pet directly into wallpapers  
+- **Window & Taskbar Sitting** – Sit on any desktop app title bar  
+- **Menu Color Customization** – Stylize your UI with custom themes  
 
 ---
-## Developer Deployment
 
-Setting up to contribute to this project is super easy!
+## How to Use
 
-1. Clone the GitHub repository and extract the project folder.  
-2. Open **Unity Hub** and click on **"Add project from disk"**.  
-3. Select the `Mate-Engine-BRANCH` folder.  
-4. Open the project in Unity Hub.  
-5. Once the project has loaded, go to the folder `Scenes - USED FOR MATE ENGINE` and open the scene **Mate Engine Main**.
-
-Important
-Do **not** open any other scenes like *Mate Engine InDev*, as they belong to different branches. For contributions and development, always use **Mate Engine Main** only.
----
-## Virus Detection Warning :warning:
-
-If **Windows Defender** detects a potential virus named `Trojan:Script/Wacatac.B1ml`, **you can ignore it**. This is a **false positive** caused by the application not being digitally signed.
-
-To verify that the application is safe, you can scan it using **VirusTotal** or other security services.
+1. Go to the **Releases** section (on the right-hand panel).  
+2. Download the ZIP file marked as a public release (not source code).  
+3. Unzip and run `MateEngineX.exe`.  
+4. Right-click the avatar or press `M` to open the settings menu.
 
 ---
-## Final Words :sparkles:
 
-I hope you enjoy **Mate Engine**! Thank you for supporting this project! :heart:
+## Frequently Asked Questions
+
+**Q: My VRM won’t load or inject!**  
+A: This usually means your `.VRM` is incorrectly exported. Common issues include broken armatures or unsupported shaders. Use official exporters and test compatibility.
+
+**Q: Is Hatsune Miku included?**  
+A: No. Download her separately from [this Booth page](https://booth.pm/en/items/3226395).
+
+**Need help with conversion?**  
+Check this official guide: [VRM Conversion Guide](https://vrm.dev/en/vrm/how_to_make_vrm/)  
+(Note: I can't provide support for model conversion.)
+
+---
+
+## Developer Guide
+
+Want to contribute? Setup is easy:
+
+1. Clone this repo and extract the folder.  
+2. Open **Unity Hub** → **Add Project From Disk**  
+3. Select the folder `Mate-Engine-BRANCH`  
+4. Load the project, then open the scene:  
+   `Scenes - USED FOR MATE ENGINE > Mate Engine Main`
+
+> ⚠️ Avoid scenes like *Mate Engine InDev* unless you're on the dev branch.
+
+---
+
+## Antivirus Notice
+
+If **Windows Defender** flags `Trojan:Script/Wacatac.B1ml`, **don’t worry** — this is a **false positive** caused by the app not being digitally signed.
+
+You can verify safety by scanning the app on [VirusTotal](https://www.virustotal.com/).
+
+---
+
+## Final Words
+
+Thanks for checking out **Mate Engine**!  
+This project is made with love and designed to stay free forever.  
+If you like it, share it or support it — but most of all, enjoy it.
