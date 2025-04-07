@@ -76628,6 +76628,14 @@ PrefabInstance:
       propertyPath: attachTarget
       value: 
       objectReference: {fileID: 2120684536}
+    - target: {fileID: 5500079421849817615, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 1da04ebca770d0b4fa87ca3b1d45c673, type: 2}
+    - target: {fileID: 5500079421849817615, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6905094604719294301, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: audioSource
       value: 
