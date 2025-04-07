@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Kirurobo;
+using TMPro;
 
 public class AvatarSettingsMenu : MonoBehaviour
 {
@@ -23,6 +24,18 @@ public class AvatarSettingsMenu : MonoBehaviour
     public GameObject fakeHDRObject;
     public GameObject bloomObject;
     public GameObject dayNightObject;
+
+    public Slider petVolumeSlider;
+    public Slider effectsVolumeSlider;
+    public Slider menuVolumeSlider;
+
+    public List<AudioSource> petAudioSources = new List<AudioSource>();
+    public List<AudioSource> effectsAudioSources = new List<AudioSource>();
+    public List<AudioSource> menuAudioSources = new List<AudioSource>();
+
+    public TMP_Dropdown graphicsDropdown;
+
+
 
     public Button windowSizeButton;
 
@@ -49,9 +62,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
 
-        LoadSettings();
-        ApplySettings();
-
         applyButton?.onClick.AddListener(ApplySettings);
         resetButton?.onClick.AddListener(ResetToDefaults);
 
@@ -59,13 +69,34 @@ public class AvatarSettingsMenu : MonoBehaviour
             AddSliderListeners(slider);
 
         foreach (var toggle in new[] {
-            enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle,
-            isTopmostToggle, enableParticlesToggle
-        })
+        enableAudioDetectionToggle, enableDancingToggle, enableMouseTrackingToggle,
+        isTopmostToggle, enableParticlesToggle
+    })
             toggle?.onValueChanged.AddListener(delegate { });
 
+        if (graphicsDropdown != null)
+        {
+            graphicsDropdown.ClearOptions();
+            graphicsDropdown.AddOptions(new List<string> {
+            "ULTRA", "VERY HIGH", "HIGH", "NORMAL", "LOW"
+        });
+
+            graphicsDropdown.onValueChanged.AddListener((index) =>
+            {
+                QualitySettings.SetQualityLevel(index, true);
+                SaveLoadHandler.Instance.data.graphicsQualityLevel = index;
+                SaveLoadHandler.Instance.SaveToDisk();
+            });
+
+            graphicsDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.graphicsQualityLevel);
+            QualitySettings.SetQualityLevel(SaveLoadHandler.Instance.data.graphicsQualityLevel, true);
+        }
+
+        LoadSettings();
+        ApplySettings();
         RestoreWindowSize();
     }
+
 
     private void CycleWindowSize()
     {
@@ -131,8 +162,20 @@ public class AvatarSettingsMenu : MonoBehaviour
         bloomToggle?.SetIsOnWithoutNotify(data.bloom);
         dayNightToggle?.SetIsOnWithoutNotify(data.dayNight);
 
+        petVolumeSlider?.SetValueWithoutNotify(data.petVolume);
+        effectsVolumeSlider?.SetValueWithoutNotify(data.effectsVolume);
+        menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
+
+        if (graphicsDropdown != null)
+        {
+            graphicsDropdown.SetValueWithoutNotify(data.graphicsQualityLevel);
+            QualitySettings.SetQualityLevel(data.graphicsQualityLevel, true);
+        }
+
         RestoreWindowSize();
     }
+
+
 
     public void ApplySettings()
     {
@@ -152,6 +195,16 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.fakeHDR = fakeHDRToggle?.isOn ?? true;
         data.bloom = bloomToggle?.isOn ?? true;
         data.dayNight = dayNightToggle?.isOn ?? true;
+
+        data.petVolume = petVolumeSlider?.value ?? 1f;
+        data.effectsVolume = effectsVolumeSlider?.value ?? 1f;
+        data.menuVolume = menuVolumeSlider?.value ?? 1f;
+
+        if (graphicsDropdown != null)
+        {
+            data.graphicsQualityLevel = graphicsDropdown.value;
+            QualitySettings.SetQualityLevel(graphicsDropdown.value, true);
+        }
 
         if (fakeHDRObject != null) fakeHDRObject.SetActive(data.fakeHDR);
         if (bloomObject != null) bloomObject.SetActive(data.bloom);
@@ -175,10 +228,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
             limiter.SetFPSLimit(data.fpsLimit);
 
+        UpdateAllCategoryVolumes();
+
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();
         RestoreWindowSize();
     }
+
+
 
     private void RestoreWindowSize()
     {
@@ -208,6 +265,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (!resetAlsoClearsAllowedApps)
             data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps);
 
+        data.petVolume = 1f;
+        data.effectsVolume = 1f;
+        data.menuVolume = 1f;
+        data.graphicsQualityLevel = 1; // Sets to 1
+
         SaveLoadHandler.Instance.data = data;
 
         LoadSettings();
@@ -216,6 +278,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (vrmLoader != null)
             vrmLoader.ResetModel();
     }
+
+
 
     private void AddSliderListeners(Slider slider)
     {
@@ -231,4 +295,34 @@ public class AvatarSettingsMenu : MonoBehaviour
         up.callback.AddListener((eventData) => { });
         trigger.triggers.Add(up);
     }
+
+    private void UpdateAllCategoryVolumes()
+    {
+        float petVolume = petVolumeSlider?.value ?? 1f;
+        float effectsVolume = effectsVolumeSlider?.value ?? 1f;
+        float menuVolume = menuVolumeSlider?.value ?? 1f;
+
+        foreach (var src in petAudioSources)
+            if (src != null) src.volume = GetBaseVolume(src) * petVolume;
+
+        foreach (var src in effectsAudioSources)
+            if (src != null) src.volume = GetBaseVolume(src) * effectsVolume;
+
+        foreach (var src in menuAudioSources)
+            if (src != null) src.volume = GetBaseVolume(src) * menuVolume;
+    }
+
+    private Dictionary<AudioSource, float> baseVolumes = new Dictionary<AudioSource, float>();
+
+    private float GetBaseVolume(AudioSource src)
+    {
+        if (src == null) return 1f;
+        if (!baseVolumes.TryGetValue(src, out float baseVol))
+        {
+            baseVol = src.volume;
+            baseVolumes[src] = baseVol;
+        }
+        return baseVol;
+    }
+
 }

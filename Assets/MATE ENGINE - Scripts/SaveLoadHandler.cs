@@ -95,7 +95,17 @@ public class SaveLoadHandler : MonoBehaviour
         public bool dayNight = true;
 
         public bool enableParticles = true;
+
+        // New volume sliders
+        public float petVolume = 1f;
+        public float effectsVolume = 1f;
+        public float menuVolume = 1f;
+
+        // Graphic Settings
+        public int graphicsQualityLevel = 1; // Default: Very High number is one hehe
+
     }
+
 
     public static void SyncAllowedAppsToAllAvatars()
     {

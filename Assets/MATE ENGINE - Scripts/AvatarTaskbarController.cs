@@ -15,7 +15,6 @@ public class AvatarTaskbarController : MonoBehaviour
     [Header("Attach Settings")]
     public GameObject attachTarget;
     public HumanBodyBones attachBone = HumanBodyBones.Head;
-    [Tooltip("If true, the object will follow the bone's position but keep its own rotation.")]
     public bool keepOriginalRotation = false;
 
     [Header("Debug")]
@@ -24,10 +23,7 @@ public class AvatarTaskbarController : MonoBehaviour
     public Color detectionGizmoColor = Color.yellow;
 
     [Header("Spawn / Despawn Animation")]
-    [Tooltip("Time it takes to grow from 0 to full scale.")]
     public float spawnScaleTime = 0.2f;
-
-    [Tooltip("Time it takes to shrink from full scale to 0.")]
     public float despawnScaleTime = 0.2f;
 
     private Vector2Int unityWindowPosition;
@@ -44,13 +40,19 @@ public class AvatarTaskbarController : MonoBehaviour
 
     private bool wasSittingProximity = false;
     private bool wasSittingAnimator = false;
+
     private Transform attachBoneTransform;
     private Transform originalAttachParent;
+    private Transform detectionBoneTransform;
+    private Camera cachedCam;
+
+    private readonly Vector2[] vec2Cache = new Vector2[3];
+    private readonly Vector3[] vec3Cache = new Vector3[4];
 
     void Start()
     {
-        if (avatarAnimator == null)
-            avatarAnimator = GetComponentInChildren<Animator>();
+        avatarAnimator ??= GetComponentInChildren<Animator>();
+        cachedCam = Camera.main;
 
         if (attachTarget != null)
         {
@@ -67,15 +69,17 @@ public class AvatarTaskbarController : MonoBehaviour
         if (avatarAnimator == null)
         {
             avatarAnimator = GetComponentInChildren<Animator>();
-            if (avatarAnimator == null)
-                return;
+            if (avatarAnimator == null) return;
         }
 
-        if (Camera.main == null)
-            return;
+        if (cachedCam == null)
+        {
+            cachedCam = Camera.main;
+            if (cachedCam == null) return;
+        }
 
-        Transform bone = avatarAnimator.GetBoneTransform(detectionBone);
-        if (bone == null) return;
+        detectionBoneTransform ??= avatarAnimator.GetBoneTransform(detectionBone);
+        if (detectionBoneTransform == null) return;
 
         bool shouldSit = wasSittingProximity;
 
@@ -84,55 +88,39 @@ public class AvatarTaskbarController : MonoBehaviour
             UpdateUnityWindowPosition();
             UpdateTaskbarWorldPosition();
 
-            Vector3 closestPoint = GetClosestPointOnRect(taskbarWorldPosition, taskbarSize, bone.position);
-            float distance = Vector3.Distance(bone.position, closestPoint);
+            vec3Cache[0] = detectionBoneTransform.position;
+            vec3Cache[1] = GetClosestPointOnRect(taskbarWorldPosition, taskbarSize, vec3Cache[0]);
 
-            shouldSit = distance <= detectionRadius;
+            float sqrDist = (vec3Cache[1] - vec3Cache[0]).sqrMagnitude;
+            shouldSit = sqrDist <= detectionRadius * detectionRadius;
             wasSittingProximity = shouldSit;
         }
 
         avatarAnimator.SetBool(IsSitting, shouldSit);
-        bool animatorSitting = avatarAnimator.GetBool(IsSitting);
-        AnimatorStateInfo currentState = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        bool isInSittingState = currentState.IsName("Sitting");
-        bool allowSpawn = animatorSitting && wasSittingAnimator && isInSittingState;
 
+        bool animatorSitting = avatarAnimator.GetBool(IsSitting);
+        bool isInSittingState = avatarAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sitting");
+        bool allowSpawn = animatorSitting && wasSittingAnimator && isInSittingState;
 
         if (attachTarget != null)
         {
-            if (avatarAnimator != null && attachBoneTransform == null)
-                attachBoneTransform = avatarAnimator.GetBoneTransform(attachBone);
+            attachBoneTransform ??= avatarAnimator.GetBoneTransform(attachBone);
 
             if (allowSpawn)
             {
-                if (keepOriginalRotation)
+                if (!attachTarget.activeSelf)
                 {
-                    if (!attachTarget.activeSelf)
-                    {
-                        attachTarget.SetActive(true);
-                        attachTarget.transform.localScale = Vector3.zero;
-                        scaleLerpT = 0f;
-                        scalingUp = true;
-                        isScaling = true;
-                    }
-
-                    if (attachBoneTransform != null)
-                        attachTarget.transform.position = attachBoneTransform.position;
+                    attachTarget.SetActive(true);
+                    attachTarget.transform.localScale = Vector3.zero;
+                    scaleLerpT = 0f;
+                    scalingUp = true;
+                    isScaling = true;
                 }
-                else
-                {
-                    if (attachTarget.transform.parent != attachBoneTransform && attachBoneTransform != null)
-                        attachTarget.transform.SetParent(attachBoneTransform, false);
 
-                    if (!attachTarget.activeSelf)
-                    {
-                        attachTarget.SetActive(true);
-                        attachTarget.transform.localScale = Vector3.zero;
-                        scaleLerpT = 0f;
-                        scalingUp = true;
-                        isScaling = true;
-                    }
-                }
+                if (keepOriginalRotation && attachBoneTransform != null)
+                    attachTarget.transform.position = attachBoneTransform.position;
+                else if (!keepOriginalRotation && attachBoneTransform != null && attachTarget.transform.parent != attachBoneTransform)
+                    attachTarget.transform.SetParent(attachBoneTransform, false);
             }
             else
             {
@@ -147,7 +135,6 @@ public class AvatarTaskbarController : MonoBehaviour
                 }
             }
 
-            // Animate scale
             if (isScaling && attachTarget.activeSelf)
             {
                 float duration = scalingUp ? spawnScaleTime : despawnScaleTime;
@@ -155,13 +142,11 @@ public class AvatarTaskbarController : MonoBehaviour
                 float t = Mathf.Clamp01(scaleLerpT);
                 Vector3 from = scalingUp ? Vector3.zero : originalScale;
                 Vector3 to = scalingUp ? originalScale : Vector3.zero;
-
                 attachTarget.transform.localScale = Vector3.Lerp(from, to, t);
 
                 if (t >= 1f)
                 {
                     isScaling = false;
-
                     if (!scalingUp)
                     {
                         attachTarget.SetActive(false);
@@ -170,7 +155,6 @@ public class AvatarTaskbarController : MonoBehaviour
                 }
             }
 
-            // Always update bone-following position even when unfocused
             if (attachTarget.activeSelf && keepOriginalRotation && attachBoneTransform != null)
                 attachTarget.transform.position = attachBoneTransform.position;
         }
@@ -180,14 +164,16 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (!showDebugGizmo || Camera.main == null || avatarAnimator == null)
+        if (!showDebugGizmo || avatarAnimator == null)
             return;
 
-        Transform bone = avatarAnimator.GetBoneTransform(detectionBone);
-        if (bone != null)
+        if (detectionBoneTransform == null)
+            detectionBoneTransform = avatarAnimator.GetBoneTransform(detectionBone);
+
+        if (detectionBoneTransform != null)
         {
             Gizmos.color = detectionGizmoColor;
-            Gizmos.DrawWireSphere(bone.position, detectionRadius);
+            Gizmos.DrawWireSphere(detectionBoneTransform.position, detectionRadius);
         }
 
         Gizmos.color = taskbarGizmoColor;
@@ -213,26 +199,26 @@ public class AvatarTaskbarController : MonoBehaviour
     private void UpdateUnityWindowPosition()
     {
         GetWindowRect(GetActiveWindow(), out RECT rect);
-        unityWindowPosition = new Vector2Int(rect.left, rect.top);
+        unityWindowPosition.x = rect.left;
+        unityWindowPosition.y = rect.top;
     }
 
     private void UpdateTaskbarWorldPosition()
     {
-        Vector2 taskbarScreenCenter = taskbarScreenRect.center;
-        Vector2 relativeToWindow = taskbarScreenCenter - unityWindowPosition;
+        vec2Cache[0] = taskbarScreenRect.center;
+        vec2Cache[1] = vec2Cache[0] - unityWindowPosition;
 
-        Vector2 normalized = new Vector2(
-            relativeToWindow.x / Screen.width,
-            1f - (relativeToWindow.y / Screen.height)
-        );
+        vec2Cache[2].x = vec2Cache[1].x / Screen.width;
+        vec2Cache[2].y = 1f - (vec2Cache[1].y / Screen.height);
 
-        Vector3 world = Camera.main.ViewportToWorldPoint(new Vector3(normalized.x, normalized.y, Camera.main.nearClipPlane + 1));
-        taskbarWorldPosition = new Vector3(world.x, world.y, 0);
+        Vector3 world = cachedCam.ViewportToWorldPoint(new Vector3(vec2Cache[2].x, vec2Cache[2].y, cachedCam.nearClipPlane + 1));
+        taskbarWorldPosition.x = world.x;
+        taskbarWorldPosition.y = world.y;
+        taskbarWorldPosition.z = 0;
 
-        taskbarSize = new Vector2(
-            taskbarScreenRect.width * (Camera.main.orthographicSize * 2 / Screen.height),
-            taskbarScreenRect.height * (Camera.main.orthographicSize * 2 / Screen.height)
-        );
+        float screenRatio = cachedCam.orthographicSize * 2f / Screen.height;
+        taskbarSize.x = taskbarScreenRect.width * screenRatio;
+        taskbarSize.y = taskbarScreenRect.height * screenRatio;
     }
 
     #endregion
@@ -272,14 +258,14 @@ public class AvatarTaskbarController : MonoBehaviour
 
     private Vector3 GetClosestPointOnRect(Vector3 rectCenter, Vector2 size, Vector3 point)
     {
-        Vector3 halfSize = new Vector3(size.x / 2, size.y / 2, 0);
-        Vector3 local = point - rectCenter;
+        vec3Cache[2].Set(size.x * 0.5f, size.y * 0.5f, 0);
+        vec3Cache[3] = point - rectCenter;
 
-        local.x = Mathf.Clamp(local.x, -halfSize.x, halfSize.x);
-        local.y = Mathf.Clamp(local.y, -halfSize.y, halfSize.y);
-        local.z = 0;
+        vec3Cache[3].x = Mathf.Clamp(vec3Cache[3].x, -vec3Cache[2].x, vec3Cache[2].x);
+        vec3Cache[3].y = Mathf.Clamp(vec3Cache[3].y, -vec3Cache[2].y, vec3Cache[2].y);
+        vec3Cache[3].z = 0;
 
-        return rectCenter + local;
+        return rectCenter + vec3Cache[3];
     }
 
     #endregion

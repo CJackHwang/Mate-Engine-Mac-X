@@ -39,20 +39,23 @@ public class UniversalBlendshapes : MonoBehaviour
         public float value;
         public float lastInput;
         public float lastUpdateTime;
-        public float holdUntil; // New: hold the value at least until this time.
+        public float holdUntil;
     }
 
-    private Dictionary<BlendShapePreset, BlendState> states;
+    private Dictionary<BlendShapePreset, BlendState> states = new();
+    private Dictionary<BlendShapePreset, BlendShapeKey> keys = new();
+    private List<KeyValuePair<BlendShapeKey, float>> reusableKeyValueList = new();
 
     private void Awake()
     {
         proxy = GetComponent<VRMBlendShapeProxy>();
-        states = new Dictionary<BlendShapePreset, BlendState>();
-
         foreach (BlendShapePreset preset in System.Enum.GetValues(typeof(BlendShapePreset)))
         {
             if (!states.ContainsKey(preset))
                 states[preset] = new BlendState();
+
+            if (!keys.ContainsKey(preset))
+                keys[preset] = BlendShapeKey.CreateFromPreset(preset);
         }
     }
 
@@ -63,7 +66,6 @@ public class UniversalBlendshapes : MonoBehaviour
         float now = Time.time;
         float dt = Time.deltaTime;
 
-        // Update each blendshape state.
         UpdateState(BlendShapePreset.Blink, Blink, now, dt);
         UpdateState(BlendShapePreset.Blink_L, Blink_L, now, dt);
         UpdateState(BlendShapePreset.Blink_R, Blink_R, now, dt);
@@ -82,14 +84,13 @@ public class UniversalBlendshapes : MonoBehaviour
         UpdateState(BlendShapePreset.Sorrow, Sorrow, now, dt);
         UpdateState(BlendShapePreset.Fun, Fun, now, dt);
 
-        // Immediately apply all the blendshape values.
+        reusableKeyValueList.Clear();
         foreach (var kv in states)
         {
-            var key = BlendShapeKey.CreateFromPreset(kv.Key);
-            proxy.ImmediatelySetValue(key, kv.Value.value);
-
+            reusableKeyValueList.Add(new KeyValuePair<BlendShapeKey, float>(keys[kv.Key], kv.Value.value));
         }
 
+        proxy.SetValues(reusableKeyValueList);
         proxy.Apply();
     }
 
@@ -97,11 +98,7 @@ public class UniversalBlendshapes : MonoBehaviour
     {
         var state = states[preset];
 
-        // Determine if this frame has an "active" update.
-        // We consider any change as active.
         bool valueChanged = !Mathf.Approximately(input, state.lastInput);
-
-        // Additionally, if the input is nonzero we assume it’s actively driven.
         bool activelyDriven = !Mathf.Approximately(input, 0f);
 
         if (valueChanged || activelyDriven)
@@ -109,19 +106,16 @@ public class UniversalBlendshapes : MonoBehaviour
             state.lastInput = input;
             state.lastUpdateTime = now;
             state.value = input;
-            // Lock the value for at least minHoldTime seconds.
             state.holdUntil = now + minHoldTime;
         }
         else
         {
-            // If we're still in the hold period, keep the current value.
             if (now < state.holdUntil)
             {
                 state.value = input;
             }
             else
             {
-                // Once hold period expires, check safe timeout.
                 float idleTime = now - state.lastUpdateTime;
                 if (idleTime > safeTimeout)
                 {
@@ -129,7 +123,6 @@ public class UniversalBlendshapes : MonoBehaviour
                 }
                 else
                 {
-                    // Smooth fade back to 0.
                     state.value = Mathf.MoveTowards(state.value, 0f, fadeSpeed * dt);
                 }
             }

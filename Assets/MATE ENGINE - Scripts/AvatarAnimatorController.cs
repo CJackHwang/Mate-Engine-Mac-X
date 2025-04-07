@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using NAudio.CoreAudioApi;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
 using System.Collections;
 
@@ -26,7 +25,7 @@ public class AvatarAnimatorController : MonoBehaviour
     public bool enableDebugLogging = false;
 
     [Header("Dance BlendTree Settings")]
-    public int DANCE_CLIP_COUNT = 5; // Set this to the number of clips in the blend tree
+    public int DANCE_CLIP_COUNT = 5;
     private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
 
     public bool isDragging = false;
@@ -41,6 +40,7 @@ public class AvatarAnimatorController : MonoBehaviour
     private int idleState = 0;
 
     private Coroutine soundCheckCoroutine;
+    private Coroutine idleTransitionCoroutine;
     private MMDeviceEnumerator enumerator;
 
     private static readonly int isIdleParam = Animator.StringToHash("isIdle");
@@ -59,31 +59,9 @@ public class AvatarAnimatorController : MonoBehaviour
             soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
 
-    private void StartDancing()
-    {
-        isDancing = true;
-        animator.SetBool("isDancing", true);
-
-        int randomDanceIndex = Random.Range(0, DANCE_CLIP_COUNT);
-        animator.SetFloat(danceIndexParam, randomDanceIndex);
-
-        Log($"Started dancing with index: {randomDanceIndex}");
-    }
-
-    void OnDisable()
-    {
-        if (soundCheckCoroutine != null)
-        {
-            StopCoroutine(soundCheckCoroutine);
-            soundCheckCoroutine = null;
-        }
-
-        defaultDevice?.Dispose();
-        defaultDevice = null;
-
-        enumerator?.Dispose();
-        enumerator = null;
-    }
+    void OnDisable() => CleanupAudioResources();
+    void OnDestroy() => CleanupAudioResources();
+    void OnApplicationQuit() => CleanupAudioResources();
 
     private IEnumerator CheckSoundContinuously()
     {
@@ -92,20 +70,6 @@ public class AvatarAnimatorController : MonoBehaviour
             if (enableAudioDetection)
             {
                 UpdateDefaultDevice();
-
-                if (defaultDevice == null)
-                {
-                    try
-                    {
-                        UpdateDefaultDevice();
-                        Log("Reinitialized default audio device.");
-                    }
-                    catch (System.Exception ex)
-                    {
-                        LogError("Failed to reinitialize audio device: " + ex.Message);
-                    }
-                }
-
                 CheckForSound();
             }
 
@@ -131,7 +95,6 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         if (AvatarSettingsMenu.IsMenuOpen)
         {
-            // Fully block and reset dancing when menu is open
             if (isDancing)
             {
                 isDancing = false;
@@ -154,7 +117,7 @@ public class AvatarAnimatorController : MonoBehaviour
             else if (!isValidSoundPlaying && isDancing)
             {
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                bool isInDanceState = stateInfo.IsName("Dancing"); // Adjust name if needed
+                bool isInDanceState = stateInfo.IsName("Dancing");
                 bool isTransitioning = animator.IsInTransition(0);
 
                 if (!isInDanceState && !isTransitioning)
@@ -167,7 +130,16 @@ public class AvatarAnimatorController : MonoBehaviour
         }
     }
 
+    private void StartDancing()
+    {
+        isDancing = true;
+        animator.SetBool("isDancing", true);
 
+        int randomDanceIndex = Random.Range(0, DANCE_CLIP_COUNT);
+        animator.SetFloat(danceIndexParam, randomDanceIndex);
+
+        Log($"Started dancing with index: {randomDanceIndex}");
+    }
 
     bool IsValidAppPlaying()
     {
@@ -189,19 +161,17 @@ public class AvatarAnimatorController : MonoBehaviour
                 if (processId == 0) continue;
 
                 Process process = null;
-                try
-                {
-                    process = Process.GetProcessById(processId);
-                }
-                catch
-                {
-                    continue;
-                }
+                try { process = Process.GetProcessById(processId); }
+                catch { continue; }
 
-                string processName = process.ProcessName.ToLowerInvariant();
-                if (allowedApps.Any(allowed => processName.StartsWith(allowed)))
-                    return true;
+                if (process == null) continue;
 
+                string processName = process.ProcessName;
+                for (int j = 0; j < allowedApps.Count; j++)
+                {
+                    if (processName.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
             }
         }
         catch (System.Exception ex)
@@ -214,7 +184,6 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
-        // Settings menu override: block all interactive states while open
         if (AvatarSettingsMenu.IsMenuOpen)
         {
             if (isDragging)
@@ -252,14 +221,19 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             idleTimer = 0f;
             int nextState = (idleState + 1) % totalIdleAnimations;
+
             if (nextState == 0)
             {
                 animator.SetFloat("IdleIndex", 0);
             }
             else
             {
-                StartCoroutine(SmoothIdleTransition(nextState));
+                if (idleTransitionCoroutine != null)
+                    StopCoroutine(idleTransitionCoroutine);
+
+                idleTransitionCoroutine = StartCoroutine(SmoothIdleTransition(nextState));
             }
+
             idleState = nextState;
         }
 
@@ -298,15 +272,18 @@ public class AvatarAnimatorController : MonoBehaviour
 
     public bool IsInIdleState() => isIdle;
 
-    void OnDestroy() => CleanupAudioResources();
-    void OnApplicationQuit() => CleanupAudioResources();
-
-    void CleanupAudioResources()
+    private void CleanupAudioResources()
     {
         if (soundCheckCoroutine != null)
         {
             StopCoroutine(soundCheckCoroutine);
             soundCheckCoroutine = null;
+        }
+
+        if (idleTransitionCoroutine != null)
+        {
+            StopCoroutine(idleTransitionCoroutine);
+            idleTransitionCoroutine = null;
         }
 
         defaultDevice?.Dispose();

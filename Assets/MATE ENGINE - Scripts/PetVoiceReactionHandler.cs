@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Animations;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
 
 public class PetVoiceReactionHandler : MonoBehaviour
 {
@@ -11,18 +9,11 @@ public class PetVoiceReactionHandler : MonoBehaviour
     {
         public string name;
         public HumanBodyBones targetBone;
-
-        [Tooltip("Local offset from bone")]
         public Vector3 offset = Vector3.zero;
-
-        [Tooltip("World offset (added after local offset)")]
         public Vector3 worldOffset = Vector3.zero;
-
-        [Tooltip("Base hover radius (will scale with model)")]
         public float hoverRadius = 50f;
-
         public Color gizmoColor = new Color(1f, 0.5f, 0f, 0.25f);
-        public List<AudioClip> voiceClips = new List<AudioClip>();
+        public List<AudioClip> voiceClips = new();
         public AnimationClip hoverAnimation;
 
         [Header("Hover Object Settings")]
@@ -32,40 +23,39 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
         [Header("Layered Sound Settings")]
         public bool enableLayeredSound = false;
-        public List<AudioClip> layeredVoiceClips = new List<AudioClip>();
+        public List<AudioClip> layeredVoiceClips = new();
 
         [HideInInspector] public bool wasHovering = false;
+        [HideInInspector] public Coroutine disableCoroutine;
     }
 
-    [Header("Animator Source")]
     public Animator avatarAnimator;
-
-    [Header("Voice Reaction Regions")]
-    public List<VoiceRegion> regions = new List<VoiceRegion>();
-
-    [Header("Voice Settings")]
+    public List<VoiceRegion> regions = new();
     public AudioSource voiceAudioSource;
     public AudioSource layeredAudioSource;
 
-    [Header("Animator State Checks")]
     public string idleStateName = "Idle";
     public string dragStateName = "isDragging";
     public string danceStateName = "isDancing";
     public string hoverTriggerParam = "HoverTrigger";
 
-    [Header("Debug Settings")]
     public bool showDebugGizmos = true;
 
     private AnimatorOverrideController animatorOverrideController;
     private string hoverReactionClipName = "HoverReaction";
+    private Camera cachedCamera;
+    private WaitForSeconds wait4s;
 
-    void Start()
+    private void Start()
     {
         if (voiceAudioSource == null)
             voiceAudioSource = gameObject.AddComponent<AudioSource>();
 
         if (layeredAudioSource == null)
             layeredAudioSource = gameObject.AddComponent<AudioSource>();
+
+        cachedCamera = Camera.main;
+        wait4s = new WaitForSeconds(4f);
 
         if (avatarAnimator != null)
         {
@@ -81,7 +71,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         SetupAnimatorOverrideController();
     }
 
-    void BindHoverObjects()
+    private void BindHoverObjects()
     {
         foreach (var region in regions)
         {
@@ -97,35 +87,34 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
     }
 
-    void SetupAnimatorOverrideController()
+    private void SetupAnimatorOverrideController()
     {
         if (avatarAnimator.runtimeAnimatorController == null) return;
-
         animatorOverrideController = new AnimatorOverrideController(avatarAnimator.runtimeAnimatorController);
         avatarAnimator.runtimeAnimatorController = animatorOverrideController;
     }
 
-    void Update()
+    private void Update()
     {
-        if (Camera.main == null || avatarAnimator == null) return;
+        if (cachedCamera == null || avatarAnimator == null) return;
 
         foreach (var region in regions)
         {
             Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
             if (bone == null) continue;
 
-            Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
-            Vector2 screenPoint = Camera.main.WorldToScreenPoint(worldPoint);
+            Vector3 localOffset = bone.TransformVector(region.offset);
+            Vector3 worldPoint = bone.position + localOffset + region.worldOffset;
+            Vector2 screenPoint = cachedCamera.WorldToScreenPoint(worldPoint);
 
             float scaleFactor = bone.lossyScale.magnitude;
-            float scaledWorldRadius = region.hoverRadius * scaleFactor;
+            float scaledRadius = region.hoverRadius * scaleFactor;
+            Vector3 offsetWorld = worldPoint + cachedCamera.transform.right * scaledRadius;
+            Vector2 screenOffset = cachedCamera.WorldToScreenPoint(offsetWorld);
+            float screenRadius = Vector2.Distance(screenPoint, screenOffset);
+            float cursorDist = Vector2.Distance(Input.mousePosition, screenPoint);
 
-            Vector3 worldOffsetPos = worldPoint + Camera.main.transform.right * scaledWorldRadius;
-            Vector2 screenOffsetPos = Camera.main.WorldToScreenPoint(worldOffsetPos);
-            float screenRadius = Vector2.Distance(screenPoint, screenOffsetPos);
-
-            float distance = Vector2.Distance(Input.mousePosition, screenPoint);
-            bool hovering = distance < screenRadius;
+            bool hovering = cursorDist < screenRadius;
 
             if (hovering && !region.wasHovering && IsInIdleState())
             {
@@ -138,11 +127,13 @@ public class PetVoiceReactionHandler : MonoBehaviour
                 if (hovering)
                 {
                     region.hoverObject.SetActive(true);
-                    StopCoroutine(DisableHoverObject(region));
+                    if (region.disableCoroutine != null)
+                        StopCoroutine(region.disableCoroutine);
+                    region.disableCoroutine = null;
                 }
-                else if (region.wasHovering)
+                else if (region.wasHovering && region.disableCoroutine == null)
                 {
-                    StartCoroutine(DisableHoverObject(region));
+                    region.disableCoroutine = StartCoroutine(DisableHoverObject(region));
                 }
             }
 
@@ -158,26 +149,27 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
     }
 
-    IEnumerator DisableHoverObject(VoiceRegion region)
+    private IEnumerator DisableHoverObject(VoiceRegion region)
     {
-        yield return new WaitForSeconds(4f);
+        yield return wait4s;
         if (!region.wasHovering && region.hoverObject != null)
         {
             region.hoverObject.SetActive(false);
         }
+        region.disableCoroutine = null;
     }
 
-    bool IsInIdleState()
+    private bool IsInIdleState()
     {
         if (avatarAnimator == null) return false;
         if (avatarAnimator.GetBool(dragStateName)) return false;
         if (avatarAnimator.GetBool(danceStateName)) return false;
 
-        AnimatorStateInfo stateInfo = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.IsName(idleStateName);
+        AnimatorStateInfo info = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName(idleStateName);
     }
 
-    void TriggerHoverReaction(VoiceRegion region, bool state)
+    private void TriggerHoverReaction(VoiceRegion region, bool state)
     {
         if (region.hoverAnimation == null || animatorOverrideController == null) return;
 
@@ -197,7 +189,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         avatarAnimator.SetBool(hoverTriggerParam, state);
     }
 
-    void PlayRandomVoice(VoiceRegion region)
+    private void PlayRandomVoice(VoiceRegion region)
     {
         if (region.voiceClips.Count > 0 && !voiceAudioSource.isPlaying)
         {
@@ -214,9 +206,9 @@ public class PetVoiceReactionHandler : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        if (!showDebugGizmos || !Application.isPlaying || Camera.main == null || avatarAnimator == null) return;
+        if (!showDebugGizmos || !Application.isPlaying || cachedCamera == null || avatarAnimator == null) return;
 
         foreach (var region in regions)
         {
@@ -225,7 +217,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
             float scaleFactor = bone.lossyScale.magnitude;
             float scaledRadius = region.hoverRadius * scaleFactor;
-
             Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
 
             Gizmos.color = region.gizmoColor;

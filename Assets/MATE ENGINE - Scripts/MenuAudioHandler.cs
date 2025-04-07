@@ -71,11 +71,17 @@ public class MenuAudioHandler : MonoBehaviour
         {
             bool isOpen = AvatarSettingsMenu.IsMenuOpen;
 
-            if (!hasPlayedStartupSound)
+            if (!hasPlayedStartupSound && SaveLoadHandler.Instance?.data != null)
             {
-                PlaySound(startupSounds, startupPitchMin, startupPitchMax, startupVolume);
-                hasPlayedStartupSound = true;
+                // Only play once menuVolume is actually set
+                float menuVol = SaveLoadHandler.Instance.data.menuVolume;
+                if (menuVol > 0f)
+                {
+                    PlaySound(startupSounds, startupPitchMin, startupPitchMax, startupVolume);
+                    hasPlayedStartupSound = true;
+                }
             }
+
 
             if (isOpen)
             {
@@ -153,7 +159,17 @@ public class MenuAudioHandler : MonoBehaviour
         if (clips == null || clips.Count == 0 || audioSource == null || !audioSource.gameObject.activeSelf)
             return;
 
+        float menuVolumeMultiplier = 1f;
+        if (SaveLoadHandler.Instance != null)
+        {
+            menuVolumeMultiplier = SaveLoadHandler.Instance.data.menuVolume;
+        }
+
+        float finalVolume = volume * menuVolumeMultiplier;
+        if (finalVolume <= 0f) return;
+
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
-        audioSource.PlayOneShot(clips[Random.Range(0, clips.Count)], volume);
+        audioSource.PlayOneShot(clips[Random.Range(0, clips.Count)], finalVolume);
     }
+
 }
