@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using VRM;
+using UniVRM10;
 using System.Collections.Generic;
+using System;
+using System.Reflection;
 
 [DisallowMultipleComponent]
 public class UniversalBlendshapes : MonoBehaviour
@@ -23,16 +26,13 @@ public class UniversalBlendshapes : MonoBehaviour
     [Range(0f, 1f)] public float Sorrow;
     [Range(0f, 1f)] public float Fun;
 
-    [Tooltip("How fast blendshapes fade back to 0 when not updated.")]
     public float fadeSpeed = 5f;
-
-    [Tooltip("Maximum seconds a blendshape can stay untouched before being force-reset.")]
     public float safeTimeout = 2f;
-
-    [Tooltip("Minimum time to hold a blendshape value after an update (prevents fast re-trigger issues).")]
     public float minHoldTime = 0.1f;
 
-    private VRMBlendShapeProxy proxy;
+    private VRMBlendShapeProxy proxy0;
+    private Vrm10Instance vrm1;
+    private Vrm10RuntimeExpression expr1;
 
     private class BlendState
     {
@@ -42,61 +42,100 @@ public class UniversalBlendshapes : MonoBehaviour
         public float holdUntil;
     }
 
-    private Dictionary<BlendShapePreset, BlendState> states = new();
-    private Dictionary<BlendShapePreset, BlendShapeKey> keys = new();
-    private List<KeyValuePair<BlendShapeKey, float>> reusableKeyValueList = new();
+    private readonly Dictionary<string, BlendState> states = new();
+    private readonly List<KeyValuePair<BlendShapeKey, float>> reusableList = new();
+
+    private static readonly string[] keys = new[]
+    {
+        "Blink", "Blink_L", "Blink_R",
+        "LookUp", "LookDown", "LookLeft", "LookRight",
+        "Neutral",
+        "A", "I", "U", "E", "O",
+        "Joy", "Angry", "Sorrow", "Fun"
+    };
+
+    private static readonly Dictionary<string, string> vrm10KeyMap = new()
+    {
+        { "A", "aa" }, { "I", "ih" }, { "U", "ou" }, { "E", "ee" }, { "O", "oh" },
+        { "Joy", "happy" }, { "Angry", "angry" }, { "Sorrow", "sad" }, { "Fun", "relaxed" },
+        { "Blink", "blink" }, { "Blink_L", "blinkLeft" }, { "Blink_R", "blinkRight" },
+        { "LookUp", "lookUp" }, { "LookDown", "lookDown" }, { "LookLeft", "lookLeft" }, { "LookRight", "lookRight" },
+        { "Neutral", "neutral" }
+    };
+
+    private readonly Dictionary<string, FieldInfo> fieldMap = new();
+    private readonly Dictionary<string, ExpressionKey> vrm1ExpressionKeyMap = new();
 
     private void Awake()
     {
-        proxy = GetComponent<VRMBlendShapeProxy>();
-        foreach (BlendShapePreset preset in System.Enum.GetValues(typeof(BlendShapePreset)))
-        {
-            if (!states.ContainsKey(preset))
-                states[preset] = new BlendState();
+        proxy0 = GetComponent<VRMBlendShapeProxy>();
+        vrm1 = GetComponentInChildren<Vrm10Instance>(true);
+        expr1 = vrm1 != null ? vrm1.Runtime?.Expression : null;
 
-            if (!keys.ContainsKey(preset))
-                keys[preset] = BlendShapeKey.CreateFromPreset(preset);
+        foreach (var key in keys)
+        {
+            states[key] = new BlendState();
+            fieldMap[key] = typeof(UniversalBlendshapes).GetField(key, BindingFlags.Instance | BindingFlags.Public);
+        }
+
+        if (expr1 == null)
+        {
+            Debug.LogWarning("[UniversalBlendshapes] No Vrm10RuntimeExpression found.");
+        }
+        else
+        {
+            vrm1ExpressionKeyMap.Clear();
+            foreach (var k in expr1.ExpressionKeys)
+            {
+                vrm1ExpressionKeyMap[k.Name] = k;
+            }
+
+            Debug.Log("[UniversalBlendshapes] Expression keys loaded: " + string.Join(", ", vrm1ExpressionKeyMap.Keys));
         }
     }
 
     private void LateUpdate()
     {
-        if (proxy == null || proxy.BlendShapeAvatar == null) return;
-
         float now = Time.time;
         float dt = Time.deltaTime;
 
-        UpdateState(BlendShapePreset.Blink, Blink, now, dt);
-        UpdateState(BlendShapePreset.Blink_L, Blink_L, now, dt);
-        UpdateState(BlendShapePreset.Blink_R, Blink_R, now, dt);
-        UpdateState(BlendShapePreset.LookUp, LookUp, now, dt);
-        UpdateState(BlendShapePreset.LookDown, LookDown, now, dt);
-        UpdateState(BlendShapePreset.LookLeft, LookLeft, now, dt);
-        UpdateState(BlendShapePreset.LookRight, LookRight, now, dt);
-        UpdateState(BlendShapePreset.Neutral, Neutral, now, dt);
-        UpdateState(BlendShapePreset.A, A, now, dt);
-        UpdateState(BlendShapePreset.I, I, now, dt);
-        UpdateState(BlendShapePreset.U, U, now, dt);
-        UpdateState(BlendShapePreset.E, E, now, dt);
-        UpdateState(BlendShapePreset.O, O, now, dt);
-        UpdateState(BlendShapePreset.Joy, Joy, now, dt);
-        UpdateState(BlendShapePreset.Angry, Angry, now, dt);
-        UpdateState(BlendShapePreset.Sorrow, Sorrow, now, dt);
-        UpdateState(BlendShapePreset.Fun, Fun, now, dt);
-
-        reusableKeyValueList.Clear();
-        foreach (var kv in states)
+        foreach (var key in keys)
         {
-            reusableKeyValueList.Add(new KeyValuePair<BlendShapeKey, float>(keys[kv.Key], kv.Value.value));
+            float value = (float)fieldMap[key].GetValue(this);
+            UpdateState(key, value, now, dt);
         }
 
-        proxy.SetValues(reusableKeyValueList);
-        proxy.Apply();
+        if (proxy0 != null)
+        {
+            reusableList.Clear();
+            foreach (var kv in states)
+            {
+                if (Enum.TryParse(kv.Key, out BlendShapePreset preset))
+                {
+                    reusableList.Add(new KeyValuePair<BlendShapeKey, float>(
+                        BlendShapeKey.CreateFromPreset(preset), kv.Value.value
+                    ));
+                }
+            }
+            proxy0.SetValues(reusableList);
+            proxy0.Apply();
+        }
+        else if (expr1 != null)
+        {
+            foreach (var kv in states)
+            {
+                string keyName = vrm10KeyMap.TryGetValue(kv.Key, out var mapped) ? mapped : kv.Key;
+                if (vrm1ExpressionKeyMap.TryGetValue(keyName, out var exprKey))
+                {
+                    expr1.SetWeight(exprKey, kv.Value.value);
+                }
+            }
+        }
     }
 
-    private void UpdateState(BlendShapePreset preset, float input, float now, float dt)
+    private void UpdateState(string key, float input, float now, float dt)
     {
-        var state = states[preset];
+        if (!states.TryGetValue(key, out var state)) return;
 
         bool valueChanged = !Mathf.Approximately(input, state.lastInput);
         bool activelyDriven = !Mathf.Approximately(input, 0f);
