@@ -55,7 +55,7 @@ public class RuntimeModelStats : MonoBehaviour
 
         currentCustomModel = customModelRoot
             .GetComponentsInChildren<Transform>(true)
-            .FirstOrDefault(t => t.name.Contains("VRMModel") && t.name.Contains("Clone"))?.gameObject;
+            .FirstOrDefault(t => t.name.Contains("CustomVRM") && t.name.Contains("Clone"))?.gameObject;
 
         if (currentCustomModel == null)
         {
