@@ -14,10 +14,15 @@ public class AvatarParticleHandler : MonoBehaviour
 
     public Animator animator;
     public List<ParticleRule> rules = new List<ParticleRule>();
+    public bool featureEnabled = true;
 
-    public bool featureEnabled = true; // NEW
+    private class BoneTracking
+    {
+        public Transform bone;
+        public List<GameObject> objects = new List<GameObject>();
+    }
 
-    private Dictionary<ParticleRule, Transform> boneTargets = new Dictionary<ParticleRule, Transform>();
+    private Dictionary<ParticleRule, BoneTracking> trackingMap = new Dictionary<ParticleRule, BoneTracking>();
 
     void Start()
     {
@@ -28,28 +33,34 @@ public class AvatarParticleHandler : MonoBehaviour
             Transform boneTransform = animator.GetBoneTransform(rule.targetBone);
             if (boneTransform != null)
             {
-                boneTargets[rule] = boneTransform;
+                BoneTracking tracking = new BoneTracking
+                {
+                    bone = boneTransform,
+                    objects = new List<GameObject>(rule.linkedObjects)
+                };
 
-                foreach (var obj in rule.linkedObjects)
+                foreach (var obj in tracking.objects)
                 {
                     if (obj != null)
                     {
-                        obj.transform.SetParent(boneTransform, worldPositionStays: false);
-                        obj.transform.localPosition = Vector3.zero;
-                        obj.transform.localRotation = Quaternion.identity;
                         obj.SetActive(false); // Initially inactive
                     }
                 }
+
+                trackingMap[rule] = tracking;
             }
         }
     }
 
     void Update()
     {
-        if (!featureEnabled) return; // NEW: Respect toggle
+        if (!featureEnabled) return;
 
-        foreach (var rule in rules)
+        foreach (var kvp in trackingMap)
         {
+            ParticleRule rule = kvp.Key;
+            BoneTracking tracking = kvp.Value;
+
             bool shouldBeActive = false;
 
             if (rule.useParameter)
@@ -65,10 +76,18 @@ public class AvatarParticleHandler : MonoBehaviour
                 shouldBeActive = state.IsName(rule.stateOrParameterName);
             }
 
-            foreach (var obj in rule.linkedObjects)
+            foreach (var obj in tracking.objects)
             {
                 if (obj != null)
+                {
                     obj.SetActive(shouldBeActive);
+
+                    if (shouldBeActive)
+                    {
+                        obj.transform.position = tracking.bone.position;
+                        obj.transform.rotation = tracking.bone.rotation;
+                    }
+                }
             }
         }
     }
