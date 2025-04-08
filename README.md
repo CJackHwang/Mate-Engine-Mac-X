@@ -18,6 +18,7 @@ A free, lightweight alternative to **Desktop Mate** with custom VRM support and 
   *Please read the license terms carefully.*
 - **Default Avatar License**: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/)  
   *Do not redistribute this model in your builds.*
+- **QWEN 2.5 1.5b LLM**: *Apache License Version 2.0, January 2004*
 
 ---
 
