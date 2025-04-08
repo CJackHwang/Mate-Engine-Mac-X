@@ -1,8 +1,0 @@
-.toggle__add-to-selected > .unity-label {
-    display: none;
-}
-
-.toggle__add-to-selected .unity-toggle__input {
-    flex-direction: row-reverse;
-    margin-bottom: 3px;
-}

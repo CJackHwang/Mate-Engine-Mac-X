@@ -95,12 +95,11 @@ MonoBehaviour:
   allowedApps:
   - spotify
   - firefox
-  - discord
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
   enableDragging: 1
-  enableDancing: 0
+  enableDancing: 1
   enableDebugLogging: 0
   DANCE_CLIP_COUNT: 8
   isDragging: 0

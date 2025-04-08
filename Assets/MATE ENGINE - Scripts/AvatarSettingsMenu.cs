@@ -126,7 +126,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.M) || Input.GetMouseButtonDown(1)) && menuPanel != null)
+        if (Input.GetMouseButtonDown(1) && menuPanel != null)
         {
             bool newState = !menuPanel.activeSelf;
             menuPanel.SetActive(newState);
@@ -268,16 +268,24 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.petVolume = 1f;
         data.effectsVolume = 1f;
         data.menuVolume = 1f;
-        data.graphicsQualityLevel = 1; // Sets to 1
+        data.graphicsQualityLevel = 1;
 
         SaveLoadHandler.Instance.data = data;
 
+        foreach (var handler in AccessoiresHandler.ActiveHandlers)
+        {
+            handler.ResetAccessoryStatesToDefault();
+            handler.ClearAccessoryStatesFromSave();
+        }
+
+        SaveLoadHandler.Instance.SaveToDisk(); 
         LoadSettings();
         ApplySettings();
 
         if (vrmLoader != null)
             vrmLoader.ResetModel();
     }
+
 
 
 

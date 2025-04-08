@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 public class SaveLoadHandler : MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class SaveLoadHandler : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadFromDisk();
-        ApplyAllSettingsToAllAvatars(); // Load Save on (Start)
+        ApplyAllSettingsToAllAvatars();
+        LoadAccessoryStatesToAll();
+
         var limiters = FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None);
         foreach (var limiter in limiters)
         {
@@ -36,11 +39,13 @@ public class SaveLoadHandler : MonoBehaviour
     {
         try
         {
+            SaveAccessoryStatesFromAll();
+
             string dir = Path.GetDirectoryName(FilePath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            string json = JsonUtility.ToJson(data, true);
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(FilePath, json);
             Debug.Log("[SaveLoadHandler] Saved settings to: " + FilePath);
         }
@@ -57,7 +62,7 @@ public class SaveLoadHandler : MonoBehaviour
             try
             {
                 string json = File.ReadAllText(FilePath);
-                data = JsonUtility.FromJson<SettingsData>(json);
+                data = JsonConvert.DeserializeObject<SettingsData>(json);
                 Debug.Log("[SaveLoadHandler] Loaded settings from: " + FilePath);
             }
             catch (System.Exception e)
@@ -89,23 +94,21 @@ public class SaveLoadHandler : MonoBehaviour
         public bool isTopmost = true;
 
         public List<string> allowedApps = new List<string>();
-
         public bool fakeHDR = false;
         public bool bloom = false;
         public bool dayNight = true;
 
         public bool enableParticles = true;
 
-        // New volume sliders
         public float petVolume = 1f;
         public float effectsVolume = 1f;
         public float menuVolume = 1f;
 
-        // Graphic Settings
-        public int graphicsQualityLevel = 1; // Default: Very High number is one hehe
+        public int graphicsQualityLevel = 1;
 
+        // Steam DLCS
+        public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
     }
-
 
     public static void SyncAllowedAppsToAllAvatars()
     {
@@ -151,6 +154,24 @@ public class SaveLoadHandler : MonoBehaviour
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }
+        }
+    }
+
+    // DLCs and Steam
+
+    public static void LoadAccessoryStatesToAll()
+    {
+        foreach (var handler in AccessoiresHandler.ActiveHandlers)
+        {
+            handler.LoadAccessoryStatesFromSave();
+        }
+    }
+
+    public static void SaveAccessoryStatesFromAll()
+    {
+        foreach (var handler in AccessoiresHandler.ActiveHandlers)
+        {
+            handler.SaveAccessoryStatesToSave();
         }
     }
 }
