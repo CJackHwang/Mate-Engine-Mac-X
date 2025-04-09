@@ -9,9 +9,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"picker_window_position_offset.075BCD15" = "387;368;320;550"
+	"picker_window_position_offset.075BCD15" = "254;525;320;550"
 	"picker_visibility_flags.075BCD15" = "264"
-	"picker_item_size.075BCD15" = "96"
+	"picker_item_size.075BCD15" = "0"
 	"picker_inspector.075BCD15" = "0"
 }
 providers = {
@@ -65,10 +65,22 @@ providers = {
 		priority = -10
 		defaultAction = null
 	}
+	at = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	st = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
 }
 objectSelectors = {
 }
 recentSearches = [
+	"st:"
+	"st: apply"
 ]
 searchItemFavorites = [
 ]

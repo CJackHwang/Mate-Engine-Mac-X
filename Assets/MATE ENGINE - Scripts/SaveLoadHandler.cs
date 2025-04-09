@@ -104,6 +104,9 @@ public class SaveLoadHandler : MonoBehaviour
         public float effectsVolume = 1f;
         public float menuVolume = 1f;
 
+        public string selectedLocaleCode = "en"; // Default to English
+
+
         public int graphicsQualityLevel = 1;
 
         // Steam DLCS

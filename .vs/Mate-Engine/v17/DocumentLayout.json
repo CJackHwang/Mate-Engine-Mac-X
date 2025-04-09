@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\swingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LocaleSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\LocaleSelector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\swingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\swingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -102,7 +106,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "AccessoiresHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AccessoiresHandler.cs",
               "RelativeDocumentMoniker": "Assets\\AccessoiresHandler.cs",
@@ -116,6 +120,17 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "LocaleSelector.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LocaleSelector.cs",
+              "RelativeDocumentMoniker": "Assets\\LocaleSelector.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LocaleSelector.cs",
+              "RelativeToolTip": "Assets\\LocaleSelector.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-08T20:10:28.158Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "SwingController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\SwingController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\SwingController.cs",
@@ -123,12 +138,11 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\SwingController.cs",
               "ViewState": "AgIAAD4AAAAAAAAAAAAiwFgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-08T16:46:54.793Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-08T16:46:54.793Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "LLM.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LLMUnity\\Runtime\\LLM.cs",
               "RelativeDocumentMoniker": "Assets\\LLMUnity\\Runtime\\LLM.cs",
@@ -140,7 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "SwingController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\SwingController.cs",
               "RelativeDocumentMoniker": "Assets\\SwingController.cs",
@@ -151,7 +165,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AvatarSettingsMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
@@ -163,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "LLMCharacter.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LLMUnity\\Runtime\\LLMCharacter.cs",
               "RelativeDocumentMoniker": "Assets\\LLMUnity\\Runtime\\LLMCharacter.cs",
@@ -175,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "NormalizeUIScale.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\NormalizeUIScale.cs",
               "RelativeDocumentMoniker": "Assets\\NormalizeUIScale.cs",
@@ -187,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
@@ -199,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "KeyBindHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\KeyBindHandler.cs",
               "RelativeDocumentMoniker": "Assets\\KeyBindHandler.cs",
@@ -211,7 +225,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "AvatarGravityController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarGravityController.cs",
@@ -223,7 +237,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "RuntimeModelStats.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\RuntimeModelStats.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\RuntimeModelStats.cs",
@@ -235,7 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "UniversalBlendshapes.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\UniversalBlendshapes.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\UniversalBlendshapes.cs",
@@ -247,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ChatBot.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LLMUnity\\Samples\\ChatBot\\ChatBot.cs",
               "RelativeDocumentMoniker": "Assets\\LLMUnity\\Samples\\ChatBot\\ChatBot.cs",
@@ -259,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "SteamVersionObjects.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\SteamVersionObjects.cs",
               "RelativeDocumentMoniker": "Assets\\SteamVersionObjects.cs",
@@ -271,7 +285,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "DiscordPresence.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\DiscordPresence.cs",
               "RelativeDocumentMoniker": "Assets\\DiscordPresence.cs",
@@ -283,7 +297,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "NativeDllHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\DiscordRPC\\Editor\\NativeDllHandler.cs",
               "RelativeDocumentMoniker": "Assets\\DiscordRPC\\Editor\\NativeDllHandler.cs",
@@ -295,7 +309,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "VRMMeta.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\Meta\\VRMMeta.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\Meta\\VRMMeta.cs",
@@ -307,7 +321,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "UISetOnOff.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\UISetOnOff.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\UISetOnOff.cs",
@@ -319,7 +333,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "HandHolder.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\HandHolder.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\HandHolder.cs",
@@ -331,7 +345,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "AvatarParticleHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarParticleHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarParticleHandler.cs",
@@ -343,7 +357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "VRMLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
@@ -355,7 +369,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "vrmc_materials_mtoon.shader",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM10\\MToon10\\Shaders\\vrmc_materials_mtoon.shader",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM10\\MToon10\\Shaders\\vrmc_materials_mtoon.shader",
