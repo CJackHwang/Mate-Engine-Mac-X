@@ -44,6 +44,17 @@ public class AvatarSettingsMenu : MonoBehaviour
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
 
+
+    [System.Serializable]
+    public class AccessoryToggleEntry
+    {
+        public string ruleName;
+        public Toggle toggle;
+    }
+
+    public List<AccessoryToggleEntry> accessoryToggleBindings = new List<AccessoryToggleEntry>();
+
+
     private void Start()
     {
         if (menuPanel != null)
@@ -91,7 +102,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             graphicsDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.graphicsQualityLevel);
             QualitySettings.SetQualityLevel(SaveLoadHandler.Instance.data.graphicsQualityLevel, true);
         }
-
         LoadSettings();
         ApplySettings();
         RestoreWindowSize();
@@ -145,6 +155,17 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public void LoadSettings()
     {
+
+        foreach (var entry in accessoryToggleBindings)
+        {
+            if (string.IsNullOrEmpty(entry.ruleName) || entry.toggle == null) continue;
+
+            if (SaveLoadHandler.Instance.data.accessoryStates.TryGetValue(entry.ruleName, out bool state))
+            {
+                entry.toggle.SetIsOnWithoutNotify(state);
+            }
+        }
+
         var data = SaveLoadHandler.Instance.data;
 
         soundThresholdSlider?.SetValueWithoutNotify(data.soundThreshold);
@@ -199,6 +220,29 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.petVolume = petVolumeSlider?.value ?? 1f;
         data.effectsVolume = effectsVolumeSlider?.value ?? 1f;
         data.menuVolume = menuVolumeSlider?.value ?? 1f;
+
+        foreach (var entry in accessoryToggleBindings)
+        {
+            if (string.IsNullOrEmpty(entry.ruleName) || entry.toggle == null) continue;
+
+            bool isOn = entry.toggle.isOn;
+            SaveLoadHandler.Instance.data.accessoryStates[entry.ruleName] = isOn;
+
+            // Apply directly to matching AccessoryRule
+            foreach (var handler in AccessoiresHandler.ActiveHandlers)
+            {
+                foreach (var rule in handler.rules)
+                {
+                    if (rule.ruleName == entry.ruleName)
+                    {
+                        rule.isEnabled = isOn;
+                        break;
+                    }
+                }
+            }
+        }
+
+
 
         if (graphicsDropdown != null)
         {
@@ -269,6 +313,15 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.effectsVolume = 1f;
         data.menuVolume = 1f;
         data.graphicsQualityLevel = 1;
+
+
+        data.accessoryStates = new Dictionary<string, bool>();
+        foreach (var entry in accessoryToggleBindings)
+        {
+            if (!string.IsNullOrEmpty(entry.ruleName))
+                data.accessoryStates[entry.ruleName] = false;
+        }
+
 
         SaveLoadHandler.Instance.data = data;
 
