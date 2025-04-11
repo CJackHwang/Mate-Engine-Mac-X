@@ -10,10 +10,10 @@ namespace MateEngine
         private List<GameObject> clothingArmatures = new List<GameObject>();
         private Vector2 scroll;
 
-        [MenuItem("MateEngine/MEBoneMerger")]
+        [MenuItem("MateEngine/ME Bone Merger")]
         public static void ShowWindow()
         {
-            GetWindow<MEBoneMerger>("MEBoneMerger");
+            GetWindow<MEBoneMerger>("ME Bone Merger");
         }
 
         private void OnGUI()

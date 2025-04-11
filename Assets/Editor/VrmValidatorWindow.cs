@@ -28,10 +28,10 @@ public class VrmValidatorWindow : EditorWindow
     private Dictionary<HumanBodyBones, string> boneMappings = new();
     private List<string> runtimeComponents = new();
 
-    [MenuItem("MateEngine/VRM Validator")]
+    [MenuItem("MateEngine/ME VRM Validator")]
     public static void ShowWindow()
     {
-        GetWindow<VrmValidatorWindow>("VRM Validator");
+        GetWindow<VrmValidatorWindow>("ME VRM Validator");
     }
 
     private void OnGUI()

@@ -7,10 +7,10 @@ public class AssetBundleExporterWindow : EditorWindow
     private GameObject prefabToExport;
     private string bundleName = "custommodel";
 
-    [MenuItem("MateEngine/AssetBundle Exporter")]
+    [MenuItem("MateEngine/ME Mod Exporter")]
     public static void ShowWindow()
     {
-        GetWindow<AssetBundleExporterWindow>("AssetBundle Exporter");
+        GetWindow<AssetBundleExporterWindow>("ME Mod Exporter");
     }
 
     private void OnGUI()
