@@ -17,7 +17,7 @@ public class VRMLoader : MonoBehaviour
     public GameObject mainModel;
     public GameObject customModelOutput;
     public RuntimeAnimatorController animatorController;
-    public GameObject componentTemplatePrefab; // 🔁 NEW: Holds all desired components
+    public GameObject componentTemplatePrefab;
 
     private GameObject currentModel;
     private bool isLoading = false;
@@ -32,13 +32,14 @@ public class VRMLoader : MonoBehaviour
                 LoadVRM(savedPath);
         }
     }
+
     public void OpenFileDialogAndLoadVRM()
     {
         if (isLoading) return;
 
         isLoading = true;
-        var extensions = new[] { new ExtensionFilter("VRM Files", "vrm") };
-        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select VRM Model", "", extensions, false);
+        var extensions = new[] { new ExtensionFilter("Model Files", "vrm", "me") };
+        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Model File", "", extensions, false);
         if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
             LoadVRM(paths[0]);
 
@@ -51,12 +52,19 @@ public class VRMLoader : MonoBehaviour
 
         try
         {
+            // Check for AssetBundle model
+            if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadAssetBundleModel(path);
+                return;
+            }
+
             byte[] fileData = await Task.Run(() => File.ReadAllBytes(path));
             if (fileData == null || fileData.Length == 0) return;
 
             GameObject loadedModel = null;
 
-            // First, try parsing as VRM 1.0
+            // Try VRM 1.0 first
             try
             {
                 var glbData = new GlbFileParser(path).Parse();
@@ -68,9 +76,7 @@ public class VRMLoader : MonoBehaviour
                     var instance10 = await importer10.LoadAsync(new ImmediateCaller());
 
                     if (instance10.Root != null)
-                    {
                         loadedModel = instance10.Root;
-                    }
                 }
             }
             catch (Exception e)
@@ -78,7 +84,7 @@ public class VRMLoader : MonoBehaviour
                 Debug.LogWarning("[VRMLoader] VRM 1.0 parsing failed, trying VRM 0.x loader: " + e.Message);
             }
 
-            // If not 1.0, fallback to 0.x
+            // Fallback to VRM 0.x
             if (loadedModel == null)
             {
                 try
@@ -88,9 +94,7 @@ public class VRMLoader : MonoBehaviour
                     var instance = await importer.LoadAsync(new ImmediateCaller());
 
                     if (instance.Root != null)
-                    {
                         loadedModel = instance.Root;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -101,39 +105,65 @@ public class VRMLoader : MonoBehaviour
 
             if (loadedModel == null) return;
 
-            DisableMainModel();
-            ClearPreviousCustomModel();
-
-            loadedModel.transform.SetParent(customModelOutput.transform, false);
-            loadedModel.transform.localPosition = Vector3.zero;
-            loadedModel.transform.localRotation = Quaternion.identity;
-            loadedModel.transform.localScale = Vector3.one;
-            currentModel = loadedModel;
-
-            EnableSkinnedMeshRenderers(currentModel);
-            AssignAnimatorController(currentModel);
-            InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
-
-            var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
-            if (avatarSettingsMenu != null)
-            {
-                avatarSettingsMenu.LoadSettings();
-                avatarSettingsMenu.ApplySettings();
-            }
-
-            StartCoroutine(DelayedRefreshStats());
-
-            PlayerPrefs.SetString(modelPathKey, path);
-            PlayerPrefs.Save();
-
-            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "VRM"));
+            FinalizeLoadedModel(loadedModel, path);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            Debug.LogError("[VRMLoader] Failed to load VRM: " + ex.Message);
+            Debug.LogError("[VRMLoader] Failed to load model: " + ex.Message);
         }
     }
 
+    private void LoadAssetBundleModel(string path)
+    {
+        var bundle = AssetBundle.LoadFromFile(path);
+        if (bundle == null)
+        {
+            Debug.LogError("[VRMLoader] Failed to load AssetBundle at: " + path);
+            return;
+        }
+
+        var prefab = bundle.LoadAllAssets<GameObject>().FirstOrDefault();
+        if (prefab == null)
+        {
+            Debug.LogError("[VRMLoader] No prefab found in AssetBundle.");
+            bundle.Unload(false);
+            return;
+        }
+
+        var instance = Instantiate(prefab);
+        bundle.Unload(false);
+        FinalizeLoadedModel(instance, path);
+    }
+
+    private void FinalizeLoadedModel(GameObject loadedModel, string path)
+    {
+        DisableMainModel();
+        ClearPreviousCustomModel();
+
+        loadedModel.transform.SetParent(customModelOutput.transform, false);
+        loadedModel.transform.localPosition = Vector3.zero;
+        loadedModel.transform.localRotation = Quaternion.identity;
+        loadedModel.transform.localScale = Vector3.one;
+        currentModel = loadedModel;
+
+        EnableSkinnedMeshRenderers(currentModel);
+        AssignAnimatorController(currentModel);
+        InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
+
+        var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
+        if (avatarSettingsMenu != null)
+        {
+            avatarSettingsMenu.LoadSettings();
+            avatarSettingsMenu.ApplySettings();
+        }
+
+        StartCoroutine(DelayedRefreshStats());
+
+        PlayerPrefs.SetString(modelPathKey, path);
+        PlayerPrefs.Save();
+
+        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "VRM"));
+    }
 
     public void ResetModel()
     {
@@ -199,11 +229,10 @@ public class VRMLoader : MonoBehaviour
         {
             var type = templateComp.GetType();
             if (targetModel.GetComponent(type) != null)
-                continue; // Skip if already exists
+                continue;
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
-            // Call SetAnimator(animator) if available
             if (animator != null)
             {
                 var setAnimMethod = type.GetMethod("SetAnimator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -218,7 +247,6 @@ public class VRMLoader : MonoBehaviour
 
         Destroy(templateObj);
     }
-
 
     private void CopyComponentValues(Component source, Component destination)
     {
@@ -247,7 +275,7 @@ public class VRMLoader : MonoBehaviour
 
     private System.Collections.IEnumerator DelayedRefreshStats()
     {
-        yield return null; // wait 1 frame
+        yield return null;
         var stats = FindFirstObjectByType<RuntimeModelStats>();
         if (stats != null)
         {
@@ -255,5 +283,4 @@ public class VRMLoader : MonoBehaviour
             stats.RefreshNow();
         }
     }
-
 }
