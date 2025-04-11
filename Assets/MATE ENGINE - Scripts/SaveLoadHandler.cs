@@ -107,6 +107,10 @@ public class SaveLoadHandler : MonoBehaviour
         public string selectedLocaleCode = "en"; // Default to English
 
 
+        public Dictionary<string, bool> modStates = new Dictionary<string, bool>(); // Mod States
+
+
+
         public int graphicsQualityLevel = 1;
 
         // Steam DLCS

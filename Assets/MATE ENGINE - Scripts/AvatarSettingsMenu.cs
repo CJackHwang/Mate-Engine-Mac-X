@@ -302,28 +302,32 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public void ResetToDefaults()
     {
-        var oldSizeState = SaveLoadHandler.Instance.data.windowSizeState;
-        var data = new SaveLoadHandler.SettingsData();
-        data.windowSizeState = oldSizeState;
+        var oldData = SaveLoadHandler.Instance.data;
+        var newData = new SaveLoadHandler.SettingsData();
 
+        // Preserve window size and allowed apps
+        newData.windowSizeState = oldData.windowSizeState;
         if (!resetAlsoClearsAllowedApps)
-            data.allowedApps = new List<string>(SaveLoadHandler.Instance.data.allowedApps);
+            newData.allowedApps = new List<string>(oldData.allowedApps);
 
-        data.petVolume = 1f;
-        data.effectsVolume = 1f;
-        data.menuVolume = 1f;
-        data.graphicsQualityLevel = 1;
+        // Preserve mod toggle states
+        newData.modStates = new Dictionary<string, bool>(oldData.modStates);
 
+        // Reset volumes and graphics
+        newData.petVolume = 1f;
+        newData.effectsVolume = 1f;
+        newData.menuVolume = 1f;
+        newData.graphicsQualityLevel = 1;
 
-        data.accessoryStates = new Dictionary<string, bool>();
+        // Reset accessory states only
+        newData.accessoryStates = new Dictionary<string, bool>();
         foreach (var entry in accessoryToggleBindings)
         {
             if (!string.IsNullOrEmpty(entry.ruleName))
-                data.accessoryStates[entry.ruleName] = false;
+                newData.accessoryStates[entry.ruleName] = false;
         }
 
-
-        SaveLoadHandler.Instance.data = data;
+        SaveLoadHandler.Instance.data = newData;
 
         foreach (var handler in AccessoiresHandler.ActiveHandlers)
         {
@@ -331,13 +335,14 @@ public class AvatarSettingsMenu : MonoBehaviour
             handler.ClearAccessoryStatesFromSave();
         }
 
-        SaveLoadHandler.Instance.SaveToDisk(); 
+        SaveLoadHandler.Instance.SaveToDisk();
         LoadSettings();
         ApplySettings();
 
         if (vrmLoader != null)
             vrmLoader.ResetModel();
     }
+
 
 
 
