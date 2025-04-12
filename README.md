@@ -49,7 +49,12 @@ Want to try with a free model?
 
 | Feature                                      | Desktop Mate | Mate Engine |
 |----------------------------------------------|--------------|-------------|
-| Window / Taskbar Sitting                     | ✅           | ❌ (planned)|
+| Custom Shader Support                                  | ❌           | ✅          |
+| Advanced .ME Model Format                                   | ❌           | ✅          |
+| Mod Support                                   | ❌           | ✅          |
+| Custom Model Support (.VRM, .ME)        | ❌           | ✅          |
+| Window Sitting                     | ✅           | ⏸ (In Version 1.5.0)|
+| Taskbar Sitting                    | ✅           | ⏸ |
 | Dragging Animation                            | ✅           | ✅          |
 | Idle Animation                                | ✅           | ✅          |
 | Hiding on Edge of Screen                      | ✅           | ❌          |
@@ -59,14 +64,12 @@ Want to try with a free model?
 | Hand Movement                                 | ✅           | ✅          |
 | Alarm / Timed Animation                       | ✅           | ❌          |
 | Dance Animation                               | ❌           | ✅          |
-| Touch Reactions (Head / Sensitive Area)       | ❌           | ✅          |
-| Sound Effects                                 | ❌           | ✅          |
+| Touch Reactions (Head / Sensitive Area)       | ⏸            | ✅          |
+| Sound Effects                                 | ⏸ (On Paid Models Only)           | ✅          |
 | Particle Effects                              | ❌           | ✅          |
-| Smooth Animation Transitions                  | ❌           | ✅          |
+| Smooth Animation Transitions                  | ❌ (Glitches between Animations)           | ✅          |
 | FPS Control                                   | ❌           | ✅          |
 | Always-on-Top Toggle                          | ❌           | ✅          |
-| Native VRM Loader (Any Model Support)         | ❌           | ✅          |
-| Native Modding Support                        | ❌           | ✅          |
 | Open Source                                   | ❌           | ✅          |
 | Chibi Mode                                    | ❌           | ✅          |
 
