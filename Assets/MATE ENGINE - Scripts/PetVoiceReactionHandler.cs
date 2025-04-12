@@ -20,14 +20,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public bool enableHoverObject = false;
         public GameObject hoverObject;
         public bool bindHoverObjectToBone = false;
+        [Range(0.1f, 10f)] public float despawnAfterSeconds = 5f;
 
         [Header("Layered Sound Settings")]
         public bool enableLayeredSound = false;
         public List<AudioClip> layeredVoiceClips = new();
 
         [HideInInspector] public bool wasHovering = false;
-        [HideInInspector] public Coroutine disableCoroutine;
     }
+
+    public static bool GlobalHoverObjectsEnabled = true;
 
     public Animator avatarAnimator;
     public List<VoiceRegion> regions = new();
@@ -44,18 +46,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
     private AnimatorOverrideController animatorOverrideController;
     private string hoverReactionClipName = "HoverReaction";
     private Camera cachedCamera;
-    private WaitForSeconds wait4s;
+
 
     private void Start()
     {
         if (voiceAudioSource == null)
             voiceAudioSource = gameObject.AddComponent<AudioSource>();
-
         if (layeredAudioSource == null)
             layeredAudioSource = gameObject.AddComponent<AudioSource>();
 
         cachedCamera = Camera.main;
-        wait4s = new WaitForSeconds(4f);
 
         if (avatarAnimator != null)
         {
@@ -71,21 +71,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
         SetupAnimatorOverrideController();
     }
 
-    private void BindHoverObjects()
+private void BindHoverObjects()
+{
+    foreach (var region in regions)
     {
-        foreach (var region in regions)
-        {
-            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
-            if (bone == null) continue;
-
-            if (region.enableHoverObject && region.bindHoverObjectToBone && region.hoverObject != null)
-            {
-                region.hoverObject.transform.SetParent(bone, false);
-                region.hoverObject.transform.localPosition = Vector3.zero;
-                region.hoverObject.transform.localRotation = Quaternion.identity;
-            }
-        }
+        Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
+        if (bone == null) continue;
+        // No parenting or moving hoverObject itself
     }
+}
+
 
     private void SetupAnimatorOverrideController()
     {
@@ -120,22 +115,24 @@ public class PetVoiceReactionHandler : MonoBehaviour
             {
                 PlayRandomVoice(region);
                 TriggerHoverReaction(region, true);
+
+                if (PetVoiceReactionHandler.GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject != null)
+                {
+                    Vector3 spawnPos = region.bindHoverObjectToBone && bone != null ? bone.position : region.hoverObject.transform.position;
+                    Quaternion spawnRot = region.hoverObject.transform.rotation;
+
+                    GameObject clone = Instantiate(region.hoverObject);
+                    clone.transform.position = spawnPos;
+                    clone.transform.rotation = spawnRot;
+                    clone.SetActive(true);
+
+                    if (region.bindHoverObjectToBone && bone != null)
+                        clone.transform.SetParent(bone, true);
+
+                    StartCoroutine(AutoDestroy(clone, region.despawnAfterSeconds));
+                }
             }
 
-            if (region.enableHoverObject && region.hoverObject != null)
-            {
-                if (hovering)
-                {
-                    region.hoverObject.SetActive(true);
-                    if (region.disableCoroutine != null)
-                        StopCoroutine(region.disableCoroutine);
-                    region.disableCoroutine = null;
-                }
-                else if (region.wasHovering && region.disableCoroutine == null)
-                {
-                    region.disableCoroutine = StartCoroutine(DisableHoverObject(region));
-                }
-            }
 
             if (hovering && !region.wasHovering)
             {
@@ -149,14 +146,10 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator DisableHoverObject(VoiceRegion region)
+    private IEnumerator AutoDestroy(GameObject obj, float delay)
     {
-        yield return wait4s;
-        if (!region.wasHovering && region.hoverObject != null)
-        {
-            region.hoverObject.SetActive(false);
-        }
-        region.disableCoroutine = null;
+        yield return new WaitForSeconds(delay);
+        if (obj != null) Destroy(obj);
     }
 
     private bool IsInIdleState()

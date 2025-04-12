@@ -87,14 +87,12 @@ public class SaveLoadHandler : MonoBehaviour
         public float idleSwitchTime = 10f;
         public float idleTransitionTime = 1f;
         public float avatarSize = 1.0f;
-        public bool enableAudioDetection = true;
         public bool enableDancing = true;
         public bool enableMouseTracking = true;
         public int fpsLimit = 90;
         public bool isTopmost = true;
 
         public List<string> allowedApps = new List<string>();
-        public bool fakeHDR = false;
         public bool bloom = false;
         public bool dayNight = true;
 
@@ -138,7 +136,6 @@ public class SaveLoadHandler : MonoBehaviour
             avatar.SOUND_THRESHOLD = data.soundThreshold;
             avatar.IDLE_SWITCH_TIME = data.idleSwitchTime;
             avatar.IDLE_TRANSITION_TIME = data.idleTransitionTime;
-            avatar.enableAudioDetection = data.enableAudioDetection;
             avatar.enableDancing = data.enableDancing;
             avatar.allowedApps = new List<string>(data.allowedApps);
             avatar.transform.localScale = Vector3.one * data.avatarSize;

@@ -47,8 +47,7 @@ namespace LLMUnitySamples
         public Color playerFontColor = Color.white;
         public Color aiFontColor = Color.white;
 
-
-
+        public ScrollRect scrollRect; // Assign in Inspector
 
 
         void Start()
@@ -108,11 +107,24 @@ namespace LLMUnitySamples
 
         Bubble AddBubble(string message, bool isPlayerMessage)
         {
-            Bubble bubble = new Bubble(chatContainer, isPlayerMessage? playerUI: aiUI, isPlayerMessage? "PlayerBubble": "AIBubble", message);
+            Bubble bubble = new Bubble(chatContainer, isPlayerMessage ? playerUI : aiUI, isPlayerMessage ? "PlayerBubble" : "AIBubble", message);
             chatBubbles.Add(bubble);
             bubble.OnResize(UpdateBubblePositions);
+
+            // Scroll to bottom next frame
+            StartCoroutine(ScrollToBottomNextFrame());
+
+            // Limit to 50 messages
+            if (chatBubbles.Count > 50)
+            {
+                Bubble oldest = chatBubbles[0];
+                oldest.Destroy();
+                chatBubbles.RemoveAt(0);
+            }
+
             return bubble;
         }
+
 
         void ShowLoadedMessages()
         {
@@ -246,6 +258,14 @@ namespace LLMUnitySamples
             Debug.Log("Exit button clicked");
             Application.Quit();
         }
+        IEnumerator ScrollToBottomNextFrame()
+        {
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+            if (scrollRect != null)
+                scrollRect.verticalNormalizedPosition = 0f;
+        }
+
 
         bool onValidateWarning = true;
         void OnValidate()
