@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using VRM;
 using UniVRM10;
+using System.Diagnostics;
 
 public class AvatarGravityController : MonoBehaviour
 {
@@ -21,10 +22,12 @@ public class AvatarGravityController : MonoBehaviour
     private List<VRMSpringBone> springBones = new();
     private List<VRM10SpringBoneJoint> springBoneJoints = new();
     private Vrm10Instance vrm10Instance;
+    private IntPtr unityHWND;
 
     void Start()
     {
         previousWindowPos = GetWindowPosition();
+        unityHWND = Process.GetCurrentProcess().MainWindowHandle;
 
         // VRM0 spring bones
         springBones.AddRange(GetComponentsInChildren<VRMSpringBone>(true));
@@ -66,7 +69,6 @@ public class AvatarGravityController : MonoBehaviour
             joint.m_gravityDir = currentForce.normalized;
             joint.m_gravityPower = currentForce.magnitude;
 
-            // notify the runtime for this joint
             if (vrm10Instance != null && vrm10Instance.Runtime != null)
             {
                 vrm10Instance.Runtime.SpringBone.SetJointLevel(joint.transform, joint.Blittable);
@@ -89,12 +91,9 @@ public class AvatarGravityController : MonoBehaviour
 
     private Vector2Int GetWindowPosition()
     {
-        GetWindowRect(GetActiveWindow(), out RECT rect);
+        GetWindowRect(unityHWND, out RECT rect);
         return new Vector2Int(rect.left, rect.top);
     }
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetActiveWindow();
 
     [DllImport("user32.dll")]
     private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);

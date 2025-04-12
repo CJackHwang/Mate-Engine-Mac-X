@@ -24893,6 +24893,23 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5500079421849817615, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
   m_PrefabInstance: {fileID: 7780268725883506862}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1499361251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37d419263f9d0c4b99c9053518ed100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapThreshold: 400
+  verticalOffset: 0
+  desktopScale: 1
+  snapZoneOffset: {x: 0, y: -125}
+  snapZoneSize: {x: 90, y: 100}
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -59199,6 +59216,7 @@ GameObject:
   - component: {fileID: 8924917334924735497}
   - component: {fileID: 8924917334924735500}
   - component: {fileID: 8924917334924735504}
+  - component: {fileID: 8924917334924735505}
   m_Layer: 10
   m_Name: VRMModel
   m_TagString: Untagged
@@ -82880,6 +82898,22 @@ PrefabInstance:
       propertyPath: preZoneMargin
       value: 38
       objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[6].allowEye
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[6].allowHead
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[6].stateOrParameterName
+      value: WindowSit
+      objectReference: {fileID: 0}
     - target: {fileID: 1268294433761061288, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: dragStopSound
       value: 
@@ -82983,6 +83017,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1499361227}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361251}
   m_SourcePrefab: {fileID: 100100000, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
 --- !u!137 &7783119356818458772
 SkinnedMeshRenderer:
@@ -99880,6 +99917,11 @@ MonoBehaviour:
     allowHead: 1
     allowSpine: 0
     allowEye: 1
+  - stateOrParameterName: WindowSit
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 0
+    allowEye: 1
   headYawLimit: 45
   headPitchLimit: 30
   headSmoothness: 10
@@ -100007,6 +100049,23 @@ MonoBehaviour:
     steamExclusive: 1
     positionOffset: {x: 0, y: 0.35, z: 0}
   featureEnabled: 1
+--- !u!114 &8924917334924735505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d37d419263f9d0c4b99c9053518ed100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapThreshold: 400
+  verticalOffset: 0
+  desktopScale: 1
+  snapZoneOffset: {x: 0, y: -125}
+  snapZoneSize: {x: 90, y: 100}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0
