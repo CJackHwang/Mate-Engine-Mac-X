@@ -12,7 +12,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider,
                   avatarSizeSlider, fpsLimitSlider, petVolumeSlider, effectsVolumeSlider, menuVolumeSlider;
     public Toggle enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle,
-                  enableParticlesToggle, bloomToggle, dayNightToggle;
+                  enableParticlesToggle, bloomToggle, dayNightToggle, enableWindowSittingToggle, enableDiscordRPCToggle;
     public TMP_Dropdown graphicsDropdown;
     public VRMLoader vrmLoader;
     public bool resetAlsoClearsAllowedApps = false;
@@ -138,6 +138,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         petVolumeSlider?.SetValueWithoutNotify(data.petVolume);
         effectsVolumeSlider?.SetValueWithoutNotify(data.effectsVolume);
         menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
+        enableWindowSittingToggle?.SetIsOnWithoutNotify(data.enableWindowSitting);
+        enableDiscordRPCToggle?.SetIsOnWithoutNotify(data.enableDiscordRPC);
+
+
 
         if (graphicsDropdown != null)
         {
@@ -163,6 +167,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.petVolume = petVolumeSlider?.value ?? 1f;
         data.effectsVolume = effectsVolumeSlider?.value ?? 1f;
         data.menuVolume = menuVolumeSlider?.value ?? 1f;
+        data.enableWindowSitting = enableWindowSittingToggle?.isOn ?? false;
+        data.enableDiscordRPC = enableDiscordRPCToggle?.isOn ?? true;
+
+
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -230,8 +238,12 @@ public class AvatarSettingsMenu : MonoBehaviour
             effectsVolume = 1f,
             menuVolume = 1f,
             graphicsQualityLevel = 1,
-            accessoryStates = new Dictionary<string, bool>()
+            enableWindowSitting = false,
+            accessoryStates = new Dictionary<string, bool>(),
+            enableDiscordRPC = true // Add here
         };
+
+        enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
 
         if (!resetAlsoClearsAllowedApps)
             newData.allowedApps = new List<string>(oldData.allowedApps);
@@ -249,9 +261,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
 
         SaveLoadHandler.Instance.SaveToDisk();
-        LoadSettings(); ApplySettings();
+        LoadSettings();
+        ApplySettings();
         if (vrmLoader != null) vrmLoader.ResetModel();
     }
+
     private void AddSliderListeners(Slider slider)
     {
         if (slider == null) return;

@@ -22,6 +22,10 @@ namespace LLMUnitySamples
         public Sprite sprite;
         // public Button stopButton;
 
+        public Material playerMaterial;
+        public Material aiMaterial;
+
+
         private InputBubble inputBubble;
         private List<Bubble> chatBubbles = new List<Bubble>();
         private bool blockInput = true;
@@ -111,10 +115,15 @@ namespace LLMUnitySamples
             chatBubbles.Add(bubble);
             bubble.OnResize(UpdateBubblePositions);
 
-            // Scroll to bottom next frame
+            // Force-find the Image even in children
+            var image = bubble.GetRectTransform().GetComponentInChildren<Image>(true);
+            if (image != null)
+            {
+                image.material = isPlayerMessage ? playerMaterial : aiMaterial;
+            }
+
             StartCoroutine(ScrollToBottomNextFrame());
 
-            // Limit to 50 messages
             if (chatBubbles.Count > 50)
             {
                 Bubble oldest = chatBubbles[0];
@@ -124,7 +133,6 @@ namespace LLMUnitySamples
 
             return bubble;
         }
-
 
         void ShowLoadedMessages()
         {

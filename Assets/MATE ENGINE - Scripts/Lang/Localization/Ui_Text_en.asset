@@ -130,6 +130,23 @@ MonoBehaviour:
     m_Localized: Language
     m_Metadata:
       m_Items: []
+  - m_Id: 1494319580045312
+    m_Localized: Experimental
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494291876667392
+    m_Localized: Load Mod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494394716807168
+    m_Localized: Window Sitting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494416451690496
+    m_Localized: Tracking Window Positions May Result In Bans In Games With Anti-Cheat
+      Software.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

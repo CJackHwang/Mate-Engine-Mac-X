@@ -51,20 +51,61 @@ public class DiscordPresence : MonoBehaviour
     private RichPresence presence;
     private string lastState = "";
     private Animator cachedAnimator;
+    private bool wasRPCEnabled = false;
 
     void Start()
     {
-        client = new DiscordRpcClient(appId);
-        client.Initialize();
-
-        ResolveAnimator();
-        UpdatePresence(force: true);
+        wasRPCEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
+        if (wasRPCEnabled)
+        {
+            client = new DiscordRpcClient(appId);
+            client.Initialize();
+            ResolveAnimator();
+            UpdatePresence(force: true);
+        }
     }
 
     void Update()
     {
-        UpdatePresence();
+        bool isEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
+
+        if (isEnabled != wasRPCEnabled)
+        {
+            wasRPCEnabled = isEnabled;
+
+            if (isEnabled)
+            {
+                client = new DiscordRpcClient(appId);
+                client.Initialize();
+                ResolveAnimator(); // initial try
+                UpdatePresence(force: true);
+                Debug.Log("[DiscordPresence] Enabled and client initialized at runtime.");
+            }
+            else
+            {
+                if (client != null)
+                {
+                    client.ClearPresence();
+                    client.Dispose();
+                    client = null;
+                    Debug.Log("[DiscordPresence] Disabled and client disposed at runtime.");
+                }
+            }
+        }
+
+        // Ensure animator resolves eventually
+        if (wasRPCEnabled && client != null)
+        {
+            if (cachedAnimator == null)
+            {
+                ResolveAnimator();
+                if (cachedAnimator == null) return; // still not ready
+            }
+
+            UpdatePresence();
+        }
     }
+
 
     void ResolveAnimator()
     {
@@ -174,11 +215,20 @@ public class DiscordPresence : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        if (client != null)
+        try
         {
-            client.ClearPresence();
-            client.Dispose();
-            Debug.Log("[DiscordPresence] Presence cleared and client disposed.");
+            if (client != null)
+            {
+                client.ClearPresence();
+                client.Dispose(); // This is sufficient
+                client = null;
+                Debug.Log("[DiscordPresence] Presence cleared and client disposed.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("[DiscordPresence] Error during Discord shutdown: " + ex);
         }
     }
+
 }

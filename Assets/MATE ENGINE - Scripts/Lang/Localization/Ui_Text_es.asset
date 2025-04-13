@@ -130,6 +130,23 @@ MonoBehaviour:
     m_Localized: Idioma
     m_Metadata:
       m_Items: []
+  - m_Id: 1494291876667392
+    m_Localized: Cargar mod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494416451690496
+    m_Localized: Rastrear posiciones de ventanas puede resultar en baneos en juegos
+      con software antitrampas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494394716807168
+    m_Localized: La mascota puede sentarse en las ventanas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494319580045312
+    m_Localized: "Configuraci\xF3n experimental"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
