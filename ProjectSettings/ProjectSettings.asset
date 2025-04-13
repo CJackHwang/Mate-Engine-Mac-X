@@ -43,8 +43,8 @@ PlayerSettings:
   - logo: {fileID: 10404, guid: 0000000000000000f000000000000000, type: 0}
     duration: 2
   - logo: {fileID: 21300000, guid: b97c753c236d6b547984a7528a9b0579, type: 3}
-    duration: 2
-  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: af1bb1a58915997479a2994b9195f12a, type: 3}
+    duration: 3
+  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: a8ea8f23a1821a445a4f5c4b7cc67fa5, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1536
   defaultScreenHeight: 1024
@@ -737,7 +737,7 @@ PlayerSettings:
   monoEnv: 
   splashScreenBackgroundSourceLandscape: {fileID: 21300000, guid: a8ea8f23a1821a445a4f5c4b7cc67fa5, type: 3}
   splashScreenBackgroundSourcePortrait: {fileID: 0}
-  blurSplashScreenBackground: 1
+  blurSplashScreenBackground: 0
   spritePackerPolicy: 
   webGLMemorySize: 16
   webGLExceptionSupport: 1
