@@ -16,6 +16,9 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public List<AudioClip> voiceClips = new();
         public AnimationClip hoverAnimation;
 
+        [Header("Face Animation (optional)")]
+        public AnimationClip faceAnimation;
+
         [Header("Hover Object Settings")]
         public bool enableHoverObject = false;
         public GameObject hoverObject;
@@ -40,13 +43,14 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public string dragStateName = "isDragging";
     public string danceStateName = "isDancing";
     public string hoverTriggerParam = "HoverTrigger";
+    public string hoverFaceTriggerParam = "HoverFaceTrigger";
 
     public bool showDebugGizmos = true;
 
     private AnimatorOverrideController animatorOverrideController;
     private string hoverReactionClipName = "HoverReaction";
+    private string hoverFaceClipName = "HoverFace";
     private Camera cachedCamera;
-
 
     private void Start()
     {
@@ -71,16 +75,14 @@ public class PetVoiceReactionHandler : MonoBehaviour
         SetupAnimatorOverrideController();
     }
 
-private void BindHoverObjects()
-{
-    foreach (var region in regions)
+    private void BindHoverObjects()
     {
-        Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
-        if (bone == null) continue;
-        // No parenting or moving hoverObject itself
+        foreach (var region in regions)
+        {
+            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
+            if (bone == null) continue;
+        }
     }
-}
-
 
     private void SetupAnimatorOverrideController()
     {
@@ -115,8 +117,9 @@ private void BindHoverObjects()
             {
                 PlayRandomVoice(region);
                 TriggerHoverReaction(region, true);
+                TriggerFaceReaction(region, true);
 
-                if (PetVoiceReactionHandler.GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject != null)
+                if (GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject != null)
                 {
                     Vector3 spawnPos = region.bindHoverObjectToBone && bone != null ? bone.position : region.hoverObject.transform.position;
                     Quaternion spawnRot = region.hoverObject.transform.rotation;
@@ -133,7 +136,6 @@ private void BindHoverObjects()
                 }
             }
 
-
             if (hovering && !region.wasHovering)
             {
                 region.wasHovering = true;
@@ -141,25 +143,10 @@ private void BindHoverObjects()
             else if (!hovering && region.wasHovering)
             {
                 TriggerHoverReaction(region, false);
+                TriggerFaceReaction(region, false);
                 region.wasHovering = false;
             }
         }
-    }
-
-    private IEnumerator AutoDestroy(GameObject obj, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (obj != null) Destroy(obj);
-    }
-
-    private bool IsInIdleState()
-    {
-        if (avatarAnimator == null) return false;
-        if (avatarAnimator.GetBool(dragStateName)) return false;
-        if (avatarAnimator.GetBool(danceStateName)) return false;
-
-        AnimatorStateInfo info = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        return info.IsName(idleStateName);
     }
 
     private void TriggerHoverReaction(VoiceRegion region, bool state)
@@ -180,6 +167,42 @@ private void BindHoverObjects()
 
         animatorOverrideController.ApplyOverrides(overrides);
         avatarAnimator.SetBool(hoverTriggerParam, state);
+    }
+
+    private void TriggerFaceReaction(VoiceRegion region, bool state)
+    {
+        if (region.faceAnimation == null || animatorOverrideController == null) return;
+
+        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        animatorOverrideController.GetOverrides(overrides);
+
+        for (int i = 0; i < overrides.Count; i++)
+        {
+            if (overrides[i].Key != null && overrides[i].Key.name == hoverFaceClipName)
+            {
+                overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(overrides[i].Key, region.faceAnimation);
+                break;
+            }
+        }
+
+        animatorOverrideController.ApplyOverrides(overrides);
+        avatarAnimator.SetBool(hoverFaceTriggerParam, state);
+    }
+
+    private IEnumerator AutoDestroy(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (obj != null) Destroy(obj);
+    }
+
+    private bool IsInIdleState()
+    {
+        if (avatarAnimator == null) return false;
+        if (avatarAnimator.GetBool(dragStateName)) return false;
+        if (avatarAnimator.GetBool(danceStateName)) return false;
+
+        AnimatorStateInfo info = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        return info.IsName(idleStateName);
     }
 
     private void PlayRandomVoice(VoiceRegion region)

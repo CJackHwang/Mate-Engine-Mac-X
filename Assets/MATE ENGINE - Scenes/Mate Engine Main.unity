@@ -28173,6 +28173,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 12d43b9bd2bce7e4bb21480737a75289, type: 3}
     - {fileID: 8300000, guid: a11b9567942a319429e077e92ce422a5, type: 3}
     hoverAnimation: {fileID: 7400000, guid: a5e8cc322431f4b43aa7762aab58f93d, type: 2}
+    faceAnimation: {fileID: 7400000, guid: b8bab687ad1fe4544bb5a05a4c78e825, type: 2}
     enableHoverObject: 1
     hoverObject: {fileID: 6313297988267904684}
     bindHoverObjectToBone: 1
@@ -28195,6 +28196,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: df6a9bf6a2119624ba42e29adad8ea83, type: 3}
     - {fileID: 8300000, guid: 780403cc2ef954c459c41ecb4b277600, type: 3}
     hoverAnimation: {fileID: 7400000, guid: b66f0269d52c2b140a5a7135e3a5df76, type: 2}
+    faceAnimation: {fileID: 0}
     enableHoverObject: 0
     hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
@@ -28214,6 +28216,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d53d85d4407004141bd13fece130ee46, type: 3}
     - {fileID: 8300000, guid: ee768ab1b58337548800696f718fe344, type: 3}
     hoverAnimation: {fileID: 0}
+    faceAnimation: {fileID: 0}
     enableHoverObject: 0
     hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
@@ -28233,6 +28236,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: d53d85d4407004141bd13fece130ee46, type: 3}
     - {fileID: 8300000, guid: ee768ab1b58337548800696f718fe344, type: 3}
     hoverAnimation: {fileID: 0}
+    faceAnimation: {fileID: 0}
     enableHoverObject: 0
     hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
@@ -28246,6 +28250,7 @@ MonoBehaviour:
   dragStateName: isDragging
   danceStateName: isDancing
   hoverTriggerParam: HoverTrigger
+  hoverFaceTriggerParam: HoverFaceTrigger
   showDebugGizmos: 1
 --- !u!1 &1763954100
 GameObject:
@@ -84303,6 +84308,14 @@ PrefabInstance:
       propertyPath: preZoneMargin
       value: 38
       objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: allowedStates.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: 'allowedStates.Array.data[1]'
+      value: Drag
+      objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: trackingPermissions.Array.size
       value: 7
@@ -84355,6 +84368,10 @@ PrefabInstance:
       propertyPath: regions.Array.data[0].hoverObject
       value: 
       objectReference: {fileID: 6313297988267904684}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: regions.Array.data[0].faceAnimation
+      value: 
+      objectReference: {fileID: 7400000, guid: b8bab687ad1fe4544bb5a05a4c78e825, type: 2}
     - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: attachTarget
       value: 
@@ -101246,7 +101263,6 @@ MonoBehaviour:
   elbowHintHeightOffset: -0.05
   allowedStates:
   - Idle
-  - HoverReaction
   - Drag
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
