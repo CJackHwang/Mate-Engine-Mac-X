@@ -175,6 +175,77 @@ MonoBehaviour:
     m_Localized: "\uD55C\uAD6D\uC5B4"
     m_Metadata:
       m_Items: []
+  - m_Id: 2011903232565248
+    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012023386791936
+    m_Localized: "Diese App befindet sich noch in der Entwicklung, und mit der Zeit
+      k\xF6nnten neue Funktionen hinzukommen. Sie wurde von der Anime-Community f\xFCr
+      die Anime-Community entwickelt. Es kann einige kleinere Probleme geben \u2013
+      wenn du welche findest, kannst du sie \xFCber das Optionen-Men\xFC melden,
+      indem du mit der rechten Maustaste auf das Haustier klickst und das Fehler-Symbol
+      ausw\xE4hlst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012176361447424
+    m_Localized: So benutzt du MateEngine (Speedrun)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012219415977984
+    m_Localized: "MateEngine ist super einfach zu bedienen! Klicke einfach mit der
+      rechten Maustaste, um das Optionsmen\xFC zu \xF6ffnen. Dort kannst du die Avatargr\xF6\xDFe
+      \xE4ndern, Effekte aktivieren oder deaktivieren, Apps auf die Whitelist setzen,
+      die deinen Avatar tanzen lassen d\xFCrfen, oder Mods und eigene VRM-/ME-Modelldateien
+      laden. Im n\xE4chsten Schritt zeige ich dir, wie du eigene Avatare l\xE4dst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012314333077504
+    m_Localized: Eigene Modelle verwenden 1/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012317843709952
+    m_Localized: "Um ein eigenes Modell zu verwenden, brauchst du eine .VRM-Datei.
+      Du kannst benutzerdefinierte VRM-Modelle auf Webseiten wie Booth.jp und VRoidHub
+      herunterladen. Sobald du eine .VRM-Datei hast, \xF6ffne das Optionsmen\xFC
+      und klicke auf den \u201EVRM\u201C-Button. Dadurch \xF6ffnet sich der Datei-Explorer,
+      in dem du deine Datei ausw\xE4hlen kannst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012431912001536
+    m_Localized: Eigene Modelle verwenden 2/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012464099090432
+    m_Localized: "Manchmal kann es passieren, dass eine .VRM-Datei nicht geladen
+      wird. Das liegt meist nicht an MateEngine, sondern an falschen Shadern oder
+      einer fehlerhaften Armatur beim Export. In solchen F\xE4llen solltest du die
+      offizielle UniVRM-Dokumentation pr\xFCfen. Manche Programme versuchen, defekte
+      Modelle zu reparieren \u2013 MateEngine tut das nicht (und wird es auch nicht).
+      Du bist selbst daf\xFCr verantwortlich, dass dein VRM korrekt exportiert ist."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024289331044352
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024320264036352
+    m_Localized: "\xDCberspringen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024395421769728
+    m_Localized: Fertig
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024529517862912
+    m_Localized: "Zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024532080582656
+    m_Localized: Weiter
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

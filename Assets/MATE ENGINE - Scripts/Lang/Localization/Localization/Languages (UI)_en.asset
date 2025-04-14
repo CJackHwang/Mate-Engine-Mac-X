@@ -175,6 +175,72 @@ MonoBehaviour:
     m_Localized: "\uD55C\uAD6D\uC5B4"
     m_Metadata:
       m_Items: []
+  - m_Id: 2011903232565248
+    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012023386791936
+    m_Localized: "This is a work-in-progress app, and new features may be added over
+      time. It was made by the anime community, for the anime community. There might
+      be some small issues here and there \u2014 if you find any, you can report
+      them from the Options menu by right-clicking the pet and clicking the bug icon."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012176361447424
+    m_Localized: How to Use MateEngine (Speedrun)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012219415977984
+    m_Localized: "Using MateEngine is really easy! Just right-click to open the Options
+      menu. There, you can change the avatar size, enable or disable effects, whitelist
+      apps that can make your avatar dance, or load mods and custom VRM/ME model
+      files. In the next step, I\u2019ll explain how to load custom avatars."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012314333077504
+    m_Localized: Using Custom Models 1/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012317843709952
+    m_Localized: To use your own custom model, you need a .VRM file. You can download
+      custom .VRM models from websites like Booth.jp and VRoidHub. Once you have
+      a .VRM file, open the Options menu and click the 'VRM' button. This will open
+      the file explorer, where you can select your VRM file.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012431912001536
+    m_Localized: Using Custom Models 2/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012464099090432
+    m_Localized: "Sometimes a .VRM file might fail to load. This usually isn\u2019t
+      a MateEngine issue, it\u2019s often due to incorrect shaders or armature setup
+      during export. If this happens, check the official UniVRM documentation. Some
+      apps use fallback methods to fix broken models, but MateEngine doesn't (and
+      won\u2019t). You're responsible for making sure your VRM is properly exported."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024320264036352
+    m_Localized: Skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024395421769728
+    m_Localized: Finish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024529517862912
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024532080582656
+    m_Localized: Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024289331044352
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

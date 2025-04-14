@@ -171,6 +171,58 @@ MonoBehaviour:
     m_Key: LANG_KOREAN
     m_Metadata:
       m_Items: []
+  - m_Id: 2011903232565248
+    m_Key: TUT_INTRO_TITLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012023386791936
+    m_Key: TUT_INTRO_TEXT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012176361447424
+    m_Key: TUT_HOW_TO_TITLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012219415977984
+    m_Key: TUT_HOW_TO_TEXT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012314333077504
+    m_Key: TUT_VRM_01_TITLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012317843709952
+    m_Key: TUT_VRM_01_TEXT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012431912001536
+    m_Key: TUT_VRM_02_TITLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012464099090432
+    m_Key: TUT_VRM_02_TEXT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024289331044352
+    m_Key: LANGUAGE_INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024320264036352
+    m_Key: SKIP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024395421769728
+    m_Key: FINISH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024529517862912
+    m_Key: BACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024532080582656
+    m_Key: NEXT
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

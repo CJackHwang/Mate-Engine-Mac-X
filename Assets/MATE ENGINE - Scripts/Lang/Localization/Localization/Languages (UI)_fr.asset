@@ -175,6 +175,79 @@ MonoBehaviour:
     m_Localized: "\uD55C\uAD6D\uC5B4"
     m_Metadata:
       m_Items: []
+  - m_Id: 2011903232565248
+    m_Localized: "Bienvenue sur \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012023386791936
+    m_Localized: "Cette application est en cours de d\xE9veloppement, et de nouvelles
+      fonctionnalit\xE9s pourraient \xEAtre ajout\xE9es au fil du temps. Elle a \xE9t\xE9
+      cr\xE9\xE9e par la communaut\xE9 anime, pour la communaut\xE9 anime. Il peut
+      y avoir quelques petits probl\xE8mes \u2014 si vous en trouvez, vous pouvez
+      les signaler dans le menu Options en faisant un clic droit sur le compagnon
+      et en cliquant sur l'ic\xF4ne de bug."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012176361447424
+    m_Localized: Comment utiliser MateEngine (Speedrun)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012219415977984
+    m_Localized: "Utiliser MateEngine est vraiment simple ! Faites un clic droit
+      pour ouvrir le menu Options. Vous pouvez y modifier la taille de l\u2019avatar,
+      activer ou d\xE9sactiver les effets, mettre en liste blanche les applications
+      autoris\xE9es \xE0 faire danser l\u2019avatar, ou charger des mods et des fichiers
+      de mod\xE8les VRM/ME personnalis\xE9s. \xC0 l\u2019\xE9tape suivante, je vous
+      expliquerai comment charger un avatar personnalis\xE9."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012314333077504
+    m_Localized: "Utiliser des mod\xE8les personnalis\xE9s 1/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012317843709952
+    m_Localized: "Pour utiliser votre propre mod\xE8le personnalis\xE9, vous avez
+      besoin d\u2019un fichier .VRM. Vous pouvez en t\xE9l\xE9charger depuis des
+      sites comme Booth.jp ou VRoidHub. Une fois le fichier obtenu, ouvrez le menu
+      Options et cliquez sur le bouton \"VRM\". Cela ouvrira l\u2019explorateur de
+      fichiers o\xF9 vous pourrez s\xE9lectionner votre fichier."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012431912001536
+    m_Localized: "Utiliser des mod\xE8les personnalis\xE9s 2/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2012464099090432
+    m_Localized: "Il arrive qu\u2019un fichier .VRM ne se charge pas correctement.
+      Ce n\u2019est g\xE9n\xE9ralement pas un probl\xE8me li\xE9 \xE0 MateEngine,
+      mais plut\xF4t \xE0 une mauvaise configuration des shaders ou de l\u2019armature
+      lors de l\u2019exportation. Si cela se produit, consultez la documentation
+      officielle d\u2019UniVRM. Certaines applications essaient de corriger les mod\xE8les
+      d\xE9fectueux, mais MateEngine ne le fait pas (et ne le fera pas). Il vous
+      revient de vous assurer que votre VRM est bien export\xE9."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024289331044352
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024320264036352
+    m_Localized: Passer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024395421769728
+    m_Localized: v
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024529517862912
+    m_Localized: Retour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2024532080582656
+    m_Localized: Suivant
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

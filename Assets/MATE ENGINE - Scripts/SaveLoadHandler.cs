@@ -106,7 +106,7 @@ public class SaveLoadHandler : MonoBehaviour
 
         public bool enableDiscordRPC = true;
 
-
+        public bool tutorialDone = false; // NEW: Save flag for tutorial completion
 
         public string selectedLocaleCode = "en"; // Default to English
 

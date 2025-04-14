@@ -5,11 +5,11 @@ public class MoveCanvasHandler : MonoBehaviour
     [Tooltip("GameObject that enables UniWindow drag movement")]
     public GameObject moveCanvas;
 
-    void Update()
+    private void Update()
     {
         if (!moveCanvas) return;
 
-        bool shouldBeActive = !AvatarSettingsMenu.IsMenuOpen;
+        bool shouldBeActive = !AvatarSettingsMenu.IsMenuOpen && !TutorialMenu.IsActive;
 
         if (moveCanvas.activeSelf != shouldBeActive)
         {
