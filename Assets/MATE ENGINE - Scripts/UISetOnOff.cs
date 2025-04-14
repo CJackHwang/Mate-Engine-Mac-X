@@ -4,24 +4,17 @@ using System.Collections.Generic;
 public class UISetOnOff : MonoBehaviour
 {
     public GameObject target;
-
-    // This shows up as a no-arg function in the OnClick list
     public void ToggleTarget()
     {
         if (target != null)
             target.SetActive(!target.activeSelf);
     }
-
-    // Optional: for OnClick(GameObject) style binding
     public void SetOnOff(GameObject obj)
     {
         if (obj != null)
             obj.SetActive(!obj.activeSelf);
     }
 
-    // === NEW METHODS FOR ACCESSOIRES ===
-
-    // Toggle accessory state on all active AccessoiresHandlers by rule name
     public void ToggleAccessoryByName(string ruleName)
     {
         foreach (var handler in AccessoiresHandler.ActiveHandlers)
@@ -37,7 +30,6 @@ public class UISetOnOff : MonoBehaviour
         }
     }
 
-    // Set accessory state explicitly on all active AccessoiresHandlers by rule name
     public void SetAccessoryState(string ruleName, bool state)
     {
         foreach (var handler in AccessoiresHandler.ActiveHandlers)
@@ -50,6 +42,21 @@ public class UISetOnOff : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+    public void CloseApp()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+    public void OpenWebsite(string url)
+    {
+        if (!string.IsNullOrEmpty(url))
+        {
+            Application.OpenURL(url);
         }
     }
 }

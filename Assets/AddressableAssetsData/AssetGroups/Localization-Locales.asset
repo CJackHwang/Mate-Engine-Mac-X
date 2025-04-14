@@ -21,8 +21,32 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16fe7814a7819144f92088c982e15c92
+    m_Address: French (fr)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7029f7bd18c27a24b93019b195c6403e
     m_Address: Japanese (ja)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f3913ac8cb137444b3d95e5ca3f62dd
+    m_Address: German (de)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5b97fcfb6db98343abdf1f48fbf8ddd
+    m_Address: Korean (ko)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf3862ce40e8b004188bca27b31c0171
+    m_Address: Chinese (Simplified) (zh)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

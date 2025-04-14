@@ -16,7 +16,8 @@ MonoBehaviour:
   m_GUID: edfcf261175c7f740afeb8cce5f28ac9
   m_SerializeEntries:
   - m_GUID: 698e167bd107c3a40a5376082f2e2f35
-    m_Address: Assets/MATE ENGINE - Scripts/Lang/Localization/Ui_Text Shared Data.asset
+    m_Address: Assets/MATE ENGINE - Scripts/Lang/Localization/Localization/Ui_Text
+      Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Languages (UI)_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 698e167bd107c3a40a5376082f2e2f35, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 96968105984
+    m_Localized: MATE ENGINE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11105833312256
+    m_Localized: "Tiempo de cambio de animaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11236599128064
+    m_Localized: "Tiempo de trans. de animaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11239019241472
+    m_Localized: Umbral de Volumen para bailar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11241108004864
+    m_Localized: Avatar siempre al frente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11243918188544
+    m_Localized: Avatar puede bailar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11244643803136
+    m_Localized: Cabeza sigue al mouse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11245205839872
+    m_Localized: "Tama\xF1o del avatar"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11245612687360
+    m_Localized: Guardar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11321839968256
+    m_Localized: Huesos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11796140253184
+    m_Localized: "L\xEDmite FPS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11320741060608
+    m_Localized: Restablecer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11321303097344
+    m_Localized: "Pol\xEDgo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23418267230208
+    m_Localized: Ajustes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23684911718400
+    m_Localized: Vol. de mascota
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24123241652224
+    m_Localized: Vol. de efectos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24123816271872
+    m_Localized: "Vol. del men\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24124437028864
+    m_Localized: "Gr\xE1ficos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24125049397248
+    m_Localized: Ultra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24125577879552
+    m_Localized: Muy alto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24126186053632
+    m_Localized: Alto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24126735507456
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24509532856320
+    m_Localized: Bajo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24510153613312
+    m_Localized: DLC de Steam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24510665318400
+    m_Localized: Aureola floral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27326909767680
+    m_Localized: "A\xF1adir"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27328117727232
+    m_Localized: Eliminar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37370367827968
+    m_Localized: Idioma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494291876667392
+    m_Localized: Cargar mod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494416451690496
+    m_Localized: Rastrear posiciones de ventanas puede resultar en baneos en juegos
+      con software antitrampas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494394716807168
+    m_Localized: Puede sentarse en ventanas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1494319580045312
+    m_Localized: "Configuraci\xF3n experimental"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971210921435136
+    m_Localized: Discord Presencia Enriquecida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971386927013888
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971392559964160
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971393197498368
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971466828505088
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1971391947595776
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1982288996851712
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
