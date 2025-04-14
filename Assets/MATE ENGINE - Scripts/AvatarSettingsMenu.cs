@@ -240,8 +240,10 @@ public class AvatarSettingsMenu : MonoBehaviour
             graphicsQualityLevel = 1,
             enableWindowSitting = false,
             accessoryStates = new Dictionary<string, bool>(),
-            enableDiscordRPC = true // Add here
+            enableDiscordRPC = true,
+            tutorialDone = oldData.tutorialDone // ← Preserve tutorial state
         };
+
 
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
 
