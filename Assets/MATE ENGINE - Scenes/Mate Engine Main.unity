@@ -30937,7 +30937,7 @@ MonoBehaviour:
   animator: {fileID: 5823227879768727422}
   SOUND_THRESHOLD: 0.2
   allowedApps: []
-  totalIdleAnimations: 11
+  totalIdleAnimations: 16
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 8
@@ -87777,6 +87777,10 @@ PrefabInstance:
       propertyPath: particleEffectObject
       value: 
       objectReference: {fileID: 1104080579}
+    - target: {fileID: 7532452377583339955, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: totalIdleAnimations
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8285868103383508146, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6379544
