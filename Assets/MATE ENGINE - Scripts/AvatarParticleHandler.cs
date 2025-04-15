@@ -9,99 +9,107 @@ public class AvatarParticleHandler : MonoBehaviour
         public string stateOrParameterName;
         public bool useParameter = false;
         public HumanBodyBones targetBone;
-        public List<GameObject> linkedObjects = new List<GameObject>();
+        public List<GameObject> linkedObjects = new();
     }
 
     public Animator animator;
-    public List<ParticleRule> rules = new List<ParticleRule>();
+    public List<ParticleRule> rules = new();
     public bool featureEnabled = true;
 
-    private class BoneTracking
+    private struct RuleCache
     {
         public Transform bone;
-        public List<GameObject> objects = new List<GameObject>();
+        public GameObject[] objects;
+        public int parameterIndex;
+        public bool useParameter;
+        public string stateName;
     }
 
-    private Dictionary<ParticleRule, BoneTracking> trackingMap = new Dictionary<ParticleRule, BoneTracking>();
+    private RuleCache[] ruleCache = System.Array.Empty<RuleCache>();
+    private AnimatorControllerParameter[] animatorParams;
 
     void Start()
     {
         if (animator == null) animator = GetComponent<Animator>();
+        animatorParams = animator.parameters;
 
-        foreach (var rule in rules)
+        var cacheList = new List<RuleCache>(rules.Count);
+        for (int i = 0; i < rules.Count; i++)
         {
-            Transform boneTransform = animator.GetBoneTransform(rule.targetBone);
-            if (boneTransform != null)
-            {
-                BoneTracking tracking = new BoneTracking
-                {
-                    bone = boneTransform,
-                    objects = new List<GameObject>(rule.linkedObjects)
-                };
+            var rule = rules[i];
+            var bone = animator.GetBoneTransform(rule.targetBone);
+            if (bone == null) continue;
 
-                foreach (var obj in tracking.objects)
+            var objs = new List<GameObject>();
+            for (int j = 0; j < rule.linkedObjects.Count; j++)
+            {
+                var obj = rule.linkedObjects[j];
+                if (obj != null)
                 {
-                    if (obj != null)
+                    obj.SetActive(false);
+                    objs.Add(obj);
+                }
+            }
+
+            int paramIndex = -1;
+            if (rule.useParameter)
+            {
+                for (int p = 0; p < animatorParams.Length; p++)
+                {
+                    if (animatorParams[p].type == AnimatorControllerParameterType.Bool &&
+                        animatorParams[p].name == rule.stateOrParameterName)
                     {
-                        obj.SetActive(false); // Initially inactive
+                        paramIndex = p;
+                        break;
                     }
                 }
-
-                trackingMap[rule] = tracking;
             }
+
+            cacheList.Add(new RuleCache
+            {
+                bone = bone,
+                objects = objs.ToArray(),
+                parameterIndex = paramIndex,
+                useParameter = rule.useParameter,
+                stateName = rule.stateOrParameterName
+            });
         }
+
+        ruleCache = cacheList.ToArray();
     }
 
     void Update()
     {
-        if (!featureEnabled) return;
+        if (!featureEnabled || animator == null) return;
 
-        foreach (var kvp in trackingMap)
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        for (int i = 0; i < ruleCache.Length; i++)
         {
-            ParticleRule rule = kvp.Key;
-            BoneTracking tracking = kvp.Value;
+            ref var rule = ref ruleCache[i];
+            bool isActive = false;
 
-            bool shouldBeActive = false;
-
-            if (rule.useParameter)
+            if (rule.useParameter && rule.parameterIndex >= 0)
             {
-                if (animator.HasParameter(rule.stateOrParameterName, AnimatorControllerParameterType.Bool))
-                {
-                    shouldBeActive = animator.GetBool(rule.stateOrParameterName);
-                }
+                isActive = animator.GetBool(animatorParams[rule.parameterIndex].name);
             }
             else
             {
-                AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-                shouldBeActive = state.IsName(rule.stateOrParameterName);
+                isActive = stateInfo.IsName(rule.stateName);
             }
 
-            foreach (var obj in tracking.objects)
+            for (int j = 0; j < rule.objects.Length; j++)
             {
-                if (obj != null)
-                {
-                    obj.SetActive(shouldBeActive);
+                var obj = rule.objects[j];
+                if (obj == null) continue;
 
-                    if (shouldBeActive)
-                    {
-                        obj.transform.position = tracking.bone.position;
-                        obj.transform.rotation = tracking.bone.rotation;
-                    }
+                obj.SetActive(isActive);
+                if (isActive)
+                {
+                    obj.transform.position = rule.bone.position;
+                    obj.transform.rotation = rule.bone.rotation;
                 }
             }
         }
-    }
-}
-
-public static class AnimatorExtensions
-{
-    public static bool HasParameter(this Animator animator, string paramName, AnimatorControllerParameterType type)
-    {
-        foreach (var param in animator.parameters)
-        {
-            if (param.name == paramName && param.type == type)
-                return true;
-        }
-        return false;
     }
 }

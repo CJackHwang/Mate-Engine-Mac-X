@@ -30935,16 +30935,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5823227879768727422}
-  enableAudioDetection: 1
   SOUND_THRESHOLD: 0.2
   allowedApps: []
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
-  enableDragging: 1
-  enableDancing: 1
-  enableDebugLogging: 0
   DANCE_CLIP_COUNT: 8
+  enableDancing: 1
   isDragging: 0
   isDancing: 0
   isIdle: 0
@@ -31001,6 +30998,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: bf7915bba2418404da85a36bc0a2c3aa, type: 3}
     - {fileID: 8300000, guid: 5c712606c89cced409c03fe37b971784, type: 3}
     wasHovering: 0
+    bone: {fileID: 0}
   - name: Intimate Down
     targetBone: 7
     offset: {x: 0, y: -0.1, z: 0}
@@ -31020,6 +31018,7 @@ MonoBehaviour:
     enableLayeredSound: 0
     layeredVoiceClips: []
     wasHovering: 0
+    bone: {fileID: 0}
   - name: Left Hand Smile
     targetBone: 17
     offset: {x: 0, y: 0, z: 0}
@@ -31040,6 +31039,7 @@ MonoBehaviour:
     enableLayeredSound: 0
     layeredVoiceClips: []
     wasHovering: 0
+    bone: {fileID: 0}
   - name: Right Hand Smile
     targetBone: 18
     offset: {x: 0, y: 0, z: 0}
@@ -31060,6 +31060,7 @@ MonoBehaviour:
     enableLayeredSound: 0
     layeredVoiceClips: []
     wasHovering: 0
+    bone: {fileID: 0}
   voiceAudioSource: {fileID: 817462139}
   layeredAudioSource: {fileID: 438021438}
   idleStateName: Idle
@@ -87766,7 +87767,7 @@ PrefabInstance:
       objectReference: {fileID: 9000000, guid: 1da04ebca770d0b4fa87ca3b1d45c673, type: 2}
     - target: {fileID: 5500079421849817615, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6905094604719294301, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: audioSource
@@ -104650,7 +104651,7 @@ MonoBehaviour:
   - Drag
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
-  gizmoColor: {r: 0, g: 0.892854, b: 1, a: 1}
+  gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
 --- !u!114 &8924917334924735497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105168,7 +105169,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6313297988267904684}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -105177,7 +105178,7 @@ Transform:
   - {fileID: 3141229092733974170}
   - {fileID: 8045676490764002084}
   m_Father: {fileID: 919112466}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9103228338241895373
 GameObject:
   m_ObjectHideFlags: 0

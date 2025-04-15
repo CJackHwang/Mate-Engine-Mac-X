@@ -6,57 +6,29 @@ using System.Collections;
 
 public class AvatarAnimatorController : MonoBehaviour
 {
-    [Header("General Settings")]
-    public Animator animator;
-    public bool enableAudioDetection = true;
-    public float SOUND_THRESHOLD = 0.02f;
-    public List<string> allowedApps = new List<string>();
+    public Animator animator; public float SOUND_THRESHOLD = 0.02f;
+    public List<string> allowedApps = new(); public int totalIdleAnimations = 10;
+    public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
+    public int DANCE_CLIP_COUNT = 5; public bool enableDancing = true;
 
-    [Header("Idle Animation Settings")]
-    public int totalIdleAnimations = 10;
-    public float IDLE_SWITCH_TIME = 12f;
-    public float IDLE_TRANSITION_TIME = 3f;
+    private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex"), isIdleParam = Animator.StringToHash("isIdle");
 
-    [Header("Drag & Dance Settings")]
-    public bool enableDragging = true;
-    public bool enableDancing = true;
-
-    [Header("Debug Logging")]
-    public bool enableDebugLogging = false;
-
-    [Header("Dance BlendTree Settings")]
-    public int DANCE_CLIP_COUNT = 5;
-    private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
-
-    public bool isDragging = false;
-    public bool isDancing = false;
-    public bool isIdle = false;
-
-    private MMDevice defaultDevice;
-    private float lastSoundCheckTime = 0f;
+    public bool isDragging = false, isDancing = false, isIdle = false;
+    private MMDevice defaultDevice; private MMDeviceEnumerator enumerator;
+    private float lastSoundCheckTime = 0f, idleTimer = 0f;
     private const float SOUND_CHECK_INTERVAL = 0.25f;
-
-    private float idleTimer = 0f;
     private int idleState = 0;
+    private Coroutine soundCheckCoroutine, idleTransitionCoroutine;
 
-    private Coroutine soundCheckCoroutine;
-    private Coroutine idleTransitionCoroutine;
-    private MMDeviceEnumerator enumerator;
-
-    private static readonly int isIdleParam = Animator.StringToHash("isIdle");
 
     void OnEnable()
     {
-        if (animator == null)
-            animator = GetComponent<Animator>();
-
+        if (animator == null) animator = GetComponent<Animator>();
         Application.runInBackground = true;
 
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
-
-        if (soundCheckCoroutine == null)
-            soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
+        soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
 
     void OnDisable() => CleanupAudioResources();
@@ -65,15 +37,12 @@ public class AvatarAnimatorController : MonoBehaviour
 
     private IEnumerator CheckSoundContinuously()
     {
+        WaitForSeconds wait = new WaitForSeconds(SOUND_CHECK_INTERVAL);
         while (true)
         {
-            if (enableAudioDetection)
-            {
-                UpdateDefaultDevice();
-                CheckForSound();
-            }
-
-            yield return new WaitForSeconds(SOUND_CHECK_INTERVAL);
+            UpdateDefaultDevice();
+            CheckForSound();
+            yield return wait;
         }
     }
 
@@ -84,47 +53,35 @@ public class AvatarAnimatorController : MonoBehaviour
             defaultDevice?.Dispose();
             defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         }
-        catch (System.Exception ex)
-        {
-            LogError("Failed to get default audio device: " + ex.Message);
-            defaultDevice = null;
-        }
+        catch { defaultDevice = null; }
     }
 
     void CheckForSound()
     {
-        if (AvatarSettingsMenu.IsMenuOpen)
+        if (AvatarSettingsMenu.IsMenuOpen || !enableDancing)
         {
             if (isDancing)
             {
                 isDancing = false;
                 animator.SetBool("isDancing", false);
-                Log("Stopped dancing due to open settings menu.");
             }
             return;
         }
 
         if (defaultDevice == null) return;
-
         bool isValidSoundPlaying = IsValidAppPlaying();
 
         if (!isDragging)
         {
-            if (isValidSoundPlaying && enableDancing && !isDancing)
-            {
+            if (isValidSoundPlaying && !isDancing)
                 StartDancing();
-            }
             else if (!isValidSoundPlaying && isDancing)
             {
-                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                bool isInDanceState = stateInfo.IsName("Dancing");
-                bool isTransitioning = animator.IsInTransition(0);
-
-                if (!isInDanceState && !isTransitioning)
+                var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (!stateInfo.IsName("Dancing") && !animator.IsInTransition(0))
                 {
                     isDancing = false;
                     animator.SetBool("isDancing", false);
-                    Log("Stopped dancing (fully exited state).");
                 }
             }
         }
@@ -134,18 +91,13 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         isDancing = true;
         animator.SetBool("isDancing", true);
-
-        int randomDanceIndex = Random.Range(0, DANCE_CLIP_COUNT);
-        animator.SetFloat(danceIndexParam, randomDanceIndex);
-
-        Log($"Started dancing with index: {randomDanceIndex}");
+        animator.SetFloat(danceIndexParam, Random.Range(0, DANCE_CLIP_COUNT));
     }
 
     bool IsValidAppPlaying()
     {
         if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
             return isDancing;
-
         lastSoundCheckTime = Time.time;
 
         try
@@ -154,30 +106,26 @@ public class AvatarAnimatorController : MonoBehaviour
             for (int i = 0; i < sessions.Count; i++)
             {
                 var session = sessions[i];
-                float peak = session.AudioMeterInformation.MasterPeakValue;
-                if (peak <= SOUND_THRESHOLD) continue;
+                if (session.AudioMeterInformation.MasterPeakValue <= SOUND_THRESHOLD) continue;
 
-                int processId = (int)session.GetProcessID;
-                if (processId == 0) continue;
+                int pid = (int)session.GetProcessID;
+                if (pid == 0) continue;
 
-                Process process = null;
-                try { process = Process.GetProcessById(processId); }
+                Process process;
+                try { process = Process.GetProcessById(pid); }
                 catch { continue; }
 
-                if (process == null) continue;
+                string pname = process?.ProcessName;
+                if (string.IsNullOrEmpty(pname)) continue;
 
-                string processName = process.ProcessName;
                 for (int j = 0; j < allowedApps.Count; j++)
                 {
-                    if (processName.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
+                    if (pname.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
                         return true;
                 }
             }
         }
-        catch (System.Exception ex)
-        {
-            LogError("Error checking audio sessions: " + ex.Message);
-        }
+        catch { }
 
         return false;
     }
@@ -186,22 +134,12 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         if (AvatarSettingsMenu.IsMenuOpen)
         {
-            if (isDragging)
-            {
-                isDragging = false;
-                animator.SetBool("isDragging", false);
-            }
-
-            if (isDancing)
-            {
-                isDancing = false;
-                animator.SetBool("isDancing", false);
-            }
-
+            if (isDragging) { isDragging = false; animator.SetBool("isDragging", false); }
+            if (isDancing) { isDancing = false; animator.SetBool("isDancing", false); }
             return;
         }
 
-        if (enableDragging && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             isDragging = true;
             animator.SetBool("isDragging", true);
@@ -209,7 +147,7 @@ public class AvatarAnimatorController : MonoBehaviour
             isDancing = false;
         }
 
-        if (enableDragging && Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             isDragging = false;
             animator.SetBool("isDragging", false);
@@ -221,19 +159,14 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             idleTimer = 0f;
             int nextState = (idleState + 1) % totalIdleAnimations;
-
             if (nextState == 0)
-            {
                 animator.SetFloat("IdleIndex", 0);
-            }
             else
             {
                 if (idleTransitionCoroutine != null)
                     StopCoroutine(idleTransitionCoroutine);
-
                 idleTransitionCoroutine = StartCoroutine(SmoothIdleTransition(nextState));
             }
-
             idleState = nextState;
         }
 
@@ -242,31 +175,25 @@ public class AvatarAnimatorController : MonoBehaviour
 
     private void UpdateIdleStatus()
     {
-        if (animator == null) return;
-
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        var state = animator.GetCurrentAnimatorStateInfo(0);
         bool inIdle = state.IsName("Idle");
-
         if (isIdle != inIdle)
         {
             isIdle = inIdle;
             animator.SetBool(isIdleParam, isIdle);
-            Log($"Animator state is now: {(isIdle ? "Idle" : "Not Idle")}");
         }
     }
 
     private IEnumerator SmoothIdleTransition(int newIdleState)
     {
-        float elapsedTime = 0f;
-        float startValue = animator.GetFloat("IdleIndex");
-
-        while (elapsedTime < IDLE_TRANSITION_TIME)
+        float elapsed = 0f;
+        float start = animator.GetFloat("IdleIndex");
+        while (elapsed < IDLE_TRANSITION_TIME)
         {
-            elapsedTime += Time.deltaTime;
-            animator.SetFloat("IdleIndex", Mathf.Lerp(startValue, newIdleState, elapsedTime / IDLE_TRANSITION_TIME));
+            elapsed += Time.deltaTime;
+            animator.SetFloat("IdleIndex", Mathf.Lerp(start, newIdleState, elapsed / IDLE_TRANSITION_TIME));
             yield return null;
         }
-
         animator.SetFloat("IdleIndex", newIdleState);
     }
 
@@ -274,34 +201,9 @@ public class AvatarAnimatorController : MonoBehaviour
 
     private void CleanupAudioResources()
     {
-        if (soundCheckCoroutine != null)
-        {
-            StopCoroutine(soundCheckCoroutine);
-            soundCheckCoroutine = null;
-        }
-
-        if (idleTransitionCoroutine != null)
-        {
-            StopCoroutine(idleTransitionCoroutine);
-            idleTransitionCoroutine = null;
-        }
-
-        defaultDevice?.Dispose();
-        defaultDevice = null;
-
-        enumerator?.Dispose();
-        enumerator = null;
-    }
-
-    private void Log(string message)
-    {
-        if (!enableDebugLogging) return;
-        UnityEngine.Debug.Log("[AvatarAnimatorController] " + message);
-    }
-
-    private void LogError(string message)
-    {
-        if (!enableDebugLogging) return;
-        UnityEngine.Debug.LogError("[AvatarAnimatorController] " + message);
+        if (soundCheckCoroutine != null) { StopCoroutine(soundCheckCoroutine); soundCheckCoroutine = null; }
+        if (idleTransitionCoroutine != null) { StopCoroutine(idleTransitionCoroutine); idleTransitionCoroutine = null; }
+        defaultDevice?.Dispose(); defaultDevice = null;
+        enumerator?.Dispose(); enumerator = null;
     }
 }

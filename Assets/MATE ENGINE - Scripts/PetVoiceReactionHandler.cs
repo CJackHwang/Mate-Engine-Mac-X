@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class PetVoiceReactionHandler : MonoBehaviour
 {
@@ -15,228 +15,224 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public Color gizmoColor = new Color(1f, 0.5f, 0f, 0.25f);
         public List<AudioClip> voiceClips = new();
         public AnimationClip hoverAnimation;
-
-        [Header("Face Animation (optional)")]
         public AnimationClip faceAnimation;
-
-        [Header("Hover Object Settings")]
         public bool enableHoverObject = false;
         public GameObject hoverObject;
         public bool bindHoverObjectToBone = false;
         [Range(0.1f, 10f)] public float despawnAfterSeconds = 5f;
-
-        [Header("Layered Sound Settings")]
         public bool enableLayeredSound = false;
         public List<AudioClip> layeredVoiceClips = new();
-
         [HideInInspector] public bool wasHovering = false;
+        [HideInInspector] public Transform bone;
     }
 
-    public static bool GlobalHoverObjectsEnabled = true;
+    private class HoverInstance { public GameObject obj; public float despawnTime; }
 
+    public static bool GlobalHoverObjectsEnabled = true;
     public Animator avatarAnimator;
     public List<VoiceRegion> regions = new();
     public AudioSource voiceAudioSource;
     public AudioSource layeredAudioSource;
-
     public string idleStateName = "Idle";
     public string dragStateName = "isDragging";
     public string danceStateName = "isDancing";
     public string hoverTriggerParam = "HoverTrigger";
     public string hoverFaceTriggerParam = "HoverFaceTrigger";
-
     public bool showDebugGizmos = true;
 
-    private AnimatorOverrideController animatorOverrideController;
-    private string hoverReactionClipName = "HoverReaction";
-    private string hoverFaceClipName = "HoverFace";
     private Camera cachedCamera;
+    private readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
+    private AnimatorOverrideController overrideController;
+    private bool hasSetup = false;
 
-    private void Start()
+    void Start()
     {
-        if (voiceAudioSource == null)
-            voiceAudioSource = gameObject.AddComponent<AudioSource>();
-        if (layeredAudioSource == null)
-            layeredAudioSource = gameObject.AddComponent<AudioSource>();
-
-        cachedCamera = Camera.main;
-
-        if (avatarAnimator != null)
-        {
-            BindHoverObjects();
-            SetupAnimatorOverrideController();
-        }
+        if (!hasSetup) TrySetup();
     }
 
     public void SetAnimator(Animator newAnimator)
     {
         avatarAnimator = newAnimator;
-        BindHoverObjects();
-        SetupAnimatorOverrideController();
+        hasSetup = false;
+        //TrySetup();
     }
 
-    private void BindHoverObjects()
+    void TrySetup()
     {
+        if (avatarAnimator == null) return;
+        if (voiceAudioSource == null) voiceAudioSource = gameObject.AddComponent<AudioSource>();
+        if (layeredAudioSource == null) layeredAudioSource = gameObject.AddComponent<AudioSource>();
+        cachedCamera = Camera.main;
+
+        var baseController = avatarAnimator.runtimeAnimatorController;
+        if (baseController == null) return;
+
+        if (baseController is AnimatorOverrideController oc)
+        {
+            overrideController = oc;
+        }
+        else
+        {
+            overrideController = new AnimatorOverrideController(baseController);
+            avatarAnimator.runtimeAnimatorController = overrideController;
+        }
+
         foreach (var region in regions)
         {
-            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
-            if (bone == null) continue;
+            region.bone = avatarAnimator.GetBoneTransform(region.targetBone);
+            if (region.enableHoverObject && region.hoverObject != null)
+            {
+                pool[region] = new List<HoverInstance>();
+                for (int i = 0; i < 4; i++)
+                {
+                    var clone = Instantiate(region.hoverObject);
+                    if (region.bindHoverObjectToBone && region.bone != null)
+                    {
+                        clone.transform.SetParent(region.bone, false);
+                        clone.transform.localPosition = Vector3.zero;
+                    }
+                    clone.SetActive(false);
+                    pool[region].Add(new HoverInstance { obj = clone, despawnTime = -1f });
+                }
+            }
         }
+
+        hasSetup = true;
     }
 
-    private void SetupAnimatorOverrideController()
+    void Update()
     {
-        if (avatarAnimator.runtimeAnimatorController == null) return;
-        animatorOverrideController = new AnimatorOverrideController(avatarAnimator.runtimeAnimatorController);
-        avatarAnimator.runtimeAnimatorController = animatorOverrideController;
-    }
-
-    private void Update()
-    {
+        if (!hasSetup) TrySetup();
         if (cachedCamera == null || avatarAnimator == null) return;
 
-        foreach (var region in regions)
+        Vector2 mouse = Input.mousePosition;
+
+        for (int r = 0; r < regions.Count; r++)
         {
-            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
-            if (bone == null) continue;
+            var region = regions[r];
+            if (region.bone == null) continue;
 
-            Vector3 localOffset = bone.TransformVector(region.offset);
-            Vector3 worldPoint = bone.position + localOffset + region.worldOffset;
-            Vector2 screenPoint = cachedCamera.WorldToScreenPoint(worldPoint);
-
-            float scaleFactor = bone.lossyScale.magnitude;
-            float scaledRadius = region.hoverRadius * scaleFactor;
-            Vector3 offsetWorld = worldPoint + cachedCamera.transform.right * scaledRadius;
-            Vector2 screenOffset = cachedCamera.WorldToScreenPoint(offsetWorld);
-            float screenRadius = Vector2.Distance(screenPoint, screenOffset);
-            float cursorDist = Vector2.Distance(Input.mousePosition, screenPoint);
-
-            bool hovering = cursorDist < screenRadius;
+            Vector3 world = region.bone.position + region.bone.TransformVector(region.offset) + region.worldOffset;
+            Vector2 screen = cachedCamera.WorldToScreenPoint(world);
+            float scale = region.bone.lossyScale.magnitude;
+            float radius = region.hoverRadius * scale;
+            Vector2 edge = cachedCamera.WorldToScreenPoint(world + cachedCamera.transform.right * radius);
+            float screenRadius = Vector2.Distance(screen, edge);
+            float dist = Vector2.Distance(mouse, screen);
+            bool hovering = dist <= screenRadius;
 
             if (hovering && !region.wasHovering && IsInIdleState())
             {
+                region.wasHovering = true;
+                TriggerAnim(region, true);
                 PlayRandomVoice(region);
-                TriggerHoverReaction(region, true);
-                TriggerFaceReaction(region, true);
 
                 if (GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject != null)
                 {
-                    Vector3 spawnPos = region.bindHoverObjectToBone && bone != null ? bone.position : region.hoverObject.transform.position;
-                    Quaternion spawnRot = region.hoverObject.transform.rotation;
+                    var list = pool[region];
+                    HoverInstance chosen = null;
 
-                    GameObject clone = Instantiate(region.hoverObject);
-                    clone.transform.position = spawnPos;
-                    clone.transform.rotation = spawnRot;
-                    clone.SetActive(true);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (!list[i].obj.activeSelf)
+                        {
+                            chosen = list[i];
+                            break;
+                        }
+                    }
 
-                    if (region.bindHoverObjectToBone && bone != null)
-                        clone.transform.SetParent(bone, true);
+                    if (chosen == null)
+                    {
+                        float oldest = float.MaxValue;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (list[i].despawnTime < oldest)
+                            {
+                                oldest = list[i].despawnTime;
+                                chosen = list[i];
+                            }
+                        }
+                    }
 
-                    StartCoroutine(AutoDestroy(clone, region.despawnAfterSeconds));
+                    if (chosen != null)
+                    {
+                        if (!region.bindHoverObjectToBone)
+                            chosen.obj.transform.position = world;
+                        chosen.obj.SetActive(false);
+                        chosen.obj.SetActive(true);
+                        chosen.despawnTime = Time.time + region.despawnAfterSeconds;
+                    }
                 }
-            }
-
-            if (hovering && !region.wasHovering)
-            {
-                region.wasHovering = true;
             }
             else if (!hovering && region.wasHovering)
             {
-                TriggerHoverReaction(region, false);
-                TriggerFaceReaction(region, false);
                 region.wasHovering = false;
+                TriggerAnim(region, false);
             }
         }
-    }
 
-    private void TriggerHoverReaction(VoiceRegion region, bool state)
-    {
-        if (region.hoverAnimation == null || animatorOverrideController == null) return;
-
-        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        animatorOverrideController.GetOverrides(overrides);
-
-        for (int i = 0; i < overrides.Count; i++)
+        foreach (var region in regions)
         {
-            if (overrides[i].Key != null && overrides[i].Key.name == hoverReactionClipName)
+            if (!region.enableHoverObject || !pool.ContainsKey(region)) continue;
+            var list = pool[region];
+            for (int i = 0; i < list.Count; i++)
             {
-                overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(overrides[i].Key, region.hoverAnimation);
-                break;
+                if (list[i].obj.activeSelf && Time.time >= list[i].despawnTime)
+                {
+                    list[i].obj.SetActive(false);
+                    list[i].despawnTime = -1f;
+                }
             }
         }
-
-        animatorOverrideController.ApplyOverrides(overrides);
-        avatarAnimator.SetBool(hoverTriggerParam, state);
     }
 
-    private void TriggerFaceReaction(VoiceRegion region, bool state)
+    void TriggerAnim(VoiceRegion region, bool state)
     {
-        if (region.faceAnimation == null || animatorOverrideController == null) return;
-
-        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        animatorOverrideController.GetOverrides(overrides);
-
-        for (int i = 0; i < overrides.Count; i++)
+        if (region.hoverAnimation != null && overrideController != null)
         {
-            if (overrides[i].Key != null && overrides[i].Key.name == hoverFaceClipName)
-            {
-                overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(overrides[i].Key, region.faceAnimation);
-                break;
-            }
+            overrideController["HoverReaction"] = region.hoverAnimation;
+            avatarAnimator.SetBool(hoverTriggerParam, state);
         }
-
-        animatorOverrideController.ApplyOverrides(overrides);
-        avatarAnimator.SetBool(hoverFaceTriggerParam, state);
+        if (region.faceAnimation != null && overrideController != null)
+        {
+            overrideController["HoverFace"] = region.faceAnimation;
+            avatarAnimator.SetBool(hoverFaceTriggerParam, state);
+        }
     }
 
-    private IEnumerator AutoDestroy(GameObject obj, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (obj != null) Destroy(obj);
-    }
-
-    private bool IsInIdleState()
-    {
-        if (avatarAnimator == null) return false;
-        if (avatarAnimator.GetBool(dragStateName)) return false;
-        if (avatarAnimator.GetBool(danceStateName)) return false;
-
-        AnimatorStateInfo info = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        return info.IsName(idleStateName);
-    }
-
-    private void PlayRandomVoice(VoiceRegion region)
+    void PlayRandomVoice(VoiceRegion region)
     {
         if (region.voiceClips.Count > 0 && !voiceAudioSource.isPlaying)
         {
-            AudioClip clip = region.voiceClips[Random.Range(0, region.voiceClips.Count)];
-            voiceAudioSource.clip = clip;
+            voiceAudioSource.clip = region.voiceClips[Random.Range(0, region.voiceClips.Count)];
             voiceAudioSource.Play();
         }
 
         if (region.enableLayeredSound && region.layeredVoiceClips.Count > 0)
         {
-            AudioClip layeredClip = region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)];
-            layeredAudioSource.PlayOneShot(layeredClip);
+            layeredAudioSource.PlayOneShot(region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)]);
         }
     }
 
+    bool IsInIdleState()
+    {
+        if (avatarAnimator == null) return false;
+        if (avatarAnimator.GetBool(dragStateName)) return false;
+        if (avatarAnimator.GetBool(danceStateName)) return false;
+        return avatarAnimator.GetCurrentAnimatorStateInfo(0).IsName(idleStateName);
+    }
+
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         if (!showDebugGizmos || !Application.isPlaying || cachedCamera == null || avatarAnimator == null) return;
-
         foreach (var region in regions)
         {
-            Transform bone = avatarAnimator.GetBoneTransform(region.targetBone);
-            if (bone == null) continue;
-
-            float scaleFactor = bone.lossyScale.magnitude;
-            float scaledRadius = region.hoverRadius * scaleFactor;
-            Vector3 worldPoint = bone.position + bone.TransformVector(region.offset) + region.worldOffset;
-
+            if (region.bone == null) continue;
+            float scale = region.bone.lossyScale.magnitude;
+            Vector3 center = region.bone.position + region.bone.TransformVector(region.offset) + region.worldOffset;
             Gizmos.color = region.gizmoColor;
-            Gizmos.DrawWireSphere(worldPoint, scaledRadius);
+            Gizmos.DrawWireSphere(center, region.hoverRadius * scale);
         }
     }
 #endif

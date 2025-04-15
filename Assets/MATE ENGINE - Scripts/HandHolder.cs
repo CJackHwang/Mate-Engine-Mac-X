@@ -1,38 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
 
 [RequireComponent(typeof(Animator))]
 public class HandHolder : MonoBehaviour
 {
-    [Header("Screen-Space Interaction")]
-    [Tooltip("Main radius (pixels) for full IK grabbing.")]
-    public float screenInteractionRadius = 30f;
-
-    [Tooltip("Extra margin (pixels) for partial IK fade-out beyond main radius.")]
-    public float preZoneMargin = 30f;
-
-    [Tooltip("Speed for the hand to follow the mouse target.")]
-    public float followSpeed = 10f;
-
-    [Header("Blending")]
-    public float maxIKWeight = 1f;
-    public float blendInTime = 1f;
-    public float blendOutTime = 1f;
-
-    [Header("Forward Reach Settings")]
-    public float maxHandDistance = 0.8f;
-    public float minForwardOffset = 0.2f;
-    public float verticalOffset = 0.05f;
-
-    [Header("Elbow Hint Settings (Outward Bend)")]
-    public float elbowHintDistance = 0.25f;
-    public float elbowHintBackOffset = 0.1f;
-    public float elbowHintHeightOffset = -0.05f;
+    [Header("Screen-Space Interaction")] public float screenInteractionRadius = 30f, preZoneMargin = 30f, followSpeed = 10f;
+    [Header("Blending")] public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
+    [Header("Forward Reach Settings")] public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
+    [Header("Elbow Hint Settings")] public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
 
     [Header("Allowed Animator States")]
-    [Tooltip("Any animator states in this list will allow hand IK.")]
-    public List<string> allowedStates = new List<string> { "Idle", "HoverReaction" };
+    public string[] allowedStates = { "Idle", "HoverReaction" };
 
     [Header("Animator Source")]
     public Animator avatarAnimator;
@@ -44,22 +21,21 @@ public class HandHolder : MonoBehaviour
     private Camera mainCam;
     private Transform leftHand, rightHand, chest, leftShoulder, rightShoulder;
     private Vector3 leftTargetPos, rightTargetPos;
-    private float leftIKWeight = 0f, rightIKWeight = 0f;
+    private float leftIKWeight, rightIKWeight;
 
-    // Exclusive control: only one hand can be grabbed at once
-    private bool leftIsActive = false;
-    private bool rightIsActive = false;
+    private bool leftIsActive, rightIsActive;
 
     void Start()
     {
-        if (avatarAnimator == null)
-            avatarAnimator = GetComponent<Animator>();
-
         mainCam = Camera.main;
+        CacheTransforms();
+    }
+
+    void CacheTransforms()
+    {
         leftHand = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
         rightHand = avatarAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest)
-                      ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
+        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest) ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
         leftShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
         rightShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.RightUpperArm);
     }
@@ -67,92 +43,68 @@ public class HandHolder : MonoBehaviour
     public void SetAnimator(Animator newAnimator)
     {
         avatarAnimator = newAnimator;
-        mainCam = Camera.main;
-        leftHand = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftHand);
-        rightHand = avatarAnimator.GetBoneTransform(HumanBodyBones.RightHand);
-        chest = avatarAnimator.GetBoneTransform(HumanBodyBones.Chest)
-                      ?? avatarAnimator.GetBoneTransform(HumanBodyBones.Spine);
-        leftShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
-        rightShoulder = avatarAnimator.GetBoneTransform(HumanBodyBones.RightUpperArm);
+        CacheTransforms(); // Ensure hand/chest bones get refreshed after assignment
     }
 
     void Update()
     {
         if (!IsValid()) return;
 
-        // Check if current animator state is in the allowed list
         if (!IsInAllowedState())
         {
-            // Fade out both hands
             leftIKWeight = Mathf.MoveTowards(leftIKWeight, 0f, Time.deltaTime / blendOutTime);
             rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
             return;
         }
 
-        // Convert each hand's world position to screen coords
-        Vector2 leftScreenPos = mainCam.WorldToScreenPoint(leftHand.position);
-        Vector2 rightScreenPos = mainCam.WorldToScreenPoint(rightHand.position);
         Vector2 mousePos = Input.mousePosition;
+        float leftWeight = ComputeScreenWeight((mousePos - (Vector2)mainCam.WorldToScreenPoint(leftHand.position)).sqrMagnitude);
+        float rightWeight = ComputeScreenWeight((mousePos - (Vector2)mainCam.WorldToScreenPoint(rightHand.position)).sqrMagnitude);
 
-        // We'll compute a desired weight for each hand
-        float leftDesiredWeight = ComputeScreenWeight(Vector2.Distance(mousePos, leftScreenPos));
-        float rightDesiredWeight = ComputeScreenWeight(Vector2.Distance(mousePos, rightScreenPos));
-
-        // EXCLUSIVE control
-        if (leftDesiredWeight > rightDesiredWeight)
+        if (leftWeight > rightWeight)
         {
-            leftIsActive = leftDesiredWeight > 0f;
+            leftIsActive = leftWeight > 0f;
             rightIsActive = false;
-            rightDesiredWeight = 0f;
+            rightWeight = 0f;
         }
         else
         {
-            rightIsActive = rightDesiredWeight > 0f;
+            rightIsActive = rightWeight > 0f;
             leftIsActive = false;
-            leftDesiredWeight = 0f;
+            leftWeight = 0f;
         }
 
-        float dt = Time.deltaTime;
-        leftIKWeight = Mathf.MoveTowards(leftIKWeight, leftDesiredWeight, dt / (leftDesiredWeight > leftIKWeight ? blendInTime : blendOutTime));
-        rightIKWeight = Mathf.MoveTowards(rightIKWeight, rightDesiredWeight, dt / (rightDesiredWeight > rightIKWeight ? blendInTime : blendOutTime));
+        leftIKWeight = Mathf.MoveTowards(leftIKWeight, leftWeight, Time.deltaTime / (leftWeight > leftIKWeight ? blendInTime : blendOutTime));
+        rightIKWeight = Mathf.MoveTowards(rightIKWeight, rightWeight, Time.deltaTime / (rightWeight > rightIKWeight ? blendInTime : blendOutTime));
 
-        Vector3 worldTarget = GetProjectedMouseTarget();
-        if (leftIsActive)
-            leftTargetPos = Vector3.Lerp(leftTargetPos, worldTarget, dt * followSpeed);
-        if (rightIsActive)
-            rightTargetPos = Vector3.Lerp(rightTargetPos, worldTarget, dt * followSpeed);
+        Vector3 target = GetProjectedMouseTarget();
+        if (leftIsActive) leftTargetPos = Vector3.Lerp(leftTargetPos, target, Time.deltaTime * followSpeed);
+        if (rightIsActive) rightTargetPos = Vector3.Lerp(rightTargetPos, target, Time.deltaTime * followSpeed);
     }
+
 
     bool IsInAllowedState()
     {
-        if (avatarAnimator == null || allowedStates.Count == 0) return false;
-
-        var currentInfo = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-
-        // Check if the current state's name matches any item in allowedStates
-        // (This requires the exact state name in your Animator)
-        return allowedStates.Any(stateName => currentInfo.IsName(stateName));
+        AnimatorStateInfo current = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        for (int i = 0; i < allowedStates.Length; i++)
+            if (current.IsName(allowedStates[i])) return true;
+        return false;
     }
 
-    private float ComputeScreenWeight(float distPixels)
+    float ComputeScreenWeight(float sqrDistPixels)
     {
-        float mainZone = screenInteractionRadius;
-        float outerZone = screenInteractionRadius + preZoneMargin;
+        float mainZone = screenInteractionRadius * screenInteractionRadius;
+        float outerZone = (screenInteractionRadius + preZoneMargin) * (screenInteractionRadius + preZoneMargin);
 
-        if (distPixels <= mainZone)
-            return maxIKWeight;
-        if (distPixels >= outerZone)
-            return 0f;
+        if (sqrDistPixels <= mainZone) return maxIKWeight;
+        if (sqrDistPixels >= outerZone) return 0f;
 
-        float t = (distPixels - mainZone) / (outerZone - mainZone);
-        return Mathf.Lerp(maxIKWeight, 0f, t);
+        return Mathf.Lerp(maxIKWeight, 0f, (Mathf.Sqrt(sqrDistPixels) - screenInteractionRadius) / preZoneMargin);
     }
 
     void OnAnimatorIK(int layerIndex)
     {
-        if (!IsValid()) return;
-
-        if (!IsInAllowedState())
+        if (!IsValid() || !IsInAllowedState())
         {
             ResetIK();
             return;
@@ -160,111 +112,76 @@ public class HandHolder : MonoBehaviour
 
         Quaternion naturalRotation = Quaternion.LookRotation(avatarAnimator.transform.forward, avatarAnimator.transform.up);
 
-        // LEFT
-        if (leftIKWeight > 0f)
-        {
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, leftIKWeight);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, leftIKWeight);
-            avatarAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftTargetPos);
-            avatarAnimator.SetIKRotation(AvatarIKGoal.LeftHand, naturalRotation);
-
-            Vector3 hint = GetElbowHint(leftShoulder, leftTargetPos, true);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, leftIKWeight);
-            avatarAnimator.SetIKHintPosition(AvatarIKHint.LeftElbow, hint);
-        }
-        else
-        {
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
-        }
-
-        // RIGHT
-        if (rightIKWeight > 0f)
-        {
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, rightIKWeight);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, rightIKWeight);
-            avatarAnimator.SetIKPosition(AvatarIKGoal.RightHand, rightTargetPos);
-            avatarAnimator.SetIKRotation(AvatarIKGoal.RightHand, naturalRotation);
-
-            Vector3 hint = GetElbowHint(rightShoulder, rightTargetPos, false);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, rightIKWeight);
-            avatarAnimator.SetIKHintPosition(AvatarIKHint.RightElbow, hint);
-        }
-        else
-        {
-            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
-            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
-            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0f);
-        }
+        ApplyIK(AvatarIKGoal.LeftHand, AvatarIKHint.LeftElbow, leftIKWeight, leftTargetPos, leftShoulder, true, naturalRotation);
+        ApplyIK(AvatarIKGoal.RightHand, AvatarIKHint.RightElbow, rightIKWeight, rightTargetPos, rightShoulder, false, naturalRotation);
     }
 
-    private Vector3 GetElbowHint(Transform shoulder, Vector3 target, bool isLeft)
+    void ApplyIK(AvatarIKGoal hand, AvatarIKHint elbow, float weight, Vector3 targetPos, Transform shoulder, bool isLeft, Quaternion rotation)
+    {
+        avatarAnimator.SetIKPositionWeight(hand, weight);
+        avatarAnimator.SetIKRotationWeight(hand, weight);
+        avatarAnimator.SetIKHintPositionWeight(elbow, weight);
+
+        if (weight <= 0f) return;
+
+        avatarAnimator.SetIKPosition(hand, targetPos);
+        avatarAnimator.SetIKRotation(hand, rotation);
+        avatarAnimator.SetIKHintPosition(elbow, GetElbowHint(shoulder, targetPos, isLeft));
+    }
+
+    Vector3 GetElbowHint(Transform shoulder, Vector3 target, bool isLeft)
     {
         Vector3 toTarget = (target - shoulder.position).normalized;
-        Vector3 up = avatarAnimator.transform.up;
-
-        // Flip cross so arm always bends outward
-        Vector3 bendDir = Vector3.Cross(toTarget, up).normalized;
+        Vector3 bendDir = Vector3.Cross(toTarget, avatarAnimator.transform.up).normalized;
         if (!isLeft) bendDir = -bendDir;
 
-        return shoulder.position
-            + bendDir * elbowHintDistance
+        return shoulder.position + bendDir * elbowHintDistance
             - avatarAnimator.transform.forward * elbowHintBackOffset
             + avatarAnimator.transform.up * elbowHintHeightOffset;
     }
 
-    private Vector3 GetProjectedMouseTarget()
+    Vector3 GetProjectedMouseTarget()
     {
         Vector3 mouse = Input.mousePosition;
         mouse.z = mainCam.WorldToScreenPoint(chest.position).z;
         Vector3 world = mainCam.ScreenToWorldPoint(mouse);
-
         Vector3 local = avatarAnimator.transform.InverseTransformPoint(world);
+
         local.z = Mathf.Clamp(local.z, minForwardOffset, maxHandDistance);
         local.y += verticalOffset;
         return avatarAnimator.transform.TransformPoint(local);
     }
 
-    private bool IsValid()
-    {
-        return avatarAnimator && leftHand && rightHand && chest && leftShoulder && rightShoulder;
-    }
-
-    private void ResetIK()
-    {
-        avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
-        avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
-        avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
-
-        avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
-        avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
-        avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0f);
-    }
-
-    // Same screen gizmo logic as before
     void OnDrawGizmos()
     {
         if (!showDebugGizmos || !Application.isPlaying || !mainCam) return;
+
         Gizmos.color = gizmoColor;
-
-        DrawScreenRadiusSphere(leftHand, screenInteractionRadius);
-        DrawScreenRadiusSphere(leftHand, screenInteractionRadius + preZoneMargin);
-
-        DrawScreenRadiusSphere(rightHand, screenInteractionRadius);
-        DrawScreenRadiusSphere(rightHand, screenInteractionRadius + preZoneMargin);
+        DrawRadiusGizmo(leftHand);
+        DrawRadiusGizmo(rightHand);
     }
 
-    private void DrawScreenRadiusSphere(Transform hand, float screenRadius)
+    void DrawRadiusGizmo(Transform hand)
     {
-        if (hand == null) return;
+        if (!hand) return;
+
         Vector3 screenPos = mainCam.WorldToScreenPoint(hand.position);
-        if (screenPos.z < 0f) return; // behind camera
-
-        Vector3 offsetScreen = screenPos + new Vector3(screenRadius, 0f, 0f);
+        Vector3 offsetScreen = screenPos + new Vector3(screenInteractionRadius, 0f, 0f);
         Vector3 offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
-
         float radiusWorld = Vector3.Distance(hand.position, offsetWorld);
         Gizmos.DrawWireSphere(hand.position, radiusWorld);
+
+        offsetScreen = screenPos + new Vector3(screenInteractionRadius + preZoneMargin, 0f, 0f);
+        offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
+        radiusWorld = Vector3.Distance(hand.position, offsetWorld);
+        Gizmos.DrawWireSphere(hand.position, radiusWorld);
+    }
+
+    bool IsValid() => avatarAnimator && leftHand && rightHand && chest && leftShoulder && rightShoulder;
+
+    void ResetIK()
+    {
+        ApplyIK(AvatarIKGoal.LeftHand, AvatarIKHint.LeftElbow, 0f, Vector3.zero, null, true, Quaternion.identity);
+        ApplyIK(AvatarIKGoal.RightHand, AvatarIKHint.RightElbow, 0f, Vector3.zero, null, false, Quaternion.identity);
     }
 }
