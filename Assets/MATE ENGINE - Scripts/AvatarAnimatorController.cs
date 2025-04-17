@@ -16,9 +16,13 @@ public class AvatarAnimatorController : MonoBehaviour
     public bool isDragging = false, isDancing = false, isIdle = false;
     private MMDevice defaultDevice; private MMDeviceEnumerator enumerator;
     private float lastSoundCheckTime = 0f, idleTimer = 0f;
-    private const float SOUND_CHECK_INTERVAL = 0.25f;
+    private const float SOUND_CHECK_INTERVAL = 2f;
     private int idleState = 0;
     private Coroutine soundCheckCoroutine, idleTransitionCoroutine;
+
+    private float dragLockTimer = 0f;
+    private bool mouseHeld = false;
+
 
     void OnEnable()
     {
@@ -90,40 +94,42 @@ public class AvatarAnimatorController : MonoBehaviour
 
         try
         {
-            if (defaultDevice == null)
-            {
-                defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-            }
+            // Fully refresh the defaultDevice every time to update the session list
+            defaultDevice?.Dispose();
+            defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
 
             var sessions = defaultDevice.AudioSessionManager.Sessions;
-            for (int i = 0; i < sessions.Count; i++)
+            int sessionCount = sessions.Count;
+
+            for (int i = 0; i < sessionCount; i++)
             {
                 var session = sessions[i];
-                if (session.AudioMeterInformation.MasterPeakValue <= SOUND_THRESHOLD) continue;
+
+                float peak = session.AudioMeterInformation.MasterPeakValue;
+                if (peak <= SOUND_THRESHOLD) continue;
 
                 int pid = (int)session.GetProcessID;
                 if (pid == 0) continue;
 
-                Process process;
-                try { process = Process.GetProcessById(pid); }
-                catch { continue; }
-
-                string pname = process?.ProcessName;
-                if (string.IsNullOrEmpty(pname)) continue;
-
-                for (int j = 0; j < allowedApps.Count; j++)
+                try
                 {
-                    if (pname.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
-                        return true;
+                    var process = Process.GetProcessById(pid);
+                    string pname = process?.ProcessName;
+                    if (string.IsNullOrEmpty(pname)) continue;
+
+                    for (int j = 0; j < allowedApps.Count; j++)
+                    {
+                        if (pname.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
                 }
+                catch { continue; }
             }
         }
         catch
         {
-            // Recovery if audio system breaks
             defaultDevice?.Dispose();
-            try { defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); }
-            catch { defaultDevice = null; }
+            defaultDevice = null;
         }
 
         return false;
@@ -139,20 +145,41 @@ public class AvatarAnimatorController : MonoBehaviour
             return;
         }
 
+        // On press
         if (Input.GetMouseButtonDown(0))
         {
             isDragging = true;
+            mouseHeld = true;
+            dragLockTimer = 0.25f;
+
             animator.SetBool("isDragging", true);
             animator.SetBool("isDancing", false);
             isDancing = false;
         }
 
+        // On release
         if (Input.GetMouseButtonUp(0))
         {
-            isDragging = false;
-            animator.SetBool("isDragging", false);
-            animator.SetBool("isDancing", isDancing);
+            mouseHeld = false;
         }
+
+        // During lock
+        if (dragLockTimer > 0f)
+        {
+            dragLockTimer -= Time.deltaTime;
+            animator.SetBool("isDragging", true); // force drag to stay on
+        }
+        else
+        {
+            // After 0.25s, allow clean exit if mouse was released
+            if (!mouseHeld && isDragging)
+            {
+                isDragging = false;
+                animator.SetBool("isDragging", false);
+                animator.SetBool("isDancing", isDancing);
+            }
+        }
+
 
         idleTimer += Time.deltaTime;
         if (idleTimer > IDLE_SWITCH_TIME)
