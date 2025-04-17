@@ -112,8 +112,14 @@ public class AvatarWindowHandler : MonoBehaviour
             if (pinkZoneDesktopRect.Overlaps(topBar))
             {
                 snappedHWND = win.hwnd;
+
+                // X‑Offset wie bisher (frei beweglich)
                 snapOffset.x = unityWindowPosition.x - win.rect.Left;
-                snapOffset.y = win.rect.Top - unityWindowPosition.y;
+                // Y‑Offset fixiert: Unity-Fenster so positionieren,
+                // dass der Mittelpunkt der pinken Zone auf win.rect.Top sitzt
+                snapOffset.y = GetUnityWindowHeight()
+                             + snapZoneOffset.y
+                             + snapZoneSize.y * 0.5f;
 
                 animator.SetBool("isWindowSit", true);
                 SetTopMost(false);
@@ -121,6 +127,7 @@ public class AvatarWindowHandler : MonoBehaviour
             }
         }
     }
+
 
     // Während des Snap-Zustands weiterziehen (freie horizontale Bewegung)
     void FollowSnappedWindowWhileDragging()

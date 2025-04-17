@@ -28004,7 +28004,7 @@ MonoBehaviour:
   snapThreshold: 400
   verticalOffset: 0
   desktopScale: 1
-  snapZoneOffset: {x: 0, y: -125}
+  snapZoneOffset: {x: 0, y: -90}
   snapZoneSize: {x: 90, y: 100}
 --- !u!1 &1502345398
 GameObject:
@@ -105029,7 +105029,7 @@ MonoBehaviour:
   snapThreshold: 400
   verticalOffset: 0
   desktopScale: 1
-  snapZoneOffset: {x: 0, y: -125}
+  snapZoneOffset: {x: 0, y: -90}
   snapZoneSize: {x: 90, y: 100}
 --- !u!4 &8932384755772289895
 Transform:
