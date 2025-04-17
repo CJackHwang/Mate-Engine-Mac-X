@@ -51,13 +51,46 @@ public class AvatarSettingsMenu : MonoBehaviour
         applyButton?.onClick.AddListener(ApplySettings);
         resetButton?.onClick.AddListener(ResetToDefaults);
 
-        foreach (var slider in new[] { soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider, avatarSizeSlider, fpsLimitSlider })
-            AddSliderListeners(slider);
+        soundThresholdSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.soundThreshold = v; SaveAll(); });
+        idleSwitchTimeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.idleSwitchTime = v; SaveAll(); });
+        idleTransitionTimeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.idleTransitionTime = v; SaveAll(); });
+        avatarSizeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.avatarSize = v; SaveAll(); });
+        fpsLimitSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.fpsLimit = (int)v; ApplySettings(); SaveAll(); });
+        petVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.petVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
+        effectsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.effectsVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
+        menuVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.menuVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
 
-        foreach (var toggle in new[] {
-        enableDancingToggle, enableMouseTrackingToggle,
-        isTopmostToggle, enableParticlesToggle
-    }) toggle?.onValueChanged.AddListener(delegate { });
+        enableDancingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDancing = v; SaveAll(); });
+        enableMouseTrackingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableMouseTracking = v; SaveAll(); });
+        isTopmostToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.isTopmost = v; ApplySettings(); SaveAll(); });
+        enableParticlesToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableParticles = v; ApplySettings(); SaveAll(); });
+        bloomToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.bloom = v; ApplySettings(); SaveAll(); });
+        dayNightToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.dayNight = v; ApplySettings(); SaveAll(); });
+        enableWindowSittingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableWindowSitting = v; SaveAll(); });
+        enableDiscordRPCToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDiscordRPC = v; SaveAll(); });
+
+        graphicsDropdown?.onValueChanged.AddListener(i => {
+            SaveLoadHandler.Instance.data.graphicsQualityLevel = i;
+            QualitySettings.SetQualityLevel(i, true);
+            SaveAll();
+        });
+
+        foreach (var entry in accessoryToggleBindings)
+        {
+            if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null)
+            {
+                string key = entry.ruleName;
+                entry.toggle.onValueChanged.AddListener(v =>
+                {
+                    SaveLoadHandler.Instance.data.accessoryStates[key] = v;
+                    foreach (var handler in AccessoiresHandler.ActiveHandlers)
+                        foreach (var rule in handler.rules)
+                            if (rule.ruleName == key) { rule.isEnabled = v; break; }
+                    SaveAll();
+                });
+            }
+        }
+
 
         if (graphicsDropdown != null)
         {
@@ -100,6 +133,13 @@ public class AvatarSettingsMenu : MonoBehaviour
         SaveLoadHandler.Instance.SaveToDisk();
     }
 
+    private void SaveAll()
+    {
+        SaveLoadHandler.Instance.SaveToDisk();
+        SaveLoadHandler.ApplyAllSettingsToAllAvatars();
+    }
+
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(1) && menuPanel != null)
@@ -140,8 +180,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
         enableWindowSittingToggle?.SetIsOnWithoutNotify(data.enableWindowSitting);
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(data.enableDiscordRPC);
-
-
 
         if (graphicsDropdown != null)
         {
@@ -264,18 +302,11 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         SaveLoadHandler.Instance.SaveToDisk();
         LoadSettings();
+
+        FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
+
         ApplySettings();
         if (vrmLoader != null) vrmLoader.ResetModel();
-    }
-
-    private void AddSliderListeners(Slider slider)
-    {
-        if (slider == null) return;
-        var trigger = slider.gameObject.GetComponent<EventTrigger>() ?? slider.gameObject.AddComponent<EventTrigger>();
-        var down = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-        down.callback.AddListener((eventData) => { }); trigger.triggers.Add(down);
-        var up = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
-        up.callback.AddListener((eventData) => { }); trigger.triggers.Add(up);
     }
 
     private void UpdateAllCategoryVolumes()

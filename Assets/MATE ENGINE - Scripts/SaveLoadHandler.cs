@@ -157,13 +157,17 @@ public class SaveLoadHandler : MonoBehaviour
                 handler.enabled = data.enableParticles;
             }
 
-            if (avatar.animator != null)
+            if (avatar.animator != null &&
+                avatar.animator.isActiveAndEnabled &&
+                avatar.animator.runtimeAnimatorController != null)
             {
                 avatar.animator.SetBool("isDancing", false);
                 avatar.animator.SetBool("isDragging", false);
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }
+
+
         }
     }
 

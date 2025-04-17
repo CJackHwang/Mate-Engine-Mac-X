@@ -20,14 +20,13 @@ public class AvatarAnimatorController : MonoBehaviour
     private int idleState = 0;
     private Coroutine soundCheckCoroutine, idleTransitionCoroutine;
 
-
     void OnEnable()
     {
         if (animator == null) animator = GetComponent<Animator>();
         Application.runInBackground = true;
 
         enumerator = new MMDeviceEnumerator();
-        UpdateDefaultDevice();
+        defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); // << Add this
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
 
@@ -40,20 +39,9 @@ public class AvatarAnimatorController : MonoBehaviour
         WaitForSeconds wait = new WaitForSeconds(SOUND_CHECK_INTERVAL);
         while (true)
         {
-            UpdateDefaultDevice();
             CheckForSound();
             yield return wait;
         }
-    }
-
-    void UpdateDefaultDevice()
-    {
-        try
-        {
-            defaultDevice?.Dispose();
-            defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-        }
-        catch { defaultDevice = null; }
     }
 
     void CheckForSound()
@@ -102,6 +90,11 @@ public class AvatarAnimatorController : MonoBehaviour
 
         try
         {
+            if (defaultDevice == null)
+            {
+                defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            }
+
             var sessions = defaultDevice.AudioSessionManager.Sessions;
             for (int i = 0; i < sessions.Count; i++)
             {
@@ -125,10 +118,17 @@ public class AvatarAnimatorController : MonoBehaviour
                 }
             }
         }
-        catch { }
+        catch
+        {
+            // Recovery if audio system breaks
+            defaultDevice?.Dispose();
+            try { defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); }
+            catch { defaultDevice = null; }
+        }
 
         return false;
     }
+
 
     void Update()
     {
