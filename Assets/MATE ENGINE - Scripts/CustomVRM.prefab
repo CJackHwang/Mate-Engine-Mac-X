@@ -389,7 +389,6 @@ MonoBehaviour:
   chibiArmatureScale: {x: 0.6, y: 0.6, z: 0.6}
   chibiHeadScale: {x: 2, y: 2, z: 2}
   chibiUpperLegScale: {x: 0.6, y: 0.6, z: 0.6}
-  chibiYOffset: 0.32
   screenInteractionRadius: 30
   holdDuration: 2
   showDebugGizmos: 1

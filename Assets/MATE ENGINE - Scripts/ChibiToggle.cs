@@ -10,9 +10,6 @@ public class ChibiToggle : MonoBehaviour
     public Vector3 chibiHeadScale = new Vector3(2.7f, 2.7f, 2.7f);
     public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f);
 
-    [Header("Chibi Position Offset")]
-    public float chibiYOffset = 0.5f;
-
     [Header("Gizmo Interaction")]
     public float screenInteractionRadius = 30f;
     public float holdDuration = 2f;
@@ -37,7 +34,6 @@ public class ChibiToggle : MonoBehaviour
     private Camera mainCam;
 
     private Vector3 originalArmaturePosition;
-    private Vector3 chibiArmaturePosition;
 
     void Start()
     {
@@ -61,7 +57,6 @@ public class ChibiToggle : MonoBehaviour
             }
 
             originalArmaturePosition = armatureRoot.localPosition;
-            chibiArmaturePosition = originalArmaturePosition + new Vector3(0f, chibiYOffset, 0f);
         }
     }
 
@@ -93,29 +88,41 @@ public class ChibiToggle : MonoBehaviour
         }
     }
 
-    void LateUpdate()
-    {
-        if (!armatureRoot) return;
-        armatureRoot.localPosition = isChibi ? chibiArmaturePosition : originalArmaturePosition;
-    }
-
     void ToggleChibiMode()
     {
-        if (!armatureRoot || !head) return;
+        if (!armatureRoot || !head || !leftFoot || !rightFoot) return;
 
         bool becomingChibi = !isChibi;
 
+        // Capture current foot world position BEFORE scale
+        float originalFootY = Mathf.Min(leftFoot.position.y, rightFoot.position.y);
+
+        // Apply all scales
         armatureRoot.localScale = becomingChibi ? chibiArmatureScale : Vector3.one;
         head.localScale = becomingChibi ? chibiHeadScale : Vector3.one;
-
         if (leftUpperLeg) leftUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
         if (rightUpperLeg) rightUpperLeg.localScale = becomingChibi ? chibiUpperLegScale : Vector3.one;
 
+        isChibi = becomingChibi;
         PlayRandomSound(becomingChibi);
         TriggerParticles();
 
-        isChibi = becomingChibi;
+        // Re-align after scaling is applied
+        StartCoroutine(AdjustFeetToGround(originalFootY));
     }
+
+    private IEnumerator AdjustFeetToGround(float originalFootY)
+    {
+        yield return null; // Wait 1 frame for scaling to apply
+
+        // Capture current world foot position AFTER scale
+        float newFootY = Mathf.Min(leftFoot.position.y, rightFoot.position.y);
+        float offsetY = originalFootY - newFootY;
+
+        // Move root GameObject (the pet) to keep feet pinned
+        transform.position += new Vector3(0f, offsetY, 0f);
+    }
+
 
     void PlayRandomSound(bool enteringChibi)
     {

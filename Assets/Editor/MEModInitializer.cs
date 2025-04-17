@@ -63,7 +63,6 @@ public static class MEModInitializer
             chibiArmatureScale = chibi.chibiArmatureScale,
             chibiHeadScale = chibi.chibiHeadScale,
             chibiUpperLegScale = chibi.chibiUpperLegScale,
-            chibiYOffset = chibi.chibiYOffset,
             screenInteractionRadius = chibi.screenInteractionRadius,
             holdDuration = chibi.holdDuration
         };
