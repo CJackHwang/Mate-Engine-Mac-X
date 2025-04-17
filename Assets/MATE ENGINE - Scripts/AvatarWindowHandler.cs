@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,12 +16,14 @@ public class AvatarWindowHandler : MonoBehaviour
 
     private IntPtr snappedHWND = IntPtr.Zero;
     private Vector2 snapOffset;
+    private Vector2 snapDragStartOffset;
     private IntPtr unityHWND;
     private readonly List<WindowEntry> cachedWindows = new List<WindowEntry>();
     private Rect pinkZoneDesktopRect;
 
     private Animator animator;
     private AvatarAnimatorController controller;
+    private float currentDragOffsetX;
 
     private readonly System.Text.StringBuilder classNameBuffer = new System.Text.StringBuilder(256);
 
@@ -41,7 +43,6 @@ public class AvatarWindowHandler : MonoBehaviour
         if (unityHWND == IntPtr.Zero || animator == null || controller == null) return;
         if (!SaveLoadHandler.Instance.data.enableWindowSitting) return;
 
-
         Vector2 unityPos = GetUnityWindowPosition();
         UpdateCachedWindows();
         UpdatePinkZone(unityPos);
@@ -54,12 +55,16 @@ public class AvatarWindowHandler : MonoBehaviour
         {
             if (!IsStillNearSnappedWindow())
             {
+                snappedHWND = IntPtr.Zero;
                 animator.SetBool("isWindowSit", false);
                 SetTopMost(true);
-                snappedHWND = IntPtr.Zero;
+            }
+            else
+            {
+                FollowSnappedWindowWhileDragging();
             }
         }
-        else if (snappedHWND != IntPtr.Zero)
+        else if (!controller.isDragging && snappedHWND != IntPtr.Zero)
         {
             FollowSnappedWindow();
         }
@@ -79,11 +84,9 @@ public class AvatarWindowHandler : MonoBehaviour
             classNameBuffer.Clear();
             GetClassName(hWnd, classNameBuffer, classNameBuffer.Capacity);
             string className = classNameBuffer.ToString();
-
             if (className == "Progman" || className == "WorkerW" || className == "Shell_TrayWnd" ||
                 className == "DV2ControlHost" || className == "MsgrIMEWindowClass" ||
-                className.StartsWith("#") || className.Contains("Desktop"))
-                return true;
+                className.StartsWith("#") || className.Contains("Desktop")) return true;
 
             cachedWindows.Add(new WindowEntry { hwnd = hWnd, rect = r });
             return true;
@@ -97,6 +100,7 @@ public class AvatarWindowHandler : MonoBehaviour
         pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2, bottomY, snapZoneSize.x, snapZoneSize.y);
     }
 
+    // Beim Snap: X- und Y-Offsets korrekt speichern
     void TrySnap(Vector2 unityWindowPosition)
     {
         for (int i = 0; i < cachedWindows.Count; i++)
@@ -111,18 +115,33 @@ public class AvatarWindowHandler : MonoBehaviour
                 snapOffset.x = unityWindowPosition.x - win.rect.Left;
                 snapOffset.y = win.rect.Top - unityWindowPosition.y;
 
-                controller.isDragging = false;
-                animator.SetBool("isDragging", false);
                 animator.SetBool("isWindowSit", true);
                 SetTopMost(false);
                 return;
             }
-
-            Rect fullWindow = new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, win.rect.Bottom - win.rect.Top);
-            if (fullWindow.Overlaps(pinkZoneDesktopRect)) return;
         }
     }
 
+    // Während des Snap-Zustands weiterziehen (freie horizontale Bewegung)
+    void FollowSnappedWindowWhileDragging()
+    {
+        for (int i = 0; i < cachedWindows.Count; i++)
+        {
+            var win = cachedWindows[i];
+            if (win.hwnd == snappedHWND)
+            {
+                Vector2 unityPos = GetUnityWindowPosition();
+                snapOffset.x = unityPos.x - win.rect.Left;
+
+                int targetX = win.rect.Left + (int)snapOffset.x;
+                int targetY = win.rect.Top - (int)snapOffset.y + verticalOffset;
+                SetUnityWindowPosition(targetX, targetY);
+                return;
+            }
+        }
+    }
+
+    // Normales Snap-Following (genau wie früher)
     void FollowSnappedWindow()
     {
         for (int i = 0; i < cachedWindows.Count; i++)
@@ -138,9 +157,9 @@ public class AvatarWindowHandler : MonoBehaviour
             }
         }
 
+        snappedHWND = IntPtr.Zero;
         animator.SetBool("isWindowSit", false);
         SetTopMost(true);
-        snappedHWND = IntPtr.Zero;
     }
 
     bool IsStillNearSnappedWindow()

@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\discordpresence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarwindowhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarwindowhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\discordpresence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\discordpresence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\avatarstateobjector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\avatarstateobjector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatarstateobjector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -55,19 +59,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DiscordPresence.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "AvatarWindowHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarWindowHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarWindowHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarWindowHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarWindowHandler.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAAwKIAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T08:09:10.176Z",
+              "WhenOpened": "2025-04-17T08:34:38.037Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "DiscordPresence.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\DiscordPresence.cs",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAAwNQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-17T08:09:10.176Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "AvatarStateObjector.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarStateObjector.cs",
               "RelativeDocumentMoniker": "Assets\\AvatarStateObjector.cs",
@@ -75,12 +91,11 @@
               "RelativeToolTip": "Assets\\AvatarStateObjector.cs",
               "ViewState": "AgIAAFMAAAAAAAAAAAAAwGwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T07:26:44.348Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-17T07:26:44.348Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "MEModInitializer.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEModInitializer.cs",
               "RelativeDocumentMoniker": "Assets\\Editor\\MEModInitializer.cs",
@@ -92,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "MEModLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
@@ -104,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "ChibiToggle.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\ChibiToggle.cs",
@@ -116,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\SaveLoadHandler.cs",
@@ -128,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AvatarScaleController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarScaleController.cs",
               "RelativeDocumentMoniker": "Assets\\AvatarScaleController.cs",
@@ -140,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "AvatarAnimatorController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarAnimatorController.cs",
@@ -152,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "VRMLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
@@ -164,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "AvatarSettingsMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarSettingsMenu.cs",
