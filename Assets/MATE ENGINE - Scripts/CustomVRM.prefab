@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.7800783, y: 0.7800783, z: 0.7800783}
+  m_LocalScale: {x: 0.8800441, y: 0.8800441, z: 0.8800441}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -91,10 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
   SOUND_THRESHOLD: 0.01
-  allowedApps:
-  - firefox
-  - spotify
-  - microsoft.media.player
+  allowedApps: []
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1

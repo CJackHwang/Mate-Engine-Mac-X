@@ -150,7 +150,7 @@ public class AvatarAnimatorController : MonoBehaviour
         {
             isDragging = true;
             mouseHeld = true;
-            dragLockTimer = 0.25f;
+            dragLockTimer = 0.30f;
 
             animator.SetBool("isDragging", true);
             animator.SetBool("isDancing", false);

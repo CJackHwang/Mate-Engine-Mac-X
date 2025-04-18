@@ -21,6 +21,8 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
+    public Button refreshAppsListButton;
+
 
     [System.Serializable]
     public class AccessoryToggleEntry
@@ -45,6 +47,13 @@ public class AvatarSettingsMenu : MonoBehaviour
             uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
         else
             uniWindowController = FindFirstObjectByType<UniWindowController>();
+
+        refreshAppsListButton?.onClick.AddListener(() =>
+        {
+            var appManager = FindFirstObjectByType<AllowedAppsManager>();
+            if (appManager != null) appManager.RefreshUI();
+        });
+
 
         var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
