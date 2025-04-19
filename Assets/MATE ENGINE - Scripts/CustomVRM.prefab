@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.8800441, y: 0.8800441, z: 0.8800441}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -90,8 +90,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
-  SOUND_THRESHOLD: 0.01
-  allowedApps: []
+  SOUND_THRESHOLD: 0.2
+  allowedApps:
+  - spotify
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
@@ -144,16 +145,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarAnimator: {fileID: 5500079421849817615}
-  detectionBone: 0
-  detectionRadius: 0.6
+  snapZoneOffset: {x: 0, y: -5}
+  snapZoneSize: {x: 100, y: 10}
   attachTarget: {fileID: 0}
   attachBone: 15
   keepOriginalRotation: 1
-  showDebugGizmo: 1
-  taskbarGizmoColor: {r: 0.4, g: 0.49019608, b: 1, a: 1}
-  detectionGizmoColor: {r: 0.4009434, g: 0.48972332, b: 1, a: 1}
   spawnScaleTime: 0.25
   despawnScaleTime: 0.25
+  showDebugGizmo: 1
+  taskbarGizmoColor: {r: 0.4, g: 0.49019608, b: 1, a: 1}
+  pinkZoneGizmoColor: {r: 1, g: 0, b: 1, a: 1}
 --- !u!114 &2776419567822350837
 MonoBehaviour:
   m_ObjectHideFlags: 0

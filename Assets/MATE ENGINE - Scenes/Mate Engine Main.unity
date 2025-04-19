@@ -28042,8 +28042,8 @@ MonoBehaviour:
   snapThreshold: 400
   verticalOffset: 0
   desktopScale: 1
-  snapZoneOffset: {x: 0, y: -90}
-  snapZoneSize: {x: 90, y: 100}
+  snapZoneOffset: {x: 0, y: -150}
+  snapZoneSize: {x: 90, y: 200}
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -88063,6 +88063,46 @@ PrefabInstance:
       propertyPath: attachTarget
       value: 
       objectReference: {fileID: 2120684536}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: avatarAnimator
+      value: 
+      objectReference: {fileID: 1499361239}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: snapZoneSize.x
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: snapZoneSize.y
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: snapZoneOffset.y
+      value: -500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: taskbarGizmoColor.b
+      value: 0.24056602
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: taskbarGizmoColor.g
+      value: 0.358523
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: taskbarGizmoColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: pinkZoneGizmoColor.b
+      value: 0.92787266
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: pinkZoneGizmoColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825684101555438657, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: pinkZoneGizmoColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5500079421849817615, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: m_Avatar
       value: 
@@ -105100,16 +105140,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarAnimator: {fileID: 5823227879768727422}
-  detectionBone: 0
-  detectionRadius: 0.6
+  snapZoneOffset: {x: 0, y: -500}
+  snapZoneSize: {x: 400, y: 400}
   attachTarget: {fileID: 2120684536}
   attachBone: 15
   keepOriginalRotation: 1
-  showDebugGizmo: 1
-  taskbarGizmoColor: {r: 0.4, g: 0.49019608, b: 1, a: 1}
-  detectionGizmoColor: {r: 0.4009434, g: 0.48972332, b: 1, a: 1}
   spawnScaleTime: 0.25
   despawnScaleTime: 0.25
+  showDebugGizmo: 1
+  taskbarGizmoColor: {r: 1, g: 0.358523, b: 0.24056602, a: 1}
+  pinkZoneGizmoColor: {r: 0, g: 1, b: 0.92787266, a: 1}
 --- !u!114 &8924917334924735502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105187,8 +105227,8 @@ MonoBehaviour:
   snapThreshold: 400
   verticalOffset: 0
   desktopScale: 1
-  snapZoneOffset: {x: 0, y: -90}
-  snapZoneSize: {x: 90, y: 100}
+  snapZoneOffset: {x: 0, y: -150}
+  snapZoneSize: {x: 90, y: 200}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0

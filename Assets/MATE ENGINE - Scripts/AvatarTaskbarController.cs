@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -9,50 +10,46 @@ public class AvatarTaskbarController : MonoBehaviour
     public Animator avatarAnimator;
 
     [Header("Detection Settings")]
-    public HumanBodyBones detectionBone = HumanBodyBones.Hips;
-    public float detectionRadius = 0.2f;
+    public Vector2 snapZoneOffset = new Vector2(0, -5);
+    public Vector2 snapZoneSize = new Vector2(100, 10);
 
     [Header("Attach Settings")]
     public GameObject attachTarget;
     public HumanBodyBones attachBone = HumanBodyBones.Head;
     public bool keepOriginalRotation = false;
 
-    [Header("Debug")]
-    public bool showDebugGizmo = true;
-    public Color taskbarGizmoColor = Color.green;
-    public Color detectionGizmoColor = Color.yellow;
-
     [Header("Spawn / Despawn Animation")]
     public float spawnScaleTime = 0.2f;
     public float despawnScaleTime = 0.2f;
 
-    private Vector2Int unityWindowPosition;
-    private Rect taskbarScreenRect;
-    private Vector3 taskbarWorldPosition;
-    private Vector2 taskbarSize;
+    [Header("Debug")]
+    public bool showDebugGizmo = true;
+    public Color taskbarGizmoColor = Color.green;
+    public Color pinkZoneGizmoColor = Color.magenta;
 
-    private static readonly int IsSitting = Animator.StringToHash("isSitting");
+    private IntPtr unityHWND;
+    private Vector2 unityPos;
+    private Rect taskbarRect;
+    private Rect pinkZoneDesktopRect;
+
+    private Animator animator;
+    private Transform attachBoneTransform;
+    private Transform originalAttachParent;
 
     private Vector3 originalScale = Vector3.one;
     private float scaleLerpT = 0f;
     private bool isScaling = false;
     private bool scalingUp = false;
 
-    private bool wasSittingProximity = false;
-    private bool wasSittingAnimator = false;
+    private bool wasAllowSpawn = false;
 
-    private Transform attachBoneTransform;
-    private Transform originalAttachParent;
-    private Transform detectionBoneTransform;
-    private Camera cachedCam;
 
-    private readonly Vector2[] vec2Cache = new Vector2[3];
-    private readonly Vector3[] vec3Cache = new Vector3[4];
+    private static readonly int IsSitting = Animator.StringToHash("isSitting");
 
     void Start()
     {
-        avatarAnimator ??= GetComponentInChildren<Animator>();
-        cachedCam = Camera.main;
+        unityHWND = Process.GetCurrentProcess().MainWindowHandle;
+        animator = avatarAnimator ?? GetComponent<Animator>();
 
         if (attachTarget != null)
         {
@@ -64,171 +61,155 @@ public class AvatarTaskbarController : MonoBehaviour
         UpdateTaskbarRect();
     }
 
+    public void SetAnimator(Animator newAnimator)
+    {
+        avatarAnimator = newAnimator;
+    }
+
     void Update()
     {
-        if (avatarAnimator == null)
-        {
-            avatarAnimator = GetComponentInChildren<Animator>();
-            if (avatarAnimator == null) return;
-        }
+        if (unityHWND == IntPtr.Zero || animator == null) return;
 
-        if (cachedCam == null)
-        {
-            cachedCam = Camera.main;
-            if (cachedCam == null) return;
-        }
+        UpdateUnityWindowPosition();
+        UpdateTaskbarRect();
+        UpdatePinkZone();
 
-        detectionBoneTransform ??= avatarAnimator.GetBoneTransform(detectionBone);
-        if (detectionBoneTransform == null) return;
+        // 1) figure out whether we're "in the zone"
+        Rect topBar = new Rect(taskbarRect.x, taskbarRect.y, taskbarRect.width, 5);
+        bool isNearTaskbar = pinkZoneDesktopRect.Overlaps(topBar);
 
-        bool shouldSit = wasSittingProximity;
+        // 2) drive your avatar animator as before
+        animator.SetBool(IsSitting, isNearTaskbar);
 
-        if (Application.isFocused && Screen.width > 0 && Screen.height > 0)
-        {
-            UpdateUnityWindowPosition();
-            UpdateTaskbarWorldPosition();
+        // 3) your existing check for whether the Animator is actually in the "Sitting" state
+        bool allowSpawn = isNearTaskbar && animator
+            .GetCurrentAnimatorStateInfo(0)
+            .IsName("Sitting");
 
-            vec3Cache[0] = detectionBoneTransform.position;
-            vec3Cache[1] = GetClosestPointOnRect(taskbarWorldPosition, taskbarSize, vec3Cache[0]);
+        // 4) grab the bone transform once
+        if (attachBoneTransform == null && attachTarget != null)
+            attachBoneTransform = animator.GetBoneTransform(attachBone);
 
-            float sqrDist = (vec3Cache[1] - vec3Cache[0]).sqrMagnitude;
-            shouldSit = sqrDist <= detectionRadius * detectionRadius;
-            wasSittingProximity = shouldSit;
-        }
-
-        avatarAnimator.SetBool(IsSitting, shouldSit);
-
-        bool animatorSitting = avatarAnimator.GetBool(IsSitting);
-        bool isInSittingState = avatarAnimator.GetCurrentAnimatorStateInfo(0).IsName("Sitting");
-        bool allowSpawn = animatorSitting && wasSittingAnimator && isInSittingState;
-
+        // 5) handle parent / position
         if (attachTarget != null)
         {
-            attachBoneTransform ??= avatarAnimator.GetBoneTransform(attachBone);
-
-            if (allowSpawn)
-            {
-                if (!attachTarget.activeSelf)
-                {
-                    attachTarget.SetActive(true);
-                    attachTarget.transform.localScale = Vector3.zero;
-                    scaleLerpT = 0f;
-                    scalingUp = true;
-                    isScaling = true;
-                }
-
-                if (keepOriginalRotation && attachBoneTransform != null)
-                    attachTarget.transform.position = attachBoneTransform.position;
-                else if (!keepOriginalRotation && attachBoneTransform != null && attachTarget.transform.parent != attachBoneTransform)
-                    attachTarget.transform.SetParent(attachBoneTransform, false);
-            }
-            else
-            {
-                if (!keepOriginalRotation && attachTarget.transform.parent != originalAttachParent)
-                    attachTarget.transform.SetParent(originalAttachParent, false);
-
-                if (attachTarget.activeSelf && !isScaling)
-                {
-                    scalingUp = false;
-                    isScaling = true;
-                    scaleLerpT = 0f;
-                }
-            }
-
-            if (isScaling && attachTarget.activeSelf)
-            {
-                float duration = scalingUp ? spawnScaleTime : despawnScaleTime;
-                scaleLerpT += Time.deltaTime / Mathf.Max(duration, 0.0001f);
-                float t = Mathf.Clamp01(scaleLerpT);
-                Vector3 from = scalingUp ? Vector3.zero : originalScale;
-                Vector3 to = scalingUp ? originalScale : Vector3.zero;
-                attachTarget.transform.localScale = Vector3.Lerp(from, to, t);
-
-                if (t >= 1f)
-                {
-                    isScaling = false;
-                    if (!scalingUp)
-                    {
-                        attachTarget.SetActive(false);
-                        attachTarget.transform.localScale = originalScale;
-                    }
-                }
-            }
-
-            if (attachTarget.activeSelf && keepOriginalRotation && attachBoneTransform != null)
-                attachTarget.transform.position = attachBoneTransform.position;
+            if (allowSpawn && !keepOriginalRotation && attachBoneTransform != null)
+                attachTarget.transform.SetParent(attachBoneTransform, false);
+            else if (!allowSpawn && !keepOriginalRotation &&
+                     attachTarget.transform.parent != originalAttachParent)
+                attachTarget.transform.SetParent(originalAttachParent, false);
         }
 
-        wasSittingAnimator = animatorSitting;
+        // 6) **SPAWN** on the **rising** edge of allowSpawn
+        if (attachTarget != null && allowSpawn && !wasAllowSpawn)
+        {
+            attachTarget.SetActive(true);
+            attachTarget.transform.localScale = Vector3.zero;
+            scaleLerpT = 0f;
+            scalingUp = true;
+            isScaling = true;
+        }
+
+        // 7) **DESPAWN** on the **falling** edge
+        if (attachTarget != null && !allowSpawn && wasAllowSpawn && attachTarget.activeSelf && !isScaling)
+        {
+            scalingUp = false;
+            isScaling = true;
+            scaleLerpT = 0f;
+        }
+
+        // 8) always run your LERP when isScaling
+        if (attachTarget != null && isScaling && attachTarget.activeSelf)
+        {
+            float duration = scalingUp ? spawnScaleTime : despawnScaleTime;
+            scaleLerpT += Time.deltaTime / Mathf.Max(duration, 0.0001f);
+            float t = Mathf.Clamp01(scaleLerpT);
+            Vector3 from = scalingUp ? Vector3.zero : originalScale;
+            Vector3 to = scalingUp ? originalScale : Vector3.zero;
+            attachTarget.transform.localScale = Vector3.Lerp(from, to, t);
+
+            if (t >= 1f)
+            {
+                isScaling = false;
+                if (!scalingUp)
+                {
+                    attachTarget.SetActive(false);
+                    attachTarget.transform.localScale = originalScale;
+                }
+            }
+        }
+
+        // 9) if you’re “pinning” without parenting, always update position
+        if (attachTarget != null && attachTarget.activeSelf && keepOriginalRotation && attachBoneTransform != null)
+            attachTarget.transform.position = attachBoneTransform.position;
+
+        // 10) remember state for next frame
+        wasAllowSpawn = allowSpawn;
     }
+
+    void UpdatePinkZone()
+    {
+        GetWindowRect(unityHWND, out RECT rect);
+        int unityWidth = rect.Right - rect.Left;
+        int unityHeight = rect.Bottom - rect.Top;
+
+        float centerX = unityPos.x + unityWidth / 2f + snapZoneOffset.x;
+        float bottomY = unityPos.y + unityHeight + snapZoneOffset.y;
+
+
+        pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2f, bottomY, snapZoneSize.x, snapZoneSize.y);
+    }
+
+    void UpdateUnityWindowPosition()
+    {
+        GetWindowRect(unityHWND, out RECT rect);
+        unityPos = new Vector2(rect.Left, rect.Top);
+    }
+
+    void UpdateTaskbarRect()
+    {
+        // Query the helper for the taskbar bounds on whichever monitor
+        taskbarRect = MonitorHelper.GetTaskbarRectForWindow(unityHWND);
+    }
+
+
 
     void OnDrawGizmos()
     {
-        if (!showDebugGizmo || avatarAnimator == null)
-            return;
+        if (!Application.isPlaying || !showDebugGizmo) return;
+        float basePixel = 1000f;
 
-        if (detectionBoneTransform == null)
-            detectionBoneTransform = avatarAnimator.GetBoneTransform(detectionBone);
-
-        if (detectionBoneTransform != null)
-        {
-            Gizmos.color = detectionGizmoColor;
-            Gizmos.DrawWireSphere(detectionBoneTransform.position, detectionRadius);
-        }
-
+        // Taskbar bar
+        Rect bar = new Rect(taskbarRect.x, taskbarRect.y, taskbarRect.width, 5);
         Gizmos.color = taskbarGizmoColor;
-        Gizmos.DrawWireCube(taskbarWorldPosition, new Vector3(taskbarSize.x, taskbarSize.y, 0.01f));
+        DrawDesktopRect(bar, basePixel);
+
+        // Detection zone (pink zone)
+        Gizmos.color = pinkZoneGizmoColor;
+        DrawDesktopRect(pinkZoneDesktopRect, basePixel);
     }
 
-    #region Taskbar Detection
-
-    private void UpdateTaskbarRect()
+    void DrawDesktopRect(Rect desktopRect, float basePixel)
     {
-        APPBARDATA data = new APPBARDATA();
-        data.cbSize = Marshal.SizeOf(data);
-        SHAppBarMessage(ABM_GETTASKBARPOS, ref data);
+        float cx = desktopRect.x + desktopRect.width / 2f;
+        float cy = desktopRect.y + desktopRect.height / 2f;
+        int screenWidth = Display.main.systemWidth;
+        int screenHeight = Display.main.systemHeight;
 
-        taskbarScreenRect = new Rect(
-            data.rc.left,
-            data.rc.top,
-            data.rc.right - data.rc.left,
-            data.rc.bottom - data.rc.top
-        );
+        float unityX = (cx - screenWidth / 2f) / basePixel;
+        float unityY = -(cy - screenHeight / 2f) / basePixel;
+
+        Vector3 worldPos = new Vector3(unityX, unityY, 0);
+        Vector3 worldSize = new Vector3(desktopRect.width / basePixel, desktopRect.height / basePixel, 0);
+
+        Gizmos.DrawWireCube(worldPos, worldSize);
     }
-
-    private void UpdateUnityWindowPosition()
-    {
-        GetWindowRect(GetActiveWindow(), out RECT rect);
-        unityWindowPosition.x = rect.left;
-        unityWindowPosition.y = rect.top;
-    }
-
-    private void UpdateTaskbarWorldPosition()
-    {
-        vec2Cache[0] = taskbarScreenRect.center;
-        vec2Cache[1] = vec2Cache[0] - unityWindowPosition;
-
-        vec2Cache[2].x = vec2Cache[1].x / Screen.width;
-        vec2Cache[2].y = 1f - (vec2Cache[1].y / Screen.height);
-
-        Vector3 world = cachedCam.ViewportToWorldPoint(new Vector3(vec2Cache[2].x, vec2Cache[2].y, cachedCam.nearClipPlane + 1));
-        taskbarWorldPosition.x = world.x;
-        taskbarWorldPosition.y = world.y;
-        taskbarWorldPosition.z = 0;
-
-        float screenRatio = cachedCam.orthographicSize * 2f / Screen.height;
-        taskbarSize.x = taskbarScreenRect.width * screenRatio;
-        taskbarSize.y = taskbarScreenRect.height * screenRatio;
-    }
-
-    #endregion
 
     #region WinAPI
-
     private const int ABM_GETTASKBARPOS = 0x00000005;
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct APPBARDATA
+    struct APPBARDATA
     {
         public int cbSize;
         public IntPtr hWnd;
@@ -239,34 +220,18 @@ public class AvatarTaskbarController : MonoBehaviour
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct RECT
+    struct RECT
     {
-        public int left;
-        public int top;
-        public int right;
-        public int bottom;
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
     }
 
     [DllImport("shell32.dll", SetLastError = true)]
-    private static extern UInt32 SHAppBarMessage(UInt32 dwMessage, ref APPBARDATA pData);
+    static extern UInt32 SHAppBarMessage(UInt32 dwMessage, ref APPBARDATA pData);
 
     [DllImport("user32.dll")]
-    private static extern IntPtr GetActiveWindow();
-
-    [DllImport("user32.dll")]
-    private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-    private Vector3 GetClosestPointOnRect(Vector3 rectCenter, Vector2 size, Vector3 point)
-    {
-        vec3Cache[2].Set(size.x * 0.5f, size.y * 0.5f, 0);
-        vec3Cache[3] = point - rectCenter;
-
-        vec3Cache[3].x = Mathf.Clamp(vec3Cache[3].x, -vec3Cache[2].x, vec3Cache[2].x);
-        vec3Cache[3].y = Mathf.Clamp(vec3Cache[3].y, -vec3Cache[2].y, vec3Cache[2].y);
-        vec3Cache[3].z = 0;
-
-        return rectCenter + vec3Cache[3];
-    }
-
+    static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
     #endregion
 }

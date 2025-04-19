@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+
+
 public class AvatarWindowHandler : MonoBehaviour
 {
     public int snapThreshold = 30;
@@ -29,6 +31,17 @@ public class AvatarWindowHandler : MonoBehaviour
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
+
+    [DllImport("user32.dll")]
+    static extern IntPtr WindowFromPoint(POINT pt);
+
+    [DllImport("user32.dll")]
+    static extern IntPtr GetAncestor(IntPtr hwnd, uint gaFlags);
+
+    struct POINT { public int X, Y; }
+
+    const uint GA_ROOT = 2;
+
 
     void Start()
     {
@@ -100,7 +113,6 @@ public class AvatarWindowHandler : MonoBehaviour
         pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2, bottomY, snapZoneSize.x, snapZoneSize.y);
     }
 
-    // Beim Snap: X- und Y-Offsets korrekt speichern
     void TrySnap(Vector2 unityWindowPosition)
     {
         for (int i = 0; i < cachedWindows.Count; i++)
@@ -108,25 +120,39 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd == unityHWND) continue;
 
-            Rect topBar = new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5);
-            if (pinkZoneDesktopRect.Overlaps(topBar))
-            {
-                snappedHWND = win.hwnd;
+            // make a tiny point in the middle of the top‑bar
+            int barMidX = win.rect.Left + (win.rect.Right - win.rect.Left) / 2;
+            int barY = win.rect.Top + 2;  // a few pixels down from the top
 
-                // X‑Offset wie bisher (frei beweglich)
-                snapOffset.x = unityWindowPosition.x - win.rect.Left;
-                // Y‑Offset fixiert: Unity-Fenster so positionieren,
-                // dass der Mittelpunkt der pinken Zone auf win.rect.Top sitzt
-                snapOffset.y = GetUnityWindowHeight()
-                             + snapZoneOffset.y
-                             + snapZoneSize.y * 0.5f;
+            // ask Windows which top‑level window is actually at that point
+            var pt = new POINT { X = barMidX, Y = barY };
+            IntPtr hwndAtPoint = WindowFromPoint(pt);
+            // climb up to the real root window
+            hwndAtPoint = GetAncestor(hwndAtPoint, GA_ROOT);
 
-                animator.SetBool("isWindowSit", true);
-                SetTopMost(false);
-                return;
-            }
+            // only snap if it matches our candidate
+            if (hwndAtPoint != win.hwnd)
+                continue;
+
+            // and still check overlap so it’s in the pink zone
+            var topBarRect = new Rect(win.rect.Left, win.rect.Top,
+                                      win.rect.Right - win.rect.Left, 5);
+            if (!pinkZoneDesktopRect.Overlaps(topBarRect))
+                continue;
+
+            // now we know it’s the *visible* topmost bar under the pink zone
+            snappedHWND = win.hwnd;
+            snapOffset.x = unityWindowPosition.x - win.rect.Left;
+            snapOffset.y = GetUnityWindowHeight()
+                         + snapZoneOffset.y
+                         + snapZoneSize.y * 0.5f;
+
+            animator.SetBool("isWindowSit", true);
+            SetTopMost(false);
+            return;
         }
     }
+
 
 
     // Während des Snap-Zustands weiterziehen (freie horizontale Bewegung)
