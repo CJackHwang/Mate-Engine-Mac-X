@@ -391,7 +391,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarSizeSlider: {fileID: 1558077526}
-  targetCanvas: {fileID: 9167954367735630939}
   scrollSensitivity: 0.1
   smoothFactor: 0.5
 --- !u!114 &14424289
@@ -88004,6 +88003,14 @@ PrefabInstance:
       value: Drag
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: headBlend
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: spineBlend
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: trackingPermissions.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -105095,6 +105102,8 @@ MonoBehaviour:
   eyeYawLimit: 12
   eyePitchLimit: 12
   eyeSmoothness: 10
+  headBlend: 0.65
+  spineBlend: 0.4
 --- !u!114 &8924917334924735500
 MonoBehaviour:
   m_ObjectHideFlags: 0

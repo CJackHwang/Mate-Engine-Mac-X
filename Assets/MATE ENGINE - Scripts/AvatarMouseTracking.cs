@@ -38,6 +38,14 @@ public class AvatarMouseTracking : MonoBehaviour
     [Range(0f, 90f)] public float eyePitchLimit = 12f;
     [Range(1f, 20f)] public float eyeSmoothness = 10f;
 
+    [Header("Animator vs. Tracking Blend")]
+    [Range(0f, 1f)]
+    public float headBlend = 1f;   // 0 = pure Animator, 1 = pure Tracking
+
+    [Range(0f, 1f)]
+    public float spineBlend = 1f;  // 0 = pure Animator, 1 = pure Tracking
+
+
     private Animator animator;
     private Camera mainCam;
 
@@ -59,6 +67,9 @@ public class AvatarMouseTracking : MonoBehaviour
     private readonly Vector3[] vectorCache = new Vector3[4];
     private readonly Quaternion[] quatCache = new Quaternion[4];
 
+    private Quaternion headInitialLocalRotation;
+    private Quaternion spineInitialLocalRotation;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -77,16 +88,19 @@ public class AvatarMouseTracking : MonoBehaviour
         InitializeEyeTracking();
     }
 
-
     void InitializeHeadTracking()
     {
         headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         if (headBone)
         {
+            // create driver
             headDriver = new GameObject("HeadDriver").transform;
             headDriver.SetParent(headBone.parent, false);
             headDriver.localPosition = headBone.localPosition;
             headDriver.localRotation = headBone.localRotation;
+
+            // **store initial local rotation** (Animation “base” pose)
+            headInitialLocalRotation = headBone.localRotation;
         }
     }
 
@@ -102,9 +116,12 @@ public class AvatarMouseTracking : MonoBehaviour
             spineDriver.SetParent(spineBone.parent, false);
             spineDriver.localPosition = spineBone.localPosition;
             spineDriver.localRotation = spineBone.localRotation;
-            spineDefaultRotation = spineBone.localRotation;
+
+            // **store initial local rotation** for additive blending
+            spineInitialLocalRotation = spineBone.localRotation;
         }
     }
+
 
     void InitializeEyeTracking()
     {
@@ -204,43 +221,94 @@ public class AvatarMouseTracking : MonoBehaviour
     {
         if (headBone == null || headDriver == null) return;
 
+        // compute driver rotation (unchanged)…
         vectorCache[0] = Input.mousePosition;
-        vectorCache[1] = mainCam.ScreenToWorldPoint(new Vector3(vectorCache[0].x, vectorCache[0].y, mainCam.nearClipPlane));
+        vectorCache[1] = mainCam.ScreenToWorldPoint(
+            new Vector3(vectorCache[0].x, vectorCache[0].y, mainCam.nearClipPlane)
+        );
         vectorCache[2] = (vectorCache[1] - headDriver.position).normalized;
         vectorCache[3] = headDriver.parent.InverseTransformDirection(vectorCache[2]);
 
-        float yaw = Mathf.Clamp(Mathf.Atan2(vectorCache[3].x, vectorCache[3].z) * Mathf.Rad2Deg, -headYawLimit, headYawLimit);
-        float pitch = Mathf.Clamp(Mathf.Asin(vectorCache[3].y) * Mathf.Rad2Deg, -headPitchLimit, headPitchLimit);
-        headDriver.localRotation = Quaternion.Slerp(headDriver.localRotation, Quaternion.Euler(-pitch, yaw, 0f), Time.deltaTime * headSmoothness);
-        headBone.localRotation = headDriver.localRotation;
+        float yaw = Mathf.Clamp(
+            Mathf.Atan2(vectorCache[3].x, vectorCache[3].z) * Mathf.Rad2Deg,
+            -headYawLimit, headYawLimit
+        );
+        float pitch = Mathf.Clamp(
+            Mathf.Asin(vectorCache[3].y) * Mathf.Rad2Deg,
+            -headPitchLimit, headPitchLimit
+        );
+
+        headDriver.localRotation = Quaternion.Slerp(
+            headDriver.localRotation,
+            Quaternion.Euler(-pitch, yaw, 0f),
+            Time.deltaTime * headSmoothness
+        );
+
+        // — additive delta, then blend with base by headBlend —
+        Quaternion baseLocal = headBone.localRotation;
+        Quaternion delta = headDriver.localRotation * Quaternion.Inverse(headInitialLocalRotation);
+        Quaternion fullOffset = delta * baseLocal;
+
+        headBone.localRotation = Quaternion.Slerp(
+            baseLocal,     // 0 = pure animation
+            fullOffset,    // 1 = full tracking
+            headBlend      // slider
+        );
     }
 
     void HandleSpineTracking()
     {
         if (spineBone == null || spineDriver == null) return;
 
-        float targetWeight = IsFeatureAllowed("Spine") ? 1f : 0f;
-        spineTrackingWeight = Mathf.MoveTowards(spineTrackingWeight, targetWeight, Time.deltaTime * spineFadeSpeed);
+        // dynamic on/off weight from permissions
+        float targetW = IsFeatureAllowed("Spine") ? 1f : 0f;
+        spineTrackingWeight = Mathf.MoveTowards(
+            spineTrackingWeight, targetW, Time.deltaTime * spineFadeSpeed
+        );
 
-        float normalized = Mathf.Clamp01(Input.mousePosition.x / Screen.width);
-        float targetY = Mathf.Lerp(spineMinRotation, spineMaxRotation, normalized);
-        spineDriver.localRotation = Quaternion.Slerp(spineDriver.localRotation, Quaternion.Euler(0f, -targetY, 0f), Time.deltaTime * spineSmoothness);
+        // compute driver rotation
+        float normY = Mathf.Clamp01(Input.mousePosition.x / Screen.width);
+        float targetY = Mathf.Lerp(spineMinRotation, spineMaxRotation, normY);
+        spineDriver.localRotation = Quaternion.Slerp(
+            spineDriver.localRotation,
+            Quaternion.Euler(0f, -targetY, 0f),
+            Time.deltaTime * spineSmoothness
+        );
 
-        Quaternion baseRot = animator.GetBoneTransform(HumanBodyBones.Spine).localRotation;
-        spineBone.localRotation = Quaternion.Slerp(baseRot, spineDriver.localRotation, spineTrackingWeight);
+        // — additive delta
+        Quaternion baseLocal = spineBone.localRotation;
+        Quaternion delta = spineDriver.localRotation * Quaternion.Inverse(spineInitialLocalRotation);
 
+        // combine dynamic weight * user slider
+        float appliedW = spineTrackingWeight * spineBlend;
+        Quaternion offset = Quaternion.Slerp(
+            Quaternion.identity,
+            delta,
+            appliedW
+        );
+
+        spineBone.localRotation = offset * baseLocal;
+
+        // chest + upper chest layered similarly
         if (chestBone)
         {
-            Quaternion chestBase = animator.GetBoneTransform(HumanBodyBones.Chest).localRotation;
-            chestBone.localRotation = Quaternion.Slerp(chestBase, spineDriver.localRotation, 0.8f * spineTrackingWeight);
+            Quaternion chestBase = chestBone.localRotation;
+            Quaternion chestOffset = Quaternion.Slerp(
+                Quaternion.identity, delta, 0.8f * appliedW
+            );
+            chestBone.localRotation = chestOffset * chestBase;
         }
-
         if (upperChestBone)
         {
-            Quaternion upperBase = animator.GetBoneTransform(HumanBodyBones.UpperChest).localRotation;
-            upperChestBone.localRotation = Quaternion.Slerp(upperBase, spineDriver.localRotation, 0.6f * spineTrackingWeight);
+            Quaternion upperBase = upperChestBone.localRotation;
+            Quaternion upperOffset = Quaternion.Slerp(
+                Quaternion.identity, delta, 0.6f * appliedW
+            );
+            upperChestBone.localRotation = upperOffset * upperBase;
         }
     }
+
+
 
     void HandleEyeTracking()
     {
