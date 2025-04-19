@@ -1,77 +1,79 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
+using Kirurobo;  // for UniWindowController
 
 public class AvatarScaleController : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private Slider avatarSizeSlider;
-    [SerializeField] private Canvas targetCanvas;
+
+    [Header("Scroll Settings")]
     [SerializeField] private float scrollSensitivity = 0.1f;
-    [SerializeField] private float smoothFactor = 0.1f; // 0 = instant, 1 = very slow smoothing
+    [SerializeField] private float smoothFactor = 0.1f; // 0 = instant, 1 = very slow
 
-    private GraphicRaycaster raycaster;
-    private PointerEventData pointerEventData;
-    private EventSystem eventSystem;
-
-    private float minSize = 0.1f;
-    private float maxSize = 2.0f;
-    private float targetSize = 1.0f;
-
-    private readonly List<RaycastResult> raycastResults = new();
+    private float minSize;
+    private float maxSize;
+    private float targetSize;
 
     void Start()
     {
-        if (avatarSizeSlider != null)
-        {
-            minSize = avatarSizeSlider.minValue;
-            maxSize = avatarSizeSlider.maxValue;
-            targetSize = avatarSizeSlider.value;
-            avatarSizeSlider.onValueChanged.AddListener(OnSliderChanged);
+        if (avatarSizeSlider == null) return;
 
-        }
+        // initialize range & target
+        minSize = avatarSizeSlider.minValue;
+        maxSize = avatarSizeSlider.maxValue;
+        targetSize = avatarSizeSlider.value;
 
-        raycaster = targetCanvas?.GetComponent<GraphicRaycaster>();
-        eventSystem = EventSystem.current;
-        pointerEventData = new PointerEventData(eventSystem);
+        // keep targetSize in sync if slider is dragged manually
+        avatarSizeSlider.onValueChanged.AddListener(v => targetSize = v);
     }
 
-    private void OnSliderChanged(float newValue)
-    {
-        targetSize = newValue;
-    }
-
+    /// <summary>
+    /// (Optional) call this from elsewhere to force-sync targetSize to the slider
+    /// </summary>
     public void SyncWithSlider()
     {
         if (avatarSizeSlider != null)
             targetSize = avatarSizeSlider.value;
     }
 
-
     void Update()
     {
-        if (avatarSizeSlider == null || raycaster == null || eventSystem == null) return;
+        if (avatarSizeSlider == null)
+            return;
 
-        pointerEventData.position = Input.mousePosition;
-        raycastResults.Clear();
-        raycaster.Raycast(pointerEventData, raycastResults);
-        if (raycastResults.Count == 0) return;
+        // --- gate scrolling on Kirurobo's per-pixel hit test ---
+        // when isClickThrough==true, mouse is over transparent pixels → we block scaling
+        if (UniWindowController.current.isClickThrough)
+            return;
+        // -------------------------------------------------------
 
+        // read scroll delta
         float scroll = Input.mouseScrollDelta.y;
         if (scroll != 0f)
         {
-            targetSize = Mathf.Clamp(targetSize + scroll * scrollSensitivity, minSize, maxSize);
+            targetSize = Mathf.Clamp(
+                targetSize + scroll * scrollSensitivity,
+                minSize, maxSize
+            );
         }
 
+        // smooth the slider toward targetSize
         float current = avatarSizeSlider.value;
-        float smoothed = Mathf.Lerp(current, targetSize, 1f - Mathf.Pow(1f - smoothFactor, Time.deltaTime * 60f));
+        float smoothed = Mathf.Lerp(
+            current,
+            targetSize,
+            1f - Mathf.Pow(1f - smoothFactor, Time.deltaTime * 60f)
+        );
 
         if (Mathf.Abs(smoothed - current) > 0.0001f)
         {
+            // update without triggering onValueChanged again
             avatarSizeSlider.SetValueWithoutNotify(smoothed);
-            SaveLoadHandler.Instance.data.avatarSize = smoothed;
             avatarSizeSlider.value = smoothed;
 
+            // persist & apply
+            SaveLoadHandler.Instance.data.avatarSize = smoothed;
             SaveLoadHandler.Instance.SaveToDisk();
             SaveLoadHandler.ApplyAllSettingsToAllAvatars();
         }

@@ -109,6 +109,16 @@ namespace LLMUnitySamples
 
         }
 
+        void OnDisable()
+        {
+            if (streamAudioSource != null && streamAudioSource.isPlaying)
+            {
+                streamAudioSource.Stop();
+                streamAudioSource.volume = 1f; // reset for future use
+            }
+        }
+
+
         Bubble AddBubble(string message, bool isPlayerMessage)
         {
             Bubble bubble = new Bubble(chatContainer, isPlayerMessage ? playerUI : aiUI, isPlayerMessage ? "PlayerBubble" : "AIBubble", message);

@@ -111,7 +111,7 @@ public class AvatarTaskbarController : MonoBehaviour
         }
 
         // 7) **DESPAWN** on the **falling** edge
-        if (attachTarget != null && !allowSpawn && wasAllowSpawn && attachTarget.activeSelf && !isScaling)
+        if (attachTarget != null && !allowSpawn && attachTarget.activeSelf && (!isScaling || scalingUp))
         {
             scalingUp = false;
             isScaling = true;
