@@ -6,24 +6,24 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
-public class AssetBundleExporterWindow : EditorWindow
+public class MEModelExporter : EditorWindow
 {
     private GameObject prefabToExport;
     private string bundleName = "custommodel";
 
-    [MenuItem("MateEngine/ME Mod Exporter")]
+    [MenuItem("MateEngine/ME Model Exporter")]
     public static void ShowWindow()
     {
-        GetWindow<AssetBundleExporterWindow>("ME Mod Exporter");
+        GetWindow<MEModelExporter>("ME Model Exporter");
     }
 
     private void OnGUI()
     {
-        GUILayout.Label("Export Custom Prefab to AssetBundle", EditorStyles.boldLabel);
+        GUILayout.Label("Export .ME Model", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
-        prefabToExport = (GameObject)EditorGUILayout.ObjectField("Prefab or Scene Object", prefabToExport, typeof(GameObject), true);
-        bundleName = EditorGUILayout.TextField("Bundle Name", bundleName);
+        prefabToExport = (GameObject)EditorGUILayout.ObjectField("Your Model", prefabToExport, typeof(GameObject), true);
+        bundleName = EditorGUILayout.TextField("Model Name", bundleName);
 
         EditorGUILayout.Space();
 

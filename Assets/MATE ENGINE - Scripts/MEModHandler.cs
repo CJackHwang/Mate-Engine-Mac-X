@@ -1,10 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using SFB;
-using System.Collections.Generic;
+using System;
 using System.IO;
-using System.Linq;
+using System.IO.Compression;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 
 public class MEModHandler : MonoBehaviour
 {
@@ -13,156 +16,260 @@ public class MEModHandler : MonoBehaviour
     public Transform modListContainer;
     public GameObject modEntryPrefab;
 
-    private string modFolderPath;
-    private List<ModEntry> loadedMods = new List<ModEntry>();
+    string modFolderPath;
+    List<ModEntry> loadedMods = new List<ModEntry>();
 
-    private void Start()
+    void Start()
     {
         modFolderPath = Path.Combine(Application.persistentDataPath, "Mods");
         Directory.CreateDirectory(modFolderPath);
 
-        if (loadModButton != null)
-            loadModButton.onClick.AddListener(OpenFileDialogAndLoadMod);
-
+        loadModButton.onClick.AddListener(OpenFileDialogAndLoadMod);
         LoadAllModsInFolder();
     }
 
-    private void LoadAllModsInFolder()
+    void LoadAllModsInFolder()
     {
-        string[] modFiles = Directory.GetFiles(modFolderPath, "*.me", SearchOption.TopDirectoryOnly);
-
-        foreach (var path in modFiles)
-        {
-            LoadModFromPath(path);
-        }
-
-        Debug.Log($"[MEModHandler] Loaded {modFiles.Length} mods from Mods/ folder.");
+        foreach (var file in Directory.GetFiles(modFolderPath, "*.me"))
+            LoadMod(file);
     }
 
-
-
-    public void OpenFileDialogAndLoadMod()
+    void OpenFileDialogAndLoadMod()
     {
-        var extensions = new[] { new ExtensionFilter("Mod Files", "me") };
-        string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Mod (.me)", "", extensions, false);
+        var ext = new[] { new ExtensionFilter("Mod Files", "me") };
+        var paths = StandaloneFileBrowser.OpenFilePanel("Select Mod", ".", ext, false);
         if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
         {
-            string sourcePath = paths[0];
-            string fileName = Path.GetFileName(sourcePath);
-            string targetPath = Path.Combine(modFolderPath, fileName);
-
-            File.Copy(sourcePath, targetPath, true);
-            LoadModFromPath(targetPath);
+            var dest = Path.Combine(modFolderPath, Path.GetFileName(paths[0]));
+            File.Copy(paths[0], dest, true);
+            LoadMod(dest);
         }
     }
 
-    private void LoadModFromPath(string path)
+    void LoadMod(string path)
     {
-        if (!File.Exists(path))
+        // Zip entpacken
+        var tmp = Path.Combine(Application.temporaryCachePath, "ME_TempMod");
+        if (Directory.Exists(tmp)) Directory.Delete(tmp, true);
+        ZipFile.ExtractToDirectory(path, tmp);
+
+        // JSON laden
+        var structJson = File.ReadAllText(Path.Combine(tmp, "structure.json"));
+        var valuesJson = File.ReadAllText(Path.Combine(tmp, "values.json"));
+
+        var structure = JsonUtility.FromJson<ObjectList>(structJson);
+        var fields = JsonUtility.FromJson<FieldList>(valuesJson);
+
+        // GameObjects anlegen
+        var created = new Dictionary<string, GameObject>();
+        foreach (var o in structure.objects)
         {
-            Debug.LogError("[MEModHandler] Mod file not found: " + path);
-            return;
+            var go = new GameObject(o.name);
+            created[o.path] = go;
+            foreach (var tn in o.components)
+            {
+                var t = ResolveType(tn);
+                if (t != null && t.IsSubclassOf(typeof(Component)))
+                    go.AddComponent(t);
+            }
+        }
+        // Eltern setzen
+        foreach (var o in structure.objects)
+            if (created.TryGetValue(o.path, out var go))
+            {
+                int i = o.path.LastIndexOf('/');
+                if (i > 0 && created.TryGetValue(o.path.Substring(0, i), out var parent))
+                    go.transform.SetParent(parent.transform, false);
+            }
+
+        // Felder setzen
+        foreach (var f in fields.fields)
+        {
+            if (!created.TryGetValue(f.objectPath, out var go)) continue;
+            var compType = ResolveType(f.componentType);
+            if (compType == null) continue;
+            var comp = go.GetComponent(compType);
+            SetNestedField(comp, f.fieldName, f.value, created);
         }
 
-        var bundle = AssetBundle.LoadFromFile(path);
-        if (bundle == null)
-        {
-            Debug.LogError("[MEModHandler] Failed to load AssetBundle: " + path);
-            return;
-        }
-
-        var prefab = bundle.LoadAllAssets<GameObject>().FirstOrDefault();
-        if (prefab == null)
-        {
-            Debug.LogError("[MEModHandler] No prefab found in AssetBundle: " + path);
-            bundle.Unload(false);
-            return;
-        }
-
-        var instance = Instantiate(prefab);
-        bundle.Unload(false);
-
-        ModEntry newMod = new ModEntry
-        {
-            name = Path.GetFileNameWithoutExtension(path),
-            instance = instance,
-            localPath = path
-        };
-
-        loadedMods.Add(newMod);
-        AddToModListUI(newMod);
-        Debug.Log("[MEModHandler] Loaded mod: " + newMod.name);
+        // Root ist das erste Objekt
+        var root = created[structure.objects[0].path];
+        var entry = new ModEntry { name = Path.GetFileNameWithoutExtension(path), instance = root, localPath = path };
+        loadedMods.Add(entry);
+        AddToModListUI(entry);
     }
 
-    private void AddToModListUI(ModEntry mod)
+    // Rekursives Setzen von Feld-Paths inklusive Listen
+    private void SetNestedField(object obj, string fieldPath, string raw, Dictionary<string, GameObject> lookup)
     {
-        if (modEntryPrefab == null || modListContainer == null) return;
+        var parts = fieldPath.Split('.');
+        object target = obj;
+        FieldInfo fieldInfo = null;
+        Type currentType = obj.GetType();
 
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string part = parts[i];
+            int index = -1;
+
+            // Erkenne Liste/Array-Zugriff
+            if (part.Contains("["))
+            {
+                int b = part.IndexOf('[');
+                index = int.Parse(part.Substring(b + 1, part.IndexOf(']') - b - 1));
+                part = part.Substring(0, b);
+            }
+
+            // Hole das FieldInfo
+            fieldInfo = currentType.GetField(part, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fieldInfo == null) return;
+
+            // Der aktuelle Wert im Feld
+            object fieldValue = fieldInfo.GetValue(target);
+
+            bool isLast = (i == parts.Length - 1);
+            Type fieldType = fieldInfo.FieldType;
+
+            // LISTEN-/ARRAY-FALL
+            if (index >= 0 && typeof(IList).IsAssignableFrom(fieldType))
+            {
+                // Liste initialisieren, falls null
+                var list = fieldValue as IList;
+                if (list == null)
+                {
+                    list = (IList)Activator.CreateInstance(fieldType);
+                    fieldInfo.SetValue(target, list);
+                }
+
+                // Elementtyp herausfinden
+                Type elemType = fieldType.IsArray
+                    ? fieldType.GetElementType()
+                    : fieldType.GetGenericArguments()[0];
+
+                // Liste bis Index füllen
+                while (list.Count <= index)
+                {
+                    var newElem = elemType.IsValueType ? Activator.CreateInstance(elemType) : Activator.CreateInstance(elemType);
+                    list.Add(newElem);
+                }
+
+                if (isLast)
+                {
+                    // FINAL: setze den rohen Wert in die Liste
+                    object finalVal = ParseValue(raw, elemType, lookup);
+                    list[index] = finalVal;
+                }
+                else
+                {
+                    // zwischendrin: instanziertes Listenelement betreten
+                    target = list[index];
+                    if (target == null) return;
+                    currentType = target.GetType();
+                }
+            }
+            else if (isLast)
+            {
+                // EINZELFELD-FALL am Ende
+                object finalVal = ParseValue(raw, fieldType, lookup);
+                fieldInfo.SetValue(target, finalVal);
+            }
+            else
+            {
+                // normales Feld zwischendrin (z.B. verschachtelte Klasse)
+                target = fieldValue;
+                if (target == null) return;
+                currentType = target.GetType();
+            }
+        }
+    }
+
+
+    object ParseValue(string raw, Type ft, Dictionary<string, GameObject> lookup)
+    {
+        if (raw.StartsWith("GO:"))
+        {
+            var p = raw.Substring(3);
+            return lookup.TryGetValue(p, out var g) ? g : null;
+        }
+        if (raw.StartsWith("GO_GLOBAL:"))
+        {
+            var nm = raw.Substring("GO_GLOBAL:".Length);
+            return GameObject.Find(nm);
+        }
+        if (raw.StartsWith("ASSET:"))
+        {
+            // Asset‑Lader hier ergänzen falls gebraucht
+            return null;
+        }
+        if (raw.StartsWith("STR:")) return raw.Substring(4);
+        if (raw.StartsWith("INT:")) return int.Parse(raw.Substring(4));
+        if (raw.StartsWith("FLT:")) return float.Parse(raw.Substring(4), System.Globalization.CultureInfo.InvariantCulture);
+        if (raw.StartsWith("BOOL:")) return raw.Substring(5) == "1";
+        if (raw.StartsWith("ENUM:")) return Enum.Parse(ft, raw.Substring(5));
+        if (raw.StartsWith("V3:"))
+        {
+            var a = raw.Substring(3).Split(',');
+            return new Vector3(float.Parse(a[0]), float.Parse(a[1]), float.Parse(a[2]));
+        }
+        if (raw.StartsWith("COL:"))
+        {
+            if (ColorUtility.TryParseHtmlString("#" + raw.Substring(4), out var c))
+                return c;
+        }
+        return null;
+    }
+
+    Type ResolveType(string name)
+    {
+        var t = Type.GetType(name);
+        if (t != null) return t;
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            if ((t = asm.GetType(name)) != null) return t;
+        return null;
+    }
+
+    void AddToModListUI(ModEntry mod)
+    {
         var entry = Instantiate(modEntryPrefab, modListContainer);
         entry.name = "Mod_" + mod.name;
+        var nt = entry.transform.Find("ModNameText")?.GetComponent<TextMeshProUGUI>();
+        if (nt != null) nt.text = mod.name;
 
-        // Set the mod name text
-        var nameText = entry.transform.Find("ModNameText")?.GetComponent<TextMeshProUGUI>();
-        if (nameText != null)
-            nameText.text = mod.name;
-
-        // Set up the toggle
-        var toggle = entry.GetComponentInChildren<Toggle>(true);
-        if (toggle != null)
+        var tog = entry.GetComponentInChildren<Toggle>(true);
+        if (tog != null)
         {
-            // Load saved toggle state if available, default to true
-            bool isActive = true;
-            if (SaveLoadHandler.Instance.data.modStates.TryGetValue(mod.name, out bool savedState))
-                isActive = savedState;
-
-            toggle.isOn = isActive;
-            if (mod.instance != null)
-                mod.instance.SetActive(isActive);
-
-            // On toggle change, update mod state and save
-            toggle.onValueChanged.AddListener(active =>
-            {
-                if (mod.instance != null)
-                    mod.instance.SetActive(active);
-
-                SaveLoadHandler.Instance.data.modStates[mod.name] = active;
+            var isOn = true;
+            if (SaveLoadHandler.Instance.data.modStates.TryGetValue(mod.name, out var s)) isOn = s;
+            tog.isOn = isOn;
+            mod.instance.SetActive(isOn);
+            tog.onValueChanged.AddListener(a => {
+                mod.instance.SetActive(a);
+                SaveLoadHandler.Instance.data.modStates[mod.name] = a;
                 SaveLoadHandler.Instance.SaveToDisk();
             });
         }
-
-        // Set up the remove button
-        var button = entry.GetComponentInChildren<Button>(true);
-        if (button != null)
-        {
-            button.onClick.AddListener(() =>
-            {
-                RemoveMod(mod, entry);
-            });
-        }
+        var btn = entry.GetComponentInChildren<Button>(true);
+        if (btn != null) btn.onClick.AddListener(() => RemoveMod(mod, entry));
     }
 
-
-
-    private void RemoveMod(ModEntry mod, GameObject uiEntry)
+    void RemoveMod(ModEntry mod, GameObject ui)
     {
-        if (mod.instance != null)
-            Destroy(mod.instance);
-
-        if (File.Exists(mod.localPath))
-            File.Delete(mod.localPath);
-
+        Destroy(mod.instance);
+        if (File.Exists(mod.localPath)) File.Delete(mod.localPath);
         loadedMods.Remove(mod);
-        if (uiEntry != null)
-            Destroy(uiEntry);
-
-        Debug.Log("[MEModHandler] Removed mod: " + mod.name);
+        Destroy(ui);
     }
 
-    [System.Serializable]
-    private class ModEntry
-    {
-        public string name;
-        public GameObject instance;
-        public string localPath;
-    }
+
+
+    [Serializable]
+    class ModEntry { public string name; public GameObject instance; public string localPath; }
+    [Serializable]
+    class ObjectInfo { public string name, path; public List<string> components; }
+    [Serializable]
+    class ObjectList { public List<ObjectInfo> objects; }
+    [Serializable]
+    class FieldValue { public string objectPath, componentType, fieldName, value; }
+    [Serializable]
+    class FieldList { public List<FieldValue> fields; }
 }
