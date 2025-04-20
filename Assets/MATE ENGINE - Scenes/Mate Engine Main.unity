@@ -105064,7 +105064,7 @@ MonoBehaviour:
   screenInteractionRadius: 30
   holdDuration: 2
   showDebugGizmos: 1
-  gizmoColor: {r: 1, g: 0.44705886, b: 0, a: 1}
+  gizmoColor: {r: 1, g: 0.38202363, b: 0, a: 1}
   audioSource: {fileID: 927620806}
   chibiEnterSounds:
   - {fileID: 8300000, guid: dda77c5cbb241e049bc4f40abfdf181b, type: 3}
@@ -105131,8 +105131,8 @@ MonoBehaviour:
   eyeYawLimit: 12
   eyePitchLimit: 12
   eyeSmoothness: 10
-  headBlend: 0.65
-  spineBlend: 0.4
+  headBlend: 0.7
+  spineBlend: 0.5
 --- !u!114 &8924917334924735500
 MonoBehaviour:
   m_ObjectHideFlags: 0

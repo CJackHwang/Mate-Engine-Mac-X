@@ -22,6 +22,18 @@ public class MEModelExporter : EditorWindow
         GUILayout.Label("Export .ME Model", EditorStyles.boldLabel);
         EditorGUILayout.Space();
 
+
+        GUILayout.Space(8); // space above
+
+        EditorGUILayout.HelpBox(
+            "ME. Model Format Usage\n" +
+            "The MateEngine SDK is limited and only supports a few modding aspects. Creating your own C# assemblies is not allowed, as we aim to prevent any potential malware distribution.",
+            MessageType.Info
+        );
+
+        GUILayout.Space(12); // space below
+
+
         prefabToExport = (GameObject)EditorGUILayout.ObjectField("Your Model", prefabToExport, typeof(GameObject), true);
         bundleName = EditorGUILayout.TextField("Model Name", bundleName);
 

@@ -14,6 +14,8 @@ public class ModExporterWindow : EditorWindow
     private string description = "";
     private string weblink = "";
     private BuildTarget buildTarget = BuildTarget.StandaloneWindows64;
+    private bool showMoreInfo = false;
+
 
     [MenuItem("MateEngine/ME Mod Exporter")]
     public static void ShowWindow() => GetWindow<ModExporterWindow>("ME Mod Exporter");
@@ -47,6 +49,37 @@ public class ModExporterWindow : EditorWindow
     void OnGUI()
     {
         GUILayout.Label("Export Mod (.me with Scene Linking)", EditorStyles.boldLabel);
+        GUILayout.Space(8); // space above
+
+        EditorGUILayout.HelpBox(
+            "Modding Limitations\n" +
+            "The MateEngine SDK is limited and only supports a few modding aspects. Creating your own C# assemblies is not allowed, as we aim to prevent any potential malware distribution.",
+            MessageType.Info
+        );
+
+        GUILayout.Space(12); // space below
+
+
+        GUILayout.Space(4);
+
+        showMoreInfo = EditorGUILayout.Foldout(showMoreInfo, "Display the mod limitations", true);
+
+        if (showMoreInfo)
+        {
+            EditorGUILayout.HelpBox(
+                "Modding Limitations:\n\n" +
+                "- You can create own GameObjects that hold existing components of this project (e.g., AvatarControllerHandler.cs)\n" +
+                "- You can use existing MateEngine SDK scripts (e.g., MERemover.cs) to remove things at runtime\n" +
+                "- You can use any type of prefabs that contain: Audio Sources, GameObjects, Particle Systems\n" +
+                "- You can use 3D meshes",
+                MessageType.None
+            );
+
+        }
+
+
+
+
         exportObject = (GameObject)EditorGUILayout.ObjectField("Root GameObject", exportObject, typeof(GameObject), true);
         modName = EditorGUILayout.TextField("Mod Name", modName);
         author = EditorGUILayout.TextField("Author", author);
@@ -57,7 +90,7 @@ public class ModExporterWindow : EditorWindow
         buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("Build Target", buildTarget);
 
         GUI.enabled = exportObject != null && !string.IsNullOrEmpty(modName);
-        if (GUILayout.Button("Export Mod")) ExportMod();
+        if (GUILayout.Button("Export Mod", GUILayout.Height(40))) ExportMod();
         GUI.enabled = true;
     }
 

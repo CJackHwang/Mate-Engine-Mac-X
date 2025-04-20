@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 
@@ -13,11 +13,12 @@ public class MESDK : EditorWindow
     private ScriptableObject vrmValidatorInstance;
 
     private Texture2D bannerTexture;
+    private Vector2 scrollPosition; // ✅ scroll state
 
     [MenuItem("MateEngine/ME SDK")]
     public static void ShowWindow()
     {
-        var window = GetWindow<MESDK>("ME SDK");
+        var window = GetWindow<MESDK>("MateEngine SDK 0.5");
         window.minSize = new Vector2(500, 400);
     }
 
@@ -35,11 +36,30 @@ public class MESDK : EditorWindow
     {
         DrawBanner();
 
-        currentTab = (Tab)GUILayout.Toolbar((int)currentTab, new[] {
-            "Mod Exporter", "Model Exporter", "Bone Merger", "VRM Validator"
-        });
+        GUIStyle toolbarStyle = new GUIStyle(EditorStyles.toolbarButton)
+        {
+            fixedHeight = 30,
+            fontStyle = FontStyle.Bold
+        };
 
-        EditorGUILayout.Space();
+        GUILayout.BeginHorizontal(EditorStyles.toolbar, GUILayout.Height(30));
+        for (int i = 0; i < 4; i++)
+        {
+            string label = ((Tab)i).ToString().Replace("ModExporter", "Mod Exporter")
+                                              .Replace("ModelExporter", "Model Exporter")
+                                              .Replace("BoneMerger", "Bone Merger")
+                                              .Replace("VRMValidator", "VRM Validator");
+
+            if (GUILayout.Toggle(currentTab == (Tab)i, label, toolbarStyle))
+            {
+                currentTab = (Tab)i;
+            }
+        }
+        GUILayout.EndHorizontal();
+
+        DrawSectionTitle();
+
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         switch (currentTab)
         {
@@ -56,6 +76,34 @@ public class MESDK : EditorWindow
                 CallOnGUI(vrmValidatorInstance);
                 break;
         }
+
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawSectionTitle()
+    {
+        string title = currentTab switch
+        {
+            Tab.ModExporter => "Export your mod",
+            Tab.ModelExporter => "Export your .me Model",
+            Tab.BoneMerger => "Let us help merge armatures",
+            Tab.VRMValidator => "Check for Failures",
+            _ => ""
+        };
+
+        GUIStyle titleStyle = new GUIStyle(EditorStyles.boldLabel)
+        {
+            fontSize = 22,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft,
+            margin = new RectOffset(10, 10, 10, 10),
+            padding = new RectOffset(0, 0, 6, 6)
+        };
+
+        GUILayout.Space(8);
+        Rect labelRect = GUILayoutUtility.GetRect(new GUIContent(title), titleStyle);
+        EditorGUI.LabelField(labelRect, title, titleStyle);
+        GUILayout.Space(6);
     }
 
     private void DrawBanner()
