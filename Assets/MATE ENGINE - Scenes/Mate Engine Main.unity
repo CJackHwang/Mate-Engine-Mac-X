@@ -10031,74 +10031,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 851295149}
   m_CullTransparentMesh: 1
---- !u!1 &852516932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 7223752995810236478, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-  m_PrefabInstance: {fileID: 1152941582}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 852516937}
-  - component: {fileID: 852516936}
-  - component: {fileID: 852516935}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &852516935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4544021720782900180, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-  m_PrefabInstance: {fileID: 1152941582}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852516932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63f4cdc89c124ba49b225e1ea8816315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targets:
-  - target: {fileID: 1315632291}
-    hasBeenDisabled: 0
---- !u!250 &852516936
-PointEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 2412883173269166927, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-  m_PrefabInstance: {fileID: 1152941582}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852516932}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceMagnitude: 222
-  m_ForceVariation: 22
-  m_DistanceScale: 2
-  m_ForceSource: 0
-  m_ForceTarget: 0
-  m_ForceMode: 0
-  m_Drag: 0
-  m_AngularDrag: 0
---- !u!4 &852516937
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-  m_PrefabInstance: {fileID: 1152941582}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852516932}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.465248, y: 1.943213, z: 4.9095182}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &866092132
 GameObject:
   m_ObjectHideFlags: 0
@@ -17848,6 +17780,7 @@ GameObject:
   - component: {fileID: 1126635228}
   - component: {fileID: 1126635227}
   - component: {fileID: 1126635229}
+  - component: {fileID: 1126635230}
   m_Layer: 0
   m_Name: ModLoader
   m_TagString: Untagged
@@ -17898,6 +17831,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targets: []
+--- !u!114 &1126635230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126635226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c2ac7d130fdd242a226cdbd4f098ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VRMModel: {fileID: 2411184301990817844}
+  CustomVRM: {fileID: 1499361201}
 --- !u!1 &1130094037
 GameObject:
   m_ObjectHideFlags: 0
@@ -18574,68 +18521,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150053894}
   m_CullTransparentMesh: 1
---- !u!1001 &1152941582
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -30.465248
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.943213
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4.9095182
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 530971266441575766, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4544021720782900180, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: targets.Array.data[0].target
-      value: 
-      objectReference: {fileID: 1315632291}
-    - target: {fileID: 7223752995810236478, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
-      propertyPath: m_Name
-      value: GameObject
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 79102f024c8e1044c88f8026578f81c1, type: 3}
 --- !u!1 &1157679953
 GameObject:
   m_ObjectHideFlags: 0
@@ -105179,7 +105064,7 @@ MonoBehaviour:
   screenInteractionRadius: 30
   holdDuration: 2
   showDebugGizmos: 1
-  gizmoColor: {r: 1, g: 0.57801723, b: 0, a: 1}
+  gizmoColor: {r: 1, g: 0.44705886, b: 0, a: 1}
   audioSource: {fileID: 927620806}
   chibiEnterSounds:
   - {fileID: 8300000, guid: dda77c5cbb241e049bc4f40abfdf181b, type: 3}
@@ -106085,5 +105970,4 @@ SceneRoots:
   - {fileID: 1007238460}
   - {fileID: 4926247279043688623}
   - {fileID: 1382623601}
-  - {fileID: 1152941582}
   - {fileID: 167025465}

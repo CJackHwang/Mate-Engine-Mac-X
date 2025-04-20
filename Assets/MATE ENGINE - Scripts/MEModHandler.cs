@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Collections;
 
 public class MEModHandler : MonoBehaviour
 {
@@ -54,90 +55,142 @@ public class MEModHandler : MonoBehaviour
         string bundlePath = null;
         string modName = Path.GetFileNameWithoutExtension(path);
 
-        // === VRC-style mod detection ===
         string modInfoPath = Path.Combine(temp, "modinfo.json");
         string refPathJson = Path.Combine(temp, "reference_paths.json");
+        string sceneLinksPath = Path.Combine(temp, "scene_links.json");
+
         Dictionary<string, string> refPaths = new();
+        Dictionary<string, string> sceneLinks = new();
 
-        if (File.Exists(modInfoPath))
+        // Load reference_paths.json
+        if (File.Exists(refPathJson))
         {
-            if (File.Exists(refPathJson))
-            {
-                var json = File.ReadAllText(refPathJson);
-                var obj = JsonUtility.FromJson<RefPathMap>(json);
-                for (int i = 0; i < obj.keys.Count; i++)
-                    refPaths[obj.keys[i]] = obj.values[i];
-            }
-
-            foreach (var file in Directory.GetFiles(temp, "*.bundle"))
-                bundlePath = file;
-
-            if (!string.IsNullOrEmpty(bundlePath) && File.Exists(bundlePath))
-            {
-                var bundle = AssetBundle.LoadFromFile(bundlePath);
-                if (bundle == null)
-                {
-                    Debug.LogError("[MEModHandler] Failed to load AssetBundle: " + bundlePath);
-                    return;
-                }
-
-                var prefab = bundle.LoadAsset<GameObject>(modName);
-                if (prefab == null)
-                {
-                    Debug.LogError("[MEModHandler] Could not find prefab named " + modName + " inside bundle.");
-                    return;
-                }
-
-                var instance = Instantiate(prefab);
-                bundle.Unload(false);
-
-                if (refPaths.Count > 0)
-                    ApplyReferencePaths(instance, refPaths);
-
-                var entry = new ModEntry { name = modName, instance = instance, localPath = path };
-                loadedMods.Add(entry);
-                AddToModListUI(entry);
-                return;
-            }
+            var json = File.ReadAllText(refPathJson);
+            var obj = JsonUtility.FromJson<RefPathMap>(json);
+            for (int i = 0; i < obj.keys.Count; i++)
+                refPaths[obj.keys[i]] = obj.values[i];
         }
 
-        // === legacy fallback skipped ===
+        // Load scene_links.json
+        if (File.Exists(sceneLinksPath))
+        {
+            var json = File.ReadAllText(sceneLinksPath);
+            var obj = JsonUtility.FromJson<SceneLinkMap>(json);
+            for (int i = 0; i < obj.keys.Count; i++)
+                sceneLinks[obj.keys[i]] = obj.values[i];
+        }
+
+        // Load bundle
+        foreach (var file in Directory.GetFiles(temp, "*.bundle"))
+            bundlePath = file;
+
+        if (!string.IsNullOrEmpty(bundlePath) && File.Exists(bundlePath))
+        {
+            var bundle = AssetBundle.LoadFromFile(bundlePath);
+            if (bundle == null)
+            {
+                Debug.LogError("[MEModHandler] Failed to load AssetBundle: " + bundlePath);
+                return;
+            }
+
+            var prefab = bundle.LoadAsset<GameObject>(modName);
+            if (prefab == null)
+            {
+                Debug.LogError("[MEModHandler] Could not find prefab named " + modName + " inside bundle.");
+                return;
+            }
+
+            var instance = Instantiate(prefab);
+            bundle.Unload(false);
+
+            ApplyReferencePaths(instance, refPaths, sceneLinks);
+
+            var entry = new ModEntry { name = modName, instance = instance, localPath = path };
+            loadedMods.Add(entry);
+            AddToModListUI(entry);
+            return;
+        }
+
+        Debug.LogWarning($"[MEModHandler] Unsupported mod format: {path}");
     }
 
-
-    void ApplyReferencePaths(GameObject root, Dictionary<string, string> paths)
+    void ApplyReferencePaths(GameObject root, Dictionary<string, string> refPaths, Dictionary<string, string> sceneLinks)
     {
         var allBehaviours = root.GetComponentsInChildren<MonoBehaviour>(true);
         foreach (var mb in allBehaviours)
         {
             if (mb == null) continue;
             Type type = mb.GetType();
+            string typeName = type.Name;
 
-            foreach (var kv in paths)
+            foreach (var map in new[] { refPaths, sceneLinks })
             {
-                if (!kv.Key.StartsWith(type.Name + ".")) continue;
-
-                string fieldName = kv.Key.Substring(type.Name.Length + 1);
-                var field = type.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (field == null) continue;
-
-                if (field.FieldType == typeof(GameObject))
+                foreach (var kv in map)
                 {
-                    var go = GameObject.Find(kv.Value);
-                    if (go != null) field.SetValue(mb, go);
-                }
-                else if (typeof(Component).IsAssignableFrom(field.FieldType))
-                {
-                    var go = GameObject.Find(kv.Value);
-                    if (go != null)
+                    if (!kv.Key.StartsWith(typeName + ".")) continue;
+
+                    string rawPath = kv.Key.Substring(typeName.Length + 1);
+                    GameObject sceneGO = GameObject.Find(kv.Value);
+                    if (sceneGO == null) continue;
+
+                    object current = mb;
+                    Type currentType = type;
+
+                    var parts = rawPath.Split('.');
+                    for (int i = 0; i < parts.Length; i++)
                     {
-                        var comp = go.GetComponent(field.FieldType);
-                        if (comp != null) field.SetValue(mb, comp);
+                        string part = parts[i];
+                        int listIndex = -1;
+
+                        // Listenindex erkennen
+                        if (part.Contains("["))
+                        {
+                            int start = part.IndexOf('[');
+                            int end = part.IndexOf(']');
+                            listIndex = int.Parse(part.Substring(start + 1, end - start - 1));
+                            part = part.Substring(0, start);
+                        }
+
+                        FieldInfo field = currentType.GetField(part, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (field == null) break;
+
+                        bool isLast = (i == parts.Length - 1);
+
+                        if (isLast)
+                        {
+                            if (field.FieldType == typeof(GameObject))
+                                field.SetValue(current, sceneGO);
+                            else if (typeof(Component).IsAssignableFrom(field.FieldType))
+                            {
+                                var comp = sceneGO.GetComponent(field.FieldType);
+                                if (comp != null) field.SetValue(current, comp);
+                            }
+                        }
+                        else
+                        {
+                            object next = field.GetValue(current);
+                            if (next == null) break;
+
+                            if (listIndex >= 0 && next is IList list)
+                            {
+                                if (listIndex >= list.Count) break;
+                                current = list[listIndex];
+                            }
+                            else
+                            {
+                                current = next;
+                            }
+
+                            if (current == null) break;
+                            currentType = current.GetType();
+                        }
                     }
                 }
             }
         }
     }
+
+
 
     [Serializable]
     class RefPathMap
@@ -145,6 +198,14 @@ public class MEModHandler : MonoBehaviour
         public List<string> keys = new();
         public List<string> values = new();
     }
+
+    [Serializable]
+    class SceneLinkMap
+    {
+        public List<string> keys = new();
+        public List<string> values = new();
+    }
+
 
     void AddToModListUI(ModEntry mod)
     {
