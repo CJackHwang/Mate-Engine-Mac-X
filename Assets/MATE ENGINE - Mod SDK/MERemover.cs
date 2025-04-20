@@ -25,4 +25,17 @@ public class MERemover : MonoBehaviour
             }
         }
     }
+
+    void OnDisable()
+    {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            TargetEntry entry = targets[i];
+            if (entry.hasBeenDisabled && entry.target != null)
+            {
+                entry.target.SetActive(true);
+                entry.hasBeenDisabled = false;
+            }
+        }
+    }
 }
