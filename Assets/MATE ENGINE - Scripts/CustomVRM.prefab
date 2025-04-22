@@ -93,6 +93,7 @@ MonoBehaviour:
   SOUND_THRESHOLD: 0.2
   allowedApps:
   - spotify
+  - firefox
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1

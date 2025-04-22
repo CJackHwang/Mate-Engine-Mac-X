@@ -138,7 +138,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
-        if (AvatarSettingsMenu.IsMenuOpen)
+        if (AvatarSettingsMenu.IsMenuOpen || AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive)
         {
             if (isDragging) { isDragging = false; animator.SetBool("isDragging", false); }
             if (isDancing) { isDancing = false; animator.SetBool("isDancing", false); }

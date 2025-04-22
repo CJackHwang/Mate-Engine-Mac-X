@@ -59,7 +59,7 @@ PlayerSettings:
   mipStripping: 0
   numberOfMipsStripped: 0
   numberOfMipsStrippedPerMipmapLimitGroup: {}
-  m_StackTraceTypes: 020000000100000001000000010000000200000001000000
+  m_StackTraceTypes: 010000000000000000000000010000000100000001000000
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
   iosUseCustomAppBackgroundBehavior: 0
@@ -98,7 +98,7 @@ PlayerSettings:
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 0
-  resizableWindow: 0
+  resizableWindow: 1
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 1
@@ -144,7 +144,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 1.6.0
+  bundleVersion: 1.6.2
   preloadedAssets:
   - {fileID: 11400000, guid: 7553923a6077f8941b76cc27bea803e6, type: 2}
   metroInputSource: 0
@@ -456,9 +456,12 @@ PlayerSettings:
     m_Automatic: 1
   - m_BuildTarget: LinuxStandaloneSupport
     m_APIs: 1100000015000000
-    m_Automatic: 1
+    m_Automatic: 0
   - m_BuildTarget: MacStandaloneSupport
     m_APIs: 10000000
+    m_Automatic: 0
+  - m_BuildTarget: WindowsStandaloneSupport
+    m_APIs: 02000000
     m_Automatic: 1
   m_BuildTargetVRSettings:
   - m_BuildTarget: Standalone

@@ -9,7 +9,10 @@ public class MoveCanvasHandler : MonoBehaviour
     {
         if (!moveCanvas) return;
 
-        bool shouldBeActive = !AvatarSettingsMenu.IsMenuOpen && !TutorialMenu.IsActive;
+        bool shouldBeActive = !AvatarSettingsMenu.IsMenuOpen &&
+                              !TutorialMenu.IsActive &&
+                              !AvatarClothesHandler.IsMenuOpen;
+
 
         if (moveCanvas.activeSelf != shouldBeActive)
         {
