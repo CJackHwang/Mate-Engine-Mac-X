@@ -164,25 +164,26 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd != snappedHWND) continue;
 
-            // aktuelle Breiten
+            // Breiten
             Vector2 unityPos = GetUnityWindowPosition();
             int currentWidth = win.rect.Right - win.rect.Left;
             int unityWidth = GetUnityWindowWidth();
 
-            // Beim Ziehen: snapFraction am mittleren Punkt anpassen
+            // → (bleibt so) relative Mitte aktualisieren
             float petCenterX = unityPos.x + unityWidth * 0.5f;
-            snapFraction = (petCenterX - win.rect.Left) / currentWidth;
+            snapFraction = (petCenterX - win.rect.Left) / (float)currentWidth;
 
-            // neuen Mittelpunkt in Pixel berechnen
+            // → neue Mitte in Pixel
             float newCenterX = win.rect.Left + snapFraction * currentWidth;
-
-            // Ziel-X so, dass der Pet-Mittelpunkt da liegt
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
+
+            // ← **hier** dynamisch den vertikalen Abstand neu berechnen
+            float dynamicOffsetY = GetUnityWindowHeight()
+                                 + snapZoneOffset.y
+                                 + snapZoneSize.y * 0.5f;
             int targetY = win.rect.Top
-                          - (int)(GetUnityWindowHeight()
-                                   + snapZoneOffset.y
-                                   + snapZoneSize.y * 0.5f)
-                          + verticalOffset;
+                                 - (int)dynamicOffsetY
+                                 + verticalOffset;
 
             SetUnityWindowPosition(targetX, targetY);
             return;
@@ -196,16 +197,21 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd != snappedHWND) continue;
 
-            // Breiten abfragen
+            // Breiten
             int currentWidth = win.rect.Right - win.rect.Left;
             int unityWidth = GetUnityWindowWidth();
 
-            // Aus gespeicherter snapFraction den neuen Mittelpunkt berechnen
+            // → aus dem fest gespeicherten snapFraction die neue Mitte
             float newCenterX = win.rect.Left + snapFraction * currentWidth;
-
-            // und das Pet-Fenster so setzen, dass sein Mittelpunkt dort sitzt
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
-            int targetY = win.rect.Top - (int)snapOffset.y + verticalOffset;
+
+            // ← auch hier: vertikalen Abstand bei jeder Frame neu berechnen
+            float dynamicOffsetY = GetUnityWindowHeight()
+                                 + snapZoneOffset.y
+                                 + snapZoneSize.y * 0.5f;
+            int targetY = win.rect.Top
+                                 - (int)dynamicOffsetY
+                                 + verticalOffset;
 
             SetUnityWindowPosition(targetX, targetY);
             SetWindowPos(unityHWND, win.hwnd,
@@ -214,12 +220,12 @@ public class AvatarWindowHandler : MonoBehaviour
             return;
         }
 
-        // Kein gültiges Fenster mehr → Reset
+        // Reset, wenn kein Fenster mehr
         snappedHWND = IntPtr.Zero;
         animator.SetBool("isWindowSit", false);
         SetTopMost(true);
     }
-
+ no
 
     bool IsStillNearSnappedWindow()
     {
