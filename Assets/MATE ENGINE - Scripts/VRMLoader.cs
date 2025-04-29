@@ -196,7 +196,10 @@ public class VRMLoader : MonoBehaviour
             }
         }
 
-        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, thumbnail);
+        Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
+        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail);
+        if (safeThumbnail != null) Destroy(safeThumbnail);
+
         var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
         if (libraryMenu != null)
         {
@@ -205,6 +208,27 @@ public class VRMLoader : MonoBehaviour
 
 
     }
+
+    private Texture2D MakeReadableCopy(Texture texture)
+    {
+        if (texture == null) return null;
+
+        RenderTexture rt = RenderTexture.GetTemporary(texture.width, texture.height, 0);
+        Graphics.Blit(texture, rt);
+
+        RenderTexture previous = RenderTexture.active;
+        RenderTexture.active = rt;
+
+        Texture2D readable = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+        readable.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+        readable.Apply();
+
+        RenderTexture.active = previous;
+        RenderTexture.ReleaseTemporary(rt);
+
+        return readable;
+    }
+
 
 
     public void ResetModel()
