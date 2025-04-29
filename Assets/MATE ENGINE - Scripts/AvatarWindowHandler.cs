@@ -18,14 +18,16 @@ public class AvatarWindowHandler : MonoBehaviour
 
     private IntPtr snappedHWND = IntPtr.Zero;
     private Vector2 snapOffset;
-    private Vector2 snapDragStartOffset;
     private IntPtr unityHWND;
     private readonly List<WindowEntry> cachedWindows = new List<WindowEntry>();
     private Rect pinkZoneDesktopRect;
 
+    private float offsetRatio = 0f;
+    private float snapFraction = 0f;
+
+
     private Animator animator;
     private AvatarAnimatorController controller;
-    private float currentDragOffsetX;
 
     private readonly System.Text.StringBuilder classNameBuffer = new System.Text.StringBuilder(256);
 
@@ -120,29 +122,31 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd == unityHWND) continue;
 
-            // make a tiny point in the middle of the top‑bar
+            // Prüfe PinkZone-Hit wie gehabt
             int barMidX = win.rect.Left + (win.rect.Right - win.rect.Left) / 2;
-            int barY = win.rect.Top + 2;  // a few pixels down from the top
-
-            // ask Windows which top‑level window is actually at that point
+            int barY = win.rect.Top + 2;
             var pt = new POINT { X = barMidX, Y = barY };
-            IntPtr hwndAtPoint = WindowFromPoint(pt);
-            // climb up to the real root window
-            hwndAtPoint = GetAncestor(hwndAtPoint, GA_ROOT);
+            IntPtr hwndAtPoint = GetAncestor(WindowFromPoint(pt), GA_ROOT);
+            if (hwndAtPoint != win.hwnd) continue;
 
-            // only snap if it matches our candidate
-            if (hwndAtPoint != win.hwnd)
-                continue;
-
-            // and still check overlap so it’s in the pink zone
             var topBarRect = new Rect(win.rect.Left, win.rect.Top,
                                       win.rect.Right - win.rect.Left, 5);
-            if (!pinkZoneDesktopRect.Overlaps(topBarRect))
-                continue;
+            if (!pinkZoneDesktopRect.Overlaps(topBarRect)) continue;
 
-            // now we know it’s the *visible* topmost bar under the pink zone
+            // Snap aktivieren
             snappedHWND = win.hwnd;
-            snapOffset.x = unityWindowPosition.x - win.rect.Left;
+
+            // Breiten ermitteln
+            int winWidth = win.rect.Right - win.rect.Left;
+            int unityWidth = GetUnityWindowWidth();
+
+            // Mittelpunkt des Pet-Fensters in Desktop-Koordinaten
+            float petCenterX = unityWindowPosition.x + unityWidth * 0.5f;
+
+            // Einmalig relativen Anteil (0…1) des Mittelpunkts speichern
+            snapFraction = (petCenterX - win.rect.Left) / winWidth;
+
+            // vertikaler Offset bleibt unverändert
             snapOffset.y = GetUnityWindowHeight()
                          + snapZoneOffset.y
                          + snapZoneSize.y * 0.5f;
@@ -153,47 +157,69 @@ public class AvatarWindowHandler : MonoBehaviour
         }
     }
 
-
-
-    // Während des Snap-Zustands weiterziehen (freie horizontale Bewegung)
     void FollowSnappedWindowWhileDragging()
     {
         for (int i = 0; i < cachedWindows.Count; i++)
         {
             var win = cachedWindows[i];
-            if (win.hwnd == snappedHWND)
-            {
-                Vector2 unityPos = GetUnityWindowPosition();
-                snapOffset.x = unityPos.x - win.rect.Left;
+            if (win.hwnd != snappedHWND) continue;
 
-                int targetX = win.rect.Left + (int)snapOffset.x;
-                int targetY = win.rect.Top - (int)snapOffset.y + verticalOffset;
-                SetUnityWindowPosition(targetX, targetY);
-                return;
-            }
+            // aktuelle Breiten
+            Vector2 unityPos = GetUnityWindowPosition();
+            int currentWidth = win.rect.Right - win.rect.Left;
+            int unityWidth = GetUnityWindowWidth();
+
+            // Beim Ziehen: snapFraction am mittleren Punkt anpassen
+            float petCenterX = unityPos.x + unityWidth * 0.5f;
+            snapFraction = (petCenterX - win.rect.Left) / currentWidth;
+
+            // neuen Mittelpunkt in Pixel berechnen
+            float newCenterX = win.rect.Left + snapFraction * currentWidth;
+
+            // Ziel-X so, dass der Pet-Mittelpunkt da liegt
+            int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
+            int targetY = win.rect.Top
+                          - (int)(GetUnityWindowHeight()
+                                   + snapZoneOffset.y
+                                   + snapZoneSize.y * 0.5f)
+                          + verticalOffset;
+
+            SetUnityWindowPosition(targetX, targetY);
+            return;
         }
     }
 
-    // Normales Snap-Following (genau wie früher)
     void FollowSnappedWindow()
     {
         for (int i = 0; i < cachedWindows.Count; i++)
         {
             var win = cachedWindows[i];
-            if (win.hwnd == snappedHWND)
-            {
-                int targetX = win.rect.Left + (int)snapOffset.x;
-                int targetY = win.rect.Top - (int)snapOffset.y + verticalOffset;
-                SetUnityWindowPosition(targetX, targetY);
-                SetWindowPos(unityHWND, win.hwnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-                return;
-            }
+            if (win.hwnd != snappedHWND) continue;
+
+            // Breiten abfragen
+            int currentWidth = win.rect.Right - win.rect.Left;
+            int unityWidth = GetUnityWindowWidth();
+
+            // Aus gespeicherter snapFraction den neuen Mittelpunkt berechnen
+            float newCenterX = win.rect.Left + snapFraction * currentWidth;
+
+            // und das Pet-Fenster so setzen, dass sein Mittelpunkt dort sitzt
+            int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
+            int targetY = win.rect.Top - (int)snapOffset.y + verticalOffset;
+
+            SetUnityWindowPosition(targetX, targetY);
+            SetWindowPos(unityHWND, win.hwnd,
+                         0, 0, 0, 0,
+                         SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+            return;
         }
 
+        // Kein gültiges Fenster mehr → Reset
         snappedHWND = IntPtr.Zero;
         animator.SetBool("isWindowSit", false);
         SetTopMost(true);
     }
+
 
     bool IsStillNearSnappedWindow()
     {
