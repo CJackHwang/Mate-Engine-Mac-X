@@ -171,6 +171,8 @@ public class VRMLoader : MonoBehaviour
         string fileType = "Unknown";
         Texture2D thumbnail = null;
 
+
+
         bool isME = path.EndsWith(".me", StringComparison.OrdinalIgnoreCase);
 
         var vrm10Instance = loadedModel.GetComponent<UniVRM10.Vrm10Instance>();
@@ -197,7 +199,9 @@ public class VRMLoader : MonoBehaviour
         }
 
         Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
-        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail);
+        int polyCount = GetTotalPolygons(loadedModel);
+        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail, polyCount);
+
         if (safeThumbnail != null) Destroy(safeThumbnail);
 
         var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
@@ -349,4 +353,25 @@ public class VRMLoader : MonoBehaviour
             stats.RefreshNow();
         }
     }
+
+    private int GetTotalPolygons(GameObject model)
+    {
+        int total = 0;
+        foreach (var meshFilter in model.GetComponentsInChildren<MeshFilter>(true))
+        {
+            var mesh = meshFilter.sharedMesh;
+            if (mesh != null)
+                total += mesh.triangles.Length / 3;
+        }
+
+        foreach (var skinned in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            var mesh = skinned.sharedMesh;
+            if (mesh != null)
+                total += mesh.triangles.Length / 3;
+        }
+
+        return total;
+    }
+
 }

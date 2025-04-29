@@ -28,6 +28,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         public string fileType; // VRM0.X or VRM1.X
         public string filePath;
         public string thumbnailPath;
+        public int polygonCount;
     }
 
     private void Start()
@@ -88,6 +89,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         TMP_Text authorText = item.transform.Find("Author").GetComponent<TMP_Text>();
         TMP_Text versionText = item.transform.Find("Version").GetComponent<TMP_Text>();
         TMP_Text fileTypeText = item.transform.Find("File Type").GetComponent<TMP_Text>();
+        TMP_Text polygonText = item.transform.Find("Polygons")?.GetComponent<TMP_Text>();
         Button loadButton = item.transform.Find("Button").GetComponent<Button>();
         Button removeButton = item.transform.Find("Remove").GetComponent<Button>();
 
@@ -99,6 +101,8 @@ public class AvatarLibraryMenu : MonoBehaviour
             versionText.text = "Version: " + entry.version;
         if (fileTypeText != null)
             fileTypeText.text = "Format: " + entry.fileType;
+        if (polygonText != null)
+            polygonText.text = "Polygons: " + entry.polygonCount;
 
         if (thumbnail != null && File.Exists(entry.thumbnailPath))
         {
@@ -137,7 +141,7 @@ public class AvatarLibraryMenu : MonoBehaviour
     }
 
 
-    public static void AddAvatarToLibrary(string displayName, string author, string version, string fileType, string filePath, Texture2D thumbnail)
+    public static void AddAvatarToLibrary(string displayName, string author, string version, string fileType, string filePath, Texture2D thumbnail, int polygonCount)
     {
         string avatarsJsonPath = Path.Combine(Application.persistentDataPath, "avatars.json");
         string thumbnailsFolder = Path.Combine(Application.persistentDataPath, "Thumbnails");
@@ -179,7 +183,8 @@ public class AvatarLibraryMenu : MonoBehaviour
             version = version,
             fileType = fileType,
             filePath = filePath,
-            thumbnailPath = thumbnailPath
+            thumbnailPath = thumbnailPath,
+            polygonCount = polygonCount
         };
 
         entries.Add(newEntry);
@@ -226,8 +231,4 @@ public class AvatarLibraryMenu : MonoBehaviour
         // Refresh UI
         ReloadAvatars();
     }
-
-
-
-
 }
