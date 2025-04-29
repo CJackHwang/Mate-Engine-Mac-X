@@ -225,7 +225,7 @@ public class AvatarWindowHandler : MonoBehaviour
         animator.SetBool("isWindowSit", false);
         SetTopMost(true);
     }
- no
+
 
     bool IsStillNearSnappedWindow()
     {
