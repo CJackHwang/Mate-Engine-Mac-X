@@ -163,7 +163,45 @@ public class VRMLoader : MonoBehaviour
         PlayerPrefs.Save();
 
         Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "VRM"));
+
+        // --- Save to Avatar Library ---
+        string displayName = Path.GetFileNameWithoutExtension(path);
+        string author = "Unknown";
+        string version = "Unknown";
+        string fileType = "Unknown";
+        Texture2D thumbnail = null;
+
+        var vrm10Instance = loadedModel.GetComponent<UniVRM10.Vrm10Instance>();
+        if (vrm10Instance != null && vrm10Instance.Vrm != null && vrm10Instance.Vrm.Meta != null)
+        {
+            displayName = vrm10Instance.Vrm.Meta.Name ?? displayName;
+            author = (vrm10Instance.Vrm.Meta.Authors != null && vrm10Instance.Vrm.Meta.Authors.Count > 0) ? vrm10Instance.Vrm.Meta.Authors[0] : "Unknown";
+            version = vrm10Instance.Vrm.Meta.Version ?? "Unknown";
+            fileType = "VRM1.X";
+            thumbnail = vrm10Instance.Vrm.Meta.Thumbnail;
+        }
+        else
+        {
+            var vrm0Meta = loadedModel.GetComponent<VRM.VRMMetaInformation>();
+            if (vrm0Meta != null)
+            {
+                displayName = vrm0Meta.Title ?? displayName;
+                author = vrm0Meta.Author ?? "Unknown";
+                version = "Unknown"; // VRM0.X has no version in meta
+                fileType = "VRM0.X";
+                thumbnail = vrm0Meta.Thumbnail;
+            }
+        }
+
+        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, thumbnail);
+        var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
+        if (libraryMenu != null)
+        {
+            libraryMenu.ReloadAvatars();
+        }
+
     }
+
 
     public void ResetModel()
     {

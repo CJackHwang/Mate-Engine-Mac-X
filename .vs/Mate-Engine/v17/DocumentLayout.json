@@ -3,24 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\memodloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\memodloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\editor\\hierarchytools.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\hierarchytools.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\editor\\memodinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\memodinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\avatarlibrarymenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatarlibrarymenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\deselectonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\deselectonclick.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GPUThrottle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\GPUThrottle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GpuBoostDisabler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\GpuBoostDisabler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\vrmloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\vrmloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -35,64 +27,39 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MEModLoader.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\MEModLoader.cs",
-              "ViewState": "AgIAANAAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
+              "Title": "HierarchyTools.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\HierarchyTools.cs",
+              "RelativeDocumentMoniker": "Assets\\Editor\\HierarchyTools.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\HierarchyTools.cs",
+              "RelativeToolTip": "Assets\\Editor\\HierarchyTools.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAIwCkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-23T16:49:12.971Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MEModInitializer.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEModInitializer.cs",
-              "RelativeDocumentMoniker": "Assets\\Editor\\MEModInitializer.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEModInitializer.cs",
-              "RelativeToolTip": "Assets\\Editor\\MEModInitializer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-23T16:48:40.28Z",
+              "WhenOpened": "2025-04-29T03:55:12.065Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "DeselectOnClick.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\DeselectOnClick.cs",
-              "RelativeDocumentMoniker": "Assets\\DeselectOnClick.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\DeselectOnClick.cs",
-              "RelativeToolTip": "Assets\\DeselectOnClick.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Title": "VRMLoader.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\VRMLoader.cs",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAkwMgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-23T16:19:39.514Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T01:29:01.052Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GPUThrottle.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GPUThrottle.cs",
-              "RelativeDocumentMoniker": "Assets\\GPUThrottle.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GPUThrottle.cs",
-              "RelativeToolTip": "Assets\\GPUThrottle.cs",
+              "DocumentIndex": 1,
+              "Title": "AvatarLibraryMenu.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarLibraryMenu.cs",
+              "RelativeDocumentMoniker": "Assets\\AvatarLibraryMenu.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarLibraryMenu.cs",
+              "RelativeToolTip": "Assets\\AvatarLibraryMenu.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAYwHQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-22T00:43:47.415Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GpuBoostDisabler.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GpuBoostDisabler.cs",
-              "RelativeDocumentMoniker": "Assets\\GpuBoostDisabler.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\GpuBoostDisabler.cs",
-              "RelativeToolTip": "Assets\\GpuBoostDisabler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-22T00:34:12.216Z"
+              "WhenOpened": "2025-04-29T01:26:16.18Z"
             }
           ]
         }
