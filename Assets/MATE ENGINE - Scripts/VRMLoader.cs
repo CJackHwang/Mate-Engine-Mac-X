@@ -171,25 +171,28 @@ public class VRMLoader : MonoBehaviour
         string fileType = "Unknown";
         Texture2D thumbnail = null;
 
+        bool isME = path.EndsWith(".me", StringComparison.OrdinalIgnoreCase);
+
         var vrm10Instance = loadedModel.GetComponent<UniVRM10.Vrm10Instance>();
         if (vrm10Instance != null && vrm10Instance.Vrm != null && vrm10Instance.Vrm.Meta != null)
         {
             displayName = vrm10Instance.Vrm.Meta.Name ?? displayName;
             author = (vrm10Instance.Vrm.Meta.Authors != null && vrm10Instance.Vrm.Meta.Authors.Count > 0) ? vrm10Instance.Vrm.Meta.Authors[0] : "Unknown";
             version = vrm10Instance.Vrm.Meta.Version ?? "Unknown";
-            fileType = "VRM1.X";
+            fileType = isME ? ".ME (VRM1.X)" : "VRM1.X";
             thumbnail = vrm10Instance.Vrm.Meta.Thumbnail;
         }
         else
         {
-            var vrm0Meta = loadedModel.GetComponent<VRM.VRMMetaInformation>();
-            if (vrm0Meta != null)
+            var vrmMeta = loadedModel.GetComponent<VRM.VRMMeta>();
+            if (vrmMeta != null && vrmMeta.Meta != null)
             {
-                displayName = vrm0Meta.Title ?? displayName;
-                author = vrm0Meta.Author ?? "Unknown";
-                version = "Unknown"; // VRM0.X has no version in meta
-                fileType = "VRM0.X";
-                thumbnail = vrm0Meta.Thumbnail;
+                var meta = vrmMeta.Meta;
+                displayName = !string.IsNullOrEmpty(meta.Title) ? meta.Title : displayName;
+                author = !string.IsNullOrEmpty(meta.Author) ? meta.Author : "Unknown";
+                version = !string.IsNullOrEmpty(meta.Version) ? meta.Version : "Unknown";
+                fileType = isME ? ".ME (VRM0.X)" : "VRM0.X";
+                thumbnail = meta.Thumbnail;
             }
         }
 
@@ -199,6 +202,7 @@ public class VRMLoader : MonoBehaviour
         {
             libraryMenu.ReloadAvatars();
         }
+
 
     }
 
