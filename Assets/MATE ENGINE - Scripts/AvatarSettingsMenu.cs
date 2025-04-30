@@ -18,6 +18,8 @@ public class AvatarSettingsMenu : MonoBehaviour
     public bool resetAlsoClearsAllowedApps = false;
     public List<AudioSource> petAudioSources = new(), effectsAudioSources = new(), menuAudioSources = new();
     public static bool IsMenuOpen { get; private set; }
+    public Slider headBlendSlider, spineBlendSlider;
+
 
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
@@ -77,6 +79,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         dayNightToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.dayNight = v; ApplySettings(); SaveAll(); });
         enableWindowSittingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableWindowSitting = v; SaveAll(); });
         enableDiscordRPCToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDiscordRPC = v; SaveAll(); });
+
+        headBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.headBlend = v; SaveAll(); });
+        spineBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.spineBlend = v; SaveAll(); });
+
 
         graphicsDropdown?.onValueChanged.AddListener(i => {
             SaveLoadHandler.Instance.data.graphicsQualityLevel = i;
@@ -189,6 +195,9 @@ public class AvatarSettingsMenu : MonoBehaviour
         menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
         enableWindowSittingToggle?.SetIsOnWithoutNotify(data.enableWindowSitting);
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(data.enableDiscordRPC);
+        headBlendSlider?.SetValueWithoutNotify(data.headBlend);
+        spineBlendSlider?.SetValueWithoutNotify(data.spineBlend);
+
 
         if (graphicsDropdown != null)
         {
@@ -216,6 +225,9 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.menuVolume = menuVolumeSlider?.value ?? 1f;
         data.enableWindowSitting = enableWindowSittingToggle?.isOn ?? false;
         data.enableDiscordRPC = enableDiscordRPCToggle?.isOn ?? true;
+        data.headBlend = headBlendSlider?.value ?? 0.7f;
+        data.spineBlend = spineBlendSlider?.value ?? 0.5f;
+
 
 
 
@@ -311,6 +323,10 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         SaveLoadHandler.Instance.SaveToDisk();
         LoadSettings();
+
+        headBlendSlider?.SetValueWithoutNotify(0.7f);
+        spineBlendSlider?.SetValueWithoutNotify(0.5f);
+
 
         FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
 

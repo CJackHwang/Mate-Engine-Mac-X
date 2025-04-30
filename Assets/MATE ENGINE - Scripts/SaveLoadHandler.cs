@@ -102,6 +102,9 @@ public class SaveLoadHandler : MonoBehaviour
         public float effectsVolume = 1f;
         public float menuVolume = 1f;
 
+        public float headBlend = 0.7f;
+        public float spineBlend = 0.5f;
+
         public bool enableWindowSitting = false;
 
         public bool enableDiscordRPC = true;
@@ -149,7 +152,10 @@ public class SaveLoadHandler : MonoBehaviour
             foreach (var tracker in avatar.GetComponentsInChildren<AvatarMouseTracking>(true))
             {
                 tracker.enableMouseTracking = data.enableMouseTracking;
+                tracker.headBlend = data.headBlend;
+                tracker.spineBlend = data.spineBlend;
             }
+
 
             foreach (var handler in avatar.GetComponentsInChildren<AvatarParticleHandler>(true))
             {
