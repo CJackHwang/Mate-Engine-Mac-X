@@ -405,10 +405,10 @@ MonoBehaviour:
   audioSource: {fileID: 1420561495}
   disableDelay: 2
   startupSounds:
-  - {fileID: 8300000, guid: db25db01b6408a24b984427160b86e1c, type: 3}
+  - {fileID: 8300000, guid: bf62efbb77c14b74a9983fba63f04c45, type: 3}
   startupPitchMin: 0.85
   startupPitchMax: 1.1
-  startupVolume: 0.5
+  startupVolume: 0.8
   openMenuSounds:
   - {fileID: 8300000, guid: 972374d4009ded9458d04bb05d39002c, type: 3}
   openMenuPitchMin: 0.7
