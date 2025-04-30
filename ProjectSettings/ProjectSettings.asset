@@ -793,10 +793,11 @@ PlayerSettings:
   scriptingBackend:
     Standalone: 0
   il2cppCompilerConfiguration:
-    Standalone: 2
-  il2cppCodeGeneration: {}
-  il2cppStacktraceInformation:
     Standalone: 1
+  il2cppCodeGeneration:
+    Standalone: 1
+  il2cppStacktraceInformation:
+    Standalone: 0
   managedStrippingLevel:
     EmbeddedLinux: 1
     GameCoreScarlett: 1
