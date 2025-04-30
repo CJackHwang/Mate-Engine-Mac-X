@@ -18,6 +18,10 @@ public class HandHolder : MonoBehaviour
     public bool showDebugGizmos = true;
     public Color gizmoColor = new Color(0.2f, 0.7f, 1f, 0.2f);
 
+    [Header("Enable Hand Holding")]
+    public bool enableHandHolding = true;
+
+
     private Camera mainCam;
     private Transform leftHand, rightHand, chest, leftShoulder, rightShoulder;
     private Vector3 leftTargetPos, rightTargetPos;
@@ -48,7 +52,7 @@ public class HandHolder : MonoBehaviour
 
     void Update()
     {
-        if (!IsValid()) return;
+        if (!enableHandHolding || !IsValid()) return;
 
         if (!IsInAllowedState())
         {
@@ -104,7 +108,7 @@ public class HandHolder : MonoBehaviour
 
     void OnAnimatorIK(int layerIndex)
     {
-        if (!IsValid() || !IsInAllowedState())
+        if (!enableHandHolding || !IsValid() || !IsInAllowedState())
         {
             ResetIK();
             return;

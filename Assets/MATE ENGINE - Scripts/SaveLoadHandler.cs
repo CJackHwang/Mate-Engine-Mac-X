@@ -104,6 +104,7 @@ public class SaveLoadHandler : MonoBehaviour
 
         public float headBlend = 0.7f;
         public float spineBlend = 0.5f;
+        public bool enableHandHolding = true;
 
         public bool enableWindowSitting = false;
 
@@ -162,6 +163,12 @@ public class SaveLoadHandler : MonoBehaviour
                 handler.featureEnabled = data.enableParticles;
                 handler.enabled = data.enableParticles;
             }
+
+            foreach (var holder in avatar.GetComponentsInChildren<HandHolder>(true))
+            {
+                holder.enableHandHolding = data.enableHandHolding;
+            }
+
 
             if (avatar.animator != null &&
                 avatar.animator.isActiveAndEnabled &&

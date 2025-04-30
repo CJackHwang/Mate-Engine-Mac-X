@@ -19,6 +19,8 @@ public class AvatarSettingsMenu : MonoBehaviour
     public List<AudioSource> petAudioSources = new(), effectsAudioSources = new(), menuAudioSources = new();
     public static bool IsMenuOpen { get; private set; }
     public Slider headBlendSlider, spineBlendSlider;
+    public Toggle enableHandHoldingToggle;
+
 
 
     private UniWindowController uniWindowController;
@@ -82,6 +84,8 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         headBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.headBlend = v; SaveAll(); });
         spineBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.spineBlend = v; SaveAll(); });
+        enableHandHoldingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableHandHolding = v; SaveAll(); });
+
 
 
         graphicsDropdown?.onValueChanged.AddListener(i => {
@@ -197,7 +201,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(data.enableDiscordRPC);
         headBlendSlider?.SetValueWithoutNotify(data.headBlend);
         spineBlendSlider?.SetValueWithoutNotify(data.spineBlend);
-
+        enableHandHoldingToggle?.SetIsOnWithoutNotify(data.enableHandHolding);
 
         if (graphicsDropdown != null)
         {
@@ -227,6 +231,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.enableDiscordRPC = enableDiscordRPCToggle?.isOn ?? true;
         data.headBlend = headBlendSlider?.value ?? 0.7f;
         data.spineBlend = spineBlendSlider?.value ?? 0.5f;
+        data.enableHandHolding = enableHandHoldingToggle?.isOn ?? true;
+
 
 
 
@@ -326,6 +332,9 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         headBlendSlider?.SetValueWithoutNotify(0.7f);
         spineBlendSlider?.SetValueWithoutNotify(0.5f);
+        newData.enableHandHolding = true;
+        enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
+
 
 
         FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();

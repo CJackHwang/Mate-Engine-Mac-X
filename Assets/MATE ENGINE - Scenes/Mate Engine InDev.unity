@@ -349,6 +349,7 @@ MonoBehaviour:
   - {fileID: 1420561495}
   headBlendSlider: {fileID: 1238372747}
   spineBlendSlider: {fileID: 1534971434}
+  enableHandHoldingToggle: {fileID: 1520284595}
   refreshAppsListButton: {fileID: 1560025850}
   accessoryToggleBindings:
   - ruleName: Steam Halo
@@ -466,6 +467,7 @@ MonoBehaviour:
     menuVolume: 1
     headBlend: 0.7
     spineBlend: 0.5
+    enableHandHolding: 1
     enableWindowSitting: 0
     enableDiscordRPC: 1
     tutorialDone: 0
@@ -121021,6 +121023,7 @@ MonoBehaviour:
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
   gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
+  enableHandHolding: 1
 --- !u!114 &8924917334924735497
 MonoBehaviour:
   m_ObjectHideFlags: 0

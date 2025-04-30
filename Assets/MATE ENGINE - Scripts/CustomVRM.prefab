@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.87985915, y: 0.87985915, z: 0.87985915}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -376,6 +376,7 @@ MonoBehaviour:
   avatarAnimator: {fileID: 5500079421849817615}
   showDebugGizmos: 1
   gizmoColor: {r: 0, g: 0.892854, b: 1, a: 1}
+  enableHandHolding: 1
 --- !u!114 &6905094604719294301
 MonoBehaviour:
   m_ObjectHideFlags: 0
