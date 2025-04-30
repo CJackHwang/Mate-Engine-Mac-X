@@ -223,6 +223,34 @@ MonoBehaviour:
     m_Key: NEXT
     m_Metadata:
       m_Items: []
+  - m_Id: 7781828886781952
+    m_Key: HEAD_BLEND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781852853035008
+    m_Key: SPINE_BLEND
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781877666537472
+    m_Key: HAND_TRACKING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781899598553088
+    m_Key: MENU_COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781916468043776
+    m_Key: MENU_SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781941810028544
+    m_Key: MODELS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781977230925824
+    m_Key: LOAD
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

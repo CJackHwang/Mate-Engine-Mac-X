@@ -97,16 +97,17 @@ public class SaveLoadHandler : MonoBehaviour
         public bool dayNight = true;
 
         public bool enableParticles = true;
-
         public float petVolume = 1f;
         public float effectsVolume = 1f;
         public float menuVolume = 1f;
-
         public float headBlend = 0.7f;
         public float spineBlend = 0.5f;
         public bool enableHandHolding = true;
-
         public bool enableWindowSitting = false;
+
+        public float uiHueShift = 0f;     // Default hue = 0
+        public float uiSaturation = 0.5f; // Default saturation = neutral
+
 
         public bool enableDiscordRPC = true;
 

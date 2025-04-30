@@ -248,6 +248,34 @@ MonoBehaviour:
     m_Localized: Suivant
     m_Metadata:
       m_Items: []
+  - m_Id: 7781828886781952
+    m_Localized: "Fusion de t\xEAte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781852853035008
+    m_Localized: Fusion de colonne
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781877666537472
+    m_Localized: Suivi des mains
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781899598553088
+    m_Localized: Couleur du menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781916468043776
+    m_Localized: Saturation du menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781941810028544
+    m_Localized: "Mod\xE8les"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781977230925824
+    m_Localized: Charger
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

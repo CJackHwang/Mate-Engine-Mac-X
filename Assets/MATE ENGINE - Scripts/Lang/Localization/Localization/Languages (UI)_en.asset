@@ -241,6 +241,34 @@ MonoBehaviour:
       - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
     m_Metadata:
       m_Items: []
+  - m_Id: 7781941810028544
+    m_Localized: Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781828886781952
+    m_Localized: Head Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781852853035008
+    m_Localized: Spine Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781877666537472
+    m_Localized: Hand Tracking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781899598553088
+    m_Localized: Menu Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781916468043776
+    m_Localized: Menu Saturation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781977230925824
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

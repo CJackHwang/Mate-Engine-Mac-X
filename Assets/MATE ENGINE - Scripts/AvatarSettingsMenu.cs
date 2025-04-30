@@ -20,8 +20,8 @@ public class AvatarSettingsMenu : MonoBehaviour
     public static bool IsMenuOpen { get; private set; }
     public Slider headBlendSlider, spineBlendSlider;
     public Toggle enableHandHoldingToggle;
-
-
+    public Slider hueShiftSlider;
+    public Slider saturationSlider;
 
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
@@ -58,7 +58,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (appManager != null) appManager.RefreshUI();
         });
 
-
         var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
         applyButton?.onClick.AddListener(ApplySettings);
@@ -86,6 +85,18 @@ public class AvatarSettingsMenu : MonoBehaviour
         spineBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.spineBlend = v; SaveAll(); });
         enableHandHoldingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableHandHolding = v; SaveAll(); });
 
+        hueShiftSlider?.onValueChanged.AddListener(v => {
+            SaveLoadHandler.Instance.data.uiHueShift = v;
+            var shifter = FindFirstObjectByType<MenuHueShift>();
+            if (shifter != null) shifter.hueShift = v;
+            SaveAll();
+        });
+        saturationSlider?.onValueChanged.AddListener(v => {
+            SaveLoadHandler.Instance.data.uiSaturation = v;
+            var shifter = FindFirstObjectByType<MenuHueShift>();
+            if (shifter != null) shifter.saturation = v;
+            SaveAll();
+        });
 
 
         graphicsDropdown?.onValueChanged.AddListener(i => {
@@ -130,6 +141,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
 
         LoadSettings(); ApplySettings(); RestoreWindowSize();
+
+        var shifter = FindFirstObjectByType<MenuHueShift>();
+        if (shifter != null)
+        {
+            shifter.hueShift = SaveLoadHandler.Instance.data.uiHueShift;
+            shifter.saturation = SaveLoadHandler.Instance.data.uiSaturation;
+        }
+
     }
 
     private void CycleWindowSize()
@@ -202,6 +221,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         headBlendSlider?.SetValueWithoutNotify(data.headBlend);
         spineBlendSlider?.SetValueWithoutNotify(data.spineBlend);
         enableHandHoldingToggle?.SetIsOnWithoutNotify(data.enableHandHolding);
+        hueShiftSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiHueShift);
+        saturationSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiSaturation);
 
         if (graphicsDropdown != null)
         {
@@ -232,10 +253,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.headBlend = headBlendSlider?.value ?? 0.7f;
         data.spineBlend = spineBlendSlider?.value ?? 0.5f;
         data.enableHandHolding = enableHandHoldingToggle?.isOn ?? true;
-
-
-
-
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -306,7 +323,9 @@ public class AvatarSettingsMenu : MonoBehaviour
             enableWindowSitting = false,
             accessoryStates = new Dictionary<string, bool>(),
             enableDiscordRPC = true,
-            tutorialDone = oldData.tutorialDone // ← Preserve tutorial state
+            tutorialDone = oldData.tutorialDone, // ← Preserve tutorial state
+            uiHueShift = 0f,
+            uiSaturation = 0.5f
         };
 
 
@@ -340,6 +359,15 @@ public class AvatarSettingsMenu : MonoBehaviour
         FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
 
         ApplySettings();
+
+        var shifter = FindFirstObjectByType<MenuHueShift>();
+        if (shifter != null)
+        {
+            shifter.hueShift = 0f;
+            shifter.saturation = 0.5f;
+        }
+
+
         if (vrmLoader != null) vrmLoader.ResetModel();
     }
 

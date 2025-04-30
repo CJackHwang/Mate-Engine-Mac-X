@@ -351,6 +351,8 @@ MonoBehaviour:
   headBlendSlider: {fileID: 1238372747}
   spineBlendSlider: {fileID: 1534971434}
   enableHandHoldingToggle: {fileID: 1520284595}
+  hueShiftSlider: {fileID: 669563968}
+  saturationSlider: {fileID: 1639704307}
   refreshAppsListButton: {fileID: 1560025850}
   accessoryToggleBindings:
   - ruleName: Steam Halo
@@ -470,6 +472,8 @@ MonoBehaviour:
     spineBlend: 0.5
     enableHandHolding: 1
     enableWindowSitting: 0
+    uiHueShift: 0
+    uiSaturation: 0.5
     enableDiscordRPC: 1
     tutorialDone: 0
     selectedLocaleCode: en
@@ -8615,7 +8619,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 0.5444999, g: 0.6199604, b: 0.7169812, a: 1}
     m_HighlightedColor: {r: 0.11764706, g: 0.16078432, b: 0.21960784, a: 1}
@@ -12213,7 +12217,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787907127}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -12222,7 +12226,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 11245205839872
+      m_KeyId: 7781899598553088
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -14097,7 +14101,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958217922}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -14106,7 +14110,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 11245205839872
+      m_KeyId: 7781916468043776
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -15864,7 +15868,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083578741}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -15873,7 +15877,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 11245205839872
+      m_KeyId: 7781828886781952
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -16441,8 +16445,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775918864}
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
-  m_Value: -0.00000082833424
-  m_Size: 0.33333164
+  m_Value: 1
+  m_Size: 0.33333334
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -23131,7 +23135,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1400.0012}
+  m_AnchoredPosition: {x: 0, y: -0.0000061147316}
   m_SizeDelta: {x: 16.75, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1179428096
@@ -25193,7 +25197,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301803504}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -25202,7 +25206,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 11245205839872
+      m_KeyId: 7781852853035008
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -30950,7 +30954,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373228640}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -30959,7 +30963,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 1971210921435136
+      m_KeyId: 7781877666537472
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -31432,7 +31436,7 @@ Transform:
   m_GameObject: {fileID: 1395170895}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5009441, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 126.24994, y: 185.24998, z: 202.7999}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34798,6 +34802,7 @@ GameObject:
   - component: {fileID: 1610782101}
   - component: {fileID: 1610782103}
   - component: {fileID: 1610782102}
+  - component: {fileID: 1610782104}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -34877,7 +34882,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -34923,6 +34928,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610782100}
   m_CullTransparentMesh: 1
+--- !u!114 &1610782104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610782100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
+    m_TableEntryReference:
+      m_KeyId: 7781941810028544
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1610782102}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1612444817
 GameObject:
   m_ObjectHideFlags: 0

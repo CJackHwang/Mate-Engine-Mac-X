@@ -245,6 +245,34 @@ MonoBehaviour:
     m_Localized: Siguiente
     m_Metadata:
       m_Items: []
+  - m_Id: 7781828886781952
+    m_Localized: Mezcla de cabeza
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781852853035008
+    m_Localized: Mezcla de columna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781877666537472
+    m_Localized: Seguimiento de manos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781899598553088
+    m_Localized: "Color del men\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781916468043776
+    m_Localized: "Saturaci\xF3n del men\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781941810028544
+    m_Localized: Modelos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7781977230925824
+    m_Localized: Cargar
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
