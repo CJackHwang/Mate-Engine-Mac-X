@@ -462,8 +462,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Build Profiles\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 888
-    y: 626
+    x: 0
+    y: 26
     width: 848
     height: 732
   m_SerializedDataModeController:
@@ -534,8 +534,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Hierarchy\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 982
-    y: 249
+    x: 0
+    y: 24
     width: 316
     height: 716
   m_SerializedDataModeController:
@@ -600,8 +600,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Project Settings\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1299
-    y: 249
+    x: 318
+    y: 24
     width: 779
     height: 716
   m_SerializedDataModeController:
@@ -2649,7 +2649,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 52d70100
     m_LastClickedID: 120658
-    m_ExpandedIDs: 00000000a0c30000a2c30000a4c30000a6c3000000ca9a3b
+    m_ExpandedIDs: 0000000070ab0000f2c40000f4c40000f6c40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2678,7 +2678,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 2652}
     m_SelectedIDs: 20f30000
     m_LastClickedID: 62240
-    m_ExpandedIDs: 00000000a0c30000a2c30000a4c30000a6c3000000ca9a3b
+    m_ExpandedIDs: 0000000070ab0000f2c40000f4c40000f6c40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -3017,8 +3017,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Project\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 982
-    y: 991
+    x: 0
+    y: 766
     width: 1097
     height: 281
   m_SerializedDataModeController:
@@ -3062,7 +3062,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 52d70100
     m_LastClickedID: 120658
-    m_ExpandedIDs: 00000000a0c30000a2c30000a4c30000a6c3000000ca9a3b
+    m_ExpandedIDs: 0000000070ab0000f2c40000f4c40000f6c40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -3091,7 +3091,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a0c30000a2c30000a4c30000a6c3000000ca9a3b
+    m_ExpandedIDs: 0000000070ab0000f2c40000f4c40000f6c40000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -3219,8 +3219,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "ME SDK\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 2080
-    y: 249
+    x: 1
+    y: 24
     width: 449
     height: 674
   m_SerializedDataModeController:
@@ -3304,8 +3304,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Preview\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 2080
-    y: 949
+    x: 1
+    y: 724
     width: 449
     height: 323
   m_SerializedDataModeController:
