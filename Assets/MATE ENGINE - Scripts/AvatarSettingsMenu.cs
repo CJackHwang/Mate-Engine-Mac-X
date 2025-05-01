@@ -26,6 +26,10 @@ public class AvatarSettingsMenu : MonoBehaviour
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
     public Button refreshAppsListButton;
+    public Toggle ambientOcclusionToggle;
+    public GameObject ambientOcclusionObject;
+
+
 
 
     [System.Serializable]
@@ -97,8 +101,11 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (shifter != null) shifter.saturation = v;
             SaveAll();
         });
-
-
+        ambientOcclusionToggle?.onValueChanged.AddListener(v => {
+            SaveLoadHandler.Instance.data.ambientOcclusion = v;
+            ApplySettings();
+            SaveAll();
+        });
         graphicsDropdown?.onValueChanged.AddListener(i => {
             SaveLoadHandler.Instance.data.graphicsQualityLevel = i;
             QualitySettings.SetQualityLevel(i, true);
@@ -223,6 +230,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableHandHoldingToggle?.SetIsOnWithoutNotify(data.enableHandHolding);
         hueShiftSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiHueShift);
         saturationSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiSaturation);
+        ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
 
         if (graphicsDropdown != null)
         {
@@ -253,6 +261,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.headBlend = headBlendSlider?.value ?? 0.7f;
         data.spineBlend = spineBlendSlider?.value ?? 0.5f;
         data.enableHandHolding = enableHandHoldingToggle?.isOn ?? true;
+        data.ambientOcclusion = ambientOcclusionToggle?.isOn ?? false;
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -271,6 +280,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
 
         if (bloomObject != null) bloomObject.SetActive(data.bloom);
+        if (ambientOcclusionObject != null) ambientOcclusionObject.SetActive(data.ambientOcclusion);
         if (dayNightObject != null) dayNightObject.SetActive(data.dayNight);
 
         if (currentParticleHandler == null)
@@ -327,6 +337,10 @@ public class AvatarSettingsMenu : MonoBehaviour
             uiHueShift = 0f,
             uiSaturation = 0.5f
         };
+
+        newData.ambientOcclusion = false;
+        ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
+
 
 
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
