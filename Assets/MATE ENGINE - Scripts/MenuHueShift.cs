@@ -9,32 +9,55 @@ public class MenuHueShift : MonoBehaviour
     [Range(0f, 1f)] public float saturation = 0.5f;
     public List<ParticleSystem> particleSystems = new List<ParticleSystem>();
 
-    private List<Graphic> graphics = new List<Graphic>();
-    private Dictionary<Graphic, Color> originalColors = new Dictionary<Graphic, Color>();
+    private readonly List<Graphic> graphics = new List<Graphic>();
+    private readonly Dictionary<Graphic, Color> originalColors = new Dictionary<Graphic, Color>();
 
-    private List<Selectable> selectables = new List<Selectable>();
-    private Dictionary<Selectable, ColorBlock> originalColorBlocks = new Dictionary<Selectable, ColorBlock>();
+    private readonly List<Selectable> selectables = new List<Selectable>();
+    private readonly Dictionary<Selectable, ColorBlock> originalColorBlocks = new Dictionary<Selectable, ColorBlock>();
 
-    private Dictionary<ParticleSystem, Color> originalStartColors = new Dictionary<ParticleSystem, Color>();
+    private readonly Dictionary<ParticleSystem, Color> originalStartColors = new Dictionary<ParticleSystem, Color>();
 
     private float lastHue = -1f;
     private float lastSat = -1f;
 
+    private bool initialized = false;
+
     void Start()
     {
         if (!Application.isPlaying) return;
+        Initialize();
+    }
 
+    void Update()
+    {
+        if (!Application.isPlaying || !enabled || !gameObject.activeInHierarchy) return;
+
+        if (!initialized)
+        {
+            Initialize();
+            return;
+        }
+
+        if (Mathf.Abs(lastHue - hueShift) < 0.001f && Mathf.Abs(lastSat - saturation) < 0.001f) return;
+
+        ApplyHueShift();
+        lastHue = hueShift;
+        lastSat = saturation;
+    }
+
+    private void Initialize()
+    {
         graphics.Clear();
         originalColors.Clear();
         selectables.Clear();
         originalColorBlocks.Clear();
         originalStartColors.Clear();
 
-        Graphic[] allGraphics = GameObject.FindObjectsOfType<Graphic>(true);
-        foreach (var g in allGraphics)
+        var allGraphics = GameObject.FindObjectsOfType<Graphic>(true);
+        for (int i = 0; i < allGraphics.Length; i++)
         {
-            if (g is TMPro.TextMeshProUGUI) continue;
-
+            var g = allGraphics[i];
+            if (g is TMPro.TextMeshProUGUI || g == null) continue;
             if (!originalColors.ContainsKey(g))
             {
                 originalColors[g] = g.color;
@@ -42,25 +65,30 @@ public class MenuHueShift : MonoBehaviour
             }
         }
 
-        Selectable[] allSelectables = GameObject.FindObjectsOfType<Selectable>(true);
-        foreach (var s in allSelectables)
+        var allSelectables = GameObject.FindObjectsOfType<Selectable>(true);
+        for (int i = 0; i < allSelectables.Length; i++)
         {
+            var s = allSelectables[i];
+            if (s == null) continue;
+
             if (!originalColorBlocks.ContainsKey(s))
             {
                 originalColorBlocks[s] = s.colors;
                 selectables.Add(s);
             }
 
-            if (s.targetGraphic != null && !originalColors.ContainsKey(s.targetGraphic))
+            var tg = s.targetGraphic;
+            if (tg != null && !originalColors.ContainsKey(tg))
             {
-                originalColors[s.targetGraphic] = s.targetGraphic.color;
-                graphics.Add(s.targetGraphic);
+                originalColors[tg] = tg.color;
+                graphics.Add(tg);
             }
 
-            Graphic[] childGraphics = s.GetComponentsInChildren<Graphic>(true);
-            foreach (var cg in childGraphics)
+            var childGraphics = s.GetComponentsInChildren<Graphic>(true);
+            for (int j = 0; j < childGraphics.Length; j++)
             {
-                if (cg is TMPro.TextMeshProUGUI) continue;
+                var cg = childGraphics[j];
+                if (cg is TMPro.TextMeshProUGUI || cg == null) continue;
                 if (!originalColors.ContainsKey(cg))
                 {
                     originalColors[cg] = cg.color;
@@ -69,64 +97,57 @@ public class MenuHueShift : MonoBehaviour
             }
         }
 
-        foreach (var ps in particleSystems)
+        for (int i = 0; i < particleSystems.Count; i++)
         {
+            var ps = particleSystems[i];
             if (ps == null || originalStartColors.ContainsKey(ps)) continue;
             originalStartColors[ps] = ps.main.startColor.color;
         }
+
+        initialized = true;
     }
 
-    void Update()
+    private void ApplyHueShift()
     {
-        if (!Application.isPlaying) return;
-        if (Mathf.Abs(lastHue - hueShift) < 0.001f && Mathf.Abs(lastSat - saturation) < 0.001f) return;
-
-        foreach (var g in graphics)
+        for (int i = 0; i < graphics.Count; i++)
         {
-            if (g == null || !originalColors.ContainsKey(g)) continue;
-            g.color = AdjustColor(originalColors[g]);
+            var g = graphics[i];
+            if (g == null || !originalColors.TryGetValue(g, out var original)) continue;
+            g.color = AdjustColor(original);
         }
 
-        foreach (var s in selectables)
+        for (int i = 0; i < selectables.Count; i++)
         {
-            if (s == null || !originalColorBlocks.ContainsKey(s)) continue;
+            var s = selectables[i];
+            if (s == null || !originalColorBlocks.TryGetValue(s, out var original)) continue;
 
-            ColorBlock original = originalColorBlocks[s];
-            ColorBlock mod = original;
-
+            var mod = original;
             mod.normalColor = AdjustColor(original.normalColor);
             mod.highlightedColor = AdjustColor(original.highlightedColor);
             mod.pressedColor = AdjustColor(original.pressedColor);
             mod.selectedColor = AdjustColor(original.selectedColor);
             mod.disabledColor = AdjustColor(original.disabledColor);
-
             s.colors = mod;
         }
 
-        foreach (var ps in particleSystems)
+        foreach (var kvp in originalStartColors)
         {
-            if (ps == null || !originalStartColors.ContainsKey(ps)) continue;
+            var ps = kvp.Key;
+            if (ps == null) continue;
 
             var main = ps.main;
-            Color newColor = AdjustColor(originalStartColors[ps]);
-            ParticleSystem.MinMaxGradient gradient = main.startColor;
-            gradient.color = newColor;
+            var gradient = main.startColor;
+            gradient.color = AdjustColor(kvp.Value);
             main.startColor = gradient;
         }
-
-        lastHue = hueShift;
-        lastSat = saturation;
     }
 
     private Color AdjustColor(Color original)
     {
         Color.RGBToHSV(original, out float h, out float s, out float v);
         h = (h + hueShift) % 1f;
-
-        // Scale saturation around 0.5 = original
         float adjustedS = Mathf.Clamp01(s * (saturation * 2f));
-
-        Color result = Color.HSVToRGB(h, adjustedS, v);
+        var result = Color.HSVToRGB(h, adjustedS, v);
         result.a = original.a;
         return result;
     }
