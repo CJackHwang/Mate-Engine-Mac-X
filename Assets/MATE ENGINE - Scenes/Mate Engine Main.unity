@@ -22814,6 +22814,7 @@ GameObject:
   - component: {fileID: 1126635227}
   - component: {fileID: 1126635229}
   - component: {fileID: 1126635230}
+  - component: {fileID: 1126635231}
   m_Layer: 0
   m_Name: ModLoader
   m_TagString: Untagged
@@ -22878,6 +22879,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VRMModel: {fileID: 2411184301990817844}
   CustomVRM: {fileID: 1499361201}
+--- !u!114 &1126635231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126635226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e60d3b76ca85d104baf3859c9db745ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  replacements: []
 --- !u!1 &1137175625
 GameObject:
   m_ObjectHideFlags: 0
@@ -34117,6 +34131,8 @@ MonoBehaviour:
   - stateName: Idle
     fixFeetIK: 1
   - stateName: HoverReaction
+    fixFeetIK: 1
+  - stateName: Dance
     fixFeetIK: 1
   blendSpeed: 2
 --- !u!1 &1502345398
@@ -124240,6 +124256,8 @@ MonoBehaviour:
   - stateName: Idle
     fixFeetIK: 1
   - stateName: HoverReaction
+    fixFeetIK: 1
+  - stateName: Dance
     fixFeetIK: 1
   blendSpeed: 2
 --- !u!4 &8932384755772289895
