@@ -106,13 +106,14 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                 }
             }
 
-            // --- Copy thumbnail if exists ---
+            // --- Copy thumbnail based on filename ---
             string thumbnailsFolder = Path.Combine(Application.persistentDataPath, "Thumbnails");
             Directory.CreateDirectory(thumbnailsFolder);
-            string thumbSource = Directory.GetFiles(installPath).FirstOrDefault(f => f.EndsWith("_thumb.png"));
+            string thumbFileName = Path.GetFileNameWithoutExtension(file) + "_thumb.png";
+            string thumbSource = Path.Combine(installPath, thumbFileName);
             string thumbnailPath = "";
 
-            if (!string.IsNullOrEmpty(thumbSource))
+            if (File.Exists(thumbSource))
             {
                 thumbnailPath = Path.Combine(thumbnailsFolder, Path.GetFileName(thumbSource));
                 File.Copy(thumbSource, thumbnailPath, true);

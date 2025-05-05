@@ -57,7 +57,7 @@ public class SteamWorkshopHandler : MonoBehaviour
         string copiedThumbnailPath = null;
         if (File.Exists(entry.thumbnailPath))
         {
-            copiedThumbnailPath = Path.Combine(uploadDir, Path.GetFileName(entry.thumbnailPath));
+            copiedThumbnailPath = Path.Combine(contentDir, Path.GetFileName(entry.thumbnailPath));
             File.Copy(entry.thumbnailPath, copiedThumbnailPath, true);
             copiedThumbnailPath = copiedThumbnailPath.Replace("\\", "/");
             Debug.Log($"[SteamWorkshopHandler] Copied thumbnail to: {copiedThumbnailPath}");
