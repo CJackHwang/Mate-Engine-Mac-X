@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Collections;
@@ -7,12 +7,10 @@ using UnityEngine;
 using Steamworks;
 using Newtonsoft.Json;
 
-
 public class SteamWorkshopAutoLoader : MonoBehaviour
 {
     private const string WorkshopFolderName = "Steam Workshop";
     private string workshopFolderPath => Path.Combine(Application.persistentDataPath, WorkshopFolderName);
-
     private readonly List<string> allowedExtensions = new List<string> { ".vrm", ".me" };
     private AvatarLibraryMenu library;
 
@@ -52,7 +50,6 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
             bool installed = false;
             string installPath = null;
 
-            // Wait until file is downloaded
             float timeout = 10f;
             while (timeout > 0f)
             {
@@ -68,7 +65,7 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                 continue;
             }
 
-            // Look for VRM or ME files inside the install directory
+            // Look for VRM or ME file
             string file = Directory.GetFiles(installPath)
                                    .FirstOrDefault(f => allowedExtensions.Contains(Path.GetExtension(f).ToLower()));
             if (string.IsNullOrEmpty(file))
@@ -77,24 +74,51 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                 continue;
             }
 
-            // Copy to Workshop folder
             string targetPath = Path.Combine(workshopFolderPath, Path.GetFileName(file));
             if (!File.Exists(targetPath))
                 File.Copy(file, targetPath);
 
-            // Load model meta from filename
+            var allAvatars = GetAvatarEntries();
+            if (allAvatars.Any(e => e.filePath == targetPath)) continue;
+
+            // --- Load metadata.json ---
             string displayName = Path.GetFileNameWithoutExtension(file);
             string author = "Workshop";
             string version = "1.0";
             string format = file.ToLower().EndsWith(".me") ? ".ME" : "VRM";
             int polygonCount = 0;
 
-            Texture2D thumbnail = Texture2D.blackTexture;
+            string metaPath = Path.Combine(installPath, "metadata.json");
+            if (File.Exists(metaPath))
+            {
+                try
+                {
+                    var meta = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(metaPath));
+                    if (meta.TryGetValue("displayName", out var d)) displayName = d.ToString();
+                    if (meta.TryGetValue("author", out var a)) author = a.ToString();
+                    if (meta.TryGetValue("version", out var v)) version = v.ToString();
+                    if (meta.TryGetValue("fileType", out var f)) format = f.ToString();
+                    if (meta.TryGetValue("polygonCount", out var p)) polygonCount = Convert.ToInt32(p);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("[WorkshopAutoLoader] Failed to parse metadata.json: " + e.Message);
+                }
+            }
 
-            // Avoid duplicates
-            var allAvatars = GetAvatarEntries();
-            if (allAvatars.Any(e => e.filePath == targetPath)) continue;
+            // --- Copy thumbnail if exists ---
+            string thumbnailsFolder = Path.Combine(Application.persistentDataPath, "Thumbnails");
+            Directory.CreateDirectory(thumbnailsFolder);
+            string thumbSource = Directory.GetFiles(installPath).FirstOrDefault(f => f.EndsWith("_thumb.png"));
+            string thumbnailPath = "";
 
+            if (!string.IsNullOrEmpty(thumbSource))
+            {
+                thumbnailPath = Path.Combine(thumbnailsFolder, Path.GetFileName(thumbSource));
+                File.Copy(thumbSource, thumbnailPath, true);
+            }
+
+            // --- Register avatar entry ---
             var newEntry = new AvatarLibraryMenu.AvatarEntry
             {
                 displayName = displayName,
@@ -102,7 +126,7 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                 version = version,
                 fileType = format,
                 filePath = targetPath,
-                thumbnailPath = "", // Optional for now
+                thumbnailPath = thumbnailPath,
                 polygonCount = polygonCount,
                 isSteamWorkshop = true,
                 steamFileId = fileId.m_PublishedFileId

@@ -213,7 +213,7 @@ public class VRMLoader : MonoBehaviour
 
     }
 
-    private Texture2D MakeReadableCopy(Texture texture)
+    public Texture2D MakeReadableCopy(Texture texture)
     {
         if (texture == null) return null;
 
@@ -354,7 +354,7 @@ public class VRMLoader : MonoBehaviour
         }
     }
 
-    private int GetTotalPolygons(GameObject model)
+    public int GetTotalPolygons(GameObject model)
     {
         int total = 0;
         foreach (var meshFilter in model.GetComponentsInChildren<MeshFilter>(true))

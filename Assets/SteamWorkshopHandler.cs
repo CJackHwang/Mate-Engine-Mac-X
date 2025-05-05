@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Steamworks;
+using Newtonsoft.Json;
 
 public class SteamWorkshopHandler : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class SteamWorkshopHandler : MonoBehaviour
         // Fix path slashes
         contentDir = contentDir.Replace("\\", "/");
 
+        // Copy thumbnail if exists
         string copiedThumbnailPath = null;
         if (File.Exists(entry.thumbnailPath))
         {
@@ -59,6 +61,27 @@ public class SteamWorkshopHandler : MonoBehaviour
             File.Copy(entry.thumbnailPath, copiedThumbnailPath, true);
             copiedThumbnailPath = copiedThumbnailPath.Replace("\\", "/");
             Debug.Log($"[SteamWorkshopHandler] Copied thumbnail to: {copiedThumbnailPath}");
+        }
+
+        // Export metadata.json
+        try
+        {
+            string metaJson = JsonConvert.SerializeObject(new
+            {
+                entry.displayName,
+                entry.author,
+                entry.version,
+                entry.fileType,
+                entry.polygonCount
+            }, Formatting.Indented);
+
+            string metaPath = Path.Combine(contentDir, "metadata.json");
+            File.WriteAllText(metaPath, metaJson);
+            Debug.Log("[SteamWorkshopHandler] metadata.json saved.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning("[SteamWorkshopHandler] Failed to write metadata.json: " + ex.Message);
         }
 
         // Create workshop item
