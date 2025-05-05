@@ -35,7 +35,7 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (IsThumbnailMissing())
+        if (IsThumbnailMissing() || IsThumbnailTooBig())
         {
             string[] paths = StandaloneFileBrowser.OpenFilePanel("Select PNG Thumbnail (Max 700KB)", "", new[] {
                 new ExtensionFilter("Image", "png")
@@ -103,11 +103,20 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
         return string.IsNullOrEmpty(entry.thumbnailPath) || !File.Exists(entry.thumbnailPath);
     }
 
+    private bool IsThumbnailTooBig()
+    {
+        if (string.IsNullOrEmpty(entry.thumbnailPath) || !File.Exists(entry.thumbnailPath))
+            return false;
+
+        FileInfo fi = new FileInfo(entry.thumbnailPath);
+        return fi.Length > 700 * 1024;
+    }
+
     private void UpdateButtonLabel()
     {
         if (labelText == null) return;
 
-        string key = IsThumbnailMissing() ? "PNG_MISSING" : "UPLOAD";
+        string key = IsThumbnailMissing() ? "PNG_MISSING" : (IsThumbnailTooBig() ? "PNG_MISSING" : "UPLOAD");
         var localized = new LocalizedString("Languages (UI)", key);
         localized.StringChanged += (val) => labelText.text = val;
     }
