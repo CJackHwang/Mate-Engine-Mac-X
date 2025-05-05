@@ -273,6 +273,18 @@ MonoBehaviour:
     m_Localized: Cargar
     m_Metadata:
       m_Items: []
+  - m_Id: 9724442586374144
+    m_Localized: Arreglar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9725012508401664
+    m_Localized: Subir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9722136935522304
+    m_Localized: El archivo PNG debe pesar menos de 700 KB.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

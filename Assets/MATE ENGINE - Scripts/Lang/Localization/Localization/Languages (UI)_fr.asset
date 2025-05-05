@@ -276,6 +276,18 @@ MonoBehaviour:
     m_Localized: Charger
     m_Metadata:
       m_Items: []
+  - m_Id: 9724442586374144
+    m_Localized: Corr. img
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9725012508401664
+    m_Localized: "T\xE9l\xE9charger"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9722136935522304
+    m_Localized: Le fichier PNG doit faire moins de 700 Ko.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -274,6 +274,18 @@ MonoBehaviour:
     m_Localized: Laden
     m_Metadata:
       m_Items: []
+  - m_Id: 9724442586374144
+    m_Localized: Bild korr.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9725012508401664
+    m_Localized: UPLOAD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9722136935522304
+    m_Localized: PNG-Datei muss unter 700 KB sein.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
