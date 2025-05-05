@@ -3,6 +3,13 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.IO;
+using SFB;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -11,6 +18,7 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     [Header("UI References")]
     public Slider progressSlider;
     public TMP_Text labelText;
+    public TMP_Text errorText;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -20,8 +28,64 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     private Coroutine holdRoutine;
     private bool isHolding = false;
 
+    private void Start()
+    {
+        UpdateButtonLabel();
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (IsThumbnailMissing())
+        {
+            string[] paths = StandaloneFileBrowser.OpenFilePanel("Select PNG Thumbnail (Max 700KB)", "", new[] {
+                new ExtensionFilter("Image", "png")
+            }, false);
+
+            if (paths.Length == 0 || !File.Exists(paths[0]))
+                return;
+
+            FileInfo fi = new FileInfo(paths[0]);
+            if (fi.Length > 700 * 1024)
+            {
+                if (errorText != null)
+                {
+                    var localizedString = new LocalizedString("Languages (UI)", "PNG_TOO_BIG");
+                    localizedString.StringChanged += (value) => errorText.text = value;
+                }
+                return;
+            }
+
+            string thumbnailsFolder = Path.Combine(Application.persistentDataPath, "Thumbnails");
+            if (!Directory.Exists(thumbnailsFolder))
+                Directory.CreateDirectory(thumbnailsFolder);
+
+            string safeName = Path.GetFileNameWithoutExtension(entry.filePath) + "_thumb.png";
+            string destinationPath = Path.Combine(thumbnailsFolder, safeName);
+            File.Copy(paths[0], destinationPath, true);
+            entry.thumbnailPath = destinationPath;
+
+            string avatarsJsonPath = Path.Combine(Application.persistentDataPath, "avatars.json");
+            if (File.Exists(avatarsJsonPath))
+            {
+                var json = File.ReadAllText(avatarsJsonPath);
+                var list = JsonConvert.DeserializeObject<List<AvatarLibraryMenu.AvatarEntry>>(json);
+                var match = list.FirstOrDefault(e => e.filePath == entry.filePath);
+                if (match != null)
+                {
+                    match.thumbnailPath = destinationPath;
+                    File.WriteAllText(avatarsJsonPath, JsonConvert.SerializeObject(list, Formatting.Indented));
+                }
+            }
+
+            var menu = FindFirstObjectByType<AvatarLibraryMenu>();
+            if (menu != null)
+                menu.ReloadAvatars();
+
+            if (errorText != null) errorText.text = "";
+            UpdateButtonLabel();
+            return;
+        }
+
         if (holdRoutine == null)
         {
             isHolding = true;
@@ -32,6 +96,20 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     public void OnPointerUp(PointerEventData eventData)
     {
         isHolding = false;
+    }
+
+    private bool IsThumbnailMissing()
+    {
+        return string.IsNullOrEmpty(entry.thumbnailPath) || !File.Exists(entry.thumbnailPath);
+    }
+
+    private void UpdateButtonLabel()
+    {
+        if (labelText == null) return;
+
+        string key = IsThumbnailMissing() ? "PNG_MISSING" : "UPLOAD";
+        var localized = new LocalizedString("Languages (UI)", key);
+        localized.StringChanged += (val) => labelText.text = val;
     }
 
     private IEnumerator HoldToUpload()
@@ -86,8 +164,8 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
             yield return new WaitForSeconds(1.5f);
         }
 
-        if (!completed && labelText != null)
-            labelText.text = "Upload";
+        if (!completed)
+            UpdateButtonLabel();
 
         GetComponent<Button>().interactable = true;
         holdRoutine = null;
