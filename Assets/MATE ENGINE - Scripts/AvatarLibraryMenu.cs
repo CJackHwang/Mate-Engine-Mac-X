@@ -6,6 +6,7 @@ using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.Audio;
 
 public class AvatarLibraryMenu : MonoBehaviour
 {
@@ -132,12 +133,30 @@ public class AvatarLibraryMenu : MonoBehaviour
         if (uploadButton != null)
         {
             uploadButton.onClick.RemoveAllListeners();
-            uploadButton.onClick.AddListener(() =>
+
+            var handler = uploadButton.GetComponent<UploadButtonHoldHandler>();
+            if (handler != null)
             {
-                if (SteamWorkshopHandler.Instance != null)
-                    SteamWorkshopHandler.Instance.UploadToWorkshop(entry, uploadSlider);
-            });
+                handler.entry = new AvatarEntry
+                {
+                    displayName = entry.displayName,
+                    author = entry.author,
+                    version = entry.version,
+                    fileType = entry.fileType,
+                    filePath = entry.filePath,
+                    thumbnailPath = entry.thumbnailPath,
+                    polygonCount = entry.polygonCount,
+                    isSteamWorkshop = entry.isSteamWorkshop,
+                    steamFileId = entry.steamFileId
+                };
+
+                handler.progressSlider = uploadSlider;
+                handler.labelText = uploadButton.GetComponentInChildren<TMP_Text>();
+                handler.progressSlider = uploadSlider;
+                handler.labelText = uploadButton.GetComponentInChildren<TMP_Text>();
+            }
         }
+
 
 
         if (uploadSlider != null)
