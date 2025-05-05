@@ -29,6 +29,12 @@ public class AvatarLibraryMenu : MonoBehaviour
         public string filePath;
         public string thumbnailPath;
         public int polygonCount;
+
+
+        //Workshop Support (BETA!!)
+        public bool isSteamWorkshop = false;
+        public ulong steamFileId = 0;
+
     }
 
     private void Start()
@@ -92,17 +98,14 @@ public class AvatarLibraryMenu : MonoBehaviour
         TMP_Text polygonText = item.transform.Find("Polygons")?.GetComponent<TMP_Text>();
         Button loadButton = item.transform.Find("Button").GetComponent<Button>();
         Button removeButton = item.transform.Find("Remove").GetComponent<Button>();
+        Button uploadButton = item.transform.Find("Upload")?.GetComponent<Button>();
+        Slider uploadSlider = item.transform.Find("Upload")?.GetComponent<Slider>();
 
-        if (titleText != null)
-            titleText.text = "Name: " + entry.displayName;
-        if (authorText != null)
-            authorText.text = "Author: " + entry.author;
-        if (versionText != null)
-            versionText.text = "Version: " + entry.version;
-        if (fileTypeText != null)
-            fileTypeText.text = "Format: " + entry.fileType;
-        if (polygonText != null)
-            polygonText.text = "Polygons: " + entry.polygonCount;
+        if (titleText != null) titleText.text = "Name: " + entry.displayName;
+        if (authorText != null) authorText.text = "Author: " + entry.author;
+        if (versionText != null) versionText.text = "Version: " + entry.version;
+        if (fileTypeText != null) fileTypeText.text = "Format: " + entry.fileType;
+        if (polygonText != null) polygonText.text = "Polygons: " + entry.polygonCount;
 
         if (thumbnail != null && File.Exists(entry.thumbnailPath))
         {
@@ -116,10 +119,32 @@ public class AvatarLibraryMenu : MonoBehaviour
         loadButton.onClick.AddListener(() => LoadAvatar(entry.filePath));
 
         removeButton.onClick.RemoveAllListeners();
-        removeButton.onClick.AddListener(() => RemoveAvatar(entry));
+        removeButton.onClick.AddListener(() =>
+        {
+            if (entry.isSteamWorkshop && entry.steamFileId != 0)
+            {
+                if (SteamWorkshopHandler.Instance != null)
+                    SteamWorkshopHandler.Instance.UnsubscribeAndDelete(new Steamworks.PublishedFileId_t(entry.steamFileId));
+            }
+            RemoveAvatar(entry);
+        });
+
+        if (uploadButton != null)
+        {
+            uploadButton.onClick.RemoveAllListeners();
+            uploadButton.onClick.AddListener(() =>
+            {
+                if (SteamWorkshopHandler.Instance != null)
+                    SteamWorkshopHandler.Instance.UploadToWorkshop(entry, uploadSlider);
+            });
+        }
+
+
+        if (uploadSlider != null)
+        {
+            uploadSlider.gameObject.SetActive(false);
+        }
     }
-
-
 
     private void LoadAvatar(string path)
     {
