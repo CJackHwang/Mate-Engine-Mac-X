@@ -99,7 +99,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         Button loadButton = item.transform.Find("Button").GetComponent<Button>();
         Button removeButton = item.transform.Find("Remove").GetComponent<Button>();
         Button uploadButton = item.transform.Find("Upload")?.GetComponent<Button>();
-        Slider uploadSlider = item.transform.Find("Upload")?.GetComponent<Slider>();
+        Slider uploadSlider = item.transform.Find("UploadBar")?.GetComponent<Slider>();
 
         if (titleText != null) titleText.text = "Name: " + entry.displayName;
         if (authorText != null) authorText.text = "Author: " + entry.author;
