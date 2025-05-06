@@ -45,6 +45,10 @@ public class AvatarMouseTracking : MonoBehaviour
     [Range(0f, 1f)]
     public float spineBlend = 1f;  // 0 = pure Animator, 1 = pure Tracking
 
+    [Range(0f, 1f)]
+    public float eyeBlend = 1f;   // 0 = pure Animator, 1 = pure Tracking
+
+
 
     private Animator animator;
     private Camera mainCam;
@@ -344,8 +348,8 @@ public class AvatarMouseTracking : MonoBehaviour
         leftEyeDriver.localRotation = Quaternion.Slerp(leftEyeDriver.localRotation, eyeRot, Time.deltaTime * eyeSmoothness);
         rightEyeDriver.localRotation = Quaternion.Slerp(rightEyeDriver.localRotation, eyeRot, Time.deltaTime * eyeSmoothness);
 
-        leftEyeBone.localRotation = leftEyeDriver.localRotation;
-        rightEyeBone.localRotation = rightEyeDriver.localRotation;
+        leftEyeBone.localRotation = Quaternion.Slerp(leftEyeBone.localRotation, leftEyeDriver.localRotation, eyeBlend);
+        rightEyeBone.localRotation = Quaternion.Slerp(rightEyeBone.localRotation, rightEyeDriver.localRotation, eyeBlend);
     }
 
     bool GetFeature(TrackingPermission entry, string feature)

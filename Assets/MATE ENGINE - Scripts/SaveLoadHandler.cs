@@ -100,8 +100,11 @@ public class SaveLoadHandler : MonoBehaviour
         public float petVolume = 1f;
         public float effectsVolume = 1f;
         public float menuVolume = 1f;
+
         public float headBlend = 0.7f;
+        public float eyeBlend = 1f;
         public float spineBlend = 0.5f;
+
         public bool enableHandHolding = true;
         public bool enableWindowSitting = false;
         public bool ambientOcclusion = false;
@@ -157,6 +160,7 @@ public class SaveLoadHandler : MonoBehaviour
                 tracker.enableMouseTracking = data.enableMouseTracking;
                 tracker.headBlend = data.headBlend;
                 tracker.spineBlend = data.spineBlend;
+                tracker.eyeBlend = data.eyeBlend;
             }
 
 

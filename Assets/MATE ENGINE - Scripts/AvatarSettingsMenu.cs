@@ -18,7 +18,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public bool resetAlsoClearsAllowedApps = false;
     public List<AudioSource> petAudioSources = new(), effectsAudioSources = new(), menuAudioSources = new();
     public static bool IsMenuOpen { get; private set; }
-    public Slider headBlendSlider, spineBlendSlider;
+    public Slider headBlendSlider, spineBlendSlider, eyeBlendSlider;
     public Toggle enableHandHoldingToggle;
     public Slider hueShiftSlider;
     public Slider saturationSlider;
@@ -111,7 +111,10 @@ public class AvatarSettingsMenu : MonoBehaviour
             QualitySettings.SetQualityLevel(i, true);
             SaveAll();
         });
-
+        eyeBlendSlider?.onValueChanged.AddListener(v => {
+            SaveLoadHandler.Instance.data.eyeBlend = v;
+            SaveAll();
+        });
         foreach (var entry in accessoryToggleBindings)
         {
             if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null)
@@ -231,6 +234,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         hueShiftSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiHueShift);
         saturationSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiSaturation);
         ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
+        eyeBlendSlider?.SetValueWithoutNotify(data.eyeBlend);
 
         if (graphicsDropdown != null)
         {
@@ -262,6 +266,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.spineBlend = spineBlendSlider?.value ?? 0.5f;
         data.enableHandHolding = enableHandHoldingToggle?.isOn ?? true;
         data.ambientOcclusion = ambientOcclusionToggle?.isOn ?? false;
+        data.eyeBlend = eyeBlendSlider?.value ?? 1f;
+
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -365,6 +371,8 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         headBlendSlider?.SetValueWithoutNotify(0.7f);
         spineBlendSlider?.SetValueWithoutNotify(0.5f);
+        eyeBlendSlider?.SetValueWithoutNotify(1.0f);
+        newData.eyeBlend = 1.0f;
         newData.enableHandHolding = true;
         enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
 
