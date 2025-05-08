@@ -1,49 +1,3 @@
-THIRT-PARTY LICENSE 
-PLEASE READ CAREFULLY  
-=========================
-- Qwen 2.5 1.5b LLM is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).  
-  See `Third Party Licenses/Qwen 2.5 1.5b/LICENSE.txt` for full terms.
-
-
-SPECIAL PERMISSION FOR PUBLISHING ON STEAM
-
-As a mod developer, you are permitted to publish AGPL-licensed modified code to the Steam Workshop for MateEngine under the following conditions:
-- You must include a link to a public GitHub repository (or similar) containing the open-source code of your mod in the Steam Workshop description.
-- You may not sell the code or restrict access to it in any way.
-
-
-PROJECT LICENSE  
-AGPL & COPYRIGHTED LICENSE  
-PLEASE READ CAREFULLY  
-=========================
-
-ASSETS (Audio, Visual, etc.)
-----------------------------
-All assets included in this project, including but not limited to:
-
-• Audio files  
-• Visual assets (images, models, textures, animations)  
-• Fonts, icons, and UI elements  
-
-are © 2025 Shiny and are strictly COPYRIGHTED.
-
-These assets are NOT licensed for commercial use in any form.  
-You may NOT use them in commercial projects, redistribute them separately, or resell them.
-
-Personal, educational, or non-commercial use is allowed, but attribution to the original author ("Shiny") is required.
-
-If you wish to license these assets for commercial use, you must contact the author directly for permission.
-
-------------------------------------------------------------
-
-Great! Here's a refined version of the **MateEngine Pro License (v2.0)** that incorporates **AGPL-inspired provisions**, especially:
-
-* The **network-use clause** (if a mod or fork is run as a service, the source must still be published).
-* Strong **copyleft**: forks must remain under this license.
-* Still allows **modding and publishing** on sites like Steam, **as long as the code is open-source** and properly linked.
-
----
-
 MateEngine Pro License (v2.0)
 PROJEC LICENSE
 PLEASE READ CAREFULLY  
@@ -141,3 +95,54 @@ Any breach of this license automatically terminates your rights to use, modify, 
 
 
 © 2025 Shiny and individual contributors. All rights reserved.
+
+
+
+
+
+
+
+
+THIRT-PARTY LICENSE 
+PLEASE READ CAREFULLY  
+=========================
+- Qwen 2.5 1.5b LLM is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).  
+  See `Third Party Licenses/Qwen 2.5 1.5b/LICENSE.txt` for full terms.
+
+
+SPECIAL PERMISSION FOR PUBLISHING ON STEAM
+
+As a mod developer, you are permitted to publish AGPL-licensed modified code to the Steam Workshop for MateEngine under the following conditions:
+- You must include a link to a public GitHub repository (or similar) containing the open-source code of your mod in the Steam Workshop description.
+- You may not sell the code or restrict access to it in any way.
+
+
+PROJECT LICENSE  
+AGPL & COPYRIGHTED LICENSE  
+PLEASE READ CAREFULLY  
+=========================
+
+ASSETS (Audio, Visual, etc.)
+----------------------------
+All assets included in this project, including but not limited to:
+
+• Audio files  
+• Visual assets (images, models, textures, animations)  
+• Fonts, icons, and UI elements  
+
+are © 2025 Shiny and are strictly COPYRIGHTED.
+
+These assets are NOT licensed for commercial use in any form.  
+You may NOT use them in commercial projects, redistribute them separately, or resell them.
+
+Personal, educational, or non-commercial use is allowed, but attribution to the original author ("Shiny") is required.
+
+If you wish to license these assets for commercial use, you must contact the author directly for permission.
+
+------------------------------------------------------------
+
+Great! Here's a refined version of the **MateEngine Pro License (v2.0)** that incorporates **AGPL-inspired provisions**, especially:
+
+* The **network-use clause** (if a mod or fork is run as a service, the source must still be published).
+* Strong **copyleft**: forks must remain under this license.
+* Still allows **modding and publishing** on sites like Steam, **as long as the code is open-source** and properly linked.
