@@ -289,6 +289,19 @@ MonoBehaviour:
     m_Localized: "Augen\xFCberblendung"
     m_Metadata:
       m_Items: []
+  - m_Id: 11144201018269696
+    m_Localized: "Inverse Kinematik F\xFC\xDFe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11144228465795072
+    m_Localized: "Die meisten Modelle sehen mit aktivierten IK-F\xFC\xDFen besser
+      aus. Wenn nicht, deaktiviere sie f\xFCr einen femininen Bewegungsstil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11147404514418688
+    m_Localized: Umgebungsverdeckung
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

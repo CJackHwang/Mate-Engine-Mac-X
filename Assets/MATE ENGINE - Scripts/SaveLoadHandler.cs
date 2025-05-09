@@ -117,6 +117,7 @@ public class SaveLoadHandler : MonoBehaviour
         public bool tutorialDone = false;
 
         public string selectedLocaleCode = "en";
+        public bool enableIK = true;
 
 
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
@@ -161,6 +162,10 @@ public class SaveLoadHandler : MonoBehaviour
                 tracker.eyeBlend = data.eyeBlend;
             }
 
+            foreach (var ik in avatar.GetComponentsInChildren<IKFix>(true))
+            {
+                ik.enableIK = data.enableIK;
+            }
 
             foreach (var handler in avatar.GetComponentsInChildren<AvatarParticleHandler>(true))
             {

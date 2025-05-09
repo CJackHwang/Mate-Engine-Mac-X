@@ -28,9 +28,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Button refreshAppsListButton;
     public Toggle ambientOcclusionToggle;
     public GameObject ambientOcclusionObject;
-
-
-
+    public Toggle enableIKToggle;
 
     [System.Serializable]
     public class AccessoryToggleEntry
@@ -113,6 +111,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         });
         eyeBlendSlider?.onValueChanged.AddListener(v => {
             SaveLoadHandler.Instance.data.eyeBlend = v;
+            SaveAll();
+        });
+        enableIKToggle?.onValueChanged.AddListener(v => {
+            SaveLoadHandler.Instance.data.enableIK = v;
             SaveAll();
         });
         foreach (var entry in accessoryToggleBindings)
@@ -238,6 +240,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         saturationSlider?.SetValueWithoutNotify(SaveLoadHandler.Instance.data.uiSaturation);
         ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
         eyeBlendSlider?.SetValueWithoutNotify(data.eyeBlend);
+        enableIKToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableIK);
 
         if (graphicsDropdown != null)
         {
@@ -270,7 +273,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.enableHandHolding = enableHandHoldingToggle?.isOn ?? true;
         data.ambientOcclusion = ambientOcclusionToggle?.isOn ?? false;
         data.eyeBlend = eyeBlendSlider?.value ?? 1f;
-
+        data.enableIK = enableIKToggle?.isOn ?? true;
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -349,9 +352,6 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         newData.ambientOcclusion = false;
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
-
-
-
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
 
         if (!resetAlsoClearsAllowedApps)
@@ -378,8 +378,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         newData.eyeBlend = 1.0f;
         newData.enableHandHolding = true;
         enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
-
-
+        newData.enableIK = true;
+        enableIKToggle?.SetIsOnWithoutNotify(true);
 
         FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
 

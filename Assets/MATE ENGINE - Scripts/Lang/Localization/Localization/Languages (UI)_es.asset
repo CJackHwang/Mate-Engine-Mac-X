@@ -288,6 +288,19 @@ MonoBehaviour:
     m_Localized: Mezcla de ojos
     m_Metadata:
       m_Items: []
+  - m_Id: 11144201018269696
+    m_Localized: "Pies con Cinem\xE1tica Inversa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11144228465795072
+    m_Localized: "La mayor\xEDa de los modelos se ver\xE1n mejor con los IK Feet
+      activados. Si no, desact\xEDvalos para un estilo de movimiento m\xE1s femenino."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11147404514418688
+    m_Localized: "Oclusi\xF3n Ambiental"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

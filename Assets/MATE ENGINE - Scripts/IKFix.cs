@@ -12,10 +12,17 @@ public class IKFix : MonoBehaviour
         public bool fixFeetIK;
     }
 
+    [Header("IK Master Toggle")]
+    public bool enableIK = true;
+
+    [Header("IK Fix States")]
     public List<IKFixState> ikFixStates = new List<IKFixState>();
-    public float blendSpeed = 5f; 
+
+    [Header("Blend Speed")]
+    public float blendSpeed = 5f;
+
     private Animator animator;
-    private float currentIKWeight = 0f; 
+    private float currentIKWeight = 0f;
 
     private void Awake()
     {
@@ -27,18 +34,22 @@ public class IKFix : MonoBehaviour
         if (animator == null || !animator.isActiveAndEnabled)
             return;
 
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
-        bool shouldApplyIK = false;
-        foreach (var state in ikFixStates)
+        float targetWeight = 0f;
+
+        if (enableIK)
         {
-            if (state.fixFeetIK && stateInfo.IsName(state.stateName))
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
+            foreach (var state in ikFixStates)
             {
-                shouldApplyIK = true;
-                break;
+                if (state.fixFeetIK && stateInfo.IsName(state.stateName))
+                {
+                    targetWeight = 1f;
+                    break;
+                }
             }
         }
 
-        float targetWeight = shouldApplyIK ? 1f : 0f;
+        // Always blend toward the target weight
         currentIKWeight = Mathf.MoveTowards(currentIKWeight, targetWeight, Time.deltaTime * blendSpeed);
 
         if (currentIKWeight > 0f)
@@ -48,6 +59,7 @@ public class IKFix : MonoBehaviour
         }
         else
         {
+            // Ensure IK is cleanly disabled if fully blended out
             animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 0f);
             animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 0f);
             animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 0f);

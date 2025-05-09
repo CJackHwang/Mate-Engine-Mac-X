@@ -284,6 +284,19 @@ MonoBehaviour:
     m_Localized: Eye Blend
     m_Metadata:
       m_Items: []
+  - m_Id: 11144201018269696
+    m_Localized: Inverse Kinematics Feet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11144228465795072
+    m_Localized: Most models will look better with IK Feet enabled. If not, disable
+      it for a more feminine movement style.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11147404514418688
+    m_Localized: Ambient Occlusion
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
