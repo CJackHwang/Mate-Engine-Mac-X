@@ -71,9 +71,14 @@ public class AvatarBubbleHandler : MonoBehaviour
             bone = animator.GetBoneTransform(attachBone);
         if (IsDragging() && Input.GetKeyDown(activationKey))
         {
-            bool newState = !animator.GetBool(animatorParameter);
-            animator.SetBool(animatorParameter, newState);
+            bool isWindowSit = animator.GetBool("isWindowSit");
+            if (!isWindowSit)
+            {
+                bool newState = !animator.GetBool(animatorParameter);
+                animator.SetBool(animatorParameter, newState);
+            }
         }
+
 
         bool shouldBeActive = animator.GetBool(animatorParameter);
         float target = shouldBeActive ? 1f : 0f;
