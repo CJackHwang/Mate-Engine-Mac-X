@@ -54,7 +54,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
     {
         avatarAnimator = newAnimator;
         hasSetup = false;
-        //TrySetup();
     }
 
     void TrySetup()

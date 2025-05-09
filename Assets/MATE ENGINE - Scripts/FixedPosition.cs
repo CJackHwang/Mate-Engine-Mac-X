@@ -6,13 +6,11 @@ public class FixedPosition : MonoBehaviour
 
     void Start()
     {
-        // Store the initial position
         fixedPosition = transform.position;
     }
 
     void LateUpdate()
     {
-        // Lock position but allow rotation and animation
         transform.position = fixedPosition;
     }
 }

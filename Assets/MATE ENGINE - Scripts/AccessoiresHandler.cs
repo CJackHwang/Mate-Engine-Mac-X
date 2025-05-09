@@ -12,9 +12,8 @@ public class AccessoiresHandler : MonoBehaviour
         public GameObject linkedObject;
         [Range(0f, 1f)] public float smoothness = 0f;
         public bool steamExclusive = false;
-        public Vector3 positionOffset = Vector3.zero; // New offset
+        public Vector3 positionOffset = Vector3.zero;
     }
-
     public Animator animator;
     public List<AccessoryRule> rules = new List<AccessoryRule>();
     public bool featureEnabled = true;
@@ -87,10 +86,9 @@ public class AccessoiresHandler : MonoBehaviour
     {
         foreach (var rule in rules)
         {
-            rule.isEnabled = false; // Default is off now lol
+            rule.isEnabled = false; 
         }
     }
-
 
     public void ClearAccessoryStatesFromSave()
     {
@@ -100,9 +98,6 @@ public class AccessoiresHandler : MonoBehaviour
             SaveLoadHandler.Instance.data.accessoryStates.Remove(rule.ruleName);
         }
     }
-
-
-
 
     void Update()
     {
@@ -152,7 +147,6 @@ public class AccessoiresHandler : MonoBehaviour
 
 
 }
-
 public static class SteamChecker
 {
     private static bool initialized = false;

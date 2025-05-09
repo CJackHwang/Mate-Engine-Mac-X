@@ -33,6 +33,7 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
             Directory.CreateDirectory(workshopFolderPath);
 
         StartCoroutine(LoadSubscribedWorkshopAvatars());
+        CleanupUnsubscribedWorkshopFiles();
     }
 
     private IEnumerator LoadSubscribedWorkshopAvatars()
@@ -162,4 +163,37 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
         string json = JsonConvert.SerializeObject(entries, Formatting.Indented);
         File.WriteAllText(path, json);
     }
+
+    private void CleanupUnsubscribedWorkshopFiles()
+    {
+        var avatars = GetAvatarEntries();
+        var subscribedIds = new HashSet<ulong>();
+
+        uint count = SteamUGC.GetNumSubscribedItems();
+        if (count > 0)
+        {
+            PublishedFileId_t[] subscribed = new PublishedFileId_t[count];
+            SteamUGC.GetSubscribedItems(subscribed, count);
+            foreach (var id in subscribed)
+                subscribedIds.Add(id.m_PublishedFileId);
+        }
+
+        bool changed = false;
+        for (int i = avatars.Count - 1; i >= 0; i--)
+        {
+            var a = avatars[i];
+            if (a.isSteamWorkshop && a.steamFileId != 0 && !subscribedIds.Contains(a.steamFileId))
+            {
+                if (File.Exists(a.filePath)) File.Delete(a.filePath);
+                if (File.Exists(a.thumbnailPath)) File.Delete(a.thumbnailPath);
+                avatars.RemoveAt(i);
+                changed = true;
+                Debug.Log("[SteamWorkshopAutoLoader] Removed unsubscribed avatar: " + a.displayName);
+            }
+        }
+
+        if (changed)
+            SaveAvatarEntries(avatars);
+    }
+
 }

@@ -192,6 +192,8 @@ public class AvatarSettingsMenu : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && menuPanel != null)
         {
+            if (AnimatorParameterHelper.IsAnyAnimatorBoolTrue("isDragging")) return;
+
             bool newState = !menuPanel.activeSelf;
             menuPanel.SetActive(newState);
             IsMenuOpen = newState;
@@ -202,6 +204,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             }
         }
     }
+
 
 
     public void LoadSettings()

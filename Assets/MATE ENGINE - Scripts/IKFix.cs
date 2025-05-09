@@ -13,10 +13,9 @@ public class IKFix : MonoBehaviour
     }
 
     public List<IKFixState> ikFixStates = new List<IKFixState>();
-    public float blendSpeed = 5f; // Higher = faster transition
-
+    public float blendSpeed = 5f; 
     private Animator animator;
-    private float currentIKWeight = 0f; // Blended IK weight
+    private float currentIKWeight = 0f; 
 
     private void Awake()
     {
@@ -29,8 +28,6 @@ public class IKFix : MonoBehaviour
             return;
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(layerIndex);
-
-        // Determine if current state should apply IK
         bool shouldApplyIK = false;
         foreach (var state in ikFixStates)
         {
@@ -41,7 +38,6 @@ public class IKFix : MonoBehaviour
             }
         }
 
-        // Smoothly blend IK weight
         float targetWeight = shouldApplyIK ? 1f : 0f;
         currentIKWeight = Mathf.MoveTowards(currentIKWeight, targetWeight, Time.deltaTime * blendSpeed);
 

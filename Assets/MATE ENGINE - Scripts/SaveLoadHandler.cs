@@ -68,12 +68,12 @@ public class SaveLoadHandler : MonoBehaviour
             catch (System.Exception e)
             {
                 Debug.LogError("[SaveLoadHandler] Failed to load: " + e);
-                data = new SettingsData(); // fallback
+                data = new SettingsData(); 
             }
         }
         else
         {
-            data = new SettingsData(); // defaults
+            data = new SettingsData();
         }
     }
 
@@ -109,19 +109,17 @@ public class SaveLoadHandler : MonoBehaviour
         public bool enableWindowSitting = false;
         public bool ambientOcclusion = false;
 
-        public float uiHueShift = 0f;     // Default hue = 0
-        public float uiSaturation = 0.5f; // Default saturation = neutral
-
+        public float uiHueShift = 0f;   
+        public float uiSaturation = 0.5f;
 
         public bool enableDiscordRPC = true;
 
-        public bool tutorialDone = false; // NEW: Save flag for tutorial completion
+        public bool tutorialDone = false;
 
-        public string selectedLocaleCode = "en"; // Default to English
+        public string selectedLocaleCode = "en";
 
 
-        public Dictionary<string, bool> modStates = new Dictionary<string, bool>(); // Mod States
-
+        public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
 
 
         public int graphicsQualityLevel = 1;
@@ -191,7 +189,6 @@ public class SaveLoadHandler : MonoBehaviour
     }
 
     // DLCs and Steam
-
     public static void LoadAccessoryStatesToAll()
     {
         foreach (var handler in AccessoiresHandler.ActiveHandlers)

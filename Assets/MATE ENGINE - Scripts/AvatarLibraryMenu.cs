@@ -262,17 +262,36 @@ public class AvatarLibraryMenu : MonoBehaviour
         // Remove the entry
         entries = entries.Where(e => e.filePath != entryToRemove.filePath).ToList();
 
+        // Delete the model file if it exists
+        if (File.Exists(entryToRemove.filePath))
+        {
+            try
+            {
+                File.Delete(entryToRemove.filePath);
+                Debug.Log("[AvatarLibraryMenu] Deleted model file: " + entryToRemove.filePath);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning("[AvatarLibraryMenu] Could not delete model file: " + e.Message);
+            }
+        }
+
         // Delete thumbnail if exists
         if (File.Exists(entryToRemove.thumbnailPath))
         {
-            File.Delete(entryToRemove.thumbnailPath);
+            try
+            {
+                File.Delete(entryToRemove.thumbnailPath);
+            }
+            catch { }
         }
 
-        // Save new json
+        // Save updated JSON
         string newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
         File.WriteAllText(avatarsJsonPath, newJson);
 
         // Refresh UI
         ReloadAvatars();
     }
+
 }

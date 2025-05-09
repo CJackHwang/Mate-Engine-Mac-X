@@ -47,7 +47,7 @@ public class HandHolder : MonoBehaviour
     public void SetAnimator(Animator newAnimator)
     {
         avatarAnimator = newAnimator;
-        CacheTransforms(); // Ensure hand/chest bones get refreshed after assignment
+        CacheTransforms();
     }
 
     void Update()

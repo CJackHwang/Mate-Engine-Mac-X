@@ -74,23 +74,18 @@ public class AvatarTaskbarController : MonoBehaviour
         UpdateTaskbarRect();
         UpdatePinkZone();
 
-        // 1) figure out whether we're "in the zone"
         Rect topBar = new Rect(taskbarRect.x, taskbarRect.y, taskbarRect.width, 5);
         bool isNearTaskbar = pinkZoneDesktopRect.Overlaps(topBar);
 
-        // 2) drive your avatar animator as before
         animator.SetBool(IsSitting, isNearTaskbar);
 
-        // 3) your existing check for whether the Animator is actually in the "Sitting" state
         bool allowSpawn = isNearTaskbar && animator
             .GetCurrentAnimatorStateInfo(0)
             .IsName("Sitting");
 
-        // 4) grab the bone transform once
         if (attachBoneTransform == null && attachTarget != null)
             attachBoneTransform = animator.GetBoneTransform(attachBone);
 
-        // 5) handle parent / position
         if (attachTarget != null)
         {
             if (allowSpawn && !keepOriginalRotation && attachBoneTransform != null)
@@ -100,7 +95,6 @@ public class AvatarTaskbarController : MonoBehaviour
                 attachTarget.transform.SetParent(originalAttachParent, false);
         }
 
-        // 6) **SPAWN** on the **rising** edge of allowSpawn
         if (attachTarget != null && allowSpawn && !wasAllowSpawn)
         {
             attachTarget.SetActive(true);
@@ -110,7 +104,6 @@ public class AvatarTaskbarController : MonoBehaviour
             isScaling = true;
         }
 
-        // 7) **DESPAWN** on the **falling** edge
         if (attachTarget != null && !allowSpawn && attachTarget.activeSelf && (!isScaling || scalingUp))
         {
             scalingUp = false;
@@ -118,7 +111,6 @@ public class AvatarTaskbarController : MonoBehaviour
             scaleLerpT = 0f;
         }
 
-        // 8) always run your LERP when isScaling
         if (attachTarget != null && isScaling && attachTarget.activeSelf)
         {
             float duration = scalingUp ? spawnScaleTime : despawnScaleTime;
@@ -139,11 +131,9 @@ public class AvatarTaskbarController : MonoBehaviour
             }
         }
 
-        // 9) if you’re “pinning” without parenting, always update position
         if (attachTarget != null && attachTarget.activeSelf && keepOriginalRotation && attachBoneTransform != null)
             attachTarget.transform.position = attachBoneTransform.position;
 
-        // 10) remember state for next frame
         wasAllowSpawn = allowSpawn;
     }
 
@@ -168,7 +158,6 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void UpdateTaskbarRect()
     {
-        // Query the helper for the taskbar bounds on whichever monitor
         taskbarRect = MonitorHelper.GetTaskbarRectForWindow(unityHWND);
     }
 
@@ -178,13 +167,9 @@ public class AvatarTaskbarController : MonoBehaviour
     {
         if (!Application.isPlaying || !showDebugGizmo) return;
         float basePixel = 1000f;
-
-        // Taskbar bar
         Rect bar = new Rect(taskbarRect.x, taskbarRect.y, taskbarRect.width, 5);
         Gizmos.color = taskbarGizmoColor;
         DrawDesktopRect(bar, basePixel);
-
-        // Detection zone (pink zone)
         Gizmos.color = pinkZoneGizmoColor;
         DrawDesktopRect(pinkZoneDesktopRect, basePixel);
     }

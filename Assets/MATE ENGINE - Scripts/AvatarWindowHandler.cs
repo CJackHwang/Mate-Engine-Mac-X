@@ -62,11 +62,11 @@ public class AvatarWindowHandler : MonoBehaviour
         UpdateCachedWindows();
         UpdatePinkZone(unityPos);
 
-        if (controller.isDragging && snappedHWND == IntPtr.Zero)
+        if (controller.isDragging && !controller.animator.GetBool("isSitting") && snappedHWND == IntPtr.Zero)
         {
             TrySnap(unityPos);
         }
-        else if (controller.isDragging && snappedHWND != IntPtr.Zero)
+        else if (controller.isDragging && !controller.animator.GetBool("isSitting") && snappedHWND != IntPtr.Zero)
         {
             if (!IsStillNearSnappedWindow())
             {
@@ -90,23 +90,46 @@ public class AvatarWindowHandler : MonoBehaviour
         cachedWindows.Clear();
         EnumWindows((hWnd, lParam) =>
         {
+            // must be visible & have a rect
             if (!IsWindowVisible(hWnd)) return true;
             if (!GetWindowRect(hWnd, out RECT r)) return true;
-            if ((r.Right - r.Left) < 100 || (r.Bottom - r.Top) < 100) return true;
-            if (GetParent(hWnd) != IntPtr.Zero) return true;
-            if (GetWindowTextLength(hWnd) == 0) return true;
 
+            // grab the class name
             classNameBuffer.Clear();
             GetClassName(hWnd, classNameBuffer, classNameBuffer.Capacity);
             string className = classNameBuffer.ToString();
-            if (className == "Progman" || className == "WorkerW" || className == "Shell_TrayWnd" ||
-                className == "DV2ControlHost" || className == "MsgrIMEWindowClass" ||
-                className.StartsWith("#") || className.Contains("Desktop")) return true;
 
+            // detect “real” taskbar window
+            bool isTaskbar = className == "Shell_TrayWnd";
+
+            if (!isTaskbar)
+            {
+                // skip tiny windows
+                if ((r.Right - r.Left) < 100 || (r.Bottom - r.Top) < 100)
+                    return true;
+
+                // skip child windows
+                if (GetParent(hWnd) != IntPtr.Zero)
+                    return true;
+
+                // skip windows without any title text
+                if (GetWindowTextLength(hWnd) == 0)
+                    return true;
+
+                // skip known system/desktop classes
+                if (className == "Progman" || className == "WorkerW" ||
+                    className == "DV2ControlHost" || className == "MsgrIMEWindowClass" ||
+                    className.StartsWith("#") || className.Contains("Desktop"))
+                    return true;
+            }
+
+            // finally, cache it (this will now include Shell_TrayWnd!)
             cachedWindows.Add(new WindowEntry { hwnd = hWnd, rect = r });
             return true;
         }, IntPtr.Zero);
     }
+
+
 
     void UpdatePinkZone(Vector2 unityPos)
     {
