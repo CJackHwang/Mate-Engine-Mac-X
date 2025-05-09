@@ -45,7 +45,7 @@ public class AvatarBubbleHandler : MonoBehaviour
             wasActive = false;
             initialized = true;
         }
-        bone = null; 
+        bone = null;
     }
 
     void OnDisable()

@@ -39437,7 +39437,7 @@ MonoBehaviour:
   DANCE_CLIP_COUNT: 8
   enableDancing: 1
   isDragging: 0
-  isDancing: 0
+  isDancing: 1
   isIdle: 0
 --- !u!114 &1758352181
 MonoBehaviour:

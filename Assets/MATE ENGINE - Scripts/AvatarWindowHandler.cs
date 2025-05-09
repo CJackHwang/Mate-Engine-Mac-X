@@ -355,4 +355,5 @@ public class AvatarWindowHandler : MonoBehaviour
 
         Gizmos.DrawWireCube(worldPos, worldSize);
     }
+
 }
