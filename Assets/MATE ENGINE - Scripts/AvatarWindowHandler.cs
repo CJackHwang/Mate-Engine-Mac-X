@@ -28,22 +28,18 @@ public class AvatarWindowHandler : MonoBehaviour
 
     private Animator animator;
     private AvatarAnimatorController controller;
-
     private readonly System.Text.StringBuilder classNameBuffer = new System.Text.StringBuilder(256);
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     static extern int GetClassName(IntPtr hWnd, System.Text.StringBuilder lpClassName, int nMaxCount);
-
     [DllImport("user32.dll")]
     static extern IntPtr WindowFromPoint(POINT pt);
-
     [DllImport("user32.dll")]
     static extern IntPtr GetAncestor(IntPtr hwnd, uint gaFlags);
 
     struct POINT { public int X, Y; }
 
     const uint GA_ROOT = 2;
-
 
     void Start()
     {
@@ -90,40 +86,28 @@ public class AvatarWindowHandler : MonoBehaviour
         cachedWindows.Clear();
         EnumWindows((hWnd, lParam) =>
         {
-            // must be visible & have a rect
             if (!IsWindowVisible(hWnd)) return true;
             if (!GetWindowRect(hWnd, out RECT r)) return true;
 
-            // grab the class name
             classNameBuffer.Clear();
             GetClassName(hWnd, classNameBuffer, classNameBuffer.Capacity);
             string className = classNameBuffer.ToString();
 
-            // detect “real” taskbar window
-            bool isTaskbar = className == "Shell_TrayWnd";
+            bool isTaskbar = className == "Shell_TrayWnd" || className == "Shell_SecondaryTrayWnd";
 
             if (!isTaskbar)
             {
-                // skip tiny windows
                 if ((r.Right - r.Left) < 100 || (r.Bottom - r.Top) < 100)
                     return true;
-
-                // skip child windows
                 if (GetParent(hWnd) != IntPtr.Zero)
                     return true;
-
-                // skip windows without any title text
                 if (GetWindowTextLength(hWnd) == 0)
                     return true;
-
-                // skip known system/desktop classes
                 if (className == "Progman" || className == "WorkerW" ||
                     className == "DV2ControlHost" || className == "MsgrIMEWindowClass" ||
                     className.StartsWith("#") || className.Contains("Desktop"))
                     return true;
             }
-
-            // finally, cache it (this will now include Shell_TrayWnd!)
             cachedWindows.Add(new WindowEntry { hwnd = hWnd, rect = r });
             return true;
         }, IntPtr.Zero);
@@ -144,8 +128,6 @@ public class AvatarWindowHandler : MonoBehaviour
         {
             var win = cachedWindows[i];
             if (win.hwnd == unityHWND) continue;
-
-            // Prüfe PinkZone-Hit wie gehabt
             int barMidX = win.rect.Left + (win.rect.Right - win.rect.Left) / 2;
             int barY = win.rect.Top + 2;
             var pt = new POINT { X = barMidX, Y = barY };
@@ -155,21 +137,11 @@ public class AvatarWindowHandler : MonoBehaviour
             var topBarRect = new Rect(win.rect.Left, win.rect.Top,
                                       win.rect.Right - win.rect.Left, 5);
             if (!pinkZoneDesktopRect.Overlaps(topBarRect)) continue;
-
-            // Snap aktivieren
             snappedHWND = win.hwnd;
-
-            // Breiten ermitteln
             int winWidth = win.rect.Right - win.rect.Left;
             int unityWidth = GetUnityWindowWidth();
-
-            // Mittelpunkt des Pet-Fensters in Desktop-Koordinaten
             float petCenterX = unityWindowPosition.x + unityWidth * 0.5f;
-
-            // Einmalig relativen Anteil (0…1) des Mittelpunkts speichern
             snapFraction = (petCenterX - win.rect.Left) / winWidth;
-
-            // vertikaler Offset bleibt unverändert
             snapOffset.y = GetUnityWindowHeight()
                          + snapZoneOffset.y
                          + snapZoneSize.y * 0.5f;
@@ -186,21 +158,13 @@ public class AvatarWindowHandler : MonoBehaviour
         {
             var win = cachedWindows[i];
             if (win.hwnd != snappedHWND) continue;
-
-            // Breiten
             Vector2 unityPos = GetUnityWindowPosition();
             int currentWidth = win.rect.Right - win.rect.Left;
             int unityWidth = GetUnityWindowWidth();
-
-            // → (bleibt so) relative Mitte aktualisieren
             float petCenterX = unityPos.x + unityWidth * 0.5f;
             snapFraction = (petCenterX - win.rect.Left) / (float)currentWidth;
-
-            // → neue Mitte in Pixel
             float newCenterX = win.rect.Left + snapFraction * currentWidth;
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
-
-            // ← **hier** dynamisch den vertikalen Abstand neu berechnen
             float dynamicOffsetY = GetUnityWindowHeight()
                                  + snapZoneOffset.y
                                  + snapZoneSize.y * 0.5f;
@@ -220,15 +184,12 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd != snappedHWND) continue;
 
-            // Breiten
             int currentWidth = win.rect.Right - win.rect.Left;
             int unityWidth = GetUnityWindowWidth();
 
-            // → aus dem fest gespeicherten snapFraction die neue Mitte
             float newCenterX = win.rect.Left + snapFraction * currentWidth;
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
 
-            // ← auch hier: vertikalen Abstand bei jeder Frame neu berechnen
             float dynamicOffsetY = GetUnityWindowHeight()
                                  + snapZoneOffset.y
                                  + snapZoneSize.y * 0.5f;
@@ -243,7 +204,6 @@ public class AvatarWindowHandler : MonoBehaviour
             return;
         }
 
-        // Reset, wenn kein Fenster mehr
         snappedHWND = IntPtr.Zero;
         animator.SetBool("isWindowSit", false);
         SetTopMost(true);
@@ -279,7 +239,6 @@ public class AvatarWindowHandler : MonoBehaviour
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)] static extern int GetWindowTextLength(IntPtr hWnd);
 
     delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
     static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
     static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
     const uint SWP_NOMOVE = 0x0002;
@@ -349,7 +308,6 @@ public class AvatarWindowHandler : MonoBehaviour
 
         float unityX = (cx - screenWidth / 2f) / basePixel;
         float unityY = -(cy - screenHeight / 2f) / basePixel;
-
         Vector3 worldPos = new Vector3(unityX, unityY, 0);
         Vector3 worldSize = new Vector3(desktopRect.width / basePixel, desktopRect.height / basePixel, 0);
 
