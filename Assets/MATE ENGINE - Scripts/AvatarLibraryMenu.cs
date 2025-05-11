@@ -262,19 +262,20 @@ public class AvatarLibraryMenu : MonoBehaviour
         // Remove the entry
         entries = entries.Where(e => e.filePath != entryToRemove.filePath).ToList();
 
-        // Delete the model file if it exists
-        if (File.Exists(entryToRemove.filePath))
+        // Only delete model file if it's Steam Workshop content // Hotfix 2
+        if (entryToRemove.isSteamWorkshop && File.Exists(entryToRemove.filePath))
         {
             try
             {
                 File.Delete(entryToRemove.filePath);
-                Debug.Log("[AvatarLibraryMenu] Deleted model file: " + entryToRemove.filePath);
+                Debug.Log("[AvatarLibraryMenu] Deleted workshop model file: " + entryToRemove.filePath);
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning("[AvatarLibraryMenu] Could not delete model file: " + e.Message);
+                Debug.LogWarning("[AvatarLibraryMenu] Could not delete workshop model file: " + e.Message);
             }
         }
+
 
         // Delete thumbnail if exists
         if (File.Exists(entryToRemove.thumbnailPath))

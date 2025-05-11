@@ -845,51 +845,5 @@ namespace LLMUnity
             Destroy();
             LLMManager.Unregister(this);
         }
-
-        public void Unload()
-        {
-            if (!started || LLMObject == IntPtr.Zero) return;
-
-            try
-            {
-                llmlib?.LLM_Stop(LLMObject);
-                llmlib?.LLM_Delete(LLMObject);
-                LLMObject = IntPtr.Zero;
-                started = false;
-                failed = false;
-
-                foreach (var wrapper in streamWrappers)
-                {
-                    wrapper?.Destroy();
-                }
-                streamWrappers.Clear();
-
-                if (llmThread != null && llmThread.IsAlive)
-                {
-                    llmThread.Abort(); // or use a cancellation method if you have one
-                    llmThread = null;
-                }
-
-                LLMManager.Unregister(this);
-
-                if (Application.isPlaying)
-                {
-                    Destroy(gameObject);
-                }
-                else
-                {
-#if UNITY_EDITOR
-                    UnityEngine.Object.DestroyImmediate(gameObject);
-#endif
-                }
-
-                Debug.Log("LLM successfully unloaded.");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("LLM unload failed: " + e.Message);
-            }
-        }
-
     }
 }

@@ -17542,7 +17542,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -67172,8 +67172,8 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   contextSize: 0
   batchSize: 512
-  model: qwen2.5-1.5b-instruct-q4_k_m.gguf
-  chatTemplate: chatml
+  model: Qwen3-1.7B-Q4_K_M.gguf
+  chatTemplate: qwen3
   lora: 
   loraWeights: 
   flashAttention: 0
@@ -67183,9 +67183,9 @@ MonoBehaviour:
   SSLKey: 
   SSLKeyPath: 
   minContextLength: 0
-  maxContextLength: 32768
+  maxContextLength: 40960
   embeddingsOnly: 0
-  embeddingLength: 1536
+  embeddingLength: 2048
 --- !u!4 &707969821429564536
 Transform:
   m_ObjectHideFlags: 0
@@ -120317,6 +120317,7 @@ MonoBehaviour:
   numPredict: -1
   slot: -1
   grammar: 
+  grammarJSON: 
   cachePrompt: 1
   seed: 0
   temperature: 1
@@ -120354,6 +120355,7 @@ MonoBehaviour:
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
+  grammarJSONString: 
 --- !u!1 &8823676453794176097
 GameObject:
   m_ObjectHideFlags: 0
