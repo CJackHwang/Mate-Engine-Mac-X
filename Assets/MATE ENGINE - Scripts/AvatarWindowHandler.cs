@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
-
-
 public class AvatarWindowHandler : MonoBehaviour
 {
     public int snapThreshold = 30;
@@ -21,10 +18,10 @@ public class AvatarWindowHandler : MonoBehaviour
     private IntPtr unityHWND;
     private readonly List<WindowEntry> cachedWindows = new List<WindowEntry>();
     private Rect pinkZoneDesktopRect;
-
-    private float offsetRatio = 0f;
     private float snapFraction = 0f;
 
+    private float baseScale = 1f;
+    private float baseOffset = 40f; 
 
     private Animator animator;
     private AvatarAnimatorController controller;
@@ -113,8 +110,6 @@ public class AvatarWindowHandler : MonoBehaviour
         }, IntPtr.Zero);
     }
 
-
-
     void UpdatePinkZone(Vector2 unityPos)
     {
         float centerX = unityPos.x + GetUnityWindowWidth() / 2 + snapZoneOffset.x;
@@ -168,9 +163,12 @@ public class AvatarWindowHandler : MonoBehaviour
             float dynamicOffsetY = GetUnityWindowHeight()
                                  + snapZoneOffset.y
                                  + snapZoneSize.y * 0.5f;
+            float scale = transform.localScale.y;
+            float scaleOffset = (baseScale - scale) * baseOffset;
             int targetY = win.rect.Top
-                                 - (int)dynamicOffsetY
-                                 + verticalOffset;
+                         - (int)(dynamicOffsetY + scaleOffset)
+                         + verticalOffset;
+
 
             SetUnityWindowPosition(targetX, targetY);
             return;
@@ -193,9 +191,12 @@ public class AvatarWindowHandler : MonoBehaviour
             float dynamicOffsetY = GetUnityWindowHeight()
                                  + snapZoneOffset.y
                                  + snapZoneSize.y * 0.5f;
+            float scale = transform.localScale.y;
+            float scaleOffset = (baseScale - scale) * baseOffset;
             int targetY = win.rect.Top
-                                 - (int)dynamicOffsetY
-                                 + verticalOffset;
+                         - (int)(dynamicOffsetY + scaleOffset)
+                         + verticalOffset;
+
 
             SetUnityWindowPosition(targetX, targetY);
             SetWindowPos(unityHWND, win.hwnd,
@@ -228,7 +229,6 @@ public class AvatarWindowHandler : MonoBehaviour
     public struct RECT { public int Left, Top, Right, Bottom; }
 
     struct WindowEntry { public IntPtr hwnd; public RECT rect; }
-
     [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
     [DllImport("user32.dll")] static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
     [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr hWnd);
