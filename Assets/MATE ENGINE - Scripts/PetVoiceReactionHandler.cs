@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class PetVoiceReactionHandler : MonoBehaviour
@@ -19,11 +18,14 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public bool enableHoverObject = false;
         public GameObject hoverObject;
         public bool bindHoverObjectToBone = false;
-        [Range(0.1f, 10f)] public float despawnAfterSeconds = 5f;
+        [Range(0.1f, 10f)]
+        public float despawnAfterSeconds = 5f;
         public bool enableLayeredSound = false;
         public List<AudioClip> layeredVoiceClips = new();
-        [HideInInspector] public bool wasHovering = false;
-        [HideInInspector] public Transform bone;
+        [HideInInspector]
+        public bool wasHovering = false;
+        [HideInInspector]
+        public Transform bone;
     }
 
     private class HoverInstance { public GameObject obj; public float despawnTime; }
@@ -43,6 +45,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
     private Camera cachedCamera;
     private readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
     private AnimatorOverrideController overrideController;
+    private RuntimeAnimatorController lastController;
     private bool hasSetup = false;
 
     void Start()
@@ -66,14 +69,18 @@ public class PetVoiceReactionHandler : MonoBehaviour
         var baseController = avatarAnimator.runtimeAnimatorController;
         if (baseController == null) return;
 
-        if (baseController is AnimatorOverrideController oc)
+        if (overrideController == null || baseController != lastController)
         {
-            overrideController = oc;
-        }
-        else
-        {
-            overrideController = new AnimatorOverrideController(baseController);
-            avatarAnimator.runtimeAnimatorController = overrideController;
+            if (baseController is AnimatorOverrideController oc)
+            {
+                overrideController = oc;
+            }
+            else
+            {
+                overrideController = new AnimatorOverrideController(baseController);
+                avatarAnimator.runtimeAnimatorController = overrideController;
+            }
+            lastController = baseController;
         }
 
         foreach (var region in regions)
@@ -101,6 +108,8 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     void Update()
     {
+        if (avatarAnimator != null && avatarAnimator.runtimeAnimatorController != lastController)
+            hasSetup = false;
         if (!hasSetup) TrySetup();
         if (cachedCamera == null || avatarAnimator == null) return;
 

@@ -207,6 +207,10 @@ public class VRMLoader : MonoBehaviour
             libraryMenu.ReloadAvatars();
         }
 
+        foreach (var receiver in GameObject.FindObjectsOfType<MEReceiver>())
+        {
+            receiver.CustomVRM = currentModel;
+        }
 
     }
 

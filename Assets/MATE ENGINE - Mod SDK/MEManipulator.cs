@@ -9,19 +9,43 @@ public class MEReplacer : MonoBehaviour
     [Serializable]
     public class ReplacementEntry
     {
-        public GameObject sourceObject; // Holds the component with the override values
+        public GameObject sourceObject;
     }
 
     public List<ReplacementEntry> replacements = new();
-    private MEReceiver receiver;
 
-    void Awake()
+    private MEReceiver receiver;
+    private GameObject lastPatchedVRMModel;
+    private GameObject lastPatchedCustomVRM;
+
+    void OnEnable()
     {
-        if (Application.isPlaying)
+        receiver = FindReceiver();
+    }
+
+    void Update()
+    {
+        if (!Application.isPlaying) return;
+        if (receiver == null) receiver = FindReceiver();
+        if (receiver == null) return;
+
+        bool needsPatch = false;
+
+        if (receiver.VRMModel && receiver.VRMModel != lastPatchedVRMModel)
         {
-            receiver = FindReceiver();
-            if (receiver && receiver.VRMModel && receiver.CustomVRM)
-                ApplyAllReplacements();
+            lastPatchedVRMModel = receiver.VRMModel;
+            needsPatch = true;
+        }
+
+        if (receiver.CustomVRM && receiver.CustomVRM != lastPatchedCustomVRM)
+        {
+            lastPatchedCustomVRM = receiver.CustomVRM;
+            needsPatch = true;
+        }
+
+        if (needsPatch)
+        {
+            ApplyAllReplacements();
         }
     }
 
@@ -29,7 +53,7 @@ public class MEReplacer : MonoBehaviour
     {
         var all = GameObject.FindObjectsOfType<MEReceiver>(true);
         foreach (var r in all)
-            if (r.VRMModel && r.CustomVRM)
+            if (r.VRMModel != null || r.CustomVRM != null)
                 return r;
         return null;
     }
@@ -39,34 +63,67 @@ public class MEReplacer : MonoBehaviour
         foreach (var entry in replacements)
         {
             if (!entry.sourceObject) continue;
+
+            var overrideAnimator = entry.sourceObject.GetComponent<Animator>();
+            if (overrideAnimator != null && overrideAnimator.runtimeAnimatorController != null)
+            {
+                var targets = new[] { receiver.VRMModel, receiver.CustomVRM };
+                foreach (var target in targets)
+                {
+                    var anim = target?.GetComponent<Animator>();
+                    if (anim != null)
+                        anim.runtimeAnimatorController = overrideAnimator.runtimeAnimatorController;
+                }
+            }
+
             var overrideComponents = entry.sourceObject.GetComponents<MonoBehaviour>();
             foreach (var overrideComp in overrideComponents)
             {
                 if (overrideComp == null) continue;
                 Type t = overrideComp.GetType();
-                CopyFieldsTo(receiver.VRMModel, t, overrideComp);
-                CopyFieldsTo(receiver.CustomVRM, t, overrideComp);
+
+                if (receiver.VRMModel != null)
+                    CopyFieldsAndProperties(receiver.VRMModel, t, overrideComp);
+
+                if (receiver.CustomVRM != null)
+                    CopyFieldsAndProperties(receiver.CustomVRM, t, overrideComp);
+
+                if (overrideComp is Behaviour b)
+                    b.enabled = false;
             }
+
+            entry.sourceObject.SetActive(false);
         }
     }
 
-    void CopyFieldsTo(GameObject targetRoot, Type type, MonoBehaviour source)
+    void CopyFieldsAndProperties(GameObject targetRoot, Type type, MonoBehaviour source)
     {
         var target = targetRoot.GetComponent(type);
-        if (!target) return;
+        if (!target)
+            target = targetRoot.AddComponent(type);
 
         var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var f in fields)
         {
             if (f.IsNotSerialized || f.Name == "enabled") continue;
-
             try
             {
                 object value = f.GetValue(source);
-
                 if (IsEmpty(value)) continue;
-
                 f.SetValue(target, value);
+            }
+            catch { }
+        }
+
+        var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        foreach (var p in properties)
+        {
+            if (!p.CanWrite || !p.CanRead || p.Name == "name" || p.Name == "tag" || p.Name == "enabled") continue;
+            try
+            {
+                object value = p.GetValue(source, null);
+                if (IsEmpty(value)) continue;
+                p.SetValue(target, value, null);
             }
             catch { }
         }
