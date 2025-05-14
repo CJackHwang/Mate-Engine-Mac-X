@@ -21,7 +21,7 @@ public class AvatarWindowHandler : MonoBehaviour
     private float snapFraction = 0f;
 
     private float baseScale = 1f;
-    private float baseOffset = 40f; 
+    private float baseOffset = 40f;
 
     private Animator animator;
     private AvatarAnimatorController controller;
