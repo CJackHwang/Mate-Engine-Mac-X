@@ -164,14 +164,11 @@ public class VRMLoader : MonoBehaviour
 
         Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "VRM"));
 
-        // --- Save to Avatar Library ---
         string displayName = Path.GetFileNameWithoutExtension(path);
         string author = "Unknown";
         string version = "Unknown";
         string fileType = "Unknown";
         Texture2D thumbnail = null;
-
-
 
         bool isME = path.EndsWith(".me", StringComparison.OrdinalIgnoreCase);
 
@@ -232,8 +229,6 @@ public class VRMLoader : MonoBehaviour
 
         return readable;
     }
-
-
 
     public void ResetModel()
     {

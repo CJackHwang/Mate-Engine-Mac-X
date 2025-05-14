@@ -13,6 +13,9 @@ public class AvatarScaleController : MonoBehaviour
     private float minSize;
     private float maxSize;
     private float targetSize;
+    private Transform modelRoot;
+    private GameObject currentModel;
+    private AvatarAnimatorController controller;
 
     void Start()
     {
@@ -22,6 +25,9 @@ public class AvatarScaleController : MonoBehaviour
         maxSize = avatarSizeSlider.maxValue;
         targetSize = avatarSizeSlider.value;
 
+        var modelRootGO = GameObject.Find("Model");
+        if (modelRootGO != null)
+            modelRoot = modelRootGO.transform;
         avatarSizeSlider.onValueChanged.AddListener(v => targetSize = v);
     }
 
@@ -41,6 +47,30 @@ public class AvatarScaleController : MonoBehaviour
 
         if (UniWindowController.current.isClickThrough)
             return;
+
+        if (modelRoot != null)
+        {
+            GameObject activeModel = null;
+            for (int i = 0; i < modelRoot.childCount; i++)
+            {
+                var child = modelRoot.GetChild(i);
+                if (child.gameObject.activeInHierarchy)
+                {
+                    activeModel = child.gameObject;
+                    break;
+                }
+            }
+
+            if (activeModel != currentModel)
+            {
+                currentModel = activeModel;
+                controller = currentModel != null ? currentModel.GetComponent<AvatarAnimatorController>() : null;
+            }
+        }
+
+        if (controller != null && controller.isDragging)
+            return;
+
 
         float scroll = Input.mouseScrollDelta.y;
         if (scroll != 0f)
