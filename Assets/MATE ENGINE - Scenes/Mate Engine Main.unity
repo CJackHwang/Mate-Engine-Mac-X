@@ -35297,6 +35297,20 @@ MonoBehaviour:
   disableSound: {fileID: 8300000, guid: b5d576f2abedbfb41a3db3667f17ada7, type: 3}
   activationKey: 324
   spawnAnimationSpeed: 0.4
+--- !u!114 &1499361276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9c521b755ef1e42ac1e982f3dc7948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarAnimator: {fileID: 5823227879768727422}
+  avatarName: MODDED AVATAR
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -39033,6 +39047,8 @@ MonoBehaviour:
   id: macaroon
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
+  hideIfAnimatorBool: []
+  hideIfStateName: []
 --- !u!114 &1660620752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75061,6 +75077,8 @@ MonoBehaviour:
   id: chat
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
+  hideIfAnimatorBool: []
+  hideIfStateName: []
 --- !u!4 &2105144023252081135
 Transform:
   m_ObjectHideFlags: 0
@@ -75504,6 +75522,7 @@ GameObject:
   - component: {fileID: 8924917334924735505}
   - component: {fileID: 8924917334924735506}
   - component: {fileID: 8924917334924735507}
+  - component: {fileID: 8924917334924735508}
   m_Layer: 10
   m_Name: VRMModel
   m_TagString: Untagged
@@ -75906,6 +75925,9 @@ MonoBehaviour:
   id: settings
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
+  hideIfAnimatorBool:
+  - isIdle
+  hideIfStateName: []
 --- !u!114 &2587953606310283654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104434,6 +104456,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1499361275}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361276}
   m_SourcePrefab: {fileID: 100100000, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
 --- !u!137 &7783119356818458772
 SkinnedMeshRenderer:
@@ -104931,6 +104956,8 @@ MonoBehaviour:
   id: clothes
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
+  hideIfAnimatorBool: []
+  hideIfStateName: []
 --- !u!1 &7944545131777468625
 GameObject:
   m_ObjectHideFlags: 0
@@ -126347,6 +126374,20 @@ MonoBehaviour:
   disableSound: {fileID: 8300000, guid: b5d576f2abedbfb41a3db3667f17ada7, type: 3}
   activationKey: 324
   spawnAnimationSpeed: 0.4
+--- !u!114 &8924917334924735508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9c521b755ef1e42ac1e982f3dc7948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarAnimator: {fileID: 5823227879768727422}
+  avatarName: DEFAULT AVATAR
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0

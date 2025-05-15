@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
 using UnityEngine.UI;
 
 namespace Xamin
@@ -9,7 +8,7 @@ namespace Xamin
     public class Button : MonoBehaviour
     {
         [Tooltip("Your actions, that will be executed when the buttons is pressed")]
-        public UnityEvent action; 
+        public UnityEvent action;
         [Tooltip("The icon of this button")]
         public Sprite image;
         [Tooltip("If this button can be pressed or not. False = grayed out button")]
@@ -20,6 +19,13 @@ namespace Xamin
         public Color customColor;
         public bool useCustomColor;
 
+        // --- NEU: HIDE CONDITION FIELDS ---
+        [Header("Button Hide Conditions")]
+        [Tooltip("Button wird ausgeblendet, wenn einer dieser Animator-Bool-Parameter true ist (z.B. IsSitting, IsWindowsSit)")]
+        public string[] hideIfAnimatorBool;
+        [Tooltip("Button wird ausgeblendet, wenn einer dieser States im Base Layer aktiv ist (z.B. Sit, WindowsSit)")]
+        public string[] hideIfStateName;
+
         private UnityEngine.UI.Image imageComponent;
         private bool _isimageComponentNotNull;
 
@@ -28,7 +34,7 @@ namespace Xamin
             imageComponent = GetComponent<UnityEngine.UI.Image>();
             if (image)
                 imageComponent.sprite = image;
-            _isimageComponentNotNull = imageComponent != null; // This check avoids expensive not null comparisons at runtime.
+            _isimageComponentNotNull = imageComponent != null;
         }
 
         public Color currentColor
@@ -41,10 +47,7 @@ namespace Xamin
             if (_isimageComponentNotNull)
                 imageComponent.color = c;
         }
-        
-        /// <summary>
-        /// This method is responsible for handling the UnityEvent execution 
-        /// </summary>
+
         public void ExecuteAction()
         {
             action.Invoke();

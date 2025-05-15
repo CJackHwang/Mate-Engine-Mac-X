@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-
 namespace Xamin
 {
     public class CircleSelector : MonoBehaviour
@@ -16,7 +15,8 @@ namespace Xamin
         [Space(10)] public bool UseSeparators = true;
         [SerializeField] private GameObject separatorPrefab;
 
-        [Header("Animations")] [Range(0.0001f, 1)]
+        [Header("Animations")]
+        [Range(0.0001f, 1)]
         public float LerpAmount = .145f;
 
         public AnimationType OpenAnimation, CloseAnimation;
@@ -27,9 +27,9 @@ namespace Xamin
 
         [Header("Interaction")] public List<GameObject> Buttons = new List<GameObject>();
         public ButtonSource buttonSource;
-        private readonly List<Xamin.Button> buttonsInstances = new List<Xamin.Button>();
+        private List<Xamin.Button> buttonsInstances = new List<Xamin.Button>();
         private Vector2 _menuCenter;
-		public bool RaiseOnSelection;
+        public bool RaiseOnSelection;
 
         private GameObject _selectedSegment;
         private bool _previousUseSeparators;
@@ -43,7 +43,6 @@ namespace Xamin
             set
             {
                 if (value == null) return;
-                //Debug.Log(value.name);
                 if (value == SelectedSegment) return;
                 _selectedSegment = value;
             }
@@ -55,7 +54,6 @@ namespace Xamin
         public bool snap, tiltTowardsMouse;
         public float tiltAmount = 15;
         private bool opened;
-
 
         public enum ControlType
         {
@@ -75,15 +73,15 @@ namespace Xamin
         public string gamepadAxisX, gamepadAxisY;
         public Vector2 CustomInputVector;
 
-
         public enum AnimationType
         {
             zoomIn,
             zoomOut
         }
 
-
         private Dictionary<GameObject, Button> instancedButtons;
+
+        private AvatarAnimatorReceiver animatorReceiver;
 
         void Start()
         {
@@ -93,110 +91,41 @@ namespace Xamin
             _cursor = transform.Find("Cursor").GetComponent<Image>();
             Assert.IsNotNull(transform.Find("Background"));
             _background = transform.Find("Background").GetComponent<Image>();
-            buttonCount = Buttons.Count;
-            foreach (Xamin.Button b in buttonsInstances)
-                Destroy(b.gameObject);
-            buttonsInstances.Clear();
-            if (buttonCount > 0 && buttonCount < 11)
-            {
-                #region Arrange Buttons
 
-                startButCount = buttonCount;
-                _desiredFill = 1f / (float) buttonCount;
-                float fillRadius = _desiredFill * 360f;
-                float previousRotation = 0;
-                foreach (Transform sep in transform.Find("Separators"))
-                    Destroy(sep.gameObject);
-                for (int i = 0; i < buttonCount; i++)
-                {
-                    //TIP   y=sin(angle)
-                    //      x=cos(angle)
-                    GameObject b;
-                    if (buttonSource == ButtonSource.prefabs)
-                        b = Instantiate(Buttons[i], Vector2.zero, transform.rotation) as GameObject;
-                    else
-                        b = Buttons[i];
-                    b.transform.SetParent(transform.Find("Buttons"));
-                    float bRot = previousRotation + fillRadius / 2;
-                    previousRotation = bRot + fillRadius / 2;
-                    GameObject separator =
-                        Instantiate(separatorPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                    separator.transform.SetParent(transform.Find("Separators"));
-                    separator.transform.localScale = Vector3.one;
-                    separator.transform.localPosition = Vector3.zero;
-                    separator.transform.localRotation = Quaternion.Euler(0, 0, previousRotation);
+            EnsureAnimatorReceiver();
 
-                    b.transform.localPosition = new Vector2(radius * Mathf.Cos((bRot - 90) * Mathf.Deg2Rad),
-                        -radius * Mathf.Sin((bRot - 90) * Mathf.Deg2Rad));
-                    b.transform.localScale = Vector3.one;
-                    if (bRot > 360)
-                        bRot -= 360;
-                    b.name = bRot.ToString();
-                    if (b.GetComponent<Button>())
-                    {
-                        instancedButtons[b] = b.GetComponent<Button>();
-                        var but = instancedButtons[b];
-                        instancedButtons[b] = but;
-                        if (but.useCustomColor)
-                            but.SetColor(but.customColor);
-                        else
-                            but.SetColor(but.useCustomColor ? but.customColor : AccentColor);
-                    }
-                    else
-                        b.GetComponent<Image>().color = DisabledColor;
-
-                    if (buttonSource == ButtonSource.prefabs)
-                        buttonsInstances.Add(b.GetComponent<Button>());
-                }
-
-                #endregion
-            }
-
-            if (buttonsInstances.Count != 0)
-                SelectedSegment = buttonsInstances[buttonsInstances.Count - 1].gameObject;
+            BuildButtons();
         }
 
         public void Open()
         {
-            _menuCenter = new Vector2((float) Screen.width / 2f, (float) Screen.height / 2f);
+            EnsureAnimatorReceiver();
+            BuildButtons();
+            _menuCenter = new Vector2((float)Screen.width / 2f, (float)Screen.height / 2f);
             opened = true;
             transform.localScale = (OpenAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10;
         }
 
-        /// <param name="origin">Mouse or Touch screen point</param>
         public void Open(Vector2 origin)
         {
             Open();
             _menuCenter = origin;
-
             Vector2 relativeCenter = new Vector2(_menuCenter.x - Screen.width / 2f, _menuCenter.y - Screen.height / 2f);
             transform.localPosition = relativeCenter;
         }
 
-        /// <summary>
-        /// Closes the menu
-        /// </summary>
         public void Close()
         {
             opened = false;
         }
 
-        /// <summary>
-        /// Useful for changing a button at runtime
-        /// </summary>
-        /// <param name="id">The button Id</param>
-        /// <returns>The button with the specified id</returns>
         public Xamin.Button GetButtonWithId(string id)
         {
-            for (int i = 0; i < Buttons.Count; i++)
+            foreach (var btn in buttonsInstances)
             {
-                Xamin.Button b = (buttonSource == ButtonSource.prefabs)
-                    ? buttonsInstances[i]
-                    : Buttons[i].GetComponent<Xamin.Button>();
-                if (b.id == id)
-                    return b;
+                if (btn.id == id)
+                    return btn;
             }
-
             return null;
         }
 
@@ -210,7 +139,6 @@ namespace Xamin
                 Debug.LogError("Can't find Separators");
                 return;
             }
-
             transform.Find("Separators").gameObject.SetActive(UseSeparators);
         }
 
@@ -224,29 +152,22 @@ namespace Xamin
                     ChangeSeparatorsState();
                 if (transform.localScale.x >= Size - .2f)
                 {
-                    #region Check if should re-arrange
-
-                    buttonCount = Buttons.Count;
+                    buttonCount = buttonsInstances.Count;
                     if (startButCount != buttonCount && buttonSource == ButtonSource.prefabs)
                     {
                         Start();
                         return;
                     }
 
-                    #endregion
-
-                    #region Update the mouse rotation and extimate cursor rotation
-
                     _cursor.fillAmount = Mathf.Lerp(_cursor.fillAmount, _desiredFill, .2f);
-                    //Cursor placement
                     Vector3 screenBounds = Camera.main.WorldToScreenPoint(transform.position);
                     Vector2 vector = (UnityEngine.Input.mousePosition - screenBounds);
-//                    vector.y = vector.y*((flip) ? -1 : 1);
+
                     if (tiltTowardsMouse)
                     {
                         float x = vector.x / screenBounds.x, y = vector.y / screenBounds.y;
                         transform.localRotation = Quaternion.Slerp(transform.localRotation,
-                            Quaternion.Euler((Vector3) (new Vector2(y, -x) * -tiltAmount) +
+                            Quaternion.Euler((Vector3)(new Vector2(y, -x) * -tiltAmount) +
                                              Vector3.forward * zRotation), LerpAmount);
                     }
                     else
@@ -256,7 +177,7 @@ namespace Xamin
 
                     float mouseRotation = zRotation + 57.29578f *
                         (controlType == ControlType.mouseAndTouch
-                            ? Mathf.Atan2(vector.x, vector.y) 
+                            ? Mathf.Atan2(vector.x, vector.y)
                             : controlType == ControlType.gamepad
                                 ? Mathf.Atan2(Input.GetAxis(gamepadAxisX), Input.GetAxis(gamepadAxisY))
                                 : Mathf.Atan2(CustomInputVector.x, CustomInputVector.y));
@@ -264,10 +185,6 @@ namespace Xamin
                     if (mouseRotation < 0f)
                         mouseRotation += 360f;
                     float cursorRotation = -(mouseRotation - _cursor.fillAmount * 360f / 2f) + zRotation;
-
-                    #endregion
-
-                    #region Find and color the selected button
 
                     float mouseDistanceFromCenter = Vector2.Distance(Camera.main.WorldToScreenPoint(transform.position), Input.mousePosition);
                     if (selectOnlyOnHover && controlType == ControlType.mouseAndTouch &&
@@ -283,11 +200,8 @@ namespace Xamin
                         GameObject nearest = null;
                         for (int i = 0; i < buttonCount; i++)
                         {
-                            GameObject b;
-                            if (buttonSource == ButtonSource.prefabs)
-                                b = buttonsInstances[i].gameObject;
-                            else
-                                b = Buttons[i];
+                            var btn = buttonsInstances[i];
+                            GameObject b = btn.gameObject;
                             b.transform.localScale = Vector3.one;
                             float rotation = System.Convert.ToSingle(b.name);
                             if (Mathf.Abs(rotation - mouseRotation) < difference)
@@ -302,20 +216,19 @@ namespace Xamin
 
                         SelectedSegment = nearest;
 
-                        if (snap)
+                        if (snap && SelectedSegment != null)
                             cursorRotation = -(System.Convert.ToSingle(SelectedSegment.name) -
                                                _cursor.fillAmount * 360f / 2f);
                         _cursor.transform.localRotation = Quaternion.Slerp(_cursor.transform.localRotation,
                             Quaternion.Euler(0, 0, cursorRotation), LerpAmount);
 
-                        instancedButtons[SelectedSegment].SetColor(
-                            Color.Lerp(instancedButtons[SelectedSegment].currentColor, BackgroundColor, LerpAmount));
+                        if (SelectedSegment != null && instancedButtons.ContainsKey(SelectedSegment))
+                            instancedButtons[SelectedSegment].SetColor(
+                                Color.Lerp(instancedButtons[SelectedSegment].currentColor, BackgroundColor, LerpAmount));
 
-                        for (int i = 0; i < Buttons.Count; i++)
+                        for (int i = 0; i < buttonCount; i++)
                         {
-                            Button b = (buttonSource == ButtonSource.prefabs)
-                                ? buttonsInstances[i]
-                                : instancedButtons[Buttons[i]];
+                            Button b = buttonsInstances[i];
                             if (b.gameObject != SelectedSegment)
                             {
                                 if (b.unlocked)
@@ -329,7 +242,7 @@ namespace Xamin
 
                         try
                         {
-                            if (SelectedSegment && instancedButtons[SelectedSegment].unlocked)
+                            if (SelectedSegment != null && instancedButtons.ContainsKey(SelectedSegment) && instancedButtons[SelectedSegment].unlocked)
                             {
                                 _cursor.color = Color.Lerp(_cursor.color,
                                     instancedButtons[SelectedSegment].useCustomColor
@@ -343,26 +256,24 @@ namespace Xamin
                         {
                         }
                     }
-                    else if (_cursor.enabled && SelectedSegment)
+                    else if (_cursor.enabled && SelectedSegment != null)
                     {
                         _cursor.enabled = false;
-                        if (instancedButtons[SelectedSegment].unlocked)
+                        if (instancedButtons.ContainsKey(SelectedSegment) && instancedButtons[SelectedSegment].unlocked)
                             instancedButtons[SelectedSegment].SetColor(instancedButtons[SelectedSegment].useCustomColor
                                 ? instancedButtons[SelectedSegment].customColor
                                 : AccentColor);
-                        else
+                        else if (instancedButtons.ContainsKey(SelectedSegment))
                             instancedButtons[SelectedSegment].SetColor(DisabledColor);
 
-                        for (int i = 0; i < Buttons.Count; i++)
+                        for (int i = 0; i < buttonCount; i++)
                         {
-                            Button b = (buttonSource == ButtonSource.prefabs)
-                                ? buttonsInstances[i]
-                                : instancedButtons[Buttons[i]];
+                            Button b = buttonsInstances[i];
                             if (b.gameObject != SelectedSegment)
                             {
                                 if (b.unlocked)
-                                    b.SetColor(instancedButtons[SelectedSegment].useCustomColor
-                                        ? instancedButtons[SelectedSegment].customColor
+                                    b.SetColor(buttonsInstances[SelectedSegment != null ? buttonsInstances.IndexOf(instancedButtons[SelectedSegment]) : 0].useCustomColor
+                                        ? buttonsInstances[SelectedSegment != null ? buttonsInstances.IndexOf(instancedButtons[SelectedSegment]) : 0].customColor
                                         : AccentColor);
                                 else
                                     b.SetColor(DisabledColor);
@@ -374,10 +285,7 @@ namespace Xamin
                         CheckForInput();
                     else if (Input.GetButtonUp(activationButton))
                         Close();
-
-                    #endregion
                 }
-
                 _previousUseSeparators = UseSeparators;
             }
             else
@@ -389,10 +297,9 @@ namespace Xamin
             }
         }
 
+
         void CheckForInput()
         {
-            #region Call the selected button action
-
             if (Input.GetButton(activationButton))
             {
                 _cursor.rectTransform.localPosition = Vector3.Lerp(_cursor.rectTransform.localPosition,
@@ -414,13 +321,147 @@ namespace Xamin
                     var audio = FindFirstObjectByType<MenuAudioHandler>();
                     if (audio != null)
                         audio.PlayButtonSound();
-
                 }
-
                 Close();
             }
+        }
 
-            #endregion
+        void EnsureAnimatorReceiver()
+        {
+            animatorReceiver = null;
+            var receivers = FindObjectsOfType<AvatarAnimatorReceiver>();
+            foreach (var recv in receivers)
+            {
+                if (recv != null
+                    && recv.isActiveAndEnabled
+                    && recv.gameObject.activeInHierarchy
+                    && recv.avatarAnimator != null
+                    && recv.avatarAnimator.isActiveAndEnabled
+                    && recv.avatarAnimator.gameObject.activeInHierarchy)
+                {
+                    animatorReceiver = recv;
+                    break;
+                }
+            }
+        }
+
+        void BuildButtons()
+        {
+            // ALLE alten Buttons und Separatoren zerstören!
+            foreach (Transform child in transform.Find("Buttons"))
+                Destroy(child.gameObject);
+            foreach (Transform sep in transform.Find("Separators"))
+                Destroy(sep.gameObject);
+            buttonsInstances.Clear();
+            instancedButtons = new Dictionary<GameObject, Button>();
+
+            int visibleCount = 0;
+            List<GameObject> visibleButtonObjects = new List<GameObject>();
+
+            // Build Buttons nur für tatsächlich sichtbare!
+            for (int i = 0; i < Buttons.Count; i++)
+            {
+                GameObject buttonObj;
+                if (buttonSource == ButtonSource.prefabs)
+                    buttonObj = Instantiate(Buttons[i], Vector2.zero, transform.rotation) as GameObject;
+                else
+                    buttonObj = Buttons[i];
+
+                Xamin.Button btn = buttonObj.GetComponent<Xamin.Button>();
+                if (ShouldHideButton(btn))
+                {
+                    Destroy(buttonObj);
+                    continue;
+                }
+
+                visibleButtonObjects.Add(buttonObj);
+                visibleCount++;
+            }
+
+            buttonCount = visibleCount;
+            if (buttonCount > 0 && buttonCount < 11)
+            {
+                startButCount = buttonCount;
+                _desiredFill = 1f / (float)buttonCount;
+                float fillRadius = _desiredFill * 360f;
+                float previousRotation = 0;
+
+                for (int i = 0; i < visibleCount; i++)
+                {
+                    GameObject buttonObj = visibleButtonObjects[i];
+                    Xamin.Button btn = buttonObj.GetComponent<Xamin.Button>();
+
+                    buttonObj.transform.SetParent(transform.Find("Buttons"));
+                    float bRot = previousRotation + fillRadius / 2;
+                    previousRotation = bRot + fillRadius / 2;
+                    GameObject separator =
+                        Instantiate(separatorPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+                    separator.transform.SetParent(transform.Find("Separators"));
+                    separator.transform.localScale = Vector3.one;
+                    separator.transform.localPosition = Vector3.zero;
+                    separator.transform.localRotation = Quaternion.Euler(0, 0, previousRotation);
+
+                    buttonObj.transform.localPosition = new Vector2(radius * Mathf.Cos((bRot - 90) * Mathf.Deg2Rad),
+                        -radius * Mathf.Sin((bRot - 90) * Mathf.Deg2Rad));
+                    buttonObj.transform.localScale = Vector3.one;
+                    if (bRot > 360)
+                        bRot -= 360;
+                    buttonObj.name = bRot.ToString();
+                    if (btn)
+                    {
+                        instancedButtons[buttonObj] = btn;
+                        if (btn.useCustomColor)
+                            btn.SetColor(btn.customColor);
+                        else
+                            btn.SetColor(btn.useCustomColor ? btn.customColor : AccentColor);
+                        buttonsInstances.Add(btn);
+                    }
+                    else
+                        buttonObj.GetComponent<Image>().color = DisabledColor;
+                }
+            }
+
+            if (buttonsInstances.Count != 0)
+                SelectedSegment = buttonsInstances[buttonsInstances.Count - 1].gameObject;
+        }
+
+        bool ShouldHideButton(Xamin.Button btn)
+        {
+            if (animatorReceiver == null || animatorReceiver.avatarAnimator == null)
+                return false;
+
+            var animator = animatorReceiver.avatarAnimator;
+
+            // Hide if Animator Bool is true
+            if (btn.hideIfAnimatorBool != null && btn.hideIfAnimatorBool.Length > 0)
+            {
+                foreach (var param in btn.hideIfAnimatorBool)
+                {
+                    if (!string.IsNullOrEmpty(param))
+                    {
+                        foreach (var animatorParam in animator.parameters)
+                        {
+                            if (animatorParam.type == AnimatorControllerParameterType.Bool && animatorParam.name == param)
+                            {
+                                if (animator.GetBool(param))
+                                    return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Hide if StateName active
+            if (btn.hideIfStateName != null && btn.hideIfStateName.Length > 0)
+            {
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                foreach (var state in btn.hideIfStateName)
+                {
+                    if (!string.IsNullOrEmpty(state) && stateInfo.IsName(state))
+                        return true;
+                }
+            }
+            return false;
         }
     }
 }
