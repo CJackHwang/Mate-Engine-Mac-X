@@ -580,6 +580,7 @@ MonoBehaviour:
   particleSystems:
   - {fileID: 6927538467923218435}
   - {fileID: 7945896184227947456}
+  chatBot: {fileID: 7574646899369980709}
 --- !u!1 &15090491
 GameObject:
   m_ObjectHideFlags: 0
@@ -103781,7 +103782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chatContainer: {fileID: 1122426459}
   playerColor: {r: 0.89417946, g: 0.923051, b: 0.9622642, a: 1}
-  aiColor: {r: 0.63243145, g: 0.46333218, b: 0.7169812, a: 1}
+  aiColor: {r: 0.07450981, g: 0.11764706, b: 0.16862746, a: 1}
   fontColor: {r: 1, g: 1, b: 1, a: 1}
   font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
   fontSize: 20
@@ -103790,8 +103791,8 @@ MonoBehaviour:
   textPadding: 24
   bubbleSpacing: 10
   sprite: {fileID: 21300000, guid: 7f5b8d8ec16099b49a0d8a41bf746138, type: 3}
-  playerMaterial: {fileID: 2100000, guid: 6101830150a113e4bba7f5e27afed5c8, type: 2}
-  aiMaterial: {fileID: 2100000, guid: 88f2b10b72054ae48bf5865fd108407b, type: 2}
+  playerMaterial: {fileID: 0}
+  aiMaterial: {fileID: 0}
   inputPlaceholder: Talk to me!
   cornerRadius: 32
   roundedSprite16: {fileID: 21300000, guid: 7f5b8d8ec16099b49a0d8a41bf746138, type: 3}

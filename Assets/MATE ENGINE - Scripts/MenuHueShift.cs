@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Xamin;
+using LLMUnitySamples;
+
 
 
 [ExecuteAlways]
@@ -24,6 +26,9 @@ public class MenuHueShift : MonoBehaviour
 
     private CircleSelector[] circleSelectors;
     private Dictionary<CircleSelector, (Color accent, Color disabled, Color background)> originalCircleColors = new();
+
+    public ChatBot chatBot;
+    private Color originalAiColor;
 
 
     private bool initialized = false;
@@ -111,6 +116,9 @@ public class MenuHueShift : MonoBehaviour
         }
 
         initialized = true;
+        if (chatBot != null)
+            originalAiColor = chatBot.aiColor;
+
 
         circleSelectors = GameObject.FindObjectsOfType<CircleSelector>(true);
         foreach (var cs in circleSelectors)
@@ -163,6 +171,37 @@ public class MenuHueShift : MonoBehaviour
             cs.DisabledColor = AdjustColor(kvp.Value.disabled);
             cs.BackgroundColor = AdjustColor(kvp.Value.background);
         }
+
+        if (chatBot != null)
+        {
+            Color newAiColor = AdjustColor(originalAiColor);
+            chatBot.aiColor = newAiColor;
+
+            // Auch zukünftige Bubbles erhalten neue Farbe
+            var aiUIField = chatBot.GetType().GetField("aiUI", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (aiUIField != null)
+            {
+                if (aiUIField != null)
+                {
+                    var aiUI = (BubbleUI)aiUIField.GetValue(chatBot);
+                    aiUI.bubbleColor = newAiColor;
+                    aiUIField.SetValue(chatBot, aiUI); // wichtig: zurücksetzen, weil struct
+                }
+
+            }
+
+            // EXISTIERENDE Bubbles live updaten
+            foreach (Transform child in chatBot.chatContainer)
+            {
+                if (child.name.Contains("AIBubble"))
+                {
+                    var image = child.GetComponentInChildren<Image>(true);
+                    if (image != null) image.color = newAiColor;
+                }
+            }
+        }
+
+
 
     }
 
