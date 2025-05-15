@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.Assertions;
+
 
 namespace Xamin
 {
-    /// <summary>
-    /// This class is the core of tasty pie menu.
-    /// </summary>
-    [RequireComponent(typeof(AudioSource))]
     public class CircleSelector : MonoBehaviour
     {
         [Range(2, 10)] private int buttonCount;
@@ -29,9 +25,6 @@ namespace Xamin
         private float _desiredFill;
         float radius = 120f;
 
-        [Header("Sound")] public AudioClip SegmentChangedSound;
-        public AudioClip SegmentClickedSound;
-
         [Header("Interaction")] public List<GameObject> Buttons = new List<GameObject>();
         public ButtonSource buttonSource;
         private readonly List<Xamin.Button> buttonsInstances = new List<Xamin.Button>();
@@ -39,7 +32,6 @@ namespace Xamin
 		public bool RaiseOnSelection;
 
         private GameObject _selectedSegment;
-        private float _audioCoolDown;
         private bool _previousUseSeparators;
 
         public bool flip = true;
@@ -54,9 +46,6 @@ namespace Xamin
                 //Debug.Log(value.name);
                 if (value == SelectedSegment) return;
                 _selectedSegment = value;
-                if (SegmentChangedSound == null || !(_audioCoolDown <= 0)) return;
-                localAudioSource.PlayOneShot(SegmentChangedSound);
-                _audioCoolDown = .05f;
             }
         }
 
@@ -75,11 +64,6 @@ namespace Xamin
             customVector
         }
 
-        /// <summary>
-        /// Button source
-        /// <para>use prefabs in a menu where you want to add or remove elements at runtime</para>
-        /// <para>use scene if you want a static menu that you can only modify on the editor</para>
-        /// </summary>
         public enum ButtonSource
         {
             prefabs,
@@ -98,13 +82,9 @@ namespace Xamin
             zoomOut
         }
 
-        private AudioSource localAudioSource;
 
         private Dictionary<GameObject, Button> instancedButtons;
 
-        /// <summary>
-        /// Rearranges the buttons, can be called multiple times
-        /// </summary>
         void Start()
         {
             instancedButtons = new Dictionary<GameObject, Button>();
@@ -172,14 +152,10 @@ namespace Xamin
                 #endregion
             }
 
-            localAudioSource = GetComponent<AudioSource>();
             if (buttonsInstances.Count != 0)
                 SelectedSegment = buttonsInstances[buttonsInstances.Count - 1].gameObject;
         }
 
-        /// <summary>
-        /// Open the menu at the center of the screen
-        /// </summary>
         public void Open()
         {
             _menuCenter = new Vector2((float) Screen.width / 2f, (float) Screen.height / 2f);
@@ -187,9 +163,6 @@ namespace Xamin
             transform.localScale = (OpenAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10;
         }
 
-        /// <summary>
-        /// Open the menu at a desired location
-        /// </summary>
         /// <param name="origin">Mouse or Touch screen point</param>
         public void Open(Vector2 origin)
         {
@@ -243,8 +216,6 @@ namespace Xamin
 
         void Update()
         {
-            if (_audioCoolDown > 0)
-                _audioCoolDown -= Time.deltaTime;
             if (opened)
             {
                 transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(Size, Size, Size), .2f);
@@ -440,7 +411,10 @@ namespace Xamin
                 if (instancedButtons[SelectedSegment].unlocked)
                 {
                     instancedButtons[SelectedSegment].ExecuteAction();
-                    localAudioSource.PlayOneShot(SegmentClickedSound);
+                    var audio = FindFirstObjectByType<MenuAudioHandler>();
+                    if (audio != null)
+                        audio.PlayButtonSound();
+
                 }
 
                 Close();

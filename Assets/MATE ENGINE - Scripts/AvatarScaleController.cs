@@ -42,7 +42,7 @@ public class AvatarScaleController : MonoBehaviour
         if (avatarSizeSlider == null)
             return;
 
-        if (AvatarSettingsMenu.IsMenuOpen)
+        if (MenuActions.IsMovementBlocked())
             return;
 
         if (UniWindowController.current.isClickThrough)

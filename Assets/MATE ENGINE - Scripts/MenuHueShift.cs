@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Xamin;
+
 
 [ExecuteAlways]
 public class MenuHueShift : MonoBehaviour
@@ -19,6 +21,10 @@ public class MenuHueShift : MonoBehaviour
 
     private float lastHue = -1f;
     private float lastSat = -1f;
+
+    private CircleSelector[] circleSelectors;
+    private Dictionary<CircleSelector, (Color accent, Color disabled, Color background)> originalCircleColors = new();
+
 
     private bool initialized = false;
 
@@ -105,6 +111,14 @@ public class MenuHueShift : MonoBehaviour
         }
 
         initialized = true;
+
+        circleSelectors = GameObject.FindObjectsOfType<CircleSelector>(true);
+        foreach (var cs in circleSelectors)
+        {
+            if (cs == null || originalCircleColors.ContainsKey(cs)) continue;
+            originalCircleColors[cs] = (cs.AccentColor, cs.DisabledColor, cs.BackgroundColor);
+        }
+
     }
 
     private void ApplyHueShift()
@@ -140,6 +154,16 @@ public class MenuHueShift : MonoBehaviour
             gradient.color = AdjustColor(kvp.Value);
             main.startColor = gradient;
         }
+        foreach (var kvp in originalCircleColors)
+        {
+            var cs = kvp.Key;
+            if (cs == null) continue;
+
+            cs.AccentColor = AdjustColor(kvp.Value.accent);
+            cs.DisabledColor = AdjustColor(kvp.Value.disabled);
+            cs.BackgroundColor = AdjustColor(kvp.Value.background);
+        }
+
     }
 
     private Color AdjustColor(Color original)

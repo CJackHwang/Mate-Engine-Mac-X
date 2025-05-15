@@ -172,4 +172,29 @@ public class MenuAudioHandler : MonoBehaviour
         audioSource.PlayOneShot(clips[Random.Range(0, clips.Count)], finalVolume);
     }
 
+    public void PlayOpenSound()
+    {
+        if (audioSource != null && !audioSource.gameObject.activeSelf)
+            audioSource.gameObject.SetActive(true);
+
+        PlaySound(openMenuSounds, openMenuPitchMin, openMenuPitchMax, openMenuVolume);
+    }
+
+    public void PlayCloseSound()
+    {
+        if (audioSource != null && !audioSource.gameObject.activeSelf)
+            audioSource.gameObject.SetActive(true);
+
+        PlaySound(closeMenuSounds, closeMenuPitchMin, closeMenuPitchMax, closeMenuVolume);
+    }
+
+    public void PlayButtonSound()
+    {
+        if (audioSource != null && !audioSource.gameObject.activeSelf)
+            audioSource.gameObject.SetActive(true);
+
+        PlaySound(buttonSounds, buttonPitchMin, buttonPitchMax, buttonVolume);
+    }
+
+
 }

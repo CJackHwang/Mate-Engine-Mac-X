@@ -50,7 +50,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void CheckForSound()
     {
-        if (AvatarSettingsMenu.IsMenuOpen || !enableDancing)
+        if (MenuActions.IsMovementBlocked() || !enableDancing)
         {
             if (isDancing)
             {
@@ -138,7 +138,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
-        if (AvatarSettingsMenu.IsMenuOpen || AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive)
+        if (MenuActions.IsMovementBlocked() || TutorialMenu.IsActive)
         {
             if (isDragging) { isDragging = false; animator.SetBool("isDragging", false); }
             if (isDancing) { isDancing = false; animator.SetBool("isDancing", false); }

@@ -17,7 +17,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public VRMLoader vrmLoader;
     public bool resetAlsoClearsAllowedApps = false;
     public List<AudioSource> petAudioSources = new(), effectsAudioSources = new(), menuAudioSources = new();
-    public static bool IsMenuOpen { get; private set; }
+    public static bool IsMenuOpen { get; set; }
     public Slider headBlendSlider, spineBlendSlider, eyeBlendSlider;
     public Toggle enableHandHoldingToggle;
     public Slider hueShiftSlider;
@@ -132,8 +132,6 @@ public class AvatarSettingsMenu : MonoBehaviour
                 });
             }
         }
-
-
         if (graphicsDropdown != null)
         {
             graphicsDropdown.ClearOptions();
@@ -188,26 +186,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();
     }
-
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1) && menuPanel != null)
-        {
-            if (AnimatorParameterHelper.IsAnyAnimatorBoolTrue("isDragging")) return;
-
-            bool newState = !menuPanel.activeSelf;
-            menuPanel.SetActive(newState);
-            IsMenuOpen = newState;
-            if (newState)
-            {
-                var appManager = FindFirstObjectByType<AllowedAppsManager>();
-                if (appManager != null) appManager.RefreshUI();
-            }
-        }
-    }
-
-
 
     public void LoadSettings()
     {
@@ -345,7 +323,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             enableWindowSitting = false,
             accessoryStates = new Dictionary<string, bool>(),
             enableDiscordRPC = true,
-            tutorialDone = oldData.tutorialDone, // ← Preserve tutorial state
+            tutorialDone = oldData.tutorialDone,
             uiHueShift = 0f,
             uiSaturation = 0.5f
         };

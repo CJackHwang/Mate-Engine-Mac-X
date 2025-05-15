@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -6,9 +6,6 @@ public class AvatarClothesHandler : MonoBehaviour
 {
     [Header("Optional UI Panel for this menu")]
     public GameObject menuPanel;
-
-    [Header("Key to open menu (from dropdown list)")]
-    public KeyCode openMenuKey = KeyCode.F2;
 
     [Header("Button References (Max 8)")]
     public Button[] outfitButtons = new Button[8];
@@ -22,11 +19,10 @@ public class AvatarClothesHandler : MonoBehaviour
 
     public static bool IsMenuOpen { get; private set; }
 
-    private Component clothesComponent;
-    private System.Type clothesType;
-
     private Vector3[] initialButtonPositions = new Vector3[8];
     private float[] buttonTimeOffsets = new float[8];
+
+    private bool lastPanelState = false;
 
     void Start()
     {
@@ -34,6 +30,7 @@ public class AvatarClothesHandler : MonoBehaviour
         {
             menuPanel.SetActive(false);
             IsMenuOpen = false;
+            lastPanelState = false;
         }
 
         for (int i = 0; i < outfitButtons.Length; i++)
@@ -50,15 +47,17 @@ public class AvatarClothesHandler : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(openMenuKey) && menuPanel != null)
-        {
-            bool newState = !menuPanel.activeSelf;
-            menuPanel.SetActive(newState);
-            IsMenuOpen = newState;
-            if (newState) RefreshButtons();
-        }
-
         AnimateButtons();
+        if (menuPanel != null)
+        {
+            bool currentState = menuPanel.activeSelf;
+            if (currentState && !lastPanelState)
+            {
+                RefreshButtons();
+            }
+
+            lastPanelState = currentState;
+        }
     }
 
     private void AnimateButtons()
@@ -84,7 +83,7 @@ public class AvatarClothesHandler : MonoBehaviour
 
     public void RefreshButtons()
     {
-        clothesComponent = FindClothesComponent();
+        var clothesComponent = FindClothesComponent(out var clothesType);
         if (clothesComponent == null)
         {
             HideAllButtons();
@@ -92,7 +91,7 @@ public class AvatarClothesHandler : MonoBehaviour
             return;
         }
 
-        var entriesField = clothesComponent.GetType().GetField("entries");
+        var entriesField = clothesType.GetField("entries");
         if (entriesField == null)
         {
             HideAllButtons();
@@ -131,11 +130,10 @@ public class AvatarClothesHandler : MonoBehaviour
                 outfitButtons[i].onClick.RemoveAllListeners();
                 outfitButtons[i].onClick.AddListener(() =>
                 {
-                    ActivateOutfit(index);
+                    ActivateOutfit(clothesComponent, clothesType, index);
                     PlayClothesClickSound();
                 });
 
-                // Reset button base position on refresh
                 initialButtonPositions[i] = outfitButtons[i].transform.localPosition;
                 visibleCount++;
             }
@@ -147,17 +145,15 @@ public class AvatarClothesHandler : MonoBehaviour
 
         IsMenuOpen = visibleCount > 0 && menuPanel != null && menuPanel.activeSelf;
     }
-
     private void HideAllButtons()
     {
         foreach (var btn in outfitButtons)
             if (btn != null) btn.gameObject.SetActive(false);
     }
 
-    private Component FindClothesComponent()
+    private Component FindClothesComponent(out System.Type foundType)
     {
-        if (clothesComponent != null) return clothesComponent;
-
+        foundType = null;
         foreach (var comp in GameObject.FindObjectsOfType<MonoBehaviour>())
         {
             var type = comp.GetType();
@@ -168,7 +164,7 @@ public class AvatarClothesHandler : MonoBehaviour
                 bool isScriptLoader = (bool)type.GetField("isScriptLoader").GetValue(comp);
                 if (!isScriptLoader)
                 {
-                    clothesType = type;
+                    foundType = type;
                     return comp;
                 }
             }
@@ -176,9 +172,8 @@ public class AvatarClothesHandler : MonoBehaviour
         return null;
     }
 
-    private void ActivateOutfit(int index)
+    private void ActivateOutfit(Component clothesComponent, System.Type clothesType, int index)
     {
-        if (clothesComponent == null || clothesType == null) return;
         var method = clothesType.GetMethod("ActivateOutfit");
         if (method != null)
             method.Invoke(clothesComponent, new object[] { index });
