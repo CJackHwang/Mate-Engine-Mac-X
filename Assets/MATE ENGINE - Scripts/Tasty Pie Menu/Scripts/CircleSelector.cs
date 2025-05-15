@@ -461,7 +461,29 @@ namespace Xamin
                         return true;
                 }
             }
+
+            // == MEClothes-Prüfung für Clothes-Button ==
+            if (btn != null && btn.id == "clothes")
+            {
+                GameObject avatarGO = animatorReceiver != null && animatorReceiver.avatarAnimator != null
+                    ? animatorReceiver.avatarAnimator.gameObject
+                    : null;
+
+                bool hasClothes = false;
+                if (avatarGO != null)
+                {
+                    var clothes = avatarGO.GetComponent<MEClothes>();
+                    if (clothes == null)
+                        clothes = avatarGO.GetComponentInChildren<MEClothes>(true);
+                    hasClothes = (clothes != null);
+                }
+                if (!hasClothes)
+                    return true;
+            }
+
+
             return false;
         }
+
     }
 }
