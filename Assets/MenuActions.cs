@@ -73,10 +73,28 @@ public class MenuActions : MonoBehaviour
             }
             else
             {
+                if (followBone && currentAnimator != null)
+                {
+                    Transform bone = currentAnimator.GetBoneTransform(targetBone);
+                    if (bone != null)
+                    {
+                        screenPosition = mainCam.WorldToScreenPoint(bone.position);
+                        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
+                            radialRect.parent as RectTransform,
+                            screenPosition,
+                            mainCam,
+                            out Vector3 worldPos))
+                        {
+                            radialRect.position = worldPos;
+                        }
+                    }
+                }
+
                 radialMenu.Open();
                 PlayMenuOpenSound();
             }
         }
+
 
         if (followBone && IsRadialOpen() && radialRect != null && currentAnimator != null)
         {

@@ -239,7 +239,7 @@ namespace Xamin
 
                     _cursor.fillAmount = Mathf.Lerp(_cursor.fillAmount, _desiredFill, .2f);
                     //Cursor placement
-                    Vector3 screenBounds = new Vector3(_menuCenter.x, _menuCenter.y, 0f);
+                    Vector3 screenBounds = Camera.main.WorldToScreenPoint(transform.position);
                     Vector2 vector = (UnityEngine.Input.mousePosition - screenBounds);
 //                    vector.y = vector.y*((flip) ? -1 : 1);
                     if (tiltTowardsMouse)
@@ -269,7 +269,7 @@ namespace Xamin
 
                     #region Find and color the selected button
 
-                    float mouseDistanceFromCenter = Vector2.Distance(_menuCenter, Input.mousePosition);
+                    float mouseDistanceFromCenter = Vector2.Distance(Camera.main.WorldToScreenPoint(transform.position), Input.mousePosition);
                     if (selectOnlyOnHover && controlType == ControlType.mouseAndTouch &&
                         mouseDistanceFromCenter > pieThickness ||
                         (selectOnlyOnHover && controlType == ControlType.gamepad &&
