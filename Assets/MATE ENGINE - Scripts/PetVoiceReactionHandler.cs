@@ -111,7 +111,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         if (avatarAnimator != null && avatarAnimator.runtimeAnimatorController != lastController)
             hasSetup = false;
         if (!hasSetup) TrySetup();
-        if (cachedCamera == null || avatarAnimator == null) return;
+        if (cachedCamera == null || avatarAnimator == null || MenuActions.IsReactionBlocked()) return;
 
         Vector2 mouse = Input.mousePosition;
 

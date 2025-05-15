@@ -29,6 +29,12 @@ public class UISetOnOff : MonoBehaviour
             }
         }
     }
+    public void ToggleBubbleFeature()
+    {
+        foreach (var handler in AvatarBubbleHandler.ActiveHandlers)
+            handler.ToggleBubbleFromUI();
+    }
+
 
     public void SetAccessoryState(string ruleName, bool state)
     {

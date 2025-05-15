@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [ExecuteAlways]
 public class AvatarBubbleHandler : MonoBehaviour
@@ -26,12 +27,18 @@ public class AvatarBubbleHandler : MonoBehaviour
     private float currentLerp = 0f;
     private bool wasActive = false;
     private bool initialized = false;
+    public static List<AvatarBubbleHandler> ActiveHandlers = new List<AvatarBubbleHandler>();
+
 
     void OnEnable()
     {
         if (!Application.isPlaying) return;
 
         animator = avatarAnimator != null ? avatarAnimator : GetComponent<Animator>();
+
+        if (!ActiveHandlers.Contains(this))
+            ActiveHandlers.Add(this);
+
 
         if (attachTarget != null)
         {
@@ -51,6 +58,8 @@ public class AvatarBubbleHandler : MonoBehaviour
     void OnDisable()
     {
         if (!Application.isPlaying) return;
+        ActiveHandlers.Remove(this);
+
 
         if (attachTarget != null)
         {
@@ -92,7 +101,7 @@ public class AvatarBubbleHandler : MonoBehaviour
             wasActive = true;
         }
 
-        Vector3 avatarScale = animator.transform.lossyScale; // Get avatar's current world scale
+        Vector3 avatarScale = animator.transform.lossyScale;
         attachTarget.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.Scale(originalScale, avatarScale), currentLerp);
 
 
@@ -133,4 +142,16 @@ public class AvatarBubbleHandler : MonoBehaviour
     {
         return animator != null && animator.GetBool("isDragging");
     }
+    public void ToggleBubbleFromUI()
+    {
+        if (animator == null) return;
+
+        bool isWindowSit = animator.GetBool("isWindowSit");
+        if (isWindowSit) return;
+
+        bool newState = !animator.GetBool(animatorParameter);
+        animator.SetBool(animatorParameter, newState);
+    }
+
+
 }

@@ -52,7 +52,7 @@ public class HandHolder : MonoBehaviour
 
     void Update()
     {
-        if (!enableHandHolding || !IsValid()) return;
+        if (!enableHandHolding || MenuActions.IsHandTrackingBlocked() || !IsValid()) return;
 
         if (!IsInAllowedState())
         {

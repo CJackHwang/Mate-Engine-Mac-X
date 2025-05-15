@@ -6,6 +6,9 @@ public class MenuEntry
 {
     public GameObject menu;
     public bool blockMovement = true;
+    public bool blockHandTracking = false;
+    public bool blockReaction = false;
+    public bool blockChibiMode = false;
 }
 
 public class MenuActions : MonoBehaviour
@@ -19,7 +22,12 @@ public class MenuActions : MonoBehaviour
     [Header("Radial Menu")]
     public GameObject radialMenuObject;
     public bool radialBlockMovement = true;
+    public bool radialBlockHandTracking = false;
+    public bool radialBlockReaction = false;
+    public bool radialBlockChibiMode = false;
     public KeyCode radialMenuKey = KeyCode.F1;
+    public bool radialDraggingBlocks = true;
+
 
     [Header("Bone Follow")]
     public bool followBone = true;
@@ -37,10 +45,7 @@ public class MenuActions : MonoBehaviour
 
     private Vector3 screenPosition;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    void Awake() => Instance = this;
 
     void Start()
     {
@@ -50,10 +55,7 @@ public class MenuActions : MonoBehaviour
             radialRect = radialMenuObject.GetComponent<RectTransform>();
         }
 
-        var modelRootGO = GameObject.Find("Model");
-        if (modelRootGO != null)
-            modelRoot = modelRootGO.transform;
-
+        modelRoot = GameObject.Find("Model")?.transform;
         mainCam = Camera.main;
     }
 
@@ -64,9 +66,18 @@ public class MenuActions : MonoBehaviour
         if (moveCanvas != null)
             moveCanvas.SetActive(!IsMovementBlocked() && !TutorialMenu.IsActive);
 
+        HandleRadialMenu();
+    }
+
+    void HandleRadialMenu()
+    {
         if (Input.GetKeyDown(radialMenuKey) && radialMenu != null)
         {
+            if (radialDraggingBlocks && currentAnimator != null && currentAnimator.GetBool("isDragging"))
+                return;
+
             if (IsAnyMenuOpen())
+
             {
                 CloseAllMenus();
                 PlayMenuCloseSound();
@@ -75,18 +86,12 @@ public class MenuActions : MonoBehaviour
             {
                 if (followBone && currentAnimator != null)
                 {
-                    Transform bone = currentAnimator.GetBoneTransform(targetBone);
+                    var bone = currentAnimator.GetBoneTransform(targetBone);
                     if (bone != null)
                     {
                         screenPosition = mainCam.WorldToScreenPoint(bone.position);
-                        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                            radialRect.parent as RectTransform,
-                            screenPosition,
-                            mainCam,
-                            out Vector3 worldPos))
-                        {
+                        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(radialRect.parent as RectTransform, screenPosition, mainCam, out Vector3 worldPos))
                             radialRect.position = worldPos;
-                        }
                     }
                 }
 
@@ -95,46 +100,36 @@ public class MenuActions : MonoBehaviour
             }
         }
 
-
         if (followBone && IsRadialOpen() && radialRect != null && currentAnimator != null)
         {
-            Transform bone = currentAnimator.GetBoneTransform(targetBone);
+            var bone = currentAnimator.GetBoneTransform(targetBone);
             if (bone != null)
             {
                 Vector3 targetScreenPos = mainCam.WorldToScreenPoint(bone.position);
                 screenPosition = Vector3.Lerp(screenPosition, targetScreenPos, 1f - followSmoothness);
 
-                if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                    radialRect.parent as RectTransform,
-                    screenPosition,
-                    mainCam,
-                    out Vector3 worldPos))
-                {
+                if (RectTransformUtility.ScreenPointToWorldPointInRectangle(radialRect.parent as RectTransform, screenPosition, mainCam, out Vector3 worldPos))
                     radialRect.position = worldPos;
-                }
             }
         }
     }
 
     private void UpdateCurrentAvatar()
     {
-        if (modelRoot == null) return;
+        if (!modelRoot) return;
 
-        GameObject activeModel = null;
         for (int i = 0; i < modelRoot.childCount; i++)
         {
             var child = modelRoot.GetChild(i);
             if (child.gameObject.activeInHierarchy)
             {
-                activeModel = child.gameObject;
-                break;
+                if (currentModel != child.gameObject)
+                {
+                    currentModel = child.gameObject;
+                    currentAnimator = currentModel.GetComponent<Animator>();
+                }
+                return;
             }
-        }
-
-        if (activeModel != currentModel)
-        {
-            currentModel = activeModel;
-            currentAnimator = currentModel != null ? currentModel.GetComponent<Animator>() : null;
         }
     }
 
@@ -142,11 +137,49 @@ public class MenuActions : MonoBehaviour
     {
         if (Instance == null) return false;
 
-        if (Instance.IsRadialOpen() && Instance.radialBlockMovement)
-            return true;
+        if (Instance.IsRadialOpen() && Instance.radialBlockMovement) return true;
 
         foreach (var entry in Instance.menuEntries)
-            if (entry.menu != null && entry.menu.activeInHierarchy && entry.blockMovement)
+            if (entry.menu.activeInHierarchy && entry.blockMovement)
+                return true;
+
+        return false;
+    }
+
+    public static bool IsHandTrackingBlocked()
+    {
+        if (Instance == null) return false;
+
+        if (Instance.IsRadialOpen() && Instance.radialBlockHandTracking) return true;
+
+        foreach (var entry in Instance.menuEntries)
+            if (entry.menu.activeInHierarchy && entry.blockHandTracking)
+                return true;
+
+        return false;
+    }
+
+    public static bool IsReactionBlocked()
+    {
+        if (Instance == null) return false;
+
+        if (Instance.IsRadialOpen() && Instance.radialBlockReaction) return true;
+
+        foreach (var entry in Instance.menuEntries)
+            if (entry.menu.activeInHierarchy && entry.blockReaction)
+                return true;
+
+        return false;
+    }
+
+    public static bool IsChibiModeBlocked()
+    {
+        if (Instance == null) return false;
+
+        if (Instance.IsRadialOpen() && Instance.radialBlockChibiMode) return true;
+
+        foreach (var entry in Instance.menuEntries)
+            if (entry.menu.activeInHierarchy && entry.blockChibiMode)
                 return true;
 
         return false;
@@ -158,40 +191,24 @@ public class MenuActions : MonoBehaviour
         if (Instance.IsRadialOpen()) return true;
 
         foreach (var entry in Instance.menuEntries)
-            if (entry.menu != null && entry.menu.activeInHierarchy)
+            if (entry.menu.activeInHierarchy)
                 return true;
 
         return false;
     }
 
-    private bool IsRadialOpen()
-    {
-        return radialMenuObject != null && radialMenuObject.transform.localScale.x > 0.01f;
-    }
+    private bool IsRadialOpen() => radialMenuObject && radialMenuObject.transform.localScale.x > 0.01f;
 
     public void CloseAllMenus()
     {
         foreach (var entry in menuEntries)
-            if (entry.menu != null && entry.menu.activeSelf)
-                entry.menu.SetActive(false);
+            entry.menu?.SetActive(false);
 
-        if (IsRadialOpen())
-            radialMenu?.Close();
+        if (IsRadialOpen()) radialMenu?.Close();
 
         AvatarSettingsMenu.IsMenuOpen = false;
     }
 
-    private void PlayMenuOpenSound()
-    {
-        var audio = FindFirstObjectByType<MenuAudioHandler>();
-        if (audio != null)
-            audio.PlayOpenSound();
-    }
-
-    private void PlayMenuCloseSound()
-    {
-        var audio = FindFirstObjectByType<MenuAudioHandler>();
-        if (audio != null)
-            audio.SendMessage("PlayCloseSound", SendMessageOptions.DontRequireReceiver);
-    }
+    void PlayMenuOpenSound() => FindFirstObjectByType<MenuAudioHandler>()?.PlayOpenSound();
+    void PlayMenuCloseSound() => FindFirstObjectByType<MenuAudioHandler>()?.PlayCloseSound();
 }

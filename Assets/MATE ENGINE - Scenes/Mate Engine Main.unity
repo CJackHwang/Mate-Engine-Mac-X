@@ -3975,6 +3975,7 @@ Transform:
   - {fileID: 2086786342859233330}
   - {fileID: 7944545131765691565}
   - {fileID: 2587953606299262512}
+  - {fileID: 1660620750}
   - {fileID: 743501261}
   m_Father: {fileID: 1495899421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17397,7 +17398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: snap
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: zRotation
@@ -17464,6 +17465,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: Buttons.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: 'Buttons.Array.data[0]'
       value: 
       objectReference: {fileID: 2587953606321553996}
@@ -17475,6 +17480,10 @@ PrefabInstance:
       propertyPath: 'Buttons.Array.data[2]'
       value: 
       objectReference: {fileID: 2086786342873105486}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: 'Buttons.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1660620749}
     - target: {fileID: 22407618, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -34984,14 +34993,27 @@ MonoBehaviour:
   menuEntries:
   - menu: {fileID: 1714680719}
     blockMovement: 1
+    blockHandTracking: 1
+    blockReaction: 1
+    blockChibiMode: 1
   - menu: {fileID: 721876386}
     blockMovement: 1
+    blockHandTracking: 1
+    blockReaction: 1
+    blockChibiMode: 1
   - menu: {fileID: 1122426458}
     blockMovement: 0
+    blockHandTracking: 0
+    blockReaction: 0
+    blockChibiMode: 0
   moveCanvas: {fileID: 9167954367541787456}
   radialMenuObject: {fileID: 534228283}
   radialBlockMovement: 1
+  radialBlockHandTracking: 1
+  radialBlockReaction: 1
+  radialBlockChibiMode: 1
   radialMenuKey: 324
+  radialDraggingBlocks: 1
   followBone: 1
   targetBone: 10
   followSmoothness: 0.975
@@ -38940,6 +38962,114 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &1660620749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1660620750}
+  - component: {fileID: 1660620753}
+  - component: {fileID: 1660620752}
+  - component: {fileID: 1660620751}
+  m_Layer: 5
+  m_Name: Macaroon
+  m_TagString: UIButton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1660620750
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660620749}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 234665254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 103.92305, y: 60}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1660620751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660620749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd1666868d70ec4281ca5d7234c891a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 324728806}
+        m_TargetAssemblyTypeName: UISetOnOff, Assembly-CSharp
+        m_MethodName: ToggleBubbleFeature
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  image: {fileID: 21300000, guid: d17ef9ed2bd2f3147b9a21b815ef6626, type: 3}
+  unlocked: 1
+  id: macaroon
+  customColor: {r: 0, g: 0, b: 0, a: 0}
+  useCustomColor: 0
+--- !u!114 &1660620752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660620749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8901961, g: 0.9372549, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: ba9b497c177c3d64081eea58be975980, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1660620753
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660620749}
+  m_CullTransparentMesh: 0
 --- !u!1 &1671185218
 GameObject:
   m_ObjectHideFlags: 0

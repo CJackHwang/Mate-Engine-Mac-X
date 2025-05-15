@@ -62,7 +62,7 @@ public class ChibiToggle : MonoBehaviour
 
     void Update()
     {
-        if (!armatureRoot || !head || !leftFoot || !rightFoot || mainCam == null)
+        if (!armatureRoot || !head || !leftFoot || !rightFoot || mainCam == null || MenuActions.IsChibiModeBlocked())
             return;
 
         Vector2 mousePos = Input.mousePosition;
