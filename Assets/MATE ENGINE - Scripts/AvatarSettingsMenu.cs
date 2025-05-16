@@ -30,6 +30,16 @@ public class AvatarSettingsMenu : MonoBehaviour
     public GameObject ambientOcclusionObject;
     public Toggle enableIKToggle;
 
+    public Slider bigScreenSaverTimeoutSlider;
+    public Toggle bigScreenSaverEnableToggle;
+    public TMP_Text bigScreenSaverTimeoutLabel;
+
+    private static readonly int[] TimeoutSteps = { 30, 60, 300, 900, 1800, 2700, 3600, 5400, 7200, 9000, 10800 };
+    private static readonly string[] TimeoutLabels = {
+    "30s", "1 min", "5 min", "15 min", "30 min", "45 min", "1 h", "1.5 h", "2 h", "2.5 h", "3 h"
+};
+
+
     [System.Serializable]
     public class AccessoryToggleEntry
     {
@@ -86,6 +96,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         headBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.headBlend = v; SaveAll(); });
         spineBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.spineBlend = v; SaveAll(); });
         enableHandHoldingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableHandHolding = v; SaveAll(); });
+
+        bigScreenSaverTimeoutSlider?.onValueChanged.AddListener(OnBigScreenSaverTimeoutSliderChanged);
+        bigScreenSaverEnableToggle?.onValueChanged.AddListener(OnBigScreenSaverEnableToggleChanged);
+
 
         hueShiftSlider?.onValueChanged.AddListener(v => {
             SaveLoadHandler.Instance.data.uiHueShift = v;
@@ -161,6 +175,22 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     }
 
+    private void OnBigScreenSaverTimeoutSliderChanged(float v)
+    {
+        int idx = Mathf.Clamp(Mathf.RoundToInt(v), 0, TimeoutSteps.Length - 1);
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = idx;
+        if (bigScreenSaverTimeoutLabel != null)
+            bigScreenSaverTimeoutLabel.text = TimeoutLabels[idx];
+        SaveAll();
+    }
+
+    private void OnBigScreenSaverEnableToggleChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = v;
+        SaveAll();
+    }
+
+
     private void CycleWindowSize()
     {
         var data = SaveLoadHandler.Instance.data;
@@ -225,6 +255,16 @@ public class AvatarSettingsMenu : MonoBehaviour
             graphicsDropdown.SetValueWithoutNotify(data.graphicsQualityLevel);
             QualitySettings.SetQualityLevel(data.graphicsQualityLevel, true);
         }
+
+        if (bigScreenSaverTimeoutSlider != null)
+        {
+            bigScreenSaverTimeoutSlider.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex);
+            if (bigScreenSaverTimeoutLabel != null)
+                bigScreenSaverTimeoutLabel.text = TimeoutLabels[SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex];
+        }
+        if (bigScreenSaverEnableToggle != null)
+            bigScreenSaverEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled);
+
         RestoreWindowSize();
     }
     public void ApplySettings()
@@ -338,6 +378,16 @@ public class AvatarSettingsMenu : MonoBehaviour
         foreach (var entry in accessoryToggleBindings)
             if (!string.IsNullOrEmpty(entry.ruleName))
                 newData.accessoryStates[entry.ruleName] = false;
+
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = 0; // 30s
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = false;
+        if (bigScreenSaverTimeoutSlider != null)
+            bigScreenSaverTimeoutSlider.SetValueWithoutNotify(0);
+        if (bigScreenSaverEnableToggle != null)
+            bigScreenSaverEnableToggle.SetIsOnWithoutNotify(false);
+        if (bigScreenSaverTimeoutLabel != null)
+            bigScreenSaverTimeoutLabel.text = TimeoutLabels[0];
+
 
         SaveLoadHandler.Instance.data = newData;
 

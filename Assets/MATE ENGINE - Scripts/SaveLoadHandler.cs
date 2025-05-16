@@ -119,6 +119,8 @@ public class SaveLoadHandler : MonoBehaviour
         public string selectedLocaleCode = "en";
         public bool enableIK = true;
 
+        public int bigScreenScreenSaverTimeoutIndex = 0; 
+        public bool bigScreenScreenSaverEnabled = false;
 
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
 

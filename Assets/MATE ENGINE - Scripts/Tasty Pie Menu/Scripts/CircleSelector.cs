@@ -291,7 +291,7 @@ namespace Xamin
             else
             {
                 transform.localScale = Vector3.Lerp(transform.localScale,
-                    (CloseAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10, .05f);
+                    (CloseAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10, .2f);
                 _cursor.color = Color.Lerp(_cursor.color, Color.clear, LerpAmount / 3f);
                 _background.color = Color.Lerp(_background.color, Color.clear, LerpAmount / 3f);
             }
