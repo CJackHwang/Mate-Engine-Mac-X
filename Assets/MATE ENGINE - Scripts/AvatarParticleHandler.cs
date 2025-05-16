@@ -20,95 +20,60 @@ public class AvatarParticleHandler : MonoBehaviour
     {
         public Transform bone;
         public GameObject[] objects;
-        public int parameterIndex;
+        public int paramIndex;
         public bool useParameter;
         public string stateName;
     }
 
-    private RuleCache[] ruleCache = System.Array.Empty<RuleCache>();
-    private AnimatorControllerParameter[] animatorParams;
+    private RuleCache[] cache = System.Array.Empty<RuleCache>();
+    private AnimatorControllerParameter[] animParams;
 
     void Start()
     {
-        if (animator == null) animator = GetComponent<Animator>();
-        animatorParams = animator.parameters;
-
-        var cacheList = new List<RuleCache>(rules.Count);
-        for (int i = 0; i < rules.Count; i++)
+        animator ??= GetComponent<Animator>();
+        animParams = animator.parameters;
+        var tmp = new List<RuleCache>(rules.Count);
+        foreach (var rule in rules)
         {
-            var rule = rules[i];
             var bone = animator.GetBoneTransform(rule.targetBone);
-            if (bone == null) continue;
-
-            var objs = new List<GameObject>();
-            for (int j = 0; j < rule.linkedObjects.Count; j++)
-            {
-                var obj = rule.linkedObjects[j];
-                if (obj != null)
-                {
-                    obj.SetActive(false);
-                    objs.Add(obj);
-                }
-            }
-
-            int paramIndex = -1;
+            if (!bone) continue;
+            var objs = rule.linkedObjects.FindAll(o => o != null);
+            foreach (var o in objs) o.SetActive(false);
+            int idx = -1;
             if (rule.useParameter)
-            {
-                for (int p = 0; p < animatorParams.Length; p++)
-                {
-                    if (animatorParams[p].type == AnimatorControllerParameterType.Bool &&
-                        animatorParams[p].name == rule.stateOrParameterName)
-                    {
-                        paramIndex = p;
-                        break;
-                    }
-                }
-            }
-
-            cacheList.Add(new RuleCache
+                for (int i = 0; i < animParams.Length; i++)
+                    if (animParams[i].type == AnimatorControllerParameterType.Bool &&
+                        animParams[i].name == rule.stateOrParameterName) { idx = i; break; }
+            tmp.Add(new RuleCache
             {
                 bone = bone,
                 objects = objs.ToArray(),
-                parameterIndex = paramIndex,
+                paramIndex = idx,
                 useParameter = rule.useParameter,
                 stateName = rule.stateOrParameterName
             });
         }
-
-        ruleCache = cacheList.ToArray();
+        cache = tmp.ToArray();
     }
 
     void Update()
     {
-        if (!featureEnabled || animator == null) return;
-
-        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-        for (int i = 0; i < ruleCache.Length; i++)
+        if (!featureEnabled || !animator) return;
+        var state = animator.GetCurrentAnimatorStateInfo(0);
+        for (int i = 0; i < cache.Length; i++)
         {
-            ref var rule = ref ruleCache[i];
-            bool isActive = false;
-
-            if (rule.useParameter && rule.parameterIndex >= 0)
+            var r = cache[i];
+            bool active = r.useParameter && r.paramIndex >= 0
+                ? animator.GetBool(animParams[r.paramIndex].name)
+                : state.IsName(r.stateName);
+            var bone = r.bone;
+            var arr = r.objects;
+            for (int j = 0; j < arr.Length; j++)
             {
-                isActive = animator.GetBool(animatorParams[rule.parameterIndex].name);
-            }
-            else
-            {
-                isActive = stateInfo.IsName(rule.stateName);
-            }
-
-            for (int j = 0; j < rule.objects.Length; j++)
-            {
-                var obj = rule.objects[j];
-                if (obj == null) continue;
-
-                obj.SetActive(isActive);
-                if (isActive)
-                {
-                    obj.transform.position = rule.bone.position;
-                    obj.transform.rotation = rule.bone.rotation;
-                }
+                var o = arr[j];
+                if (!o) continue;
+                o.SetActive(active);
+                if (active) { o.transform.SetPositionAndRotation(bone.position, bone.rotation); }
             }
         }
     }

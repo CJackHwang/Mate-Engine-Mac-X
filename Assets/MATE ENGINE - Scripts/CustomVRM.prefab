@@ -266,10 +266,10 @@ MonoBehaviour:
     hoverAnimation: {fileID: 7400000, guid: a5e8cc322431f4b43aa7762aab58f93d, type: 2}
     faceAnimation: {fileID: 0}
     enableHoverObject: 1
-    hoverObject: {fileID: 0}
     bindHoverObjectToBone: 1
-    despawnAfterSeconds: 5
     enableLayeredSound: 1
+    hoverObject: {fileID: 0}
+    despawnAfterSeconds: 5
     layeredVoiceClips:
     - {fileID: 8300000, guid: ee7b0dec8553beb4eacbb5f58af5f11a, type: 3}
     - {fileID: 8300000, guid: 51a92dec7c8611242b5a22937e68feb0, type: 3}
@@ -290,10 +290,10 @@ MonoBehaviour:
     hoverAnimation: {fileID: 7400000, guid: b66f0269d52c2b140a5a7135e3a5df76, type: 2}
     faceAnimation: {fileID: 0}
     enableHoverObject: 0
-    hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
-    despawnAfterSeconds: 5
     enableLayeredSound: 0
+    hoverObject: {fileID: 0}
+    despawnAfterSeconds: 5
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}
@@ -311,10 +311,10 @@ MonoBehaviour:
     hoverAnimation: {fileID: 0}
     faceAnimation: {fileID: 0}
     enableHoverObject: 0
-    hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
-    despawnAfterSeconds: 5
     enableLayeredSound: 0
+    hoverObject: {fileID: 0}
+    despawnAfterSeconds: 5
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}
@@ -332,10 +332,10 @@ MonoBehaviour:
     hoverAnimation: {fileID: 0}
     faceAnimation: {fileID: 0}
     enableHoverObject: 0
-    hoverObject: {fileID: 0}
     bindHoverObjectToBone: 0
-    despawnAfterSeconds: 5
     enableLayeredSound: 0
+    hoverObject: {fileID: 0}
+    despawnAfterSeconds: 5
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}

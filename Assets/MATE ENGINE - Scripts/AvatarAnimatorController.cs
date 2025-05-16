@@ -6,204 +6,153 @@ using System.Collections;
 
 public class AvatarAnimatorController : MonoBehaviour
 {
-    public Animator animator; public float SOUND_THRESHOLD = 0.02f;
-    public List<string> allowedApps = new(); public int totalIdleAnimations = 10;
+    public Animator animator;
+    public float SOUND_THRESHOLD = 0.02f;
+    public List<string> allowedApps = new();
+    public int totalIdleAnimations = 10;
     public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
-    public int DANCE_CLIP_COUNT = 5; public bool enableDancing = true;
+    public int DANCE_CLIP_COUNT = 5;
+    public bool enableDancing = true;
 
-    private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex"), isIdleParam = Animator.StringToHash("isIdle");
+    private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
+    private static readonly int isIdleParam = Animator.StringToHash("isIdle");
+    private static readonly int isDraggingParam = Animator.StringToHash("isDragging");
+    private static readonly int isDancingParam = Animator.StringToHash("isDancing");
+    private static readonly int idleIndexParam = Animator.StringToHash("IdleIndex");
 
-    public bool isDragging = false, isDancing = false, isIdle = false;
-    private MMDevice defaultDevice; private MMDeviceEnumerator enumerator;
-    private float lastSoundCheckTime = 0f, idleTimer = 0f;
-    private const float SOUND_CHECK_INTERVAL = 2f;
-    private int idleState = 0;
+    private MMDevice defaultDevice;
+    private MMDeviceEnumerator enumerator;
     private Coroutine soundCheckCoroutine, idleTransitionCoroutine;
-
-    private float dragLockTimer = 0f;
-    private bool mouseHeld = false;
-
+    private float lastSoundCheckTime, idleTimer;
+    private int idleState;
+    private float dragLockTimer;
+    private bool mouseHeld;
+    public bool isDragging, isDancing, isIdle;
 
     void OnEnable()
     {
-        if (animator == null) animator = GetComponent<Animator>();
+        animator ??= GetComponent<Animator>();
         Application.runInBackground = true;
-
         enumerator = new MMDeviceEnumerator();
-        defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia); // << Add this
+        defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
-
     void OnDisable() => CleanupAudioResources();
     void OnDestroy() => CleanupAudioResources();
     void OnApplicationQuit() => CleanupAudioResources();
 
-    private IEnumerator CheckSoundContinuously()
+    IEnumerator CheckSoundContinuously()
     {
-        WaitForSeconds wait = new WaitForSeconds(SOUND_CHECK_INTERVAL);
-        while (true)
-        {
-            CheckForSound();
-            yield return wait;
-        }
+        var wait = new WaitForSeconds(2f);
+        while (true) { CheckForSound(); yield return wait; }
     }
 
     void CheckForSound()
     {
         if (MenuActions.IsMovementBlocked() || !enableDancing)
         {
-            if (isDancing)
-            {
-                isDancing = false;
-                animator.SetBool("isDancing", false);
-            }
+            if (isDancing) SetDancing(false);
             return;
         }
-
         if (defaultDevice == null) return;
-        bool isValidSoundPlaying = IsValidAppPlaying();
-
         if (!isDragging)
         {
-            if (isValidSoundPlaying && !isDancing)
-                StartDancing();
-            else if (!isValidSoundPlaying && isDancing)
-            {
-                var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-                if (!stateInfo.IsName("Dancing") && !animator.IsInTransition(0))
-                {
-                    isDancing = false;
-                    animator.SetBool("isDancing", false);
-                }
-            }
+            bool valid = IsValidAppPlaying();
+            if (valid && !isDancing) StartDancing();
+            else if (!valid && isDancing) SetDancing(false);
         }
     }
 
-    private void StartDancing()
+    void StartDancing()
     {
         isDancing = true;
-        animator.SetBool("isDancing", true);
+        animator.SetBool(isDancingParam, true);
         animator.SetFloat(danceIndexParam, Random.Range(0, DANCE_CLIP_COUNT));
+    }
+    void SetDancing(bool value)
+    {
+        isDancing = value;
+        animator.SetBool(isDancingParam, value);
     }
 
     bool IsValidAppPlaying()
     {
-        if (Time.time - lastSoundCheckTime < SOUND_CHECK_INTERVAL)
-            return isDancing;
+        if (Time.time - lastSoundCheckTime < 2f) return isDancing;
         lastSoundCheckTime = Time.time;
-
         try
         {
-            // Fully refresh the defaultDevice every time to update the session list
             defaultDevice?.Dispose();
             defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
-
             var sessions = defaultDevice.AudioSessionManager.Sessions;
-            int sessionCount = sessions.Count;
-
-            for (int i = 0; i < sessionCount; i++)
+            for (int i = 0, count = sessions.Count; i < count; i++)
             {
-                var session = sessions[i];
-
-                float peak = session.AudioMeterInformation.MasterPeakValue;
-                if (peak <= SOUND_THRESHOLD) continue;
-
-                int pid = (int)session.GetProcessID;
-                if (pid == 0) continue;
-
-                try
+                var s = sessions[i];
+                if (s.AudioMeterInformation.MasterPeakValue > SOUND_THRESHOLD)
                 {
-                    var process = Process.GetProcessById(pid);
-                    string pname = process?.ProcessName;
-                    if (string.IsNullOrEmpty(pname)) continue;
-
-                    for (int j = 0; j < allowedApps.Count; j++)
+                    int pid = (int)s.GetProcessID;
+                    if (pid == 0) continue;
+                    try
                     {
-                        if (pname.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
-                            return true;
+                        string pname = Process.GetProcessById(pid)?.ProcessName;
+                        if (string.IsNullOrEmpty(pname)) continue;
+                        for (int j = 0; j < allowedApps.Count; j++)
+                            if (pname.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase)) return true;
                     }
+                    catch { continue; }
                 }
-                catch { continue; }
             }
         }
-        catch
-        {
-            defaultDevice?.Dispose();
-            defaultDevice = null;
-        }
-
+        catch { defaultDevice?.Dispose(); defaultDevice = null; }
         return false;
     }
-
 
     void Update()
     {
         if (MenuActions.IsMovementBlocked() || TutorialMenu.IsActive)
         {
-            if (isDragging) { isDragging = false; animator.SetBool("isDragging", false); }
-            if (isDancing) { isDancing = false; animator.SetBool("isDancing", false); }
+            if (isDragging) SetDragging(false);
+            if (isDancing) SetDancing(false);
             return;
         }
-
-        // On press
         if (Input.GetMouseButtonDown(0))
         {
-            isDragging = true;
+            SetDragging(true);
             mouseHeld = true;
             dragLockTimer = 0.30f;
-
-            animator.SetBool("isDragging", true);
-            animator.SetBool("isDancing", false);
-            isDancing = false;
+            SetDancing(false);
         }
-
-        // On release
-        if (Input.GetMouseButtonUp(0))
-        {
-            mouseHeld = false;
-        }
-
-        // During lock
+        if (Input.GetMouseButtonUp(0)) mouseHeld = false;
         if (dragLockTimer > 0f)
         {
             dragLockTimer -= Time.deltaTime;
-            animator.SetBool("isDragging", true); // force drag to stay on
+            animator.SetBool(isDraggingParam, true);
         }
-        else
-        {
-            // After 0.25s, allow clean exit if mouse was released
-            if (!mouseHeld && isDragging)
-            {
-                isDragging = false;
-                animator.SetBool("isDragging", false);
-                animator.SetBool("isDancing", isDancing);
-            }
-        }
-
+        else if (!mouseHeld && isDragging) SetDragging(false);
 
         idleTimer += Time.deltaTime;
         if (idleTimer > IDLE_SWITCH_TIME)
         {
             idleTimer = 0f;
-            int nextState = (idleState + 1) % totalIdleAnimations;
-            if (nextState == 0)
-                animator.SetFloat("IdleIndex", 0);
+            int next = (idleState + 1) % totalIdleAnimations;
+            if (next == 0) animator.SetFloat(idleIndexParam, 0);
             else
             {
-                if (idleTransitionCoroutine != null)
-                    StopCoroutine(idleTransitionCoroutine);
-                idleTransitionCoroutine = StartCoroutine(SmoothIdleTransition(nextState));
+                if (idleTransitionCoroutine != null) StopCoroutine(idleTransitionCoroutine);
+                idleTransitionCoroutine = StartCoroutine(SmoothIdleTransition(next));
             }
-            idleState = nextState;
+            idleState = next;
         }
-
         UpdateIdleStatus();
     }
-
-    private void UpdateIdleStatus()
+    void SetDragging(bool value)
     {
-        var state = animator.GetCurrentAnimatorStateInfo(0);
-        bool inIdle = state.IsName("Idle");
+        isDragging = value;
+        animator.SetBool(isDraggingParam, value);
+    }
+
+    void UpdateIdleStatus()
+    {
+        bool inIdle = animator.GetCurrentAnimatorStateInfo(0).IsName("Idle");
         if (isIdle != inIdle)
         {
             isIdle = inIdle;
@@ -211,22 +160,21 @@ public class AvatarAnimatorController : MonoBehaviour
         }
     }
 
-    private IEnumerator SmoothIdleTransition(int newIdleState)
+    IEnumerator SmoothIdleTransition(int newIdle)
     {
-        float elapsed = 0f;
-        float start = animator.GetFloat("IdleIndex");
+        float elapsed = 0f, start = animator.GetFloat(idleIndexParam);
         while (elapsed < IDLE_TRANSITION_TIME)
         {
             elapsed += Time.deltaTime;
-            animator.SetFloat("IdleIndex", Mathf.Lerp(start, newIdleState, elapsed / IDLE_TRANSITION_TIME));
+            animator.SetFloat(idleIndexParam, Mathf.Lerp(start, newIdle, elapsed / IDLE_TRANSITION_TIME));
             yield return null;
         }
-        animator.SetFloat("IdleIndex", newIdleState);
+        animator.SetFloat(idleIndexParam, newIdle);
     }
 
     public bool IsInIdleState() => isIdle;
 
-    private void CleanupAudioResources()
+    void CleanupAudioResources()
     {
         if (soundCheckCoroutine != null) { StopCoroutine(soundCheckCoroutine); soundCheckCoroutine = null; }
         if (idleTransitionCoroutine != null) { StopCoroutine(idleTransitionCoroutine); idleTransitionCoroutine = null; }
