@@ -5405,7 +5405,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 15
   m_MaxValue: 120
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 90
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15154,6 +15154,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885261627}
   m_CullTransparentMesh: 1
+--- !u!1 &899439560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 899439561}
+  - component: {fileID: 899439562}
+  m_Layer: 0
+  m_Name: Clothes_Example
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &899439561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899439560}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -0.25274882, y: 0.85968196, z: 3.6489453}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3945531233510193017}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &899439562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899439560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6952c57b87eaf743a883c84002171c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isScriptLoader: 0
+  entries:
+  - name: Dress
+    tag: 
+    gameObjects:
+    - {fileID: 2647784575255399227}
+    - {fileID: 7777445000605796654}
+    - {fileID: 1093429396051181920}
+  - name: Head Dress
+    tag: 
+    gameObjects:
+    - {fileID: 4564832717738550540}
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: Long Sleeve
+    tag: 
+    gameObjects:
+    - {fileID: 2754856459417085775}
 --- !u!1 &913577722
 GameObject:
   m_ObjectHideFlags: 0
@@ -18809,7 +18884,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2491103
+  m_Size: 0.24911034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36595,7 +36670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseColliderRadius: 0.045
+  mouseColliderRadius: 0.065
 --- !u!114 &1499361309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77887,7 +77962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2782564517692288964
 Transform:
   m_ObjectHideFlags: 0
@@ -84483,7 +84558,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2754856459417085775}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -84573,16 +84648,17 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5047176899424058108}
+  - {fileID: 899439561}
   - {fileID: 7956394576677112169}
   - {fileID: 5832614955323681190}
   - {fileID: 3620604151759057470}
+  - {fileID: 7449452431881875522}
+  - {fileID: 4094875476063265159}
   - {fileID: 7152840546071336309}
   - {fileID: 7380751132979222692}
   - {fileID: 8174726422971619218}
   - {fileID: 1244182772705293582}
   - {fileID: 5451849669133751100}
-  - {fileID: 7449452431881875522}
-  - {fileID: 4094875476063265159}
   - {fileID: 7376968181869014342}
   m_Father: {fileID: 638481095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84818,7 +84894,7 @@ Transform:
   m_GameObject: {fileID: 1093429396051181920}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -105209,7 +105285,7 @@ Transform:
   m_GameObject: {fileID: 7777445000605796654}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -128124,7 +128200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseColliderRadius: 0.045
+  mouseColliderRadius: 0.065
 --- !u!114 &8924917334924735511
 MonoBehaviour:
   m_ObjectHideFlags: 0
