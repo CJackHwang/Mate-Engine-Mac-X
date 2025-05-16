@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 1.0998834, y: 1.0998834, z: 1.0998834}
+  m_LocalScale: {x: 0.69989574, y: 0.69989574, z: 0.69989574}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -364,6 +364,7 @@ MonoBehaviour:
   screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
   preZoneMargin: 25
   preZoneMarginColor: {r: 0.1, g: 0.5, b: 1, a: 0.15}
+  bigScreenRadiusScale: 100
   followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.2

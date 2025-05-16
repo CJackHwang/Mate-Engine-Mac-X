@@ -4,11 +4,15 @@
 public class HandHolder : MonoBehaviour
 {
     [Header("World-Space Interaction")]
-    public float screenInteractionRadius = 0.2f; // Meter (unskaliert)
+    public float screenInteractionRadius = 0.2f;
     public Color screenInteractionRadiusColor = new Color(0.2f, 0.7f, 1f, 0.2f);
 
-    public float preZoneMargin = 0.1f; // Meter (unskaliert)
+    public float preZoneMargin = 0.1f;
     public Color preZoneMarginColor = new Color(0.1f, 0.5f, 1f, 0.15f);
+
+    [Header("Big Screen Scaling")]
+    [Range(0f, 100f)]
+    public float bigScreenRadiusScale = 100f;
 
     public float followSpeed = 10f;
 
@@ -93,7 +97,6 @@ public class HandHolder : MonoBehaviour
         if (rightIsActive) rightTargetPos = Vector3.Lerp(rightTargetPos, target, Time.deltaTime * followSpeed);
     }
 
-    // --- RICHTIG: Alle Radien werden mit Bone-Scale multipliziert ---
     float ComputeWorldWeight(Transform hand)
     {
         if (!hand) return 0f;
@@ -102,8 +105,13 @@ public class HandHolder : MonoBehaviour
         Vector3 mouseWorld = mainCam.ScreenToWorldPoint(mouseScreen);
 
         float scale = hand.lossyScale.magnitude;
-        float mainZone = screenInteractionRadius * scale;
-        float outerZone = (screenInteractionRadius + preZoneMargin) * scale;
+        float radiusScale = 1f;
+
+        if (avatarAnimator != null && avatarAnimator.GetBool("isBigScreen"))
+            radiusScale = bigScreenRadiusScale * 0.01f;
+
+        float mainZone = screenInteractionRadius * scale * radiusScale;
+        float outerZone = (screenInteractionRadius + preZoneMargin) * scale * radiusScale;
 
         float dist = Vector3.Distance(hand.position, mouseWorld);
 
@@ -180,13 +188,15 @@ public class HandHolder : MonoBehaviour
         DrawRadiusGizmo(rightHand, screenInteractionRadius + preZoneMargin, preZoneMarginColor);
     }
 
-    // --- RICHTIG: Skaliert wie bei PetVoiceHandler! ---
     void DrawRadiusGizmo(Transform hand, float radius, Color color)
     {
         if (!hand) return;
         float scale = hand.lossyScale.magnitude;
+        float radiusScale = 1f;
+        if (avatarAnimator != null && avatarAnimator.GetBool("isBigScreen"))
+            radiusScale = bigScreenRadiusScale * 0.01f;
         Gizmos.color = color;
-        Gizmos.DrawWireSphere(hand.position, radius * scale);
+        Gizmos.DrawWireSphere(hand.position, radius * scale * radiusScale);
     }
 #endif
 

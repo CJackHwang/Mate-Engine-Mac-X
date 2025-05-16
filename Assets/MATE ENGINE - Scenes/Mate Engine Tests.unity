@@ -35483,7 +35483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseColliderRadius: 0.075
+  mouseColliderRadius: 0.045
 --- !u!114 &1499361309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104486,12 +104486,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMargin
-      value: 0.075
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: avatarAnimator
       value: 
       objectReference: {fileID: 1499361239}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: bigScreenRadiusScale
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMarginColor.a
       value: 0.15
@@ -105252,7 +105256,9 @@ MonoBehaviour:
   useCustomColor: 0
   hideIfAnimatorBool:
   - isBigScreen
-  hideIfStateName: []
+  hideIfStateName:
+  - Sitting
+  - WindowSit
 --- !u!1 &7944545131777468625
 GameObject:
   m_ObjectHideFlags: 0
@@ -126410,8 +126416,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenInteractionRadius: 0.05
   screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
-  preZoneMargin: 0.075
+  preZoneMargin: 0.09
   preZoneMarginColor: {r: 0.1, g: 0.5, b: 1, a: 0.15}
+  bigScreenRadiusScale: 50
   followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.5
@@ -126722,7 +126729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseColliderRadius: 0.075
+  mouseColliderRadius: 0.045
 --- !u!114 &8924917334924735511
 MonoBehaviour:
   m_ObjectHideFlags: 0
