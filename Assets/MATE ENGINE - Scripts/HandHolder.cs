@@ -3,7 +3,15 @@
 [RequireComponent(typeof(Animator))]
 public class HandHolder : MonoBehaviour
 {
-    [Header("Screen-Space Interaction")] public float screenInteractionRadius = 30f, preZoneMargin = 30f, followSpeed = 10f;
+    [Header("World-Space Interaction")]
+    public float screenInteractionRadius = 0.2f; // Meter!
+    public Color screenInteractionRadiusColor = new Color(0.2f, 0.7f, 1f, 0.2f);
+
+    public float preZoneMargin = 0.1f; // Meter!
+    public Color preZoneMarginColor = new Color(0.1f, 0.5f, 1f, 0.15f);
+
+    public float followSpeed = 10f;
+
     [Header("Blending")] public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
     [Header("Forward Reach Settings")] public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
     [Header("Elbow Hint Settings")] public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
@@ -16,17 +24,14 @@ public class HandHolder : MonoBehaviour
 
     [Header("Gizmos")]
     public bool showDebugGizmos = true;
-    public Color gizmoColor = new Color(0.2f, 0.7f, 1f, 0.2f);
 
     [Header("Enable Hand Holding")]
     public bool enableHandHolding = true;
-
 
     private Camera mainCam;
     private Transform leftHand, rightHand, chest, leftShoulder, rightShoulder;
     private Vector3 leftTargetPos, rightTargetPos;
     private float leftIKWeight, rightIKWeight;
-
     private bool leftIsActive, rightIsActive;
 
     void Start()
@@ -61,9 +66,8 @@ public class HandHolder : MonoBehaviour
             return;
         }
 
-        Vector2 mousePos = Input.mousePosition;
-        float leftWeight = ComputeScreenWeight((mousePos - (Vector2)mainCam.WorldToScreenPoint(leftHand.position)).sqrMagnitude);
-        float rightWeight = ComputeScreenWeight((mousePos - (Vector2)mainCam.WorldToScreenPoint(rightHand.position)).sqrMagnitude);
+        float leftWeight = ComputeWorldWeight(leftHand);
+        float rightWeight = ComputeWorldWeight(rightHand);
 
         if (leftWeight > rightWeight)
         {
@@ -86,6 +90,22 @@ public class HandHolder : MonoBehaviour
         if (rightIsActive) rightTargetPos = Vector3.Lerp(rightTargetPos, target, Time.deltaTime * followSpeed);
     }
 
+    // --- NEU: Interaktion 100% in Weltkoordinaten ---
+    float ComputeWorldWeight(Transform hand)
+    {
+        if (!hand) return 0f;
+        Vector3 mouseScreen = Input.mousePosition;
+        mouseScreen.z = mainCam.WorldToScreenPoint(hand.position).z;
+        Vector3 mouseWorld = mainCam.ScreenToWorldPoint(mouseScreen);
+
+        float dist = Vector3.Distance(hand.position, mouseWorld);
+        float mainZone = screenInteractionRadius;
+        float outerZone = screenInteractionRadius + preZoneMargin;
+
+        if (dist <= mainZone) return maxIKWeight;
+        if (dist >= outerZone) return 0f;
+        return Mathf.Lerp(maxIKWeight, 0f, (dist - mainZone) / (outerZone - mainZone));
+    }
 
     bool IsInAllowedState()
     {
@@ -93,17 +113,6 @@ public class HandHolder : MonoBehaviour
         for (int i = 0; i < allowedStates.Length; i++)
             if (current.IsName(allowedStates[i])) return true;
         return false;
-    }
-
-    float ComputeScreenWeight(float sqrDistPixels)
-    {
-        float mainZone = screenInteractionRadius * screenInteractionRadius;
-        float outerZone = (screenInteractionRadius + preZoneMargin) * (screenInteractionRadius + preZoneMargin);
-
-        if (sqrDistPixels <= mainZone) return maxIKWeight;
-        if (sqrDistPixels >= outerZone) return 0f;
-
-        return Mathf.Lerp(maxIKWeight, 0f, (Mathf.Sqrt(sqrDistPixels) - screenInteractionRadius) / preZoneMargin);
     }
 
     void OnAnimatorIK(int layerIndex)
@@ -156,30 +165,23 @@ public class HandHolder : MonoBehaviour
         return avatarAnimator.transform.TransformPoint(local);
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        if (!showDebugGizmos || !Application.isPlaying || !mainCam) return;
-
-        Gizmos.color = gizmoColor;
-        DrawRadiusGizmo(leftHand);
-        DrawRadiusGizmo(rightHand);
+        if (!showDebugGizmos || !mainCam) return;
+        DrawRadiusGizmo(leftHand, screenInteractionRadius, screenInteractionRadiusColor);
+        DrawRadiusGizmo(leftHand, screenInteractionRadius + preZoneMargin, preZoneMarginColor);
+        DrawRadiusGizmo(rightHand, screenInteractionRadius, screenInteractionRadiusColor);
+        DrawRadiusGizmo(rightHand, screenInteractionRadius + preZoneMargin, preZoneMarginColor);
     }
 
-    void DrawRadiusGizmo(Transform hand)
+    void DrawRadiusGizmo(Transform hand, float radius, Color color)
     {
         if (!hand) return;
-
-        Vector3 screenPos = mainCam.WorldToScreenPoint(hand.position);
-        Vector3 offsetScreen = screenPos + new Vector3(screenInteractionRadius, 0f, 0f);
-        Vector3 offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
-        float radiusWorld = Vector3.Distance(hand.position, offsetWorld);
-        Gizmos.DrawWireSphere(hand.position, radiusWorld);
-
-        offsetScreen = screenPos + new Vector3(screenInteractionRadius + preZoneMargin, 0f, 0f);
-        offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
-        radiusWorld = Vector3.Distance(hand.position, offsetWorld);
-        Gizmos.DrawWireSphere(hand.position, radiusWorld);
+        Gizmos.color = color;
+        Gizmos.DrawWireSphere(hand.position, radius);
     }
+#endif
 
     bool IsValid() => avatarAnimator && leftHand && rightHand && chest && leftShoulder && rightShoulder;
 

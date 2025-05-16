@@ -104292,8 +104292,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 14424278}
     m_Modifications:
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: blendOutTime
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMargin
-      value: 38
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: avatarAnimator
+      value: 
+      objectReference: {fileID: 1499361239}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: preZoneMarginColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: preZoneMarginColor.g
+      value: 0.10196078
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: preZoneMarginColor.r
+      value: 0.10616417
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: screenInteractionRadius
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: allowedStates.Array.size
@@ -104302,6 +104326,10 @@ PrefabInstance:
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: 'allowedStates.Array.data[1]'
       value: Drag
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: screenInteractionRadiusColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: headBlend
@@ -126165,12 +126193,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenInteractionRadius: 25
-  preZoneMargin: 38
+  screenInteractionRadius: 0.1
+  screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 1}
+  preZoneMargin: 0.06
+  preZoneMarginColor: {r: 0.10616417, g: 0.10196078, b: 1, a: 1}
   followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.2
-  blendOutTime: 0.4
+  blendOutTime: 0.6
   maxHandDistance: 1.75
   minForwardOffset: 0.2
   verticalOffset: 0.05
@@ -126182,7 +126212,6 @@ MonoBehaviour:
   - Drag
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
-  gizmoColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
   enableHandHolding: 1
 --- !u!114 &8924917334924735497
 MonoBehaviour:

@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9800293, y: 0.9800293, z: 0.9800293}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,6 +100,7 @@ MonoBehaviour:
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 8
   enableDancing: 1
+  BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 0
   isIdle: 0
@@ -360,7 +361,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenInteractionRadius: 25
+  screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
   preZoneMargin: 25
+  preZoneMarginColor: {r: 0.1, g: 0.5, b: 1, a: 0.15}
   followSpeed: 10
   maxIKWeight: 1
   blendInTime: 0.2
@@ -377,7 +380,6 @@ MonoBehaviour:
   - Drag
   avatarAnimator: {fileID: 5500079421849817615}
   showDebugGizmos: 1
-  gizmoColor: {r: 0, g: 0.892854, b: 1, a: 1}
   enableHandHolding: 1
 --- !u!114 &6905094604719294301
 MonoBehaviour:
