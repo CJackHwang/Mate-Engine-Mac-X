@@ -35332,6 +35332,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   avatarAnimator: {fileID: 5823227879768727422}
   avatarName: MODDED AVATAR
+--- !u!114 &1499361287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d193f735c55945445905b983a2c28293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToggleKeys: 62000000
+  avatarAnimator: {fileID: 1499361239}
+  attachBone: 10
+  MainCamera: {fileID: 330585545}
+  TargetZoom: 0.25
+  ZoomMoveSpeed: 10
+  YOffset: 0.1
+  moveCanvas: {fileID: 9167954367541787456}
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -39068,7 +39088,8 @@ MonoBehaviour:
   id: macaroon
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
-  hideIfAnimatorBool: []
+  hideIfAnimatorBool:
+  - isBigScreen
   hideIfStateName:
   - Dance
   - WindowSit
@@ -40382,6 +40403,7 @@ MonoBehaviour:
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 8
   enableDancing: 1
+  BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 1
   isIdle: 0
@@ -75101,7 +75123,8 @@ MonoBehaviour:
   id: chat
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
-  hideIfAnimatorBool: []
+  hideIfAnimatorBool:
+  - 
   hideIfStateName: []
 --- !u!4 &2105144023252081135
 Transform:
@@ -75950,7 +75973,8 @@ MonoBehaviour:
   id: settings
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
-  hideIfAnimatorBool: []
+  hideIfAnimatorBool:
+  - isBigScreen
   hideIfStateName: []
 --- !u!114 &2587953606310283654
 MonoBehaviour:
@@ -104483,6 +104507,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1499361276}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361287}
   m_SourcePrefab: {fileID: 100100000, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
 --- !u!137 &7783119356818458772
 SkinnedMeshRenderer:
@@ -104980,7 +105007,8 @@ MonoBehaviour:
   id: clothes
   customColor: {r: 0, g: 0, b: 0, a: 0}
   useCustomColor: 0
-  hideIfAnimatorBool: []
+  hideIfAnimatorBool:
+  - isBigScreen
   hideIfStateName: []
 --- !u!1 &7944545131777468625
 GameObject:
@@ -126431,6 +126459,7 @@ MonoBehaviour:
   TargetZoom: 0.25
   ZoomMoveSpeed: 10
   YOffset: 0.1
+  moveCanvas: {fileID: 9167954367541787456}
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0

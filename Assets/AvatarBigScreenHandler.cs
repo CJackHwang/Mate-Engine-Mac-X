@@ -21,6 +21,9 @@ public class AvatarBigScreenHandler : MonoBehaviour
     [Tooltip("Y-Offset zur Bone-Position (in Metern, vor Skalierung)")]
     public float YOffset = 0.08f;
 
+    [Header("Canvas-Blocking")]
+    public GameObject moveCanvas; // Zieh hier dein Canvas rein
+
     private IntPtr unityHWND = IntPtr.Zero;
     private bool isBigScreenActive = false;
     private Vector3 originalCamPos;
@@ -31,6 +34,10 @@ public class AvatarBigScreenHandler : MonoBehaviour
     private RECT originalWindowRect;
     private bool originalRectSet = false;
     private Transform bone;
+    private AvatarAnimatorController avatarAnimatorController;
+
+    // Für sauberes Canvas-Restore
+    private bool moveCanvasWasActive = false;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT { public int left, top, right, bottom; }
@@ -45,6 +52,7 @@ public class AvatarBigScreenHandler : MonoBehaviour
 
     [DllImport("user32.dll")]
     private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+
 
     void Start()
     {
@@ -65,6 +73,12 @@ public class AvatarBigScreenHandler : MonoBehaviour
             originalWindowRect = r;
             originalRectSet = true;
         }
+        avatarAnimatorController = GetComponent<AvatarAnimatorController>();
+    }
+
+    public void SetAnimator(Animator a)
+    {
+        avatarAnimator = a;
     }
 
     void Update()
@@ -88,14 +102,12 @@ public class AvatarBigScreenHandler : MonoBehaviour
 
             Vector3 headPos = bone.position;
             float headHeight = 0.25f;
-
             var neck = avatarAnimator.GetBoneTransform(HumanBodyBones.Neck);
             if (neck != null)
                 headHeight = Mathf.Max(0.12f, Mathf.Abs(headPos.y - neck.position.y));
             headHeight *= scaleFactor;
 
             float buffer = 1.4f;
-
             float yOffsetScaled = YOffset * scaleFactor;
             Vector3 camPos = MainCamera.transform.position;
             camPos.x = originalCamX;
@@ -129,24 +141,31 @@ public class AvatarBigScreenHandler : MonoBehaviour
     void ActivateBigScreen()
     {
         isBigScreenActive = true;
+        if (avatarAnimator != null)
+            avatarAnimator.SetBool("isBigScreen", true);
+        if (avatarAnimatorController != null)
+            avatarAnimatorController.BlockDraggingOverride = true;
+
+        // Canvas nur hier deaktivieren, und merken ob es aktiv war!
+        if (moveCanvas != null)
+        {
+            moveCanvasWasActive = moveCanvas.activeSelf;
+            if (moveCanvas.activeSelf)
+                moveCanvas.SetActive(false);
+        }
+
         if (unityHWND != IntPtr.Zero)
         {
             RECT windowRect;
             if (GetWindowRect(unityHWND, out windowRect))
             {
                 RECT targetScreen = FindBestMonitorRect(windowRect);
-
-                // Fenster auf GANZE Bildschirmgröße setzen!
                 int screenWidth = targetScreen.right - targetScreen.left;
                 int screenHeight = targetScreen.bottom - targetScreen.top;
                 int targetX = targetScreen.left;
                 int targetY = targetScreen.top;
-
-                // Speichere aktuelle Fenstergröße/position für Restore
                 originalWindowRect = windowRect;
                 originalRectSet = true;
-
-                // Setze Window auf Monitorgröße (ohne Taskleiste!)
                 MoveWindow(unityHWND, targetX, targetY, screenWidth, screenHeight, true);
             }
         }
@@ -169,6 +188,15 @@ public class AvatarBigScreenHandler : MonoBehaviour
     void DeactivateBigScreen()
     {
         isBigScreenActive = false;
+        if (avatarAnimator != null)
+            avatarAnimator.SetBool("isBigScreen", false);
+        if (avatarAnimatorController != null)
+            avatarAnimatorController.BlockDraggingOverride = false;
+
+        // Canvas nur hier wieder aktivieren, wenn wir es vorher deaktiviert haben!
+        if (moveCanvas != null && moveCanvasWasActive)
+            moveCanvas.SetActive(true);
+
         if (unityHWND != IntPtr.Zero && originalRectSet)
         {
             int w = originalWindowRect.right - originalWindowRect.left;

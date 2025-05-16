@@ -13,6 +13,7 @@ public class AvatarAnimatorController : MonoBehaviour
     public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
     public int DANCE_CLIP_COUNT = 5;
     public bool enableDancing = true;
+    public bool BlockDraggingOverride = false;
 
     private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
     private static readonly int isIdleParam = Animator.StringToHash("isIdle");
@@ -108,7 +109,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
-        if (MenuActions.IsMovementBlocked() || TutorialMenu.IsActive)
+        if (BlockDraggingOverride || MenuActions.IsMovementBlocked() || TutorialMenu.IsActive)
         {
             if (isDragging) SetDragging(false);
             if (isDancing) SetDancing(false);
