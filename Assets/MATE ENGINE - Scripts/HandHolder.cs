@@ -4,17 +4,20 @@
 public class HandHolder : MonoBehaviour
 {
     [Header("World-Space Interaction")]
-    public float screenInteractionRadius = 0.2f; // Meter!
+    public float screenInteractionRadius = 0.2f; // Meter (unskaliert)
     public Color screenInteractionRadiusColor = new Color(0.2f, 0.7f, 1f, 0.2f);
 
-    public float preZoneMargin = 0.1f; // Meter!
+    public float preZoneMargin = 0.1f; // Meter (unskaliert)
     public Color preZoneMarginColor = new Color(0.1f, 0.5f, 1f, 0.15f);
 
     public float followSpeed = 10f;
 
-    [Header("Blending")] public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
-    [Header("Forward Reach Settings")] public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
-    [Header("Elbow Hint Settings")] public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
+    [Header("Blending")]
+    public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
+    [Header("Forward Reach Settings")]
+    public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
+    [Header("Elbow Hint Settings")]
+    public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
 
     [Header("Allowed Animator States")]
     public string[] allowedStates = { "Idle", "HoverReaction" };
@@ -90,7 +93,7 @@ public class HandHolder : MonoBehaviour
         if (rightIsActive) rightTargetPos = Vector3.Lerp(rightTargetPos, target, Time.deltaTime * followSpeed);
     }
 
-    // --- NEU: Interaktion 100% in Weltkoordinaten ---
+    // --- RICHTIG: Alle Radien werden mit Bone-Scale multipliziert ---
     float ComputeWorldWeight(Transform hand)
     {
         if (!hand) return 0f;
@@ -98,9 +101,11 @@ public class HandHolder : MonoBehaviour
         mouseScreen.z = mainCam.WorldToScreenPoint(hand.position).z;
         Vector3 mouseWorld = mainCam.ScreenToWorldPoint(mouseScreen);
 
+        float scale = hand.lossyScale.magnitude;
+        float mainZone = screenInteractionRadius * scale;
+        float outerZone = (screenInteractionRadius + preZoneMargin) * scale;
+
         float dist = Vector3.Distance(hand.position, mouseWorld);
-        float mainZone = screenInteractionRadius;
-        float outerZone = screenInteractionRadius + preZoneMargin;
 
         if (dist <= mainZone) return maxIKWeight;
         if (dist >= outerZone) return 0f;
@@ -175,11 +180,13 @@ public class HandHolder : MonoBehaviour
         DrawRadiusGizmo(rightHand, screenInteractionRadius + preZoneMargin, preZoneMarginColor);
     }
 
+    // --- RICHTIG: Skaliert wie bei PetVoiceHandler! ---
     void DrawRadiusGizmo(Transform hand, float radius, Color color)
     {
         if (!hand) return;
+        float scale = hand.lossyScale.magnitude;
         Gizmos.color = color;
-        Gizmos.DrawWireSphere(hand.position, radius);
+        Gizmos.DrawWireSphere(hand.position, radius * scale);
     }
 #endif
 

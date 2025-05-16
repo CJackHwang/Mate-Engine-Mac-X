@@ -3998,6 +3998,7 @@ Transform:
   - {fileID: 7944545131765691565}
   - {fileID: 2587953606299262512}
   - {fileID: 1660620750}
+  - {fileID: 399325475}
   - {fileID: 743501261}
   m_Father: {fileID: 1495899421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7072,6 +7073,122 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387998300}
   m_CullTransparentMesh: 1
+--- !u!1 &399325474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 399325475}
+  - component: {fileID: 399325478}
+  - component: {fileID: 399325477}
+  - component: {fileID: 399325476}
+  m_Layer: 5
+  m_Name: BigScreen
+  m_TagString: UIButton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &399325475
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399325474}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 234665254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 103.92305, y: 60}
+  m_SizeDelta: {x: 40, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &399325476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399325474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd1666868d70ec4281ca5d7234c891a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 324728806}
+        m_TargetAssemblyTypeName: UISetOnOff, Assembly-CSharp
+        m_MethodName: ToggleBigScreenFeature
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  image: {fileID: 21300000, guid: 06826ec135d0783498e81f40377b33ea, type: 3}
+  unlocked: 1
+  id: bigscreen
+  customColor: {r: 0, g: 0, b: 0, a: 0}
+  useCustomColor: 0
+  hideIfAnimatorBool: []
+  hideIfStateName:
+  - Dance
+  - WindowSit
+  - Drag
+  - HoverReaction
+  - Sitting
+  - Intro
+--- !u!114 &399325477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399325474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8901961, g: 0.9372549, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: ba9b497c177c3d64081eea58be975980, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &399325478
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399325474}
+  m_CullTransparentMesh: 0
 --- !u!1 &403723798
 GameObject:
   m_ObjectHideFlags: 0
@@ -17488,7 +17605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: Buttons.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: 'Buttons.Array.data[0]'
@@ -17506,6 +17623,10 @@ PrefabInstance:
       propertyPath: 'Buttons.Array.data[3]'
       value: 
       objectReference: {fileID: 1660620749}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: 'Buttons.Array.data[4]'
+      value: 
+      objectReference: {fileID: 399325474}
     - target: {fileID: 22407618, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -35344,7 +35465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f735c55945445905b983a2c28293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToggleKeys: 62000000
+  ToggleKeys: 
   avatarAnimator: {fileID: 1499361239}
   attachBone: 10
   MainCamera: {fileID: 330585545}
@@ -35352,6 +35473,66 @@ MonoBehaviour:
   ZoomMoveSpeed: 10
   YOffset: 0.1
   moveCanvas: {fileID: 9167954367541787456}
+--- !u!114 &1499361298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseColliderRadius: 0.075
+--- !u!114 &1499361309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9568d3c72e4dd241a2b8398d4bf9a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+  - componentTypeName: UnityEngine.Animator
+    disableInBigScreen: 0
+  - componentTypeName: FixedPosition
+    disableInBigScreen: 0
+  - componentTypeName: AvatarAnimatorController
+    disableInBigScreen: 0
+  - componentTypeName: AvatarDragSoundHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarGravityController
+    disableInBigScreen: 0
+  - componentTypeName: AvatarParticleHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarMouseTracking
+    disableInBigScreen: 0
+  - componentTypeName: PetVoiceReactionHandler
+    disableInBigScreen: 1
+  - componentTypeName: HandHolder
+    disableInBigScreen: 0
+  - componentTypeName: ChibiToggle
+    disableInBigScreen: 0
+  - componentTypeName: UniversalBlendshapes
+    disableInBigScreen: 0
+  - componentTypeName: AccessoiresHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarWindowHandler
+    disableInBigScreen: 0
+  - componentTypeName: IKFix
+    disableInBigScreen: 0
+  - componentTypeName: AvatarBubbleHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarAnimatorReceiver
+    disableInBigScreen: 0
+  - componentTypeName: AvatarBigScreenTouchHandler
+    disableInBigScreen: 0
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -50334,10 +50515,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdc0c0f959b333409be87b3bf8e241a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 1122426458}
-  smoothness: 0.95
-  velocityMultiplier: 0.0165
-  anchorWorldPosition: {x: -0.4838488, y: 0.65934706, z: -1.468}
+  follows:
+  - label: Chat
+    menuObject: {fileID: 1122426458}
+    targetBone: 10
+    smoothness: 0.975
+    swingAmount: 40
+    swingOffset: {x: -0.020993706, y: -0.0031416037, z: 0.0076689795}
+    lastBonePos: {x: 0.13539171, y: 0.6230727, z: -0.014137911}
+    lastScreenPos: {x: 432.75146, y: 396.09482, z: 3.263531}
 --- !u!1 &2061305906
 GameObject:
   m_ObjectHideFlags: 0
@@ -75571,6 +75757,8 @@ GameObject:
   - component: {fileID: 8924917334924735507}
   - component: {fileID: 8924917334924735508}
   - component: {fileID: 8924917334924735509}
+  - component: {fileID: 8924917334924735510}
+  - component: {fileID: 8924917334924735511}
   m_Layer: 10
   m_Name: VRMModel
   m_TagString: Untagged
@@ -104292,32 +104480,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 14424278}
     m_Modifications:
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: blendInTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: blendOutTime
       value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMargin
-      value: 0.06
+      value: 0.075
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: avatarAnimator
       value: 
-      objectReference: {fileID: 1499361239}
+      objectReference: {fileID: 5823227879768727422}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMarginColor.a
-      value: 1
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMarginColor.g
-      value: 0.10196078
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMarginColor.r
-      value: 0.10616417
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: screenInteractionRadius
-      value: 0.1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: allowedStates.Array.size
@@ -104329,7 +104521,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: screenInteractionRadiusColor.a
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: headBlend
@@ -104538,6 +104730,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1499361287}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361298}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361309}
   m_SourcePrefab: {fileID: 100100000, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
 --- !u!137 &7783119356818458772
 SkinnedMeshRenderer:
@@ -126193,13 +126391,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenInteractionRadius: 0.1
-  screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 1}
-  preZoneMargin: 0.06
-  preZoneMarginColor: {r: 0.10616417, g: 0.10196078, b: 1, a: 1}
+  screenInteractionRadius: 0.05
+  screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
+  preZoneMargin: 0.075
+  preZoneMarginColor: {r: 0.1, g: 0.5, b: 1, a: 0.15}
   followSpeed: 10
   maxIKWeight: 1
-  blendInTime: 0.2
+  blendInTime: 0.5
   blendOutTime: 0.6
   maxHandDistance: 1.75
   minForwardOffset: 0.2
@@ -126481,7 +126679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d193f735c55945445905b983a2c28293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToggleKeys: 62000000
+  ToggleKeys: 
   avatarAnimator: {fileID: 5823227879768727422}
   attachBone: 10
   MainCamera: {fileID: 330585545}
@@ -126489,6 +126687,78 @@ MonoBehaviour:
   ZoomMoveSpeed: 10
   YOffset: 0.1
   moveCanvas: {fileID: 9167954367541787456}
+--- !u!114 &8924917334924735510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582a697b7603e7d41bc38b4aca2494f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseColliderRadius: 0.075
+--- !u!114 &8924917334924735511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411184301990817844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9568d3c72e4dd241a2b8398d4bf9a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+  - componentTypeName: VRM.VRMMeta
+    disableInBigScreen: 0
+  - componentTypeName: VRM.VRMHumanoidDescription
+    disableInBigScreen: 0
+  - componentTypeName: UnityEngine.Animator
+    disableInBigScreen: 0
+  - componentTypeName: VRM.VRMBlendShapeProxy
+    disableInBigScreen: 0
+  - componentTypeName: VRM.VRMFirstPerson
+    disableInBigScreen: 0
+  - componentTypeName: VRM.VRMLookAtHead
+    disableInBigScreen: 0
+  - componentTypeName: VRM.VRMLookAtBoneApplyer
+    disableInBigScreen: 0
+  - componentTypeName: FixedPosition
+    disableInBigScreen: 0
+  - componentTypeName: AvatarAnimatorController
+    disableInBigScreen: 0
+  - componentTypeName: AvatarDragSoundHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarGravityController
+    disableInBigScreen: 0
+  - componentTypeName: AvatarParticleHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarMouseTracking
+    disableInBigScreen: 0
+  - componentTypeName: PetVoiceReactionHandler
+    disableInBigScreen: 1
+  - componentTypeName: HandHolder
+    disableInBigScreen: 0
+  - componentTypeName: ChibiToggle
+    disableInBigScreen: 0
+  - componentTypeName: UniversalBlendshapes
+    disableInBigScreen: 0
+  - componentTypeName: AccessoiresHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarWindowHandler
+    disableInBigScreen: 0
+  - componentTypeName: IKFix
+    disableInBigScreen: 0
+  - componentTypeName: AvatarBubbleHandler
+    disableInBigScreen: 0
+  - componentTypeName: AvatarAnimatorReceiver
+    disableInBigScreen: 0
+  - componentTypeName: AvatarBigScreenTouchHandler
+    disableInBigScreen: 0
 --- !u!4 &8932384755772289895
 Transform:
   m_ObjectHideFlags: 0

@@ -54,6 +54,30 @@ public class AvatarBigScreenHandler : MonoBehaviour
     private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
 
 
+    public static List<AvatarBigScreenHandler> ActiveHandlers = new List<AvatarBigScreenHandler>();
+
+    void OnEnable()
+    {
+        if (!ActiveHandlers.Contains(this))
+            ActiveHandlers.Add(this);
+    }
+    void OnDisable()
+    {
+        ActiveHandlers.Remove(this);
+    }
+    public void ToggleBigScreenFromUI()
+    {
+        var isActiveField = GetType().GetField("isBigScreenActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        bool isActive = isActiveField != null && (bool)isActiveField.GetValue(this);
+
+        if (!isActive)
+            SendMessage("ActivateBigScreen");
+        else
+            SendMessage("DeactivateBigScreen");
+    }
+
+
+
     void Start()
     {
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;

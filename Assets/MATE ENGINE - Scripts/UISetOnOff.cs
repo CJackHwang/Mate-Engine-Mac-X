@@ -50,6 +50,13 @@ public class UISetOnOff : MonoBehaviour
             }
         }
     }
+    public void ToggleBigScreenFeature()
+    {
+        foreach (var handler in AvatarBigScreenHandler.ActiveHandlers)
+            handler.ToggleBigScreenFromUI();
+    }
+
+
     public void CloseApp()
     {
 #if UNITY_EDITOR

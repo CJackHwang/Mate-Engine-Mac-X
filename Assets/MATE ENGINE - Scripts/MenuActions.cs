@@ -64,7 +64,16 @@ public class MenuActions : MonoBehaviour
         UpdateCurrentAvatar();
 
         if (moveCanvas != null)
-            moveCanvas.SetActive(!IsMovementBlocked() && !TutorialMenu.IsActive);
+        {
+            var bigScreen = FindObjectOfType<AvatarBigScreenHandler>();
+            bool isBigScreen = bigScreen != null && bigScreen.GetType()
+                .GetField("isBigScreenActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.GetValue(bigScreen) as bool? == true;
+
+            if (!isBigScreen)
+                moveCanvas.SetActive(!IsMovementBlocked() && !TutorialMenu.IsActive);
+        }
+
 
         HandleRadialMenu();
     }
