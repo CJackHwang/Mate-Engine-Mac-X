@@ -7145,10 +7145,8 @@ MonoBehaviour:
   useCustomColor: 0
   hideIfAnimatorBool: []
   hideIfStateName:
-  - Dance
   - WindowSit
   - Drag
-  - HoverReaction
   - Sitting
   - Intro
 --- !u!114 &399325477
@@ -50520,10 +50518,9 @@ MonoBehaviour:
     menuObject: {fileID: 1122426458}
     targetBone: 10
     smoothness: 0.975
-    swingAmount: 40
-    swingOffset: {x: -0.020993706, y: -0.0031416037, z: 0.0076689795}
-    lastBonePos: {x: 0.13539171, y: 0.6230727, z: -0.014137911}
-    lastScreenPos: {x: 432.75146, y: 396.09482, z: 3.263531}
+    baseOffset: {x: 0, y: 0}
+    hasBaseOffset: 0
+    currentPosition: {x: 0, y: 0}
 --- !u!1 &2061305906
 GameObject:
   m_ObjectHideFlags: 0
@@ -104494,7 +104491,7 @@ PrefabInstance:
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: avatarAnimator
       value: 
-      objectReference: {fileID: 5823227879768727422}
+      objectReference: {fileID: 1499361239}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: preZoneMarginColor.a
       value: 0.15
@@ -104513,11 +104510,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: allowedStates.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: 'allowedStates.Array.data[1]'
       value: Drag
+      objectReference: {fileID: 0}
+    - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: 'allowedStates.Array.data[2]'
+      value: Big Screen
       objectReference: {fileID: 0}
     - target: {fileID: 76249201430738456, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: screenInteractionRadiusColor.a
@@ -104525,18 +104526,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: headBlend
-      value: 0.65
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: spineBlend
-      value: 0.45
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: trackingPermissions.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: trackingPermissions.Array.data[6].allowEye
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[7].allowEye
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
@@ -104544,8 +104549,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[7].allowHead
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[7].allowSpine
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: trackingPermissions.Array.data[6].stateOrParameterName
       value: WindowSit
+      objectReference: {fileID: 0}
+    - target: {fileID: 519848802782271312, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: trackingPermissions.Array.data[7].stateOrParameterName
+      value: Big Screen
       objectReference: {fileID: 0}
     - target: {fileID: 1268294433761061288, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: dragStopSound
@@ -126408,6 +126425,7 @@ MonoBehaviour:
   allowedStates:
   - Idle
   - Drag
+  - Big Screen
   avatarAnimator: {fileID: 5823227879768727422}
   showDebugGizmos: 1
   enableHandHolding: 1
@@ -126485,6 +126503,11 @@ MonoBehaviour:
     isParameter: 0
     allowHead: 1
     allowSpine: 0
+    allowEye: 1
+  - stateOrParameterName: Big Screen
+    isParameter: 0
+    allowHead: 1
+    allowSpine: 1
     allowEye: 1
   headYawLimit: 45
   headPitchLimit: 30

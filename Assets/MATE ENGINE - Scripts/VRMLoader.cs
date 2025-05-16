@@ -211,7 +211,7 @@ public class VRMLoader : MonoBehaviour
         {
             receiver.CustomVRM = currentModel;
         }
-
+        MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
     }
 
     public Texture2D MakeReadableCopy(Texture texture)
@@ -247,6 +247,10 @@ public class VRMLoader : MonoBehaviour
         EnableMainModel();
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
+
+        var defaultModel = mainModel;
+        if (defaultModel != null && defaultModel.activeInHierarchy)
+            MEModLoader.Instance.AssignHandlersForCurrentAvatar(defaultModel);
     }
 
     private void DisableMainModel()

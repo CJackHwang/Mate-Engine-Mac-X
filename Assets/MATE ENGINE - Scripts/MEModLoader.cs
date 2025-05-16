@@ -6,6 +6,8 @@ using System.IO;
 
 public class MEModLoader : MonoBehaviour
 {
+    public static MEModLoader Instance;
+
     [Header("Required")]
     public ChibiToggle chibiToggle;
 
@@ -22,7 +24,18 @@ public class MEModLoader : MonoBehaviour
 
     private string hoverReactionsFolder;
 
-    void Start()
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
     {
         string chibiBase = Path.Combine(Application.streamingAssetsPath, "Mods/ModLoader/Chibi Mode/Sounds");
         enterFolder = Path.Combine(chibiBase, "Enter Sounds");
@@ -37,10 +50,42 @@ public class MEModLoader : MonoBehaviour
 
         EnsureFolderStructure();
 
+        var currentAvatar = FindCurrentActiveAvatar();
+        if (currentAvatar != null)
+            AssignHandlersForCurrentAvatar(currentAvatar);
+
         StartCoroutine(LoadChibiSounds());
         StartCoroutine(LoadDragSounds());
         StartCoroutine(ApplyChibiSettings());
         StartCoroutine(LoadHoverReactionSounds());
+    }
+
+    public void AssignHandlersForCurrentAvatar(GameObject avatar)
+    {
+        if (avatar == null)
+            return;
+
+        chibiToggle = avatar.GetComponentInChildren<ChibiToggle>(true);
+        dragSoundHandler = avatar.GetComponentInChildren<AvatarDragSoundHandler>(true);
+        petVoiceHandler = avatar.GetComponentInChildren<PetVoiceReactionHandler>(true);
+
+        StartCoroutine(LoadChibiSounds());
+        StartCoroutine(LoadDragSounds());
+        StartCoroutine(LoadHoverReactionSounds());
+        StartCoroutine(ApplyChibiSettings());
+    }
+
+    private GameObject FindCurrentActiveAvatar()
+    {
+        var modelRoot = GameObject.Find("Model");
+        if (modelRoot == null)
+            return null;
+        foreach (Transform child in modelRoot.transform)
+        {
+            if (child.gameObject.activeInHierarchy)
+                return child.gameObject;
+        }
+        return null;
     }
 
     private void EnsureFolderStructure()
@@ -67,17 +112,21 @@ public class MEModLoader : MonoBehaviour
         List<AudioClip> enterSounds = new List<AudioClip>();
         List<AudioClip> exitSounds = new List<AudioClip>();
 
+        if (!Directory.Exists(enterFolder)) yield break;
         foreach (string file in Directory.GetFiles(enterFolder))
             yield return LoadClip(file, clip => enterSounds.Add(clip));
 
+        if (!Directory.Exists(exitFolder)) yield break;
         foreach (string file in Directory.GetFiles(exitFolder))
             yield return LoadClip(file, clip => exitSounds.Add(clip));
 
-        if (enterSounds.Count > 0)
-            chibiToggle.chibiEnterSounds = enterSounds;
-
-        if (exitSounds.Count > 0)
-            chibiToggle.chibiExitSounds = exitSounds;
+        if (chibiToggle != null)
+        {
+            if (enterSounds.Count > 0)
+                chibiToggle.chibiEnterSounds = enterSounds;
+            if (exitSounds.Count > 0)
+                chibiToggle.chibiExitSounds = exitSounds;
+        }
     }
 
     private IEnumerator LoadDragSounds()
@@ -87,11 +136,17 @@ public class MEModLoader : MonoBehaviour
         List<AudioClip> dragClips = new List<AudioClip>();
         List<AudioClip> placeClips = new List<AudioClip>();
 
-        foreach (string file in Directory.GetFiles(dragFolder))
-            yield return LoadClip(file, clip => dragClips.Add(clip));
+        if (Directory.Exists(dragFolder))
+        {
+            foreach (string file in Directory.GetFiles(dragFolder))
+                yield return LoadClip(file, clip => dragClips.Add(clip));
+        }
 
-        foreach (string file in Directory.GetFiles(placeFolder))
-            yield return LoadClip(file, clip => placeClips.Add(clip));
+        if (Directory.Exists(placeFolder))
+        {
+            foreach (string file in Directory.GetFiles(placeFolder))
+                yield return LoadClip(file, clip => placeClips.Add(clip));
+        }
 
         if (dragClips.Count > 0)
             dragSoundHandler.dragStartSound = CreateRandomAudioSource(dragClips, "DragStart");
@@ -122,18 +177,24 @@ public class MEModLoader : MonoBehaviour
             List<AudioClip> voiceClips = new List<AudioClip>();
             List<AudioClip> layeredClips = new List<AudioClip>();
 
-            foreach (string file in Directory.GetFiles(voiceClipsFolder))
+            if (Directory.Exists(voiceClipsFolder))
             {
-                string ext = Path.GetExtension(file).ToLower();
-                if (ext == ".wav" || ext == ".mp3" || ext == ".ogg")
-                    yield return LoadClip(file, clip => { if (clip != null) voiceClips.Add(clip); });
+                foreach (string file in Directory.GetFiles(voiceClipsFolder))
+                {
+                    string ext = Path.GetExtension(file).ToLower();
+                    if (ext == ".wav" || ext == ".mp3" || ext == ".ogg")
+                        yield return LoadClip(file, clip => { if (clip != null) voiceClips.Add(clip); });
+                }
             }
 
-            foreach (string file in Directory.GetFiles(layeredClipsFolder))
+            if (Directory.Exists(layeredClipsFolder))
             {
-                string ext = Path.GetExtension(file).ToLower();
-                if (ext == ".wav" || ext == ".mp3" || ext == ".ogg")
-                    yield return LoadClip(file, clip => { if (clip != null) layeredClips.Add(clip); });
+                foreach (string file in Directory.GetFiles(layeredClipsFolder))
+                {
+                    string ext = Path.GetExtension(file).ToLower();
+                    if (ext == ".wav" || ext == ".mp3" || ext == ".ogg")
+                        yield return LoadClip(file, clip => { if (clip != null) layeredClips.Add(clip); });
+                }
             }
 
             if (voiceClips.Count > 0)

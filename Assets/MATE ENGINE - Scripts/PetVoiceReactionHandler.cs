@@ -84,7 +84,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
     {
         if (avatarAnimator && avatarAnimator.runtimeAnimatorController != lastController) hasSetup = false;
         if (!hasSetup) TrySetup();
-        if (!cachedCamera || !avatarAnimator || MenuActions.IsReactionBlocked()) return;
+        if (!cachedCamera || !avatarAnimator) return;
 
         Vector2 mouse = Input.mousePosition;
         foreach (var region in regions)
@@ -97,7 +97,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
             float screenRadius = Vector2.Distance(screen, cachedCamera.WorldToScreenPoint(world + cachedCamera.transform.right * radius));
             bool hovering = Vector2.Distance(mouse, screen) <= screenRadius;
 
-            if (hovering && !region.wasHovering && IsInIdleState())
+            if (hovering && !region.wasHovering && !MenuActions.IsReactionBlocked() && IsInIdleState())
             {
                 region.wasHovering = true;
                 TriggerAnim(region, true);
@@ -109,7 +109,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
                     if (chosen != null)
                     {
                         if (!region.bindHoverObjectToBone) chosen.obj.transform.position = world;
-                        chosen.obj.SetActive(false); // force re-enable
+                        chosen.obj.SetActive(false);
                         chosen.obj.SetActive(true);
                         chosen.despawnTime = Time.time + region.despawnAfterSeconds;
                     }
@@ -118,9 +118,10 @@ public class PetVoiceReactionHandler : MonoBehaviour
             else if (!hovering && region.wasHovering)
             {
                 region.wasHovering = false;
-                TriggerAnim(region, false);
+                TriggerAnim(region, false); 
             }
         }
+
 
         foreach (var region in regions)
         {
