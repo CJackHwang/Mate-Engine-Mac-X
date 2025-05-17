@@ -10,12 +10,6 @@ public class ChibiToggle : MonoBehaviour
     public Vector3 chibiHeadScale = new Vector3(2.7f, 2.7f, 2.7f);
     public Vector3 chibiUpperLegScale = new Vector3(0.6f, 0.6f, 0.6f);
 
-    [Header("Gizmo Interaction")]
-    public float screenInteractionRadius = 30f;
-    public float holdDuration = 2f;
-    public bool showDebugGizmos = true;
-    public Color gizmoColor = new Color(1f, 0.5f, 0.7f, 0.25f);
-
     [Header("Sound Effects")]
     public AudioSource audioSource;
     public List<AudioClip> chibiEnterSounds = new List<AudioClip>();
@@ -30,16 +24,12 @@ public class ChibiToggle : MonoBehaviour
     private Transform leftUpperLeg, rightUpperLeg;
 
     private bool isChibi = false;
-    private float holdTimer = 0f;
-    private Camera mainCam;
-
     private Vector3 originalArmaturePosition;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         anim.applyRootMotion = false;
-        mainCam = Camera.main;
 
         Transform hips = anim.GetBoneTransform(HumanBodyBones.Hips);
         head = anim.GetBoneTransform(HumanBodyBones.Head);
@@ -52,43 +42,13 @@ public class ChibiToggle : MonoBehaviour
         {
             armatureRoot = hips;
             while (armatureRoot.parent != null && armatureRoot.parent != transform)
-            {
                 armatureRoot = armatureRoot.parent;
-            }
 
             originalArmaturePosition = armatureRoot.localPosition;
         }
     }
 
-    void Update()
-    {
-        if (!armatureRoot || !head || !leftFoot || !rightFoot || mainCam == null || MenuActions.IsChibiModeBlocked())
-            return;
-
-        Vector2 mousePos = Input.mousePosition;
-
-        Vector2 leftFootScreen = mainCam.WorldToScreenPoint(leftFoot.position);
-        Vector2 rightFootScreen = mainCam.WorldToScreenPoint(rightFoot.position);
-
-        bool hoveringLeft = Vector2.Distance(mousePos, leftFootScreen) <= screenInteractionRadius;
-        bool hoveringRight = Vector2.Distance(mousePos, rightFootScreen) <= screenInteractionRadius;
-
-        if (hoveringLeft || hoveringRight)
-        {
-            holdTimer += Time.deltaTime;
-            if (holdTimer >= holdDuration)
-            {
-                ToggleChibiMode();
-                holdTimer = 0f;
-            }
-        }
-        else
-        {
-            holdTimer = 0f;
-        }
-    }
-
-    void ToggleChibiMode()
+    public void ToggleChibiMode()
     {
         if (!armatureRoot || !head || !leftFoot || !rightFoot) return;
 
@@ -109,13 +69,12 @@ public class ChibiToggle : MonoBehaviour
 
     private IEnumerator AdjustFeetToGround(float originalFootY)
     {
-        yield return null; 
+        yield return null;
 
         float newFootY = Mathf.Min(leftFoot.position.y, rightFoot.position.y);
         float offsetY = originalFootY - newFootY;
         transform.position += new Vector3(0f, offsetY, 0f);
     }
-
 
     void PlayRandomSound(bool enteringChibi)
     {
@@ -141,28 +100,5 @@ public class ChibiToggle : MonoBehaviour
         particleEffectObject.SetActive(true);
         yield return new WaitForSeconds(particleDuration);
         particleEffectObject.SetActive(false);
-    }
-
-    void OnDrawGizmos()
-    {
-        if (!showDebugGizmos || !Application.isPlaying || !mainCam) return;
-
-        Gizmos.color = gizmoColor;
-        DrawScreenRadiusSphere(leftFoot, screenInteractionRadius);
-        DrawScreenRadiusSphere(rightFoot, screenInteractionRadius);
-    }
-
-    private void DrawScreenRadiusSphere(Transform bone, float screenRadius)
-    {
-        if (bone == null) return;
-
-        Vector3 screenPos = mainCam.WorldToScreenPoint(bone.position);
-        if (screenPos.z < 0f) return;
-
-        Vector3 offsetScreen = screenPos + new Vector3(screenRadius, 0f, 0f);
-        Vector3 offsetWorld = mainCam.ScreenToWorldPoint(offsetScreen);
-        float radiusWorld = Vector3.Distance(bone.position, offsetWorld);
-
-        Gizmos.DrawWireSphere(bone.position, radiusWorld);
     }
 }

@@ -291,8 +291,6 @@ public class MEModLoader : MonoBehaviour
             chibiToggle.chibiArmatureScale = settings.chibiArmatureScale;
             chibiToggle.chibiHeadScale = settings.chibiHeadScale;
             chibiToggle.chibiUpperLegScale = settings.chibiUpperLegScale;
-            chibiToggle.screenInteractionRadius = settings.screenInteractionRadius;
-            chibiToggle.holdDuration = settings.holdDuration;
         }
 
         Debug.Log("[MEModLoader] Applied Chibi settings from JSON.");

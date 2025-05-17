@@ -56,6 +56,11 @@ public class UISetOnOff : MonoBehaviour
             handler.ToggleBigScreenFromUI();
     }
 
+    public void ToggleChibiMode()
+    {
+        foreach (var chibi in GameObject.FindObjectsOfType<ChibiToggle>())
+            chibi.ToggleChibiMode();
+    }
 
     public void CloseApp()
     {

@@ -63,8 +63,6 @@ public static class MEModInitializer
             chibiArmatureScale = chibi.chibiArmatureScale,
             chibiHeadScale = chibi.chibiHeadScale,
             chibiUpperLegScale = chibi.chibiUpperLegScale,
-            screenInteractionRadius = chibi.screenInteractionRadius,
-            holdDuration = chibi.holdDuration
         };
 
         string json = JsonUtility.ToJson(data, true);

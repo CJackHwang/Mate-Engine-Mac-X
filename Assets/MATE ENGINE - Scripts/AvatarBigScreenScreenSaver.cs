@@ -80,7 +80,7 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
         bool isBigScreen = avatarAnimator != null && avatarAnimator.GetBool("isBigScreen");
         bool isBigScreenSaver = avatarAnimator != null && avatarAnimator.GetBool("isBigScreenSaver");
-
+        /*
         if (isBigScreen && isBigScreenSaver)
         {
             idleTimer = 0f;
@@ -104,6 +104,32 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
             lastMousePos = GetGlobalMousePosition();
             return;
         }
+        */
+
+        if (isBigScreen && isBigScreenSaver)
+        {
+            idleTimer = 0f;
+            inspectorEvent = "Screensaver active! Timer paused";
+            inspectorTime = 0f;
+            UpdateInspectorTimeoutLabel();
+
+            if (IsGlobalUserInput())
+            {
+                avatarAnimator.SetBool("isBigScreenSaver", false);
+                inspectorEvent = "Screensaver ended by input";
+
+                if (clickDisablesBoth)
+                {
+                    avatarAnimator.SetBool("isBigScreen", false);
+                    inspectorEvent = "Exited Screensaver & BigScreen by input";
+                    if (bigScreenHandler != null)
+                        bigScreenHandler.SendMessage("DeactivateBigScreen");
+                }
+            }
+            lastMousePos = GetGlobalMousePosition();
+            return;
+        }
+
 
         if (!IsInAllowedState())
         {
@@ -209,4 +235,27 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
             if (current.IsName(allowedStates[i])) return true;
         return false;
     }
+
+    // Check if the user is interacting with second monitors or other apps
+    private bool lastGlobalMouseDown = false;
+    private bool IsGlobalUserInput()
+    {
+        // Mouse Left Click (anywhere)
+        bool mouseDown = (GetAsyncKeyState(0x01) & 0x8000) != 0;
+        bool mouseClick = mouseDown && !lastGlobalMouseDown;
+        lastGlobalMouseDown = mouseDown;
+
+        // Any keyboard key (anywhere)
+        bool keyPressed = false;
+        for (int key = 0x08; key <= 0xFE; key++)
+        {
+            if ((GetAsyncKeyState(key) & 0x8000) != 0)
+            {
+                keyPressed = true;
+                break;
+            }
+        }
+        return mouseClick || keyPressed;
+    }
+
 }
