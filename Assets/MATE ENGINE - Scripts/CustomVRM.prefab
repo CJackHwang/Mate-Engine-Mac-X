@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.7997637, y: 0.7997637, z: 0.7997637}
+  m_LocalScale: {x: 0.9999975, y: 0.9999975, z: 0.9999975}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -90,9 +90,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
-  SOUND_THRESHOLD: 0.39554185
+  SOUND_THRESHOLD: 0.2
   allowedApps:
   - spotify
+  - firefox
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
@@ -237,7 +238,7 @@ MonoBehaviour:
   eyeSmoothness: 10
   headBlend: 0.7
   spineBlend: 0.5
-  eyeBlend: 0.61246693
+  eyeBlend: 1
 --- !u!114 &4771289125681901212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   - Drag
   avatarAnimator: {fileID: 5500079421849817615}
   showDebugGizmos: 1
-  enableHandHolding: 0
+  enableHandHolding: 1
 --- !u!114 &6905094604719294301
 MonoBehaviour:
   m_ObjectHideFlags: 0
