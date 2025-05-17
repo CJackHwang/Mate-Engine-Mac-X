@@ -122,7 +122,11 @@ public class MenuAudioHandler : MonoBehaviour
         }
 
         foreach (var button in GetComponentsInChildren<Button>(true))
-            button.onClick.AddListener(() => PlaySound(buttonSounds, buttonPitchMin, buttonPitchMax, buttonVolume));
+        {
+            if (button.GetComponent<ButtonLinker>() == null)
+                button.onClick.AddListener(() => PlaySound(buttonSounds, buttonPitchMin, buttonPitchMax, buttonVolume));
+        }
+
 
         foreach (var toggle in GetComponentsInChildren<Toggle>(true))
             toggle.onValueChanged.AddListener((_) => PlaySound(toggleSounds, togglePitchMin, togglePitchMax, toggleVolume));
