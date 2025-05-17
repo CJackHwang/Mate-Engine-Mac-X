@@ -301,6 +301,33 @@ MonoBehaviour:
     m_Localized: "Oclusi\xF3n Ambiental"
     m_Metadata:
       m_Items: []
+  - m_Id: 13999268343832576
+    m_Localized: Protector de pantalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13999269778284544
+    m_Localized: "Despu\xE9s de un tiempo, la mascota del escritorio aparece en grande
+      en la pantalla y reproduce una animaci\xF3n de espera hasta que regreses y
+      hagas clic."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037793143513088
+    m_Localized: emporizador de protector de pantalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037795504906240
+    m_Localized: "Depuraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037796842889216
+    m_Localized: Forzar GC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037800621957120
+    m_Localized: "Ejecuta una recolecci\xF3n de basura forzada. Esta funci\xF3n es
+      solo para depuraci\xF3n; no la uses a menos que sepas lo que est\xE1s haciendo."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

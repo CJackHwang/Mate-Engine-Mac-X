@@ -287,6 +287,22 @@ MonoBehaviour:
     m_Key: SCREEN_SAVER_INFO
     m_Metadata:
       m_Items: []
+  - m_Id: 14037793143513088
+    m_Key: SCREEN_SAVER_SLIDER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037795504906240
+    m_Key: DEBUGGING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037796842889216
+    m_Key: GC_KILL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037800621957120
+    m_Key: GC_KILL_INFO
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

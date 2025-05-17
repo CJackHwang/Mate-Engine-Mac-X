@@ -1267,7 +1267,6 @@ MonoBehaviour:
   hideIfStateName:
   - Dance
   - WindowSit
-  - Drag
 --- !u!114 &58419293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3483,7 +3482,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164895296}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -3492,7 +3491,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 7781941810028544
+      m_KeyId: 14037796842889216
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -7938,7 +7937,6 @@ MonoBehaviour:
   hideIfAnimatorBool: []
   hideIfStateName:
   - WindowSit
-  - Drag
   - Sitting
   - Intro
 --- !u!114 &399325477
@@ -8191,7 +8189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 482, y: -120}
+  m_AnchoredPosition: {x: 400, y: -120}
   m_SizeDelta: {x: 650, y: 950}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411985450
@@ -9731,7 +9729,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 481048523}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -9740,7 +9738,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 7781916468043776
+      m_KeyId: 14037793143513088
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -26476,7 +26474,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959308476}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -26485,7 +26483,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 1494416451690496
+      m_KeyId: 14037800621957120
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -34215,7 +34213,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.24911034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -43155,7 +43153,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556108393}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -43164,7 +43162,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 1494319580045312
+      m_KeyId: 14037795504906240
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -43768,7 +43766,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 85.99831, y: -43}
+  m_AnchoredPosition: {x: 229.9, y: -43}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1562841845
@@ -46038,7 +46036,6 @@ MonoBehaviour:
   hideIfStateName:
   - Dance
   - WindowSit
-  - Drag
 --- !u!114 &1660620752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48549,7 +48546,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 482, y: -106}
+  m_AnchoredPosition: {x: 400, y: -106}
   m_SizeDelta: {x: 650, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838489475
@@ -63105,7 +63102,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096660900}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
   m_Name: 
@@ -63114,7 +63111,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:698e167bd107c3a40a5376082f2e2f35
     m_TableEntryReference:
-      m_KeyId: 7781877666537472
+      m_KeyId: 11147404514418688
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

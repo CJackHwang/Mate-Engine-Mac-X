@@ -23,55 +23,73 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11105833312256
-    m_Localized: "Animationswechselzeit\r"
+    m_Localized: 'Animationswechselzeit
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11236599128064
-    m_Localized: "Animations\xFCbergangszeit\r"
+    m_Localized: "Animations\xFCbergangszeit\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11239019241472
-    m_Localized: "Tanzstart-Lautst\xE4rkeschwelle\r"
+    m_Localized: "Tanzstart-Lautst\xE4rkeschwelle\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11241108004864
-    m_Localized: "Avatar immer im Vordergrund\r"
+    m_Localized: 'Avatar immer im Vordergrund
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11243918188544
-    m_Localized: "Avatar kann tanzen\r"
+    m_Localized: 'Avatar kann tanzen
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11244643803136
-    m_Localized: "Kopf folgt der Maus\r"
+    m_Localized: 'Kopf folgt der Maus
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11245205839872
-    m_Localized: "Avatargr\xF6\xDFe\r"
+    m_Localized: "Avatargr\xF6\xDFe\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11245612687360
-    m_Localized: "Speich.\r"
+    m_Localized: 'Speich.
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11320741060608
-    m_Localized: "Zur\xFCcks.\r"
+    m_Localized: "Zur\xFCcks.\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11321303097344
-    m_Localized: "Polygone\r"
+    m_Localized: 'Polygone
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11321839968256
-    m_Localized: "Knochen\r"
+    m_Localized: 'Knochen
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 11796140253184
-    m_Localized: "FPS-Limit\r"
+    m_Localized: 'FPS-Limit
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 23418267230208
-    m_Localized: "Einstellungen\r"
+    m_Localized: 'Einstellungen
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 23684911718400
@@ -79,63 +97,89 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 24123241652224
-    m_Localized: "Effekt Lautst.\r"
+    m_Localized: 'Effekt Lautst.
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24123816271872
-    m_Localized: "Men\xFC Lautst.\r"
+    m_Localized: "Men\xFC Lautst.\n"
     m_Metadata:
       m_Items: []
   - m_Id: 24124437028864
-    m_Localized: "Grafik\r"
+    m_Localized: 'Grafik
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24125049397248
-    m_Localized: "Ultra\r"
+    m_Localized: 'Ultra
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24125577879552
-    m_Localized: "Sehr Hoch\r"
+    m_Localized: 'Sehr Hoch
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24126186053632
-    m_Localized: "Hoch\r"
+    m_Localized: 'Hoch
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24126735507456
-    m_Localized: "Normal\r"
+    m_Localized: 'Normal
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24509532856320
-    m_Localized: "Niedrig\r"
+    m_Localized: 'Niedrig
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24510153613312
-    m_Localized: "Steam-DLCs\r"
+    m_Localized: 'Steam-DLCs
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 24510665318400
-    m_Localized: "Blumen-Heiligenschein\r"
+    m_Localized: 'Blumen-Heiligenschein
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 27326909767680
-    m_Localized: "Hinzuf\xFCgen\r"
+    m_Localized: "Hinzuf\xFCgen\n"
     m_Metadata:
       m_Items: []
   - m_Id: 27328117727232
-    m_Localized: "Entfernen\r"
+    m_Localized: 'Entfernen
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 37370367827968
-    m_Localized: "Sprache\r"
+    m_Localized: 'Sprache
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 1494291876667392
-    m_Localized: "Mod laden\r"
+    m_Localized: 'Mod laden
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 1494319580045312
-    m_Localized: "Experimentell\r"
+    m_Localized: 'Experimentell
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 1494394716807168
@@ -147,7 +191,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1971210921435136
-    m_Localized: "Discord Rich Presence\r"
+    m_Localized: 'Discord Rich Presence
+
+'
     m_Metadata:
       m_Items: []
   - m_Id: 1971386927013888
@@ -300,6 +346,34 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 11147404514418688
     m_Localized: Umgebungsverdeckung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13999268343832576
+    m_Localized: Bildschirmschoner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13999269778284544
+    m_Localized: "Nach einiger Zeit erscheint das Desktop-Maskottchen gro\xDF auf
+      dem Bildschirm und spielt eine Idle-Animation ab, bis du zur\xFCckkehrst und
+      klickst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037793143513088
+    m_Localized: Bildschirmschoner-Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037795504906240
+    m_Localized: Debugging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037796842889216
+    m_Localized: GC erzwingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14037800621957120
+    m_Localized: "F\xFChrt eine erzwungene Speicherbereinigung (Garbage Collection)
+      durch. Dies ist eine Debug-Funktion \u2013 benutze sie nur, wenn du genau wei\xDFt,
+      was du tust."
     m_Metadata:
       m_Items: []
   references:
