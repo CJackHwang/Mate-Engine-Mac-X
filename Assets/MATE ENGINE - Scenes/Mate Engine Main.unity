@@ -13924,7 +13924,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 330585545}
-  m_PlaneDistance: 1.5
+  m_PlaneDistance: 0.6
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -34215,7 +34215,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.24911034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -41637,7 +41637,7 @@ MonoBehaviour:
   radialBlockChibiMode: 1
   radialMenuKey: 324
   radialDraggingBlocks: 1
-  followBone: 0
+  followBone: 1
   targetBone: 10
   followSmoothness: 0.975
 --- !u!4 &1495899421
@@ -41997,7 +41997,7 @@ MonoBehaviour:
   - componentTypeName: AvatarMouseTracking
     disableInBigScreen: 0
   - componentTypeName: PetVoiceReactionHandler
-    disableInBigScreen: 1
+    disableInBigScreen: 0
   - componentTypeName: HandHolder
     disableInBigScreen: 0
   - componentTypeName: ChibiToggle
@@ -47507,6 +47507,9 @@ MonoBehaviour:
   hoverTriggerParam: HoverTrigger
   hoverFaceTriggerParam: HoverFaceTrigger
   showDebugGizmos: 1
+  blockStates:
+  - Big Screen
+  - Screen Saver
 --- !u!1 &1763954100
 GameObject:
   m_ObjectHideFlags: 0
@@ -106908,7 +106911,7 @@ PrefabInstance:
     - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: avatarAnimator
       value: 
-      objectReference: {fileID: 1499361239}
+      objectReference: {fileID: 5823227879768727422}
     - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: voiceAudioSource
       value: 
@@ -106917,6 +106920,18 @@ PrefabInstance:
       propertyPath: layeredAudioSource
       value: 
       objectReference: {fileID: 438021438}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: blockStates.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: 'blockStates.Array.data[0]'
+      value: Big Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: 'blockStates.Array.data[1]'
+      value: Screen Saver
+      objectReference: {fileID: 0}
     - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: regions.Array.data[0].hoverObject
       value: 
@@ -129094,7 +129109,7 @@ MonoBehaviour:
   - componentTypeName: AvatarMouseTracking
     disableInBigScreen: 0
   - componentTypeName: PetVoiceReactionHandler
-    disableInBigScreen: 1
+    disableInBigScreen: 0
   - componentTypeName: HandHolder
     disableInBigScreen: 0
   - componentTypeName: ChibiToggle

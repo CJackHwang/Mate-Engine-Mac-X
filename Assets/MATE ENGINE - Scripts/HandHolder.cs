@@ -64,7 +64,19 @@ public class HandHolder : MonoBehaviour
 
     void Update()
     {
-        if (!enableHandHolding || MenuActions.IsHandTrackingBlocked() || !IsValid()) return;
+        if (!enableHandHolding || !IsValid())
+        {
+            leftIKWeight = Mathf.MoveTowards(leftIKWeight, 0f, Time.deltaTime / blendOutTime);
+            rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
+            return;
+        }
+        if (MenuActions.IsHandTrackingBlocked())
+        {
+            leftIKWeight = Mathf.MoveTowards(leftIKWeight, 0f, Time.deltaTime / blendOutTime);
+            rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
+            return;
+        }
+
 
         if (!IsInAllowedState())
         {

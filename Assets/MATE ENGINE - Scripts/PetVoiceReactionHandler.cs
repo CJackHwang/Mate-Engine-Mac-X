@@ -31,6 +31,9 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public string hoverTriggerParam = "HoverTrigger", hoverFaceTriggerParam = "HoverFaceTrigger";
     public bool showDebugGizmos = true;
 
+    [Header("Block States (Blacklist)")]
+    [SerializeField] public List<string> blockStates = new();
+
     Camera cachedCamera;
     readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
     AnimatorOverrideController overrideController;
@@ -97,7 +100,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
             float screenRadius = Vector2.Distance(screen, cachedCamera.WorldToScreenPoint(world + cachedCamera.transform.right * radius));
             bool hovering = Vector2.Distance(mouse, screen) <= screenRadius;
 
-            if (hovering && !region.wasHovering && !MenuActions.IsReactionBlocked() && IsInIdleState())
+            if (hovering && !region.wasHovering && !MenuActions.IsReactionBlocked() && IsInIdleState() && !IsInBlockedState())
             {
                 region.wasHovering = true;
                 TriggerAnim(region, true);
@@ -115,24 +118,47 @@ public class PetVoiceReactionHandler : MonoBehaviour
                     }
                 }
             }
-            else if (!hovering && region.wasHovering)
+            else if ((!hovering || MenuActions.IsReactionBlocked() || !IsInIdleState() || IsInBlockedState()) && region.wasHovering)
             {
                 region.wasHovering = false;
-                TriggerAnim(region, false); 
+                TriggerAnim(region, false);
+                // Stelle sicher, dass ALLE aktiven Hover-Objekte einen Timer bekommen
+                if (region.enableHoverObject && pool.TryGetValue(region, out var list))
+                {
+                    foreach (var h in list)
+                    {
+                        if (h.obj.activeSelf && (h.despawnTime < 0f || h.despawnTime == 0f))
+                        {
+                            h.despawnTime = Time.time + region.despawnAfterSeconds;
+                        }
+                    }
+                }
             }
         }
 
-
+        // Bombensicherer Timer-Despawn (läuft IMMER, egal welcher State)
         foreach (var region in regions)
         {
             if (!region.enableHoverObject || !pool.ContainsKey(region)) continue;
             foreach (var h in pool[region])
+            {
                 if (h.obj.activeSelf && Time.time >= h.despawnTime)
                 {
                     h.obj.SetActive(false);
                     h.despawnTime = -1f;
                 }
+            }
         }
+    }
+
+    // State-Blacklist-Abfrage
+    bool IsInBlockedState()
+    {
+        if (avatarAnimator == null) return false;
+        var current = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        foreach (var s in blockStates)
+            if (!string.IsNullOrEmpty(s) && current.IsName(s)) return true;
+        return false;
     }
 
     void TriggerAnim(VoiceRegion region, bool state)

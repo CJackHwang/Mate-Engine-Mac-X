@@ -18,7 +18,7 @@ PlayerSettings:
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
-  m_ShowUnitySplashLogo: 1
+  m_ShowUnitySplashLogo: 0
   m_SplashScreenOverlayOpacity: 1
   m_SplashScreenAnimation: 1
   m_SplashScreenLogoStyle: 1
@@ -40,10 +40,8 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
-  - logo: {fileID: 10404, guid: 0000000000000000f000000000000000, type: 0}
-    duration: 2
   - logo: {fileID: 21300000, guid: b97c753c236d6b547984a7528a9b0579, type: 3}
-    duration: 3
+    duration: 5
   m_VirtualRealitySplashScreen: {fileID: 2800000, guid: a8ea8f23a1821a445a4f5c4b7cc67fa5, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1536
@@ -144,7 +142,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 1.8.0 ALPHA
+  bundleVersion: 1.8.0-GM
   preloadedAssets:
   - {fileID: 11400000, guid: 7553923a6077f8941b76cc27bea803e6, type: 2}
   metroInputSource: 0
