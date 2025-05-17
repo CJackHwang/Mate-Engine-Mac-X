@@ -310,27 +310,33 @@ namespace Xamin
             }
         }
 
-
         void CheckForInput()
         {
+            // Schutz: Es MUSS ein Button selektiert UND im Dictionary vorhanden sein, sonst return
+            if (SelectedSegment == null || instancedButtons == null || !instancedButtons.ContainsKey(SelectedSegment))
+                return;
+
+            var btn = instancedButtons[SelectedSegment];
             if (Input.GetButton(activationButton))
             {
                 _cursor.rectTransform.localPosition = Vector3.Lerp(_cursor.rectTransform.localPosition,
                     new Vector3(0, 0, RaiseOnSelection ? -10 : 0), LerpAmount);
-                if (instancedButtons[SelectedSegment].unlocked)
+                if (btn.unlocked)
                 {
                     SelectedSegment.transform.localScale = new Vector2(.8f, .8f);
                 }
             }
             else
+            {
                 _cursor.rectTransform.localPosition = Vector3.Lerp(_cursor.rectTransform.localPosition,
                     Vector3.zero, LerpAmount);
+            }
 
-            if (Input.GetButtonUp(activationButton) && SelectedSegment)
+            if (Input.GetButtonUp(activationButton))
             {
-                if (instancedButtons[SelectedSegment].unlocked)
+                if (btn.unlocked)
                 {
-                    instancedButtons[SelectedSegment].ExecuteAction();
+                    btn.ExecuteAction();
                     var audio = FindFirstObjectByType<MenuAudioHandler>();
                     if (audio != null)
                         audio.PlayButtonSound();
@@ -338,6 +344,7 @@ namespace Xamin
                 Close();
             }
         }
+
 
         void EnsureAnimatorReceiver()
         {
@@ -433,9 +440,18 @@ namespace Xamin
                         buttonObj.GetComponent<Image>().color = DisabledColor;
                 }
             }
-
             if (buttonsInstances.Count != 0)
+            {
                 SelectedSegment = buttonsInstances[buttonsInstances.Count - 1].gameObject;
+            }
+            else
+            {
+                SelectedSegment = null;
+                opened = false;
+                transform.localScale = Vector3.zero;
+            }
+
+
         }
 
         bool ShouldHideButton(Xamin.Button btn)

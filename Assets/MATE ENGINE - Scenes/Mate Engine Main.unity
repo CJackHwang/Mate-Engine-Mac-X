@@ -41637,7 +41637,7 @@ MonoBehaviour:
   radialBlockChibiMode: 1
   radialMenuKey: 324
   radialDraggingBlocks: 1
-  followBone: 1
+  followBone: 0
   targetBone: 10
   followSmoothness: 0.975
 --- !u!4 &1495899421
