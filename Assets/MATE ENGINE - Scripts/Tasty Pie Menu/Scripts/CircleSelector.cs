@@ -96,23 +96,36 @@ namespace Xamin
 
             BuildButtons();
         }
-
-        public void Open()
+        public bool Open()
         {
             EnsureAnimatorReceiver();
             BuildButtons();
+
+            // --- FIX: NICHT ÖFFNEN, WENN KEINE BUTTONS ---
+            if (buttonsInstances == null || buttonsInstances.Count == 0)
+            {
+                opened = false;
+                transform.localScale = Vector3.zero;
+                return false; // <= NEU!
+            }
+            // --- ENDE FIX ---
+
             _menuCenter = new Vector2((float)Screen.width / 2f, (float)Screen.height / 2f);
             opened = true;
             transform.localScale = (OpenAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10;
+            return true; // <= NEU!
         }
 
-        public void Open(Vector2 origin)
+        public bool Open(Vector2 origin)
         {
-            Open();
+            bool openedSuccessfully = Open();
+            if (!openedSuccessfully) return false;
             _menuCenter = origin;
             Vector2 relativeCenter = new Vector2(_menuCenter.x - Screen.width / 2f, _menuCenter.y - Screen.height / 2f);
             transform.localPosition = relativeCenter;
+            return true;
         }
+
 
         public void Close()
         {

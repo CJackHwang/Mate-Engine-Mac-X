@@ -103,9 +103,11 @@ public class MenuActions : MonoBehaviour
                             radialRect.position = worldPos;
                     }
                 }
+                if (radialMenu.Open())
+                {
+                    PlayMenuOpenSound();
+                }
 
-                radialMenu.Open();
-                PlayMenuOpenSound();
             }
         }
 
