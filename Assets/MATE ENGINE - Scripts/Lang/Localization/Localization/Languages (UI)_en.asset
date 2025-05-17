@@ -297,6 +297,15 @@ MonoBehaviour:
     m_Localized: Ambient Occlusion
     m_Metadata:
       m_Items: []
+  - m_Id: 13999268343832576
+    m_Localized: Screen Saver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13999269778284544
+    m_Localized: After some time, the desktop mascot appears large on the screen
+      and plays an idle animation until you return and click.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

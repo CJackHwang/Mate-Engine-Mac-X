@@ -57,7 +57,17 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
     void Update()
     {
-        LoadSettings(); // Immer aktuelle Werte aus Settings holen
+        LoadSettings(); // Always fetch current settings
+
+        // NEW: Block timer if any menu is open (CircleMenu or Action Menus)
+        if (MenuActions.IsAnyMenuOpen())
+        {
+            inspectorEvent = "Screensaver blocked by menu";
+            inspectorTime = 0f;
+            idleTimer = 0f;
+            UpdateInspectorTimeoutLabel();
+            return;
+        }
 
         if (!enableBigScreenScreenSaver)
         {
