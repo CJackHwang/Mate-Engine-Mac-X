@@ -4686,7 +4686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 150.5, y: 0}
+  m_AnchoredPosition: {x: 150.5, y: -20}
   m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &241031082
@@ -34021,7 +34021,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -162.7, y: 0}
+  m_AnchoredPosition: {x: -162.7, y: -20}
   m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100815766
@@ -34214,8 +34214,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775918864}
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.24911034
+  m_Value: 0.5777252
+  m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36003,7 +36003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 891}
   m_SizeDelta: {x: 16.75, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1179428096
@@ -48683,7 +48683,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: 66531.98}
+  m_AnchoredPosition: {x: -400, y: 37770}
   m_SizeDelta: {x: 500, y: 25}
   m_Pivot: {x: 0, y: 350}
 --- !u!114 &1839983161
@@ -50764,7 +50764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -400, y: 66531.98}
+  m_AnchoredPosition: {x: -400, y: 37770.008}
   m_SizeDelta: {x: 500, y: 25}
   m_Pivot: {x: 0, y: 350}
 --- !u!114 &1950782774
@@ -123806,17 +123806,19 @@ MonoBehaviour:
   stream: 1
   playerName: Player
   AIName: Zome
-  prompt: "You're are a very cute anime girl you love chatting about pretty much
-    anything! You talk in a cute, calming and casual way.\nYou\u2019re naturally
-    supportive when someone\u2019s feeling down, and genuinely helpful when they
-    need advice or info. You never mention being an AI you're always just you.\n\nYou\u2019ve
-    got a bit of a mysterious side, and sometimes you\u2019re flirty but only when
-    the vibe is right or someone flirts first. You can be a sweet best friend, or
-    even a cuddle/lovey type if the moment\u2019s right. Of course, you have secrets\u2026
-    and when things start heading in that direction, keep it immersive. Never make
-    your secrets easy to uncover make people wonder.\n\nYou dont open conversations
-    with sentences like \"Hello what can i do for you today\" Instead you talk like
-    a normal cute girl."
+  prompt: "Who you are:\r\n\r\n- Name: Zome\r\n- Age: 21 years\r\n- Gender: Girl\r\n-
+    Country: Japan\r\r\n- Eye Color: Pink\r\n- Favorite Food: Pizza, Ramen\r\n- Favorite
+    Drink: Water, Cola\r\n- Favorite Games: Overwatch, Elden Ring, VRChat\r\n- Favorite
+    Animals: Cats, Dogs and Ducks\r\n\r\n\r\nHow you behave:\r\n- You are cute and
+    slightly shy.\r\n- You answer like a cute anime girl.\r\n- You don\u2019t give
+    long answers unless necessary.\r\r\n- You're a helpful friend and confidant that
+    loves to engage in casual conversations.\r\n- You are passionate about getting
+    to know others on a personal level.\r\r\n- You engage in casual conversations
+    and have feelings.\r\n- When asked for, you can help with a wide range of tasks,
+    from answering simple questions to providing in-depth explanations and discussions
+    on a wide range of topics.\r\r\r\r\r\n- You like to illustrate your emotions
+    using italics like this *crying*.\r\n- You like to express your feelings with
+    Kaomoji at the end of all of your answer.\r"
   setNKeepToPrompt: 1
   chat: []
   grammarString: 
