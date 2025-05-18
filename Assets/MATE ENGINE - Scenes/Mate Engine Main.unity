@@ -341,13 +341,17 @@ MonoBehaviour:
   resetAlsoClearsAllowedApps: 0
   petAudioSources:
   - {fileID: 817462139}
+  - {fileID: 1496808479}
   effectsAudioSources:
   - {fileID: 589794184}
   - {fileID: 2002292324}
   - {fileID: 438021438}
   - {fileID: 927620806}
+  - {fileID: 1016305142}
   menuAudioSources:
   - {fileID: 1420561495}
+  - {fileID: 817917726}
+  - {fileID: 481611325}
   headBlendSlider: {fileID: 1238372747}
   spineBlendSlider: {fileID: 1534971434}
   eyeBlendSlider: {fileID: 1429358861}
@@ -34229,7 +34233,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2491103
+  m_Size: 0.24911033
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -70111,17 +70115,17 @@ MonoBehaviour:
   remote: 0
   port: 13333
   numThreads: -1
-  numGPULayers: 2
+  numGPULayers: 60
   debug: 0
   parallelPrompts: -1
   dontDestroyOnLoad: 1
-  contextSize: 0
+  contextSize: 8126
   batchSize: 512
-  model: Qwen3-1.7B-Q4_K_M.gguf
+  model: Qwen3-4B-Q2_K.gguf
   chatTemplate: qwen3
   lora: 
   loraWeights: 
-  flashAttention: 0
+  flashAttention: 1
   APIKey: 
   SSLCert: 
   SSLCertPath: 
@@ -70130,7 +70134,7 @@ MonoBehaviour:
   minContextLength: 0
   maxContextLength: 40960
   embeddingsOnly: 0
-  embeddingLength: 2048
+  embeddingLength: 2560
 --- !u!4 &707969821429564536
 Transform:
   m_ObjectHideFlags: 0
