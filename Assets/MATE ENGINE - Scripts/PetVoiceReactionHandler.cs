@@ -85,71 +85,103 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     void Update()
     {
-        if (avatarAnimator && avatarAnimator.runtimeAnimatorController != lastController) hasSetup = false;
         if (!hasSetup) TrySetup();
-        if (!cachedCamera || !avatarAnimator) return;
+        if (cachedCamera == null || avatarAnimator == null) return;
 
         Vector2 mouse = Input.mousePosition;
-        foreach (var region in regions)
+
+        bool menuBlocked = MenuActions.IsReactionBlocked();
+        bool bigScreenBlocked = false;
+        var bigScreen = FindObjectOfType<AvatarBigScreenHandler>();
+        if (bigScreen != null)
         {
-            if (!region.bone) continue;
+            var isBig = bigScreen.GetType()
+                .GetField("isBigScreenActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.GetValue(bigScreen) as bool?;
+            bigScreenBlocked = isBig == true;
+        }
+
+        bool anyBlocked = menuBlocked || bigScreenBlocked;
+
+        for (int r = 0; r < regions.Count; r++)
+        {
+            var region = regions[r];
+            if (region.bone == null) continue;
+
             Vector3 world = region.bone.position + region.bone.TransformVector(region.offset) + region.worldOffset;
             Vector2 screen = cachedCamera.WorldToScreenPoint(world);
             float scale = region.bone.lossyScale.magnitude;
             float radius = region.hoverRadius * scale;
-            float screenRadius = Vector2.Distance(screen, cachedCamera.WorldToScreenPoint(world + cachedCamera.transform.right * radius));
-            bool hovering = Vector2.Distance(mouse, screen) <= screenRadius;
+            Vector2 edge = cachedCamera.WorldToScreenPoint(world + cachedCamera.transform.right * radius);
+            float screenRadius = Vector2.Distance(screen, edge);
+            float dist = Vector2.Distance(mouse, screen);
+            bool hovering = dist <= screenRadius;
 
-            if (hovering && !region.wasHovering && !MenuActions.IsReactionBlocked() && IsInIdleState() && !IsInBlockedState())
+            if (hovering && !region.wasHovering && IsInIdleState() && !anyBlocked)
             {
                 region.wasHovering = true;
                 TriggerAnim(region, true);
                 PlayRandomVoice(region);
-                if (GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject && pool.TryGetValue(region, out var list))
+
+                if (GlobalHoverObjectsEnabled && region.enableHoverObject && region.hoverObject != null)
                 {
-                    HoverInstance chosen = list.Find(h => !h.obj.activeSelf) ??
-                        list.MinByOrDefault(h => h.despawnTime);
+                    var list = pool[region];
+                    HoverInstance chosen = null;
+
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (!list[i].obj.activeSelf)
+                        {
+                            chosen = list[i];
+                            break;
+                        }
+                    }
+
+                    if (chosen == null)
+                    {
+                        float oldest = float.MaxValue;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (list[i].despawnTime < oldest)
+                            {
+                                oldest = list[i].despawnTime;
+                                chosen = list[i];
+                            }
+                        }
+                    }
+
                     if (chosen != null)
                     {
-                        if (!region.bindHoverObjectToBone) chosen.obj.transform.position = world;
+                        if (!region.bindHoverObjectToBone)
+                            chosen.obj.transform.position = world;
                         chosen.obj.SetActive(false);
                         chosen.obj.SetActive(true);
                         chosen.despawnTime = Time.time + region.despawnAfterSeconds;
                     }
                 }
             }
-            else if ((!hovering || MenuActions.IsReactionBlocked() || !IsInIdleState() || IsInBlockedState()) && region.wasHovering)
+            else if ((!hovering || anyBlocked) && region.wasHovering)
             {
                 region.wasHovering = false;
                 TriggerAnim(region, false);
-                // Stelle sicher, dass ALLE aktiven Hover-Objekte einen Timer bekommen
-                if (region.enableHoverObject && pool.TryGetValue(region, out var list))
-                {
-                    foreach (var h in list)
-                    {
-                        if (h.obj.activeSelf && (h.despawnTime < 0f || h.despawnTime == 0f))
-                        {
-                            h.despawnTime = Time.time + region.despawnAfterSeconds;
-                        }
-                    }
-                }
             }
         }
 
-        // Bombensicherer Timer-Despawn (läuft IMMER, egal welcher State)
         foreach (var region in regions)
         {
             if (!region.enableHoverObject || !pool.ContainsKey(region)) continue;
-            foreach (var h in pool[region])
+            var list = pool[region];
+            for (int i = 0; i < list.Count; i++)
             {
-                if (h.obj.activeSelf && Time.time >= h.despawnTime)
+                if (list[i].obj.activeSelf && Time.time >= list[i].despawnTime)
                 {
-                    h.obj.SetActive(false);
-                    h.despawnTime = -1f;
+                    list[i].obj.SetActive(false);
+                    list[i].despawnTime = -1f;
                 }
             }
         }
     }
+
 
     // State-Blacklist-Abfrage
     bool IsInBlockedState()
