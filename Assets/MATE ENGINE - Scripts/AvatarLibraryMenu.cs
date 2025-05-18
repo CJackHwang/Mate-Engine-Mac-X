@@ -93,7 +93,6 @@ public class AvatarLibraryMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // DLC-Einträge zuerst rendern (niemals in JSON oder Dateien speichern)
         foreach (var dlc in dlcAvatars)
         {
             if (dlc.prefab == null) continue;
@@ -101,7 +100,6 @@ public class AvatarLibraryMenu : MonoBehaviour
             SetupDLCItem(item, dlc);
         }
 
-        // Dann die normalen Avatare aus Json
         foreach (var entry in avatarEntries)
         {
             GameObject item = Instantiate(avatarItemPrefab, contentParent);
@@ -142,9 +140,6 @@ public class AvatarLibraryMenu : MonoBehaviour
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() => LoadAvatar(dlc.prefab.name));
 
-        // Optional: Upload/Remove-Button deaktivieren (falls nötig – sonst bleibt Standard)
-        // if (removeButton != null) removeButton.gameObject.SetActive(false);
-        // if (uploadButton != null) uploadButton.gameObject.SetActive(false);
         if (uploadSlider != null) uploadSlider.gameObject.SetActive(false);
     }
 
@@ -252,8 +247,6 @@ public class AvatarLibraryMenu : MonoBehaviour
             }
             catch { }
         }
-
-        // --- Prevent duplicates by file path ---
         if (entries.Exists(e => e.filePath == filePath))
         {
             Debug.Log($"[AvatarLibraryMenu] VRM already exists in library, skipping: {displayName}");
@@ -307,24 +300,21 @@ public class AvatarLibraryMenu : MonoBehaviour
         }
         catch { }
 
-        // Remove the entry
         entries = entries.Where(e => e.filePath != entryToRemove.filePath).ToList();
 
-        // Delete the model file if it exists
-        if (File.Exists(entryToRemove.filePath))
+        if (entryToRemove.isSteamWorkshop && File.Exists(entryToRemove.filePath))
         {
             try
             {
                 File.Delete(entryToRemove.filePath);
-                Debug.Log("[AvatarLibraryMenu] Deleted model file: " + entryToRemove.filePath);
+                Debug.Log("[AvatarLibraryMenu] Deleted Workshop model file: " + entryToRemove.filePath);
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning("[AvatarLibraryMenu] Could not delete model file: " + e.Message);
+                Debug.LogWarning("[AvatarLibraryMenu] Could not delete Workshop model file: " + e.Message);
             }
         }
 
-        // Delete thumbnail if exists
         if (File.Exists(entryToRemove.thumbnailPath))
         {
             try
@@ -334,11 +324,10 @@ public class AvatarLibraryMenu : MonoBehaviour
             catch { }
         }
 
-        // Save updated JSON
         string newJson = JsonConvert.SerializeObject(entries, Formatting.Indented);
         File.WriteAllText(avatarsJsonPath, newJson);
 
-        // Refresh UI
         ReloadAvatars();
     }
+
 }
