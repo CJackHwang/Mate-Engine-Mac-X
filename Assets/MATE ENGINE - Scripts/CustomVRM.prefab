@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.89993066, y: 0.89993066, z: 0.89993066}
+  m_LocalScale: {x: 0.78024656, y: 0.78024656, z: 0.78024656}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 8
-  enableDancing: 0
+  enableDancing: 1
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 0

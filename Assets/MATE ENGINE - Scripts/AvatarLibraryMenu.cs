@@ -12,13 +12,28 @@ public class AvatarLibraryMenu : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject avatarItemPrefab;
+    public GameObject avatarItemPrefabDLC;
     public Transform contentParent;
     public GameObject libraryPanel;
+
+    [Header("DLC Avatars")]
+    public List<DLCEntry> dlcAvatars = new List<DLCEntry>();
 
     private string avatarsJsonPath => Path.Combine(Application.persistentDataPath, "avatars.json");
     private string thumbnailsFolder => Path.Combine(Application.persistentDataPath, "Thumbnails");
 
     private List<AvatarEntry> avatarEntries = new List<AvatarEntry>();
+
+    [System.Serializable]
+    public class DLCEntry
+    {
+        public GameObject prefab;
+        public string displayName;
+        public string author;
+        public string version;
+        public string fileType;
+        public Texture2D thumbnail;
+    }
 
     [System.Serializable]
     public class AvatarEntry
@@ -30,12 +45,8 @@ public class AvatarLibraryMenu : MonoBehaviour
         public string filePath;
         public string thumbnailPath;
         public int polygonCount;
-
-
-        //Workshop Support (BETA!!)
         public bool isSteamWorkshop = false;
         public ulong steamFileId = 0;
-
     }
 
     private void Start()
@@ -82,11 +93,59 @@ public class AvatarLibraryMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        // DLC-Einträge zuerst rendern (niemals in JSON oder Dateien speichern)
+        foreach (var dlc in dlcAvatars)
+        {
+            if (dlc.prefab == null) continue;
+            GameObject item = Instantiate(avatarItemPrefabDLC != null ? avatarItemPrefabDLC : avatarItemPrefab, contentParent);
+            SetupDLCItem(item, dlc);
+        }
+
+        // Dann die normalen Avatare aus Json
         foreach (var entry in avatarEntries)
         {
             GameObject item = Instantiate(avatarItemPrefab, contentParent);
             SetupAvatarItem(item, entry);
         }
+    }
+
+    private void SetupDLCItem(GameObject item, DLCEntry dlc)
+    {
+        RawImage thumbnail = item.transform.Find("RawImage").GetComponent<RawImage>();
+        TMP_Text titleText = item.transform.Find("Title").GetComponent<TMP_Text>();
+        TMP_Text authorText = item.transform.Find("Author").GetComponent<TMP_Text>();
+        TMP_Text versionText = item.transform.Find("Version").GetComponent<TMP_Text>();
+        TMP_Text fileTypeText = item.transform.Find("File Type").GetComponent<TMP_Text>();
+        TMP_Text polygonText = item.transform.Find("Polygons")?.GetComponent<TMP_Text>();
+        Button loadButton = item.transform.Find("Button").GetComponent<Button>();
+        Button removeButton = item.transform.Find("Remove")?.GetComponent<Button>();
+        Button uploadButton = item.transform.Find("Upload")?.GetComponent<Button>();
+        Slider uploadSlider = item.transform.Find("UploadBar")?.GetComponent<Slider>();
+
+        if (titleText != null) titleText.text = "Name: " + (!string.IsNullOrEmpty(dlc.displayName) ? dlc.displayName : dlc.prefab.name);
+        if (authorText != null) authorText.text = "Author: " + dlc.author;
+        if (versionText != null) versionText.text = "Version: " + dlc.version;
+        if (fileTypeText != null) fileTypeText.text = "Format: " + dlc.fileType;
+
+        int polyCount = 0;
+        foreach (var mesh in dlc.prefab.GetComponentsInChildren<MeshFilter>(true))
+            if (mesh.sharedMesh != null) polyCount += mesh.sharedMesh.triangles.Length / 3;
+        foreach (var smr in dlc.prefab.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            if (smr.sharedMesh != null) polyCount += smr.sharedMesh.triangles.Length / 3;
+        if (polygonText != null) polygonText.text = "Polygons: " + polyCount;
+
+        if (thumbnail != null && dlc.thumbnail != null)
+        {
+            thumbnail.texture = dlc.thumbnail;
+        }
+
+        loadButton.onClick.RemoveAllListeners();
+        loadButton.onClick.AddListener(() => LoadAvatar(dlc.prefab.name));
+
+        // Optional: Upload/Remove-Button deaktivieren (falls nötig – sonst bleibt Standard)
+        // if (removeButton != null) removeButton.gameObject.SetActive(false);
+        // if (uploadButton != null) uploadButton.gameObject.SetActive(false);
+        if (uploadSlider != null) uploadSlider.gameObject.SetActive(false);
     }
 
     private void SetupAvatarItem(GameObject item, AvatarEntry entry)
@@ -152,12 +211,8 @@ public class AvatarLibraryMenu : MonoBehaviour
 
                 handler.progressSlider = uploadSlider;
                 handler.labelText = uploadButton.GetComponentInChildren<TMP_Text>();
-                handler.progressSlider = uploadSlider;
-                handler.labelText = uploadButton.GetComponentInChildren<TMP_Text>();
             }
         }
-
-
 
         if (uploadSlider != null)
         {
@@ -167,12 +222,6 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     private void LoadAvatar(string path)
     {
-        if (!File.Exists(path))
-        {
-            Debug.LogError("[AvatarLibraryMenu] VRM file not found: " + path);
-            return;
-        }
-
         var loader = FindFirstObjectByType<VRMLoader>();
         if (loader != null)
         {
@@ -183,7 +232,6 @@ public class AvatarLibraryMenu : MonoBehaviour
             Debug.LogError("[AvatarLibraryMenu] VRMLoader not found in scene!");
         }
     }
-
 
     public static void AddAvatarToLibrary(string displayName, string author, string version, string fileType, string filePath, Texture2D thumbnail, int polygonCount)
     {
@@ -262,20 +310,19 @@ public class AvatarLibraryMenu : MonoBehaviour
         // Remove the entry
         entries = entries.Where(e => e.filePath != entryToRemove.filePath).ToList();
 
-        // Only delete model file if it's Steam Workshop content // Hotfix 2
-        if (entryToRemove.isSteamWorkshop && File.Exists(entryToRemove.filePath))
+        // Delete the model file if it exists
+        if (File.Exists(entryToRemove.filePath))
         {
             try
             {
                 File.Delete(entryToRemove.filePath);
-                Debug.Log("[AvatarLibraryMenu] Deleted workshop model file: " + entryToRemove.filePath);
+                Debug.Log("[AvatarLibraryMenu] Deleted model file: " + entryToRemove.filePath);
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning("[AvatarLibraryMenu] Could not delete workshop model file: " + e.Message);
+                Debug.LogWarning("[AvatarLibraryMenu] Could not delete model file: " + e.Message);
             }
         }
-
 
         // Delete thumbnail if exists
         if (File.Exists(entryToRemove.thumbnailPath))
@@ -294,5 +341,4 @@ public class AvatarLibraryMenu : MonoBehaviour
         // Refresh UI
         ReloadAvatars();
     }
-
 }

@@ -11,6 +11,10 @@ using System.Reflection;
 using UniVRM10;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class VRMLoader : MonoBehaviour
 {
     public Button loadVRMButton;
@@ -38,7 +42,7 @@ public class VRMLoader : MonoBehaviour
         if (isLoading) return;
 
         isLoading = true;
-        var extensions = new[] { new ExtensionFilter("Model Files", "vrm", "me") };
+        var extensions = new[] { new ExtensionFilter("Model Files", "vrm", "me", "prefab") };
         string[] paths = StandaloneFileBrowser.OpenFilePanel("Select Model File", "", extensions, false);
         if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
             LoadVRM(paths[0]);
@@ -48,11 +52,27 @@ public class VRMLoader : MonoBehaviour
 
     public async void LoadVRM(string path)
     {
+        if (IsDLCReference(path))
+        {
+            GameObject prefab = FindDLCByName(path);
+            if (prefab != null)
+            {
+                GameObject instance = Instantiate(prefab);
+                FinalizeLoadedModel(instance, path);
+                PlayerPrefs.SetString(modelPathKey, path);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                Debug.LogError("[VRMLoader] DLC Prefab nicht gefunden: " + path);
+            }
+            return;
+        }
+
         if (!File.Exists(path)) return;
 
         try
         {
-            // Check for AssetBundle model
             if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
             {
                 LoadAssetBundleModel(path);
@@ -63,8 +83,6 @@ public class VRMLoader : MonoBehaviour
             if (fileData == null || fileData.Length == 0) return;
 
             GameObject loadedModel = null;
-
-            // Try VRM 1.0 first
             try
             {
                 var glbData = new GlbFileParser(path).Parse();
@@ -74,17 +92,12 @@ public class VRMLoader : MonoBehaviour
                 {
                     using var importer10 = new Vrm10Importer(vrm10Data);
                     var instance10 = await importer10.LoadAsync(new ImmediateCaller());
-
                     if (instance10.Root != null)
                         loadedModel = instance10.Root;
                 }
             }
-            catch (Exception e)
-            {
-                Debug.LogWarning("[VRMLoader] VRM 1.0 parsing failed, trying VRM 0.x loader: " + e.Message);
-            }
+            catch { }
 
-            // Fallback to VRM 0.x
             if (loadedModel == null)
             {
                 try
@@ -92,20 +105,17 @@ public class VRMLoader : MonoBehaviour
                     using var gltfData = new GlbBinaryParser(fileData, path).Parse();
                     var importer = new VRMImporterContext(new VRMData(gltfData));
                     var instance = await importer.LoadAsync(new ImmediateCaller());
-
                     if (instance.Root != null)
                         loadedModel = instance.Root;
                 }
-                catch (Exception ex)
-                {
-                    Debug.LogError("[VRMLoader] VRM 0.x loading failed: " + ex.Message);
-                    return;
-                }
+                catch { return; }
             }
 
             if (loadedModel == null) return;
 
             FinalizeLoadedModel(loadedModel, path);
+            PlayerPrefs.SetString(modelPathKey, path);
+            PlayerPrefs.Save();
         }
         catch (Exception ex)
         {
@@ -158,79 +168,25 @@ public class VRMLoader : MonoBehaviour
         }
 
         StartCoroutine(DelayedRefreshStats());
-
-        PlayerPrefs.SetString(modelPathKey, path);
-        PlayerPrefs.Save();
-
-        Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "VRM"));
-
-        string displayName = Path.GetFileNameWithoutExtension(path);
-        string author = "Unknown";
-        string version = "Unknown";
-        string fileType = "Unknown";
-        Texture2D thumbnail = null;
-
-        bool isME = path.EndsWith(".me", StringComparison.OrdinalIgnoreCase);
-
-        var vrm10Instance = loadedModel.GetComponent<UniVRM10.Vrm10Instance>();
-        if (vrm10Instance != null && vrm10Instance.Vrm != null && vrm10Instance.Vrm.Meta != null)
-        {
-            displayName = vrm10Instance.Vrm.Meta.Name ?? displayName;
-            author = (vrm10Instance.Vrm.Meta.Authors != null && vrm10Instance.Vrm.Meta.Authors.Count > 0) ? vrm10Instance.Vrm.Meta.Authors[0] : "Unknown";
-            version = vrm10Instance.Vrm.Meta.Version ?? "Unknown";
-            fileType = isME ? ".ME (VRM1.X)" : "VRM1.X";
-            thumbnail = vrm10Instance.Vrm.Meta.Thumbnail;
-        }
-        else
-        {
-            var vrmMeta = loadedModel.GetComponent<VRM.VRMMeta>();
-            if (vrmMeta != null && vrmMeta.Meta != null)
-            {
-                var meta = vrmMeta.Meta;
-                displayName = !string.IsNullOrEmpty(meta.Title) ? meta.Title : displayName;
-                author = !string.IsNullOrEmpty(meta.Author) ? meta.Author : "Unknown";
-                version = !string.IsNullOrEmpty(meta.Version) ? meta.Version : "Unknown";
-                fileType = isME ? ".ME (VRM0.X)" : "VRM0.X";
-                thumbnail = meta.Thumbnail;
-            }
-        }
-
-        Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
-        int polyCount = GetTotalPolygons(loadedModel);
-        AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail, polyCount);
-
-        if (safeThumbnail != null) Destroy(safeThumbnail);
-
         var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
         if (libraryMenu != null)
         {
             libraryMenu.ReloadAvatars();
         }
-
-        foreach (var receiver in GameObject.FindObjectsOfType<MEReceiver>())
-        {
-            receiver.CustomVRM = currentModel;
-        }
-        MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
     }
 
     public Texture2D MakeReadableCopy(Texture texture)
     {
         if (texture == null) return null;
-
         RenderTexture rt = RenderTexture.GetTemporary(texture.width, texture.height, 0);
         Graphics.Blit(texture, rt);
-
         RenderTexture previous = RenderTexture.active;
         RenderTexture.active = rt;
-
         Texture2D readable = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
         readable.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         readable.Apply();
-
         RenderTexture.active = previous;
         RenderTexture.ReleaseTemporary(rt);
-
         return readable;
     }
 
@@ -238,19 +194,12 @@ public class VRMLoader : MonoBehaviour
     {
         string vrmFolder = Path.Combine(Application.persistentDataPath, "VRM");
         if (Directory.Exists(vrmFolder))
-        {
             Directory.Delete(vrmFolder, true);
-            Debug.Log("[VRMLoader] VRM folder deleted successfully.");
-        }
 
         ClearPreviousCustomModel();
         EnableMainModel();
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
-
-        var defaultModel = mainModel;
-        if (defaultModel != null && defaultModel.activeInHierarchy)
-            MEModLoader.Instance.AssignHandlersForCurrentAvatar(defaultModel);
     }
 
     private void DisableMainModel()
@@ -317,31 +266,23 @@ public class VRMLoader : MonoBehaviour
                     animatorField.SetValue(newComp, animator);
             }
         }
-
         Destroy(templateObj);
     }
 
     private void CopyComponentValues(Component source, Component destination)
     {
         var type = source.GetType();
-
         var fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         foreach (var field in fields)
         {
             if (field.IsDefined(typeof(SerializeField), true) || field.IsPublic)
-            {
                 field.SetValue(destination, field.GetValue(source));
-            }
         }
-
         var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                         .Where(p => p.CanWrite && p.GetSetMethod(true) != null);
         foreach (var prop in props)
         {
-            try
-            {
-                prop.SetValue(destination, prop.GetValue(source));
-            }
+            try { prop.SetValue(destination, prop.GetValue(source)); }
             catch { }
         }
     }
@@ -351,10 +292,7 @@ public class VRMLoader : MonoBehaviour
         yield return null;
         var stats = FindFirstObjectByType<RuntimeModelStats>();
         if (stats != null)
-        {
-            Debug.Log("[VRMLoader] Delayed refresh of RuntimeModelStats.");
             stats.RefreshNow();
-        }
     }
 
     public int GetTotalPolygons(GameObject model)
@@ -366,15 +304,39 @@ public class VRMLoader : MonoBehaviour
             if (mesh != null)
                 total += mesh.triangles.Length / 3;
         }
-
         foreach (var skinned in model.GetComponentsInChildren<SkinnedMeshRenderer>(true))
         {
             var mesh = skinned.sharedMesh;
             if (mesh != null)
                 total += mesh.triangles.Length / 3;
         }
-
         return total;
     }
 
+    private bool IsDLCReference(string path)
+    {
+#if UNITY_EDITOR
+        if (path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
+            return true;
+#endif
+        // Im Build: DLC wird über Prefab-Name referenziert (Name aus Inspector)
+        if (!File.Exists(path) && !path.EndsWith(".vrm") && !path.EndsWith(".me"))
+            return true;
+        return false;
+    }
+
+    private GameObject FindDLCByName(string name)
+    {
+        var library = FindFirstObjectByType<AvatarLibraryMenu>();
+        if (library == null) return null;
+        foreach (var dlc in library.dlcAvatars)
+        {
+#if UNITY_EDITOR
+            string assetPath = AssetDatabase.GetAssetPath(dlc.prefab);
+            if (assetPath == name) return dlc.prefab;
+#endif
+            if (dlc.prefab != null && dlc.prefab.name == name) return dlc.prefab;
+        }
+        return null;
+    }
 }

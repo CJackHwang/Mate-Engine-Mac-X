@@ -567,8 +567,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   avatarItemPrefab: {fileID: 3954346010846192513, guid: cf5dcbf5b9bfabf4b807e47c40a3a54b, type: 3}
+  avatarItemPrefabDLC: {fileID: 9004791003646548659, guid: 88e97ca557051cf42b996156146dd6e2, type: 3}
   contentParent: {fileID: 239117372}
   libraryPanel: {fileID: 291524067}
+  dlcAvatars:
+  - prefab: {fileID: 2929267508169169733, guid: 5a23f1077959b55489618edb4cd6c3cb, type: 3}
+    displayName: Aldina
+    author: Yorshka
+    version: 1.3
+    fileType: DLC
+    thumbnail: {fileID: 2800000, guid: b1d38790be4aa964ca407d973f1cf70c, type: 3}
+  - prefab: {fileID: 2944783988476641375, guid: cf59fb29424fed04397cc97a39e552fc, type: 3}
+    displayName: Lazuli
+    author: Elychiffon
+    version: 1.0
+    fileType: DLC
+    thumbnail: {fileID: 2800000, guid: 9989801a9c7bfa04ea4b83a9858b8627, type: 3}
 --- !u!114 &14424291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34214,7 +34228,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775918864}
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
-  m_Value: 0.5777252
+  m_Value: 1
   m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -36003,7 +36017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 891}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 16.75, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1179428096
