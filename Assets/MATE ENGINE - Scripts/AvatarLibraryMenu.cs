@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class AvatarLibraryMenu : MonoBehaviour
 {
@@ -89,9 +90,7 @@ public class AvatarLibraryMenu : MonoBehaviour
     private void RefreshUI()
     {
         foreach (Transform child in contentParent)
-        {
             Destroy(child.gameObject);
-        }
 
         foreach (var dlc in dlcAvatars)
         {
@@ -99,13 +98,27 @@ public class AvatarLibraryMenu : MonoBehaviour
             GameObject item = Instantiate(avatarItemPrefabDLC != null ? avatarItemPrefabDLC : avatarItemPrefab, contentParent);
             SetupDLCItem(item, dlc);
         }
-
         foreach (var entry in avatarEntries)
         {
             GameObject item = Instantiate(avatarItemPrefab, contentParent);
             SetupAvatarItem(item, entry);
         }
+
+        StartCoroutine(HueShiftAllMenuItemsNextFrame());
     }
+
+    private IEnumerator HueShiftAllMenuItemsNextFrame()
+    {
+        yield return null; 
+
+        var hueShifter = FindFirstObjectByType<MenuHueShift>();
+        if (hueShifter != null)
+        {
+            hueShifter.RefreshNewGraphicsAndSelectables(contentParent);
+            hueShifter.ApplyHueShift();
+        }
+    }
+
 
     private void SetupDLCItem(GameObject item, DLCEntry dlc)
     {

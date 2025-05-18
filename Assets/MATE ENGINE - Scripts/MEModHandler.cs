@@ -230,6 +230,9 @@ public class MEModHandler : MonoBehaviour
 
         var btn = entry.GetComponentInChildren<Button>(true);
         if (btn != null) btn.onClick.AddListener(() => RemoveMod(mod, entry));
+        var hueShifter = FindFirstObjectByType<MenuHueShift>();
+        if (hueShifter != null)
+            hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
 
     void RemoveMod(ModEntry mod, GameObject ui)

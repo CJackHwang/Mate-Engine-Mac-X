@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using Xamin;
 using LLMUnitySamples;
 
-
-
 [ExecuteAlways]
 public class MenuHueShift : MonoBehaviour
 {
@@ -128,8 +126,7 @@ public class MenuHueShift : MonoBehaviour
         }
 
     }
-
-    private void ApplyHueShift()
+    public void ApplyHueShift()
     {
         for (int i = 0; i < graphics.Count; i++)
         {
@@ -177,7 +174,6 @@ public class MenuHueShift : MonoBehaviour
             Color newAiColor = AdjustColor(originalAiColor);
             chatBot.aiColor = newAiColor;
 
-            // Auch zukünftige Bubbles erhalten neue Farbe
             var aiUIField = chatBot.GetType().GetField("aiUI", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (aiUIField != null)
             {
@@ -185,12 +181,11 @@ public class MenuHueShift : MonoBehaviour
                 {
                     var aiUI = (BubbleUI)aiUIField.GetValue(chatBot);
                     aiUI.bubbleColor = newAiColor;
-                    aiUIField.SetValue(chatBot, aiUI); // wichtig: zurücksetzen, weil struct
+                    aiUIField.SetValue(chatBot, aiUI); 
                 }
 
             }
 
-            // EXISTIERENDE Bubbles live updaten
             foreach (Transform child in chatBot.chatContainer)
             {
                 if (child.name.Contains("AIBubble"))
@@ -214,4 +209,81 @@ public class MenuHueShift : MonoBehaviour
         result.a = original.a;
         return result;
     }
+
+    private void LateUpdate()
+    {
+        if (!Application.isPlaying || !enabled || !gameObject.activeInHierarchy)
+            return;
+
+        var allGraphics = GameObject.FindObjectsOfType<Graphic>(true);
+        foreach (var g in allGraphics)
+        {
+            if (g is TMPro.TextMeshProUGUI || g == null) continue;
+            if (!originalColors.ContainsKey(g))
+            {
+                originalColors[g] = g.color;
+                graphics.Add(g);
+                g.color = AdjustColor(g.color); 
+            }
+        }
+
+        var allSelectables = GameObject.FindObjectsOfType<Selectable>(true);
+        foreach (var s in allSelectables)
+        {
+            if (s == null) continue;
+            if (!originalColorBlocks.ContainsKey(s))
+            {
+                originalColorBlocks[s] = s.colors;
+                selectables.Add(s);
+                var tg = s.targetGraphic;
+                if (tg != null && !originalColors.ContainsKey(tg))
+                {
+                    originalColors[tg] = tg.color;
+                    graphics.Add(tg);
+                    tg.color = AdjustColor(tg.color);
+                }
+            }
+        }
+    }
+
+    public void RefreshNewGraphicsAndSelectables(Transform parent = null)
+    {
+        var newGraphics = parent == null
+            ? GameObject.FindObjectsOfType<Graphic>(true)
+            : parent.GetComponentsInChildren<Graphic>(true);
+
+        foreach (var g in newGraphics)
+        {
+            if (g is TMPro.TextMeshProUGUI || g == null) continue;
+            if (!originalColors.ContainsKey(g))
+            {
+                originalColors[g] = g.color;
+                graphics.Add(g);
+                g.color = AdjustColor(g.color);
+            }
+        }
+
+        var newSelectables = parent == null
+            ? GameObject.FindObjectsOfType<Selectable>(true)
+            : parent.GetComponentsInChildren<Selectable>(true);
+
+        foreach (var s in newSelectables)
+        {
+            if (s == null) continue;
+            if (!originalColorBlocks.ContainsKey(s))
+            {
+                originalColorBlocks[s] = s.colors;
+                selectables.Add(s);
+                var tg = s.targetGraphic;
+                if (tg != null && !originalColors.ContainsKey(tg))
+                {
+                    originalColors[tg] = tg.color;
+                    graphics.Add(tg);
+                    tg.color = AdjustColor(tg.color);
+                }
+            }
+        }
+    }
+
+
 }
