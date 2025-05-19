@@ -48,6 +48,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         public int polygonCount;
         public bool isSteamWorkshop = false;
         public ulong steamFileId = 0;
+        public bool isNSFW = false; 
     }
 
     private void Start()
@@ -168,6 +169,23 @@ public class AvatarLibraryMenu : MonoBehaviour
         Button removeButton = item.transform.Find("Remove").GetComponent<Button>();
         Button uploadButton = item.transform.Find("Upload")?.GetComponent<Button>();
         Slider uploadSlider = item.transform.Find("UploadBar")?.GetComponent<Slider>();
+        Toggle nsfwToggle = item.transform.Find("NSFW")?.GetComponent<Toggle>();
+        if (nsfwToggle != null)
+        {
+            nsfwToggle.isOn = entry.isNSFW;
+            nsfwToggle.onValueChanged.RemoveAllListeners();
+            nsfwToggle.onValueChanged.AddListener((val) =>
+            {
+                entry.isNSFW = val;
+                var match = avatarEntries.FirstOrDefault(e => e.filePath == entry.filePath);
+                if (match != null)
+                {
+                    match.isNSFW = val;
+                    SaveAvatars();
+                }
+            });
+
+        }
 
         if (titleText != null) titleText.text = "Name: " + entry.displayName;
         if (authorText != null) authorText.text = "Author: " + entry.author;
@@ -200,22 +218,27 @@ public class AvatarLibraryMenu : MonoBehaviour
         if (uploadButton != null)
         {
             uploadButton.onClick.RemoveAllListeners();
+            uploadButton.onClick.AddListener(() =>
+            {
+                if (nsfwToggle != null)
+                    entry.isNSFW = nsfwToggle.isOn;
+
+                var match = avatarEntries.FirstOrDefault(e => e.filePath == entry.filePath);
+                if (match != null)
+                {
+                    match.isNSFW = entry.isNSFW;
+                    SaveAvatars();
+                    SteamWorkshopHandler.Instance.UploadToWorkshop(match, uploadSlider);
+                }
+            });
+
 
             var handler = uploadButton.GetComponent<UploadButtonHoldHandler>();
             if (handler != null)
             {
-                handler.entry = new AvatarEntry
-                {
-                    displayName = entry.displayName,
-                    author = entry.author,
-                    version = entry.version,
-                    fileType = entry.fileType,
-                    filePath = entry.filePath,
-                    thumbnailPath = entry.thumbnailPath,
-                    polygonCount = entry.polygonCount,
-                    isSteamWorkshop = entry.isSteamWorkshop,
-                    steamFileId = entry.steamFileId
-                };
+                var match = avatarEntries.FirstOrDefault(e => e.filePath == entry.filePath);
+                if (match != null)
+                    handler.entry = match;
 
                 handler.progressSlider = uploadSlider;
                 handler.labelText = uploadButton.GetComponentInChildren<TMP_Text>();
@@ -227,6 +250,7 @@ public class AvatarLibraryMenu : MonoBehaviour
             uploadSlider.gameObject.SetActive(false);
         }
     }
+
 
     private void LoadAvatar(string path)
     {
@@ -282,7 +306,8 @@ public class AvatarLibraryMenu : MonoBehaviour
             fileType = fileType,
             filePath = filePath,
             thumbnailPath = thumbnailPath,
-            polygonCount = polygonCount
+            polygonCount = polygonCount,
+            isNSFW = false
         };
 
         entries.Add(newEntry);
@@ -342,5 +367,12 @@ public class AvatarLibraryMenu : MonoBehaviour
 
         ReloadAvatars();
     }
+    private void SaveAvatars()
+    {
+        string avatarsJsonPath = Path.Combine(Application.persistentDataPath, "avatars.json");
+        string newJson = JsonConvert.SerializeObject(avatarEntries, Formatting.Indented);
+        File.WriteAllText(avatarsJsonPath, newJson);
+    }
+
 
 }

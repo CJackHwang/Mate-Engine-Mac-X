@@ -259,6 +259,7 @@ namespace LLMUnitySamples
                 inputBubble.ActivateInputField();
                 StartCoroutine(BlockInteraction());
             }
+
             if (lastBubbleOutsideFOV != -1)
             {
                 // destroy bubbles outside the container
@@ -269,6 +270,7 @@ namespace LLMUnitySamples
                 chatBubbles.RemoveRange(0, lastBubbleOutsideFOV + 1);
                 lastBubbleOutsideFOV = -1;
             }
+
         }
 
         public void ExitGame()

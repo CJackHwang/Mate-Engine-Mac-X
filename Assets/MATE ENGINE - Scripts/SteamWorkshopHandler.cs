@@ -66,7 +66,8 @@ public class SteamWorkshopHandler : MonoBehaviour
                 entry.author,
                 entry.version,
                 entry.fileType,
-                entry.polygonCount
+                entry.polygonCount,
+                isNSFW = entry.isNSFW 
             }, Formatting.Indented);
 
             File.WriteAllText(Path.Combine(contentDir, "metadata.json"), metaJson);
@@ -142,7 +143,9 @@ public class SteamWorkshopHandler : MonoBehaviour
 
         var tags = new List<string> { "Avatar" };
         if (entry.fileType.Contains("1.X")) tags.Add("VRM1"); else tags.Add("VRM0");
+        if (entry.isNSFW) tags.Add("NSFW");
         SteamUGC.SetItemTags(handle, tags);
+
 
         SteamUGC.SetItemContent(handle, contentDir);
         if (!string.IsNullOrEmpty(thumbnailPath)) SteamUGC.SetItemPreview(handle, thumbnailPath);

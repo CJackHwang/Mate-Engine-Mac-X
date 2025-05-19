@@ -89,6 +89,7 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
             string format = file.ToLower().EndsWith(".me") ? ".ME" : "VRM";
             int polygonCount = 0;
 
+            bool isNSFW = false;
             string metaPath = Path.Combine(installPath, "metadata.json");
             if (File.Exists(metaPath))
             {
@@ -100,12 +101,14 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                     if (meta.TryGetValue("version", out var v)) version = v.ToString();
                     if (meta.TryGetValue("fileType", out var f)) format = f.ToString();
                     if (meta.TryGetValue("polygonCount", out var p)) polygonCount = Convert.ToInt32(p);
+                    if (meta.TryGetValue("isNSFW", out var nswfVal)) isNSFW = Convert.ToBoolean(nswfVal); // <<<<<<<< HINZUGEFÜGT
                 }
                 catch (Exception e)
                 {
                     Debug.LogWarning("[WorkshopAutoLoader] Failed to parse metadata.json: " + e.Message);
                 }
             }
+
 
             // --- Copy thumbnail based on filename ---
             string thumbnailsFolder = Path.Combine(Application.persistentDataPath, "Thumbnails");
@@ -131,8 +134,10 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                 thumbnailPath = thumbnailPath,
                 polygonCount = polygonCount,
                 isSteamWorkshop = true,
-                steamFileId = fileId.m_PublishedFileId
+                steamFileId = fileId.m_PublishedFileId,
+                isNSFW = isNSFW
             };
+
 
             allAvatars.Add(newEntry);
             SaveAvatarEntries(allAvatars);
