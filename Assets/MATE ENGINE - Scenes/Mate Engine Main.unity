@@ -570,6 +570,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce7a0cb473f62a438a11b01196391c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultAvatarPrefab: {fileID: 2411184301990817844}
+  defaultAvatarThumbnail: {fileID: 2800000, guid: f4e335442129446488db3f662450e941, type: 3}
+  defaultAvatarDisplayName: Zome
+  defaultAvatarAuthor: Yorshka
+  defaultAvatarVersion: 1.0
+  defaultAvatarFileType: Built-in
   avatarItemPrefab: {fileID: 3954346010846192513, guid: cf5dcbf5b9bfabf4b807e47c40a3a54b, type: 3}
   avatarItemPrefabDLC: {fileID: 9004791003646548659, guid: 88e97ca557051cf42b996156146dd6e2, type: 3}
   contentParent: {fileID: 239117372}
@@ -12517,7 +12523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &638481095
 Transform:
   m_ObjectHideFlags: 0
@@ -34432,7 +34438,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2491103
+  m_Size: 0.24911034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -372,6 +372,25 @@ public class VRMLoader : MonoBehaviour
         return total;
     }
 
+    public void ActivateDefaultModel()
+    {
+        ClearPreviousCustomModel();
+        EnableMainModel();
+        PlayerPrefs.DeleteKey(modelPathKey);
+        PlayerPrefs.Save();
+
+        if (MEModLoader.Instance != null && mainModel != null)
+            MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
+
+        var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
+        if (avatarSettingsMenu != null)
+        {
+            avatarSettingsMenu.LoadSettings();
+            avatarSettingsMenu.ApplySettings();
+        }
+    }
+
+
     private bool IsDLCReference(string path)
     {
 #if UNITY_EDITOR

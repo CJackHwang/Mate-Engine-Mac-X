@@ -11,6 +11,15 @@ using System.Collections;
 
 public class AvatarLibraryMenu : MonoBehaviour
 {
+    [Header("Default Model")]
+    public GameObject defaultAvatarPrefab;
+    public Texture2D defaultAvatarThumbnail;
+    public string defaultAvatarDisplayName = "Zome";
+    public string defaultAvatarAuthor = "Yorshka";
+    public string defaultAvatarVersion = "1.0";
+    public string defaultAvatarFileType = "Built-in";
+
+
     [Header("UI References")]
     public GameObject avatarItemPrefab;
     public GameObject avatarItemPrefabDLC;
@@ -92,6 +101,14 @@ public class AvatarLibraryMenu : MonoBehaviour
     {
         foreach (Transform child in contentParent)
             Destroy(child.gameObject);
+        if (defaultAvatarPrefab != null)
+        {
+            GameObject item = Instantiate(
+                avatarItemPrefabDLC != null ? avatarItemPrefabDLC : avatarItemPrefab,
+                contentParent
+            );
+            SetupDefaultAvatarItem(item);
+        }
 
         foreach (var dlc in dlcAvatars)
         {
@@ -108,6 +125,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         StartCoroutine(HueShiftAllMenuItemsNextFrame());
     }
 
+
     private IEnumerator HueShiftAllMenuItemsNextFrame()
     {
         yield return null; 
@@ -119,6 +137,41 @@ public class AvatarLibraryMenu : MonoBehaviour
             hueShifter.ApplyHueShift();
         }
     }
+
+    private void SetupDefaultAvatarItem(GameObject item)
+    {
+        RawImage thumbnail = item.transform.Find("RawImage").GetComponent<RawImage>();
+        TMP_Text titleText = item.transform.Find("Title").GetComponent<TMP_Text>();
+        TMP_Text authorText = item.transform.Find("Author").GetComponent<TMP_Text>();
+        TMP_Text versionText = item.transform.Find("Version").GetComponent<TMP_Text>();
+        TMP_Text fileTypeText = item.transform.Find("File Type").GetComponent<TMP_Text>();
+        TMP_Text polygonText = item.transform.Find("Polygons")?.GetComponent<TMP_Text>();
+        Button loadButton = item.transform.Find("Button").GetComponent<Button>();
+
+        if (thumbnail != null && defaultAvatarThumbnail != null)
+            thumbnail.texture = defaultAvatarThumbnail;
+        if (titleText != null) titleText.text = "Name: " + defaultAvatarDisplayName;
+        if (authorText != null) authorText.text = "Author: " + defaultAvatarAuthor;
+        if (versionText != null) versionText.text = "Version: " + defaultAvatarVersion;
+        if (fileTypeText != null) fileTypeText.text = "Format: " + defaultAvatarFileType;
+        if (polygonText != null && defaultAvatarPrefab != null)
+        {
+            int polyCount = 0;
+            foreach (var mesh in defaultAvatarPrefab.GetComponentsInChildren<MeshFilter>(true))
+                if (mesh.sharedMesh != null) polyCount += mesh.sharedMesh.triangles.Length / 3;
+            foreach (var smr in defaultAvatarPrefab.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                if (smr.sharedMesh != null) polyCount += smr.sharedMesh.triangles.Length / 3;
+            polygonText.text = "Polygons: " + polyCount;
+        }
+        loadButton.onClick.RemoveAllListeners();
+        loadButton.onClick.AddListener(() => {
+            var loader = FindFirstObjectByType<VRMLoader>();
+            if (loader != null)
+                loader.ActivateDefaultModel();
+        });
+    }
+
+
 
 
     private void SetupDLCItem(GameObject item, DLCEntry dlc)
@@ -373,6 +426,5 @@ public class AvatarLibraryMenu : MonoBehaviour
         string newJson = JsonConvert.SerializeObject(avatarEntries, Formatting.Indented);
         File.WriteAllText(avatarsJsonPath, newJson);
     }
-
 
 }
