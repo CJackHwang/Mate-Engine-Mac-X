@@ -11,8 +11,10 @@ public class SwingFollowEntry
     [HideInInspector] public Vector2 baseOffset;
     [HideInInspector] public bool hasBaseOffset;
     [HideInInspector] public Vector2 currentPosition;
+    [HideInInspector] public float originalY; 
+    [Tooltip("Blockiert vertikale Bewegung. Y-Position bleibt wie im Editor.")]
+    public bool blockYMovement = false;
 }
-
 public class SwingController : MonoBehaviour
 {
     public List<SwingFollowEntry> follows = new();
@@ -68,18 +70,30 @@ public class SwingController : MonoBehaviour
             Vector3 bonePos = bone.position;
             Vector3 targetScreenPos = mainCam.WorldToScreenPoint(bonePos);
 
-            // Basis-Offset nur einmalig beim ersten Attach berechnen
+            Vector2 targetLocal = ScreenToLocal(rect, targetScreenPos);
             if (!entry.hasBaseOffset)
             {
-                entry.baseOffset = ((Vector2)rect.anchoredPosition) - ((Vector2)ScreenToLocal(rect, targetScreenPos));
-                entry.currentPosition = rect.anchoredPosition;
+                Vector2 currentAnchored = rect.anchoredPosition;
+                entry.baseOffset.x = currentAnchored.x - targetLocal.x;
+                entry.baseOffset.y = 0f;
+                entry.currentPosition = currentAnchored;
+                entry.originalY = currentAnchored.y; 
                 entry.hasBaseOffset = true;
             }
 
-            Vector2 finalTarget = (Vector2)ScreenToLocal(rect, targetScreenPos) + entry.baseOffset;
-            // SMOOTHEST: currentPosition = LERP (currentPosition, target, 1-smoothness)
-            entry.currentPosition = Vector2.Lerp(entry.currentPosition, finalTarget, 1f - entry.smoothness);
+            Vector2 finalTarget = targetLocal + entry.baseOffset;
 
+            if (!entry.blockYMovement)
+            {
+                float boneDeltaY = targetLocal.y - entry.originalY;
+                finalTarget.y = entry.originalY + boneDeltaY;
+            }
+            else
+            {
+                finalTarget.y = entry.originalY;
+            }
+
+            entry.currentPosition = Vector2.Lerp(entry.currentPosition, finalTarget, 1f - entry.smoothness);
             rect.anchoredPosition = entry.currentPosition;
         }
     }

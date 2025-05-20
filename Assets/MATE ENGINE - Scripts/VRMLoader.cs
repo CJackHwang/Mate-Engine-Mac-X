@@ -52,6 +52,13 @@ public class VRMLoader : MonoBehaviour
 
     public async void LoadVRM(string path)
     {
+        if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
+        {
+            LoadAssetBundleModel(path);
+            PlayerPrefs.SetString(modelPathKey, path);
+            PlayerPrefs.Save();
+            return;
+        }
         if (IsDLCReference(path))
         {
             GameObject prefab = FindDLCByName(path);
@@ -68,6 +75,7 @@ public class VRMLoader : MonoBehaviour
             }
             return;
         }
+
 
         if (!File.Exists(path)) return;
 
@@ -195,6 +203,7 @@ public class VRMLoader : MonoBehaviour
                 fileType = isME ? ".ME (VRM0.X)" : "VRM0.X";
                 thumbnail = meta.Thumbnail;
             }
+
         }
 
         Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
@@ -215,6 +224,10 @@ public class VRMLoader : MonoBehaviour
         }
 
         StartCoroutine(DelayedRefreshStats());
+
+        if (MEModLoader.Instance != null)
+            MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
+
     }
 
 
@@ -243,6 +256,9 @@ public class VRMLoader : MonoBehaviour
         EnableMainModel();
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
+
+        if (MEModLoader.Instance != null && mainModel != null)
+            MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
     }
 
     private void DisableMainModel()
@@ -362,7 +378,6 @@ public class VRMLoader : MonoBehaviour
         if (path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
             return true;
 #endif
-        // Im Build: DLC wird über Prefab-Name referenziert (Name aus Inspector)
         if (!File.Exists(path) && !path.EndsWith(".vrm") && !path.EndsWith(".me"))
             return true;
         return false;
