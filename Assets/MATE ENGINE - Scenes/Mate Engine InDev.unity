@@ -610,7 +610,6 @@ MonoBehaviour:
   particleSystems:
   - {fileID: 6927538467923218435}
   - {fileID: 7945896184227947456}
-  chatBot: {fileID: 7574646899369980709}
 --- !u!114 &14424292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14639,7 +14638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &794148441
 Transform:
   m_ObjectHideFlags: 0
@@ -34453,7 +34452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -42160,7 +42159,7 @@ MonoBehaviour:
   audioSource: {fileID: 1016305142}
   enableSound: {fileID: 8300000, guid: 142d7f94a144c0d488958010ed11753c, type: 3}
   disableSound: {fileID: 8300000, guid: b5d576f2abedbfb41a3db3667f17ada7, type: 3}
-  activationKey: 324
+  activationKey: 0
   spawnAnimationSpeed: 0.4
 --- !u!114 &1499361276
 MonoBehaviour:
@@ -129033,7 +129032,7 @@ MonoBehaviour:
   audioSource: {fileID: 1016305142}
   enableSound: {fileID: 8300000, guid: 142d7f94a144c0d488958010ed11753c, type: 3}
   disableSound: {fileID: 8300000, guid: b5d576f2abedbfb41a3db3667f17ada7, type: 3}
-  activationKey: 324
+  activationKey: 0
   spawnAnimationSpeed: 0.4
 --- !u!114 &8924917334924735508
 MonoBehaviour:

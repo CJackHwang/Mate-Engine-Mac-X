@@ -256,7 +256,7 @@ public class AvatarLibraryMenu : MonoBehaviour
 
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() => LoadAvatar(entry.filePath));
-
+        /*
         removeButton.onClick.RemoveAllListeners();
         removeButton.onClick.AddListener(() =>
         {
@@ -267,6 +267,15 @@ public class AvatarLibraryMenu : MonoBehaviour
             }
             RemoveAvatar(entry);
         });
+       */
+
+        var holdHandler = removeButton.GetComponent<DeleteButtonHoldHandler>();
+        if (holdHandler == null)
+            holdHandler = removeButton.gameObject.AddComponent<DeleteButtonHoldHandler>();
+        holdHandler.entry = entry;
+        holdHandler.labelText = removeButton.GetComponentInChildren<TMP_Text>();
+        holdHandler.audioSource = item.GetComponentInChildren<AudioSource>();
+
 
         if (uploadButton != null)
         {

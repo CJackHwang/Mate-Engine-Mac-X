@@ -1379,6 +1379,8 @@ GameObject:
   - component: {fileID: 5445619984063793182}
   - component: {fileID: 6936357432154922089}
   - component: {fileID: 6063209770869559115}
+  - component: {fileID: 4087454902207396851}
+  - component: {fileID: 6941733129526391045}
   m_Layer: 5
   m_Name: Remove
   m_TagString: Untagged
@@ -1466,10 +1468,10 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.7924528, g: 0.31025273, b: 0.31025273, a: 1}
-    m_HighlightedColor: {r: 0.20392157, g: 0.2784314, b: 0.3764706, a: 1}
-    m_PressedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
-    m_SelectedColor: {r: 0.3137255, g: 0.39607844, b: 0.5019608, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 0.4245283, g: 0.18623175, b: 0.18623175, a: 1}
+    m_PressedColor: {r: 0.42352942, g: 0.18431373, b: 0.18431373, a: 1}
+    m_SelectedColor: {r: 0.42352942, g: 0.18431373, b: 0.18431373, a: 1}
+    m_DisabledColor: {r: 0.42352942, g: 0.18431373, b: 0.18431373, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1500,6 +1502,45 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4087454902207396851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3225683535950699924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7d1daadd2b0054ba70801e21d2aa5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6941733129526391045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3225683535950699924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9e53a4c0506ca2479d20b8a5cdbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entry:
+    displayName: 
+    author: 
+    version: 
+    fileType: 
+    filePath: 
+    thumbnailPath: 
+    polygonCount: 0
+    isSteamWorkshop: 0
+    steamFileId: 0
+    isNSFW: 0
+  labelText: {fileID: 2860245946395051894}
+  audioSource: {fileID: 7718908701645140085}
+  tickSound: {fileID: 8300000, guid: ed75ee7d66b3feb419728cbd10cbd9a2, type: 3}
+  completeSound: {fileID: 8300000, guid: bd8c385aa551a604093624314940e2b6, type: 3}
 --- !u!1 &3450494287503252672
 GameObject:
   m_ObjectHideFlags: 0

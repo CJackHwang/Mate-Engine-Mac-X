@@ -63,6 +63,7 @@ public class MenuHueShift : MonoBehaviour
         {
             var g = allGraphics[i];
             if (g is TMPro.TextMeshProUGUI || g == null) continue;
+            if (g.GetComponent<MenuHueShiftBlocker>() != null) continue;
             if (!originalColors.ContainsKey(g))
             {
                 originalColors[g] = g.color;
@@ -94,12 +95,14 @@ public class MenuHueShift : MonoBehaviour
             {
                 var cg = childGraphics[j];
                 if (cg is TMPro.TextMeshProUGUI || cg == null) continue;
+                if (cg.GetComponent<MenuHueShiftBlocker>() != null) continue; 
                 if (!originalColors.ContainsKey(cg))
                 {
                     originalColors[cg] = cg.color;
                     graphics.Add(cg);
                 }
             }
+
         }
 
         for (int i = 0; i < particleSystems.Count; i++)
@@ -124,6 +127,7 @@ public class MenuHueShift : MonoBehaviour
         {
             var g = graphics[i];
             if (g == null || !originalColors.TryGetValue(g, out var original)) continue;
+            if (g.GetComponent<MenuHueShiftBlocker>() != null) continue;
             g.color = AdjustColor(original);
         }
 
@@ -131,6 +135,7 @@ public class MenuHueShift : MonoBehaviour
         {
             var s = selectables[i];
             if (s == null || !originalColorBlocks.TryGetValue(s, out var original)) continue;
+            if (s.GetComponent<MenuHueShiftBlocker>() != null) continue;
 
             var mod = original;
             mod.normalColor = AdjustColor(original.normalColor);
@@ -161,7 +166,6 @@ public class MenuHueShift : MonoBehaviour
             cs.BackgroundColor = AdjustColor(kvp.Value.background);
         }
     }
-
     private Color AdjustColor(Color original)
     {
         Color.RGBToHSV(original, out float h, out float s, out float v);
@@ -181,6 +185,7 @@ public class MenuHueShift : MonoBehaviour
         foreach (var g in allGraphics)
         {
             if (g is TMPro.TextMeshProUGUI || g == null) continue;
+            if (g.GetComponent<MenuHueShiftBlocker>() != null) continue;
             if (!originalColors.ContainsKey(g))
             {
                 originalColors[g] = g.color;
@@ -217,6 +222,7 @@ public class MenuHueShift : MonoBehaviour
         foreach (var g in newGraphics)
         {
             if (g is TMPro.TextMeshProUGUI || g == null) continue;
+            if (g.GetComponent<MenuHueShiftBlocker>() != null) continue;
             if (!originalColors.ContainsKey(g))
             {
                 originalColors[g] = g.color;
@@ -224,6 +230,7 @@ public class MenuHueShift : MonoBehaviour
                 g.color = AdjustColor(g.color);
             }
         }
+
 
         var newSelectables = parent == null
             ? GameObject.FindObjectsOfType<Selectable>(true)
