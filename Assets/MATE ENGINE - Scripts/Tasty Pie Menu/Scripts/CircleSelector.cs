@@ -371,6 +371,7 @@ namespace Xamin
 
         void EnsureAnimatorReceiver()
         {
+            RefreshAllButtonColorsDelayed();
             animatorReceiver = null;
             var receivers = FindObjectsOfType<AvatarAnimatorReceiver>();
             foreach (var recv in receivers)
@@ -390,6 +391,7 @@ namespace Xamin
 
         void BuildButtons()
         {
+            RefreshAllButtonColorsDelayed();
             foreach (Transform child in transform.Find("Buttons"))
                 Destroy(child.gameObject);
             foreach (Transform sep in transform.Find("Separators"))
@@ -474,6 +476,7 @@ namespace Xamin
 
         bool ShouldHideButton(Xamin.Button btn)
         {
+            RefreshAllButtonColorsDelayed();
             if (animatorReceiver == null || animatorReceiver.avatarAnimator == null)
                 return false;
 
