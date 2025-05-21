@@ -1289,7 +1289,6 @@ MonoBehaviour:
   hideIfAnimatorBool:
   - isBigScreen
   hideIfStateName:
-  - Dance
   - WindowSit
 --- !u!114 &58419293
 MonoBehaviour:
@@ -14640,7 +14639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &794148441
 Transform:
   m_ObjectHideFlags: 0
@@ -33937,6 +33936,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 743501261}
     m_Modifications:
+    - target: {fileID: 166396, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: flip
       value: 0
@@ -33952,6 +33955,10 @@ PrefabInstance:
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: LerpAmount
       value: 0.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: pieThickness
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: AccentColor.a
@@ -33992,6 +33999,10 @@ PrefabInstance:
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: DisabledColor.r
       value: 0.33041117
+      objectReference: {fileID: 0}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: RaiseOnSelection
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: tiltTowardsMouse
@@ -34442,7 +34453,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2491103
+  m_Size: 0.24911033
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -41869,7 +41880,7 @@ MonoBehaviour:
   radialBlockChibiMode: 1
   radialMenuKey: 324
   radialDraggingBlocks: 1
-  followBone: 0
+  followBone: 1
   targetBone: 10
   followSmoothness: 0.975
 --- !u!4 &1495899421
@@ -46268,7 +46279,6 @@ MonoBehaviour:
   hideIfAnimatorBool:
   - isBigScreen
   hideIfStateName:
-  - Dance
   - WindowSit
 --- !u!114 &1660620752
 MonoBehaviour:
@@ -106352,7 +106362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chatContainer: {fileID: 1122426459}
-  playerColor: {r: 0.89417946, g: 0.923051, b: 0.9622642, a: 1}
+  playerColor: {r: 1, g: 1, b: 1, a: 1}
   aiColor: {r: 0.07450981, g: 0.11764706, b: 0.16862746, a: 1}
   fontColor: {r: 1, g: 1, b: 1, a: 1}
   font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
