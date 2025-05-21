@@ -50,7 +50,6 @@ namespace Xamin
 
         public bool selectOnlyOnHover;
         public float pieThickness = 85;
-
         public bool snap, tiltTowardsMouse;
         public float tiltAmount = 15;
         private bool opened;
@@ -98,26 +97,25 @@ namespace Xamin
         }
         public bool Open()
         {
+            RefreshAllButtonColorsDelayed();
             EnsureAnimatorReceiver();
             BuildButtons();
 
-            // --- FIX: NICHT ÖFFNEN, WENN KEINE BUTTONS ---
             if (buttonsInstances == null || buttonsInstances.Count == 0)
             {
                 opened = false;
                 transform.localScale = Vector3.zero;
-                return false; // <= NEU!
+                return false; 
             }
-            // --- ENDE FIX ---
-
             _menuCenter = new Vector2((float)Screen.width / 2f, (float)Screen.height / 2f);
             opened = true;
             transform.localScale = (OpenAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10;
-            return true; // <= NEU!
+            return true;
         }
 
         public bool Open(Vector2 origin)
         {
+            RefreshAllButtonColorsDelayed();
             bool openedSuccessfully = Open();
             if (!openedSuccessfully) return false;
             _menuCenter = origin;
@@ -308,27 +306,36 @@ namespace Xamin
                 _cursor.color = Color.Lerp(_cursor.color, Color.clear, LerpAmount / 3f);
                 _background.color = Color.Lerp(_background.color, Color.clear, LerpAmount / 3f);
             }
-
-
-            if (opened && buttonsInstances != null && buttonsInstances.Count > 0)
-            {
-                for (int i = 0; i < buttonCount; i++)
-                {
-                    var btn = buttonsInstances[i];
-                    if (btn == null) continue;
-                    if (btn.unlocked)
-                        btn.SetColor(Color.Lerp(btn.currentColor, btn.useCustomColor ? btn.customColor : AccentColor, LerpAmount));
-                    else
-                        btn.SetColor(Color.Lerp(btn.currentColor, DisabledColor, LerpAmount));
-                }
-            }
-
-
         }
+
+        public void RefreshAllButtonColors()
+        {
+            if (buttonsInstances == null || buttonsInstances.Count == 0) return;
+            for (int i = 0; i < buttonCount; i++)
+            {
+                var btn = buttonsInstances[i];
+                if (btn == null) continue;
+                if (btn.unlocked)
+                    btn.SetColor(Color.Lerp(btn.currentColor, btn.useCustomColor ? btn.customColor : AccentColor, LerpAmount));
+                else
+                    btn.SetColor(Color.Lerp(btn.currentColor, DisabledColor, LerpAmount));
+            }
+        }
+
+        public void RefreshAllButtonColorsDelayed()
+        {
+            StartCoroutine(DoRefreshAllButtonColorsDelayed());
+        }
+
+        private System.Collections.IEnumerator DoRefreshAllButtonColorsDelayed()
+        {
+            yield return null; 
+            RefreshAllButtonColors();
+        }
+
 
         void CheckForInput()
         {
-            // Schutz: Es MUSS ein Button selektiert UND im Dictionary vorhanden sein, sonst return
             if (SelectedSegment == null || instancedButtons == null || !instancedButtons.ContainsKey(SelectedSegment))
                 return;
 
@@ -383,7 +390,6 @@ namespace Xamin
 
         void BuildButtons()
         {
-            // ALLE alten Buttons und Separatoren zerstören!
             foreach (Transform child in transform.Find("Buttons"))
                 Destroy(child.gameObject);
             foreach (Transform sep in transform.Find("Separators"))
@@ -393,8 +399,6 @@ namespace Xamin
 
             int visibleCount = 0;
             List<GameObject> visibleButtonObjects = new List<GameObject>();
-
-            // Build Buttons nur für tatsächlich sichtbare!
             for (int i = 0; i < Buttons.Count; i++)
             {
                 GameObject buttonObj;
@@ -474,8 +478,6 @@ namespace Xamin
                 return false;
 
             var animator = animatorReceiver.avatarAnimator;
-
-            // Hide if Animator Bool is true
             if (btn.hideIfAnimatorBool != null && btn.hideIfAnimatorBool.Length > 0)
             {
                 foreach (var param in btn.hideIfAnimatorBool)
@@ -494,7 +496,6 @@ namespace Xamin
                 }
             }
 
-            // Hide if StateName active
             if (btn.hideIfStateName != null && btn.hideIfStateName.Length > 0)
             {
                 AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
@@ -504,8 +505,6 @@ namespace Xamin
                         return true;
                 }
             }
-
-            // == MEClothes-Prüfung für Clothes-Button ==
             if (btn != null && btn.id == "clothes")
             {
                 GameObject avatarGO = animatorReceiver != null && animatorReceiver.avatarAnimator != null
@@ -523,8 +522,6 @@ namespace Xamin
                 if (!hasClothes)
                     return true;
             }
-
-
             return false;
         }
 
