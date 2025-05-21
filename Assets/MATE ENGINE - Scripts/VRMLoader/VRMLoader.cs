@@ -228,6 +228,8 @@ public class VRMLoader : MonoBehaviour
         if (MEModLoader.Instance != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
 
+        ReleaseRamAndUnloadAssets();
+
     }
 
 
@@ -252,13 +254,14 @@ public class VRMLoader : MonoBehaviour
         if (Directory.Exists(vrmFolder))
             Directory.Delete(vrmFolder, true);
 
-        ClearPreviousCustomModel();
+        ClearPreviousCustomModel(skipRawImageCleanup: true);
         EnableMainModel();
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
 
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
+        ReleaseRamAndUnloadAssets();
     }
 
     private void DisableMainModel()
@@ -272,8 +275,7 @@ public class VRMLoader : MonoBehaviour
         if (mainModel != null)
             mainModel.SetActive(true);
     }
-
-    private void ClearPreviousCustomModel()
+    private void ClearPreviousCustomModel(bool skipRawImageCleanup = false)
     {
         if (customModelOutput != null)
         {
@@ -281,9 +283,14 @@ public class VRMLoader : MonoBehaviour
             {
                 if (child.gameObject == mainModel)
                     continue;
+                CleanupMaterialsAndTextures(child.gameObject);
+                CleanupRawImages(child.gameObject);
                 Destroy(child.gameObject);
             }
         }
+
+        if (!skipRawImageCleanup)
+            CleanupAllRawImagesInScene();
     }
 
     private void EnableSkinnedMeshRenderers(GameObject model)
@@ -374,7 +381,7 @@ public class VRMLoader : MonoBehaviour
 
     public void ActivateDefaultModel()
     {
-        ClearPreviousCustomModel();
+        ClearPreviousCustomModel(skipRawImageCleanup: true);
         EnableMainModel();
         PlayerPrefs.DeleteKey(modelPathKey);
         PlayerPrefs.Save();
@@ -388,8 +395,51 @@ public class VRMLoader : MonoBehaviour
             avatarSettingsMenu.LoadSettings();
             avatarSettingsMenu.ApplySettings();
         }
+        ReleaseRamAndUnloadAssets();
+
     }
 
+    private void ReleaseRamAndUnloadAssets()
+    {
+        Resources.UnloadUnusedAssets();
+        System.GC.Collect();
+    }
+
+    private void CleanupMaterialsAndTextures(GameObject obj)
+    {
+        if (obj == null) return;
+        foreach (var renderer in obj.GetComponentsInChildren<Renderer>(true))
+        {
+            if (renderer.materials != null)
+            {
+                foreach (var mat in renderer.materials)
+                {
+                    if (mat == null) continue;
+                    if (mat.mainTexture != null)
+                        mat.mainTexture = null;
+                }
+            }
+        }
+    }
+
+    private void CleanupRawImages(GameObject obj)
+    {
+        if (obj == null) return;
+        var rawImages = obj.GetComponentsInChildren<RawImage>(true);
+        foreach (var rawImage in rawImages)
+        {
+            rawImage.texture = null;
+        }
+    }
+
+    private void CleanupAllRawImagesInScene()
+    {
+        var rawImages = GameObject.FindObjectsOfType<RawImage>(true);
+        foreach (var rawImage in rawImages)
+        {
+            rawImage.texture = null;
+        }
+    }
 
     private bool IsDLCReference(string path)
     {

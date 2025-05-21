@@ -57,7 +57,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         public int polygonCount;
         public bool isSteamWorkshop = false;
         public ulong steamFileId = 0;
-        public bool isNSFW = false; 
+        public bool isNSFW = false;
     }
 
     private void Start()
@@ -128,7 +128,7 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     private IEnumerator HueShiftAllMenuItemsNextFrame()
     {
-        yield return null; 
+        yield return null;
 
         var hueShifter = FindFirstObjectByType<MenuHueShift>();
         if (hueShifter != null)
