@@ -33954,6 +33954,10 @@ PrefabInstance:
       value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
+      propertyPath: AccentColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11434286, guid: 483c946d35a69704b9c4e151528ab04c, type: 3}
       propertyPath: AccentColor.b
       value: 1
       objectReference: {fileID: 0}

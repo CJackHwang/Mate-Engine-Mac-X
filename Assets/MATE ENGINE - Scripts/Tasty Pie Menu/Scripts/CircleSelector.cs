@@ -308,6 +308,22 @@ namespace Xamin
                 _cursor.color = Color.Lerp(_cursor.color, Color.clear, LerpAmount / 3f);
                 _background.color = Color.Lerp(_background.color, Color.clear, LerpAmount / 3f);
             }
+
+
+            if (opened && buttonsInstances != null && buttonsInstances.Count > 0)
+            {
+                for (int i = 0; i < buttonCount; i++)
+                {
+                    var btn = buttonsInstances[i];
+                    if (btn == null) continue;
+                    if (btn.unlocked)
+                        btn.SetColor(Color.Lerp(btn.currentColor, btn.useCustomColor ? btn.customColor : AccentColor, LerpAmount));
+                    else
+                        btn.SetColor(Color.Lerp(btn.currentColor, DisabledColor, LerpAmount));
+                }
+            }
+
+
         }
 
         void CheckForInput()
@@ -450,8 +466,6 @@ namespace Xamin
                 opened = false;
                 transform.localScale = Vector3.zero;
             }
-
-
         }
 
         bool ShouldHideButton(Xamin.Button btn)
