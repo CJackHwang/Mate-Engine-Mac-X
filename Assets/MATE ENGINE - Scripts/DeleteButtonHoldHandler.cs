@@ -87,6 +87,11 @@ public class DeleteButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
             yield return new WaitForSeconds(0.5f);
             if (entry != null)
             {
+                if (entry.isSteamWorkshop && entry.steamFileId != 0)
+                {
+                    if (SteamWorkshopHandler.Instance != null)
+                        SteamWorkshopHandler.Instance.UnsubscribeAndDelete(new Steamworks.PublishedFileId_t(entry.steamFileId));
+                }
                 var menu = FindFirstObjectByType<AvatarLibraryMenu>();
                 if (menu != null)
                     menu.SendMessage("RemoveAvatar", entry, SendMessageOptions.DontRequireReceiver);
