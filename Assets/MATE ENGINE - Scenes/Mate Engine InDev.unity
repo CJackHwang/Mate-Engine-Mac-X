@@ -34452,7 +34452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -47711,15 +47711,11 @@ MonoBehaviour:
     bone: {fileID: 0}
   voiceAudioSource: {fileID: 817462139}
   layeredAudioSource: {fileID: 438021438}
-  idleStateName: Idle
-  dragStateName: isDragging
-  danceStateName: isDancing
   hoverTriggerParam: HoverTrigger
   hoverFaceTriggerParam: HoverFaceTrigger
   showDebugGizmos: 1
-  blockStates:
-  - Big Screen
-  - Screen Saver
+  stateWhitelist:
+  - Idle
 --- !u!1 &1763954100
 GameObject:
   m_ObjectHideFlags: 0
@@ -106940,6 +106936,14 @@ PrefabInstance:
     - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: 'blockStates.Array.data[1]'
       value: Screen Saver
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: stateWhitelist.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      propertyPath: 'stateWhitelist.Array.data[0]'
+      value: Idle
       objectReference: {fileID: 0}
     - target: {fileID: 4771289125681901212, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       propertyPath: regions.Array.data[0].hoverObject

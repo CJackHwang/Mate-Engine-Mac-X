@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.8800627, y: 0.8800627, z: 0.8800627}
+  m_LocalScale: {x: 1.0001478, y: 1.0001478, z: 1.0001478}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
-  SOUND_THRESHOLD: 0.2
+  SOUND_THRESHOLD: 0.01
   allowedApps:
   - spotify
   - firefox
@@ -341,13 +341,10 @@ MonoBehaviour:
     bone: {fileID: 0}
   voiceAudioSource: {fileID: 0}
   layeredAudioSource: {fileID: 0}
-  idleStateName: Idle
-  dragStateName: isDragging
-  danceStateName: isDancing
   hoverTriggerParam: HoverTrigger
   hoverFaceTriggerParam: HoverFaceTrigger
   showDebugGizmos: 1
-  blockStates: []
+  stateWhitelist: []
 --- !u!114 &76249201430738456
 MonoBehaviour:
   m_ObjectHideFlags: 0

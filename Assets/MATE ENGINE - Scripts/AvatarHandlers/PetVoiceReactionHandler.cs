@@ -20,26 +20,19 @@ public class PetVoiceReactionHandler : MonoBehaviour
         [HideInInspector] public bool wasHovering;
         [HideInInspector] public Transform bone;
     }
-
     class HoverInstance { public GameObject obj; public float despawnTime; }
-
     public static bool GlobalHoverObjectsEnabled = true;
     public Animator avatarAnimator;
     public List<VoiceRegion> regions = new();
     public AudioSource voiceAudioSource, layeredAudioSource;
-    public string idleStateName = "Idle", dragStateName = "isDragging", danceStateName = "isDancing";
     public string hoverTriggerParam = "HoverTrigger", hoverFaceTriggerParam = "HoverFaceTrigger";
     public bool showDebugGizmos = true;
-
-    [Header("Block States (Blacklist)")]
-    [SerializeField] public List<string> blockStates = new();
-
+    [SerializeField] public List<string> stateWhitelist = new();
     Camera cachedCamera;
     readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
     AnimatorOverrideController overrideController;
     RuntimeAnimatorController lastController;
     bool hasSetup;
-
     void Start() { if (!hasSetup) TrySetup(); }
     public void SetAnimator(Animator a) { avatarAnimator = a; hasSetup = false; }
 
@@ -82,7 +75,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
         hasSetup = true;
     }
-
     void Update()
     {
         if (!hasSetup) TrySetup();
@@ -117,7 +109,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
             float dist = Vector2.Distance(mouse, screen);
             bool hovering = dist <= screenRadius;
 
-            if (hovering && !region.wasHovering && IsInIdleState() && !anyBlocked)
+            if (hovering && !region.wasHovering && IsStateAllowed() && !anyBlocked)
             {
                 region.wasHovering = true;
                 TriggerAnim(region, true);
@@ -181,18 +173,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
             }
         }
     }
-
-
-    // State-Blacklist-Abfrage
-    bool IsInBlockedState()
-    {
-        if (avatarAnimator == null) return false;
-        var current = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        foreach (var s in blockStates)
-            if (!string.IsNullOrEmpty(s) && current.IsName(s)) return true;
-        return false;
-    }
-
     void TriggerAnim(VoiceRegion region, bool state)
     {
         if (region.hoverAnimation && overrideController != null)
@@ -217,12 +197,15 @@ public class PetVoiceReactionHandler : MonoBehaviour
         if (region.enableLayeredSound && region.layeredVoiceClips.Count > 0)
             layeredAudioSource.PlayOneShot(region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)]);
     }
-
-    bool IsInIdleState()
+    bool IsStateAllowed()
     {
-        if (!avatarAnimator) return false;
-        if (avatarAnimator.GetBool(dragStateName) || avatarAnimator.GetBool(danceStateName)) return false;
-        return avatarAnimator.GetCurrentAnimatorStateInfo(0).IsName(idleStateName);
+        if (avatarAnimator == null || stateWhitelist == null || stateWhitelist.Count == 0)
+            return false;
+        var currentState = avatarAnimator.GetCurrentAnimatorStateInfo(0);
+        foreach (var allowed in stateWhitelist)
+            if (!string.IsNullOrEmpty(allowed) && currentState.IsName(allowed))
+                return true;
+        return false;
     }
 
 #if UNITY_EDITOR
@@ -240,7 +223,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
     }
 #endif
 }
-
 public static class ListExt
 {
     public static T MinByOrDefault<T, TKey>(this List<T> list, System.Func<T, TKey> selector) where TKey : System.IComparable<TKey>
