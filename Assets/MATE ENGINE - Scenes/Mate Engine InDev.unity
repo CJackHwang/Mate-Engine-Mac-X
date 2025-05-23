@@ -5906,7 +5906,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1867322861}
   m_Direction: 0
   m_MinValue: 15
-  m_MaxValue: 120
+  m_MaxValue: 165
   m_WholeNumbers: 1
   m_Value: 90
   m_OnValueChanged:
@@ -6335,10 +6335,10 @@ MonoBehaviour:
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
   temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
+    jitterSpread: 0.5
+    sharpness: 0
+    stationaryBlending: 0.99
+    motionBlending: 0.237
   subpixelMorphologicalAntialiasing:
     quality: 2
   fastApproximateAntialiasing:
@@ -34452,7 +34452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.2491103
+  m_Size: 0.24911033
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -4,7 +4,7 @@ using TMPro;
 
 public class FPSLimiter : MonoBehaviour
 {
-    [Range(15, 120)]
+    [Range(15, 165)]
     public int targetFPS = 60;
 
     [Header("UI References")]
@@ -22,7 +22,7 @@ public class FPSLimiter : MonoBehaviour
         if (fpsSlider)
         {
             fpsSlider.minValue = 15;
-            fpsSlider.maxValue = 120;
+            fpsSlider.maxValue = 165;
             fpsSlider.value = targetFPS;
             fpsSlider.onValueChanged.AddListener(SetFPSLimit);
         }
@@ -54,7 +54,7 @@ public class FPSLimiter : MonoBehaviour
 
     public void SetFPSLimit(float fps)
     {
-        targetFPS = Mathf.RoundToInt(Mathf.Clamp(fps, 15, 120));
+        targetFPS = Mathf.RoundToInt(Mathf.Clamp(fps, 15, 165));
         ApplyFPSLimit();
     }
 
