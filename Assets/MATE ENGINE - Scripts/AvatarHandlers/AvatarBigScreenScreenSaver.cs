@@ -57,9 +57,8 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
     void Update()
     {
-        LoadSettings(); // Always fetch current settings
+        LoadSettings(); 
 
-        // NEW: Block timer if any menu is open (CircleMenu or Action Menus)
         if (MenuActions.IsAnyMenuOpen())
         {
             inspectorEvent = "Screensaver blocked by menu";
@@ -80,31 +79,6 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
         bool isBigScreen = avatarAnimator != null && avatarAnimator.GetBool("isBigScreen");
         bool isBigScreenSaver = avatarAnimator != null && avatarAnimator.GetBool("isBigScreenSaver");
-        /*
-        if (isBigScreen && isBigScreenSaver)
-        {
-            idleTimer = 0f;
-            inspectorEvent = "Screensaver active! Timer paused";
-            inspectorTime = 0f;
-            UpdateInspectorTimeoutLabel();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                avatarAnimator.SetBool("isBigScreenSaver", false);
-                inspectorEvent = "Screensaver ended by click";
-
-                if (clickDisablesBoth)
-                {
-                    avatarAnimator.SetBool("isBigScreen", false);
-                    inspectorEvent = "Exited Screensaver & BigScreen by click";
-                    if (bigScreenHandler != null)
-                        bigScreenHandler.SendMessage("DeactivateBigScreen");
-                }
-            }
-            lastMousePos = GetGlobalMousePosition();
-            return;
-        }
-        */
 
         if (isBigScreen && isBigScreenSaver)
         {
@@ -177,7 +151,6 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
     void LoadSettings()
     {
-        // Live laden (ohne GC): Holt aktuelle UserSettings von SaveLoadHandler
         if (SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data != null)
         {
             timeoutStep = Mathf.Clamp(SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex, 0, TimeoutSteps.Length - 1);
@@ -236,16 +209,13 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
         return false;
     }
 
-    // Check if the user is interacting with second monitors or other apps
     private bool lastGlobalMouseDown = false;
     private bool IsGlobalUserInput()
     {
-        // Mouse Left Click (anywhere)
         bool mouseDown = (GetAsyncKeyState(0x01) & 0x8000) != 0;
         bool mouseClick = mouseDown && !lastGlobalMouseDown;
         lastGlobalMouseDown = mouseDown;
 
-        // Any keyboard key (anywhere)
         bool keyPressed = false;
         for (int key = 0x08; key <= 0xFE; key++)
         {
@@ -271,7 +241,6 @@ public class AvatarBigScreenScreenSaverEditor : UnityEditor.Editor
         AvatarBigScreenScreenSaver script = (AvatarBigScreenScreenSaver)target;
         if (GUILayout.Button("Trigger Screensaver Now (Debug)"))
         {
-            // Setzt sofort die beiden bools und aktiviert BigScreen/Saver
             if (script.TryGetComponent<Animator>(out var anim))
             {
                 anim.SetBool("isBigScreen", true);

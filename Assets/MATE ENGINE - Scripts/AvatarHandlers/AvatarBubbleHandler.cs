@@ -88,6 +88,16 @@ public class AvatarBubbleHandler : MonoBehaviour
             }
         }
 
+        if (animator != null && animator.GetBool("isBigScreen"))
+        {
+            if (animator.GetBool(animatorParameter))
+                animator.SetBool(animatorParameter, false);
+            if (attachTarget != null)
+                attachTarget.SetActive(false);
+            wasActive = false;
+            currentLerp = 0f;
+            return;
+        }
 
         bool shouldBeActive = animator.GetBool(animatorParameter);
         float target = shouldBeActive ? 1f : 0f;
@@ -152,6 +162,4 @@ public class AvatarBubbleHandler : MonoBehaviour
         bool newState = !animator.GetBool(animatorParameter);
         animator.SetBool(animatorParameter, newState);
     }
-
-
 }

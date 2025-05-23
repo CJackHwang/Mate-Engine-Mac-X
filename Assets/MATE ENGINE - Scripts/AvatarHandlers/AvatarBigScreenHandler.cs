@@ -46,8 +46,6 @@ public class AvatarBigScreenHandler : MonoBehaviour
     private bool isFading = false;
     private bool isInDesktopTransition = false;
 
-
-
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT { public int left, top, right, bottom; }
 
@@ -169,24 +167,8 @@ public class AvatarBigScreenHandler : MonoBehaviour
 
     void ActivateBigScreen()
     {
-        isBigScreenActive = true;
-        if (avatarAnimator != null)
-            avatarAnimator.SetBool("isBigScreen", true);
-        if (avatarAnimatorController != null)
-            avatarAnimatorController.BlockDraggingOverride = true;
-
-        if (moveCanvas != null)
-        {
-            moveCanvasWasActive = moveCanvas.activeSelf;
-            if (moveCanvas.activeSelf)
-                moveCanvas.SetActive(false);
-        }
-
-        if (avatarAnimator != null)
-            bone = avatarAnimator.GetBoneTransform(attachBone);
-        else
-            bone = null;
-
+        if (isBigScreenActive)
+            return;
         if (MainCamera != null)
         {
             originalCamPos = MainCamera.transform.position;
@@ -196,6 +178,22 @@ public class AvatarBigScreenHandler : MonoBehaviour
             originalCamX = MainCamera.transform.position.x;
             originalCamZ = MainCamera.transform.position.z;
         }
+        if (moveCanvas != null)
+            moveCanvasWasActive = moveCanvas.activeSelf;
+
+        isBigScreenActive = true;
+        if (avatarAnimator != null)
+            avatarAnimator.SetBool("isBigScreen", true);
+        if (avatarAnimatorController != null)
+            avatarAnimatorController.BlockDraggingOverride = true;
+
+        if (moveCanvas != null && moveCanvas.activeSelf)
+            moveCanvas.SetActive(false);
+
+        if (avatarAnimator != null)
+            bone = avatarAnimator.GetBoneTransform(attachBone);
+        else
+            bone = null;
 
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
@@ -419,8 +417,6 @@ public class AvatarBigScreenHandler : MonoBehaviour
 
         isInDesktopTransition = false;
     }
-
-
     IEnumerator GlideAvatarDesktopIn(float duration = 0.5f)
     {
         isInDesktopTransition = true;
@@ -479,6 +475,4 @@ public class AvatarBigScreenHandler : MonoBehaviour
         yield return StartCoroutine(FadeCameraY(false));
         yield return StartCoroutine(GlideAvatarDesktopIn(0.4f));
     }
-
-
 }
