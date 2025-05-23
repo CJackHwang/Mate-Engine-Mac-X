@@ -43,6 +43,9 @@ public class AvatarBigScreenTimer : MonoBehaviour
     [Range(5, 100)]
     public int streamSpeed = 35;
 
+    [Header("Stream Audio")]
+    public AudioSource streamAudioSource;
+
     [Header("Live Status (Inspector)")]
     [SerializeField] private string inspectorEvent;
     [SerializeField] private string inspectorTargetTime;
@@ -69,17 +72,25 @@ public class AvatarBigScreenTimer : MonoBehaviour
         bigScreenHandler = GetComponent<AvatarBigScreenHandler>();
         avatarAnimator = GetComponent<Animator>();
         alarmActive = false;
-        RemoveAlarmBubble(); // Clean start
+        RemoveAlarmBubble(); 
     }
 
     void Update()
     {
+
+        enableBigScreenAlarm = SaveLoadHandler.Instance.data.bigScreenAlarmEnabled;
+        targetHour = SaveLoadHandler.Instance.data.bigScreenAlarmHour;
+        targetMinute = SaveLoadHandler.Instance.data.bigScreenAlarmMinute;
+        alarmText = SaveLoadHandler.Instance.data.bigScreenAlarmText;
+
+        /*
         if (MenuActions.IsAnyMenuOpen())
         {
             inspectorEvent = "Alarm blocked by menu";
             StopAlarm();
             return;
         }
+        */
 
         if (!enableBigScreenAlarm)
         {
@@ -95,7 +106,6 @@ public class AvatarBigScreenTimer : MonoBehaviour
         bool isBigScreen = avatarAnimator != null && avatarAnimator.GetBool("isBigScreen");
         bool isBigScreenAlarm = avatarAnimator != null && avatarAnimator.GetBool("isBigScreenAlarm");
 
-        // Destroy bubble if alarm is no longer active
         if (!isBigScreenAlarm)
         {
             RemoveAlarmBubble();
@@ -220,8 +230,9 @@ public class AvatarBigScreenTimer : MonoBehaviour
     void ShowAlarmBubbleStreamed()
     {
         if (chatContainer == null) return;
+        RemoveAlarmBubble(); 
 
-        RemoveAlarmBubble(); // Bubble vorher immer entfernen
+
 
         var ui = new LLMUnitySamples.BubbleUI
         {
@@ -240,7 +251,12 @@ public class AvatarBigScreenTimer : MonoBehaviour
 
         alarmBubble = new LLMUnitySamples.Bubble(chatContainer, ui, "AlarmBubble", "");
 
-        // Start fake stream
+        if (streamAudioSource != null)
+        {
+            streamAudioSource.Stop();
+            streamAudioSource.Play();
+        }
+
         if (streamCoroutine != null) StopCoroutine(streamCoroutine);
         streamCoroutine = StartCoroutine(FakeStreamAlarmText(alarmText));
     }
@@ -248,7 +264,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
     IEnumerator FakeStreamAlarmText(string fullText)
     {
         if (alarmBubble == null) yield break;
-        alarmBubble.SetText(""); // Start empty
+        alarmBubble.SetText(""); 
         int length = 0;
         float delay = 1f / Mathf.Max(streamSpeed, 1);
 
@@ -257,9 +273,11 @@ public class AvatarBigScreenTimer : MonoBehaviour
             length++;
             alarmBubble.SetText(fullText.Substring(0, length));
             yield return new WaitForSeconds(delay);
-            if (alarmBubble == null) yield break; // Bubble wurde währenddessen entfernt
+            if (alarmBubble == null) yield break; 
         }
         alarmBubble.SetText(fullText);
+        if (streamAudioSource != null && streamAudioSource.isPlaying)
+            streamAudioSource.Stop();
         streamCoroutine = null;
     }
 
@@ -275,5 +293,25 @@ public class AvatarBigScreenTimer : MonoBehaviour
             alarmBubble.Destroy();
             alarmBubble = null;
         }
+        if (streamAudioSource != null && streamAudioSource.isPlaying)
+            streamAudioSource.Stop();
+
     }
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(AvatarBigScreenTimer))]
+public class AvatarBigScreenTimerEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        AvatarBigScreenTimer script = (AvatarBigScreenTimer)target;
+        if (GUILayout.Button("Trigger Alarm Now (Debug)"))
+        {
+            script.TriggerAlarmNow();
+        }
+    }
+}
+#endif

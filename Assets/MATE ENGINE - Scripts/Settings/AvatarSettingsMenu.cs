@@ -33,6 +33,10 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Slider bigScreenSaverTimeoutSlider;
     public Toggle bigScreenSaverEnableToggle;
     public TMP_Text bigScreenSaverTimeoutLabel;
+    public TMP_Dropdown bigScreenAlarmHourDropdown;
+    public TMP_Dropdown bigScreenAlarmMinuteDropdown;
+    public Toggle bigScreenAlarmEnableToggle;
+    public InputField bigScreenAlarmTextInput;
 
     private static readonly int[] TimeoutSteps = { 30, 60, 300, 900, 1800, 2700, 3600, 5400, 7200, 9000, 10800 };
     private static readonly string[] TimeoutLabels = {
@@ -69,7 +73,52 @@ public class AvatarSettingsMenu : MonoBehaviour
             var appManager = FindFirstObjectByType<AllowedAppsManager>();
             if (appManager != null) appManager.RefreshUI();
         });
-
+        if (bigScreenAlarmHourDropdown != null)
+        {
+            if (bigScreenAlarmHourDropdown.options.Count != 24)
+            {
+                bigScreenAlarmHourDropdown.ClearOptions();
+                var hours = new List<string>();
+                for (int i = 0; i < 24; i++) hours.Add(i.ToString("D2"));
+                bigScreenAlarmHourDropdown.AddOptions(hours);
+            }
+            bigScreenAlarmHourDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmHour);
+            bigScreenAlarmHourDropdown.onValueChanged.AddListener(v => {
+                SaveLoadHandler.Instance.data.bigScreenAlarmHour = v;
+                SaveLoadHandler.Instance.SaveToDisk();
+            });
+        }
+        if (bigScreenAlarmMinuteDropdown != null)
+        {
+            if (bigScreenAlarmMinuteDropdown.options.Count != 60)
+            {
+                bigScreenAlarmMinuteDropdown.ClearOptions();
+                var minutes = new List<string>();
+                for (int i = 0; i < 60; i++) minutes.Add(i.ToString("D2"));
+                bigScreenAlarmMinuteDropdown.AddOptions(minutes);
+            }
+            bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmMinute);
+            bigScreenAlarmMinuteDropdown.onValueChanged.AddListener(v => {
+                SaveLoadHandler.Instance.data.bigScreenAlarmMinute = v;
+                SaveLoadHandler.Instance.SaveToDisk();
+            });
+        }
+        if (bigScreenAlarmEnableToggle != null)
+        {
+            bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmEnabled);
+            bigScreenAlarmEnableToggle.onValueChanged.AddListener(v => {
+                SaveLoadHandler.Instance.data.bigScreenAlarmEnabled = v;
+                SaveLoadHandler.Instance.SaveToDisk();
+            });
+        }
+        if (bigScreenAlarmTextInput != null)
+        {
+            bigScreenAlarmTextInput.SetTextWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmText);
+            bigScreenAlarmTextInput.onEndEdit.AddListener(text => {
+                SaveLoadHandler.Instance.data.bigScreenAlarmText = text;
+                SaveLoadHandler.Instance.SaveToDisk();
+            });
+        }
         var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
         applyButton?.onClick.AddListener(ApplySettings);
@@ -173,6 +222,16 @@ public class AvatarSettingsMenu : MonoBehaviour
             shifter.saturation = SaveLoadHandler.Instance.data.uiSaturation;
         }
 
+    }
+
+    public void LoadAlarmUIFromSettings()
+    {
+        if (bigScreenAlarmHourDropdown != null)
+            bigScreenAlarmHourDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmHour);
+        if (bigScreenAlarmMinuteDropdown != null)
+            bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmMinute);
+        if (bigScreenAlarmEnableToggle != null)
+            bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmEnabled);
     }
 
     private void OnBigScreenSaverTimeoutSliderChanged(float v)
@@ -368,6 +427,21 @@ public class AvatarSettingsMenu : MonoBehaviour
             uiSaturation = 0.5f
         };
 
+        SaveLoadHandler.Instance.data.bigScreenAlarmHour = 0;
+        SaveLoadHandler.Instance.data.bigScreenAlarmMinute = 0;
+        SaveLoadHandler.Instance.data.bigScreenAlarmText = "";
+        SaveLoadHandler.Instance.data.bigScreenAlarmEnabled = false;
+
+        if (bigScreenAlarmHourDropdown != null)
+            bigScreenAlarmHourDropdown.SetValueWithoutNotify(0);
+        if (bigScreenAlarmMinuteDropdown != null)
+            bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(0);
+        if (bigScreenAlarmEnableToggle != null)
+            bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(false);
+        if (bigScreenAlarmTextInput != null)
+            bigScreenAlarmTextInput.SetTextWithoutNotify("");
+
+
         newData.ambientOcclusion = false;
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
@@ -379,7 +453,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (!string.IsNullOrEmpty(entry.ruleName))
                 newData.accessoryStates[entry.ruleName] = false;
 
-        SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = 0; // 30s
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = 0;
         SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = false;
         if (bigScreenSaverTimeoutSlider != null)
             bigScreenSaverTimeoutSlider.SetValueWithoutNotify(0);

@@ -122,6 +122,11 @@ public class SaveLoadHandler : MonoBehaviour
         public int bigScreenScreenSaverTimeoutIndex = 0; 
         public bool bigScreenScreenSaverEnabled = false;
 
+        public bool bigScreenAlarmEnabled = false;
+        public int bigScreenAlarmHour = 0;  
+        public int bigScreenAlarmMinute = 0;
+        public string bigScreenAlarmText = "Wake up! This is your alarm!";
+
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
 
 

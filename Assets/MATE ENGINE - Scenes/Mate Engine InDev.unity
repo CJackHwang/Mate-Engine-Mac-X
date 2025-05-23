@@ -365,6 +365,10 @@ MonoBehaviour:
   bigScreenSaverTimeoutSlider: {fileID: 1369437052}
   bigScreenSaverEnableToggle: {fileID: 116645323}
   bigScreenSaverTimeoutLabel: {fileID: 1811812983}
+  bigScreenAlarmHourDropdown: {fileID: 1759463040}
+  bigScreenAlarmMinuteDropdown: {fileID: 1606369263}
+  bigScreenAlarmEnableToggle: {fileID: 531177386}
+  bigScreenAlarmTextInput: {fileID: 567180554}
   accessoryToggleBindings:
   - ruleName: Steam Halo
     toggle: {fileID: 1343568825}
@@ -493,6 +497,10 @@ MonoBehaviour:
     enableIK: 1
     bigScreenScreenSaverTimeoutIndex: 0
     bigScreenScreenSaverEnabled: 0
+    bigScreenAlarmEnabled: 0
+    bigScreenAlarmHour: 0
+    bigScreenAlarmMinute: 0
+    bigScreenAlarmText: Wake up! This is your alarm!
     graphicsQualityLevel: 1
 --- !u!114 &14424286
 MonoBehaviour:
@@ -36065,8 +36073,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1775918864}
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
-  m_Value: -0.000000028926614
-  m_Size: 0.2491093
+  m_Value: 1
+  m_Size: 0.24911033
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -38066,7 +38074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2110}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 16.75, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1179428096
@@ -44884,6 +44892,8 @@ MonoBehaviour:
     disableInBigScreen: 0
   - componentTypeName: AvatarBigScreenScreenSaver
     disableInBigScreen: 0
+  - componentTypeName: AvatarBigScreenTimer
+    disableInBigScreen: 0
 --- !u!114 &1499361320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44905,6 +44915,43 @@ MonoBehaviour:
   inspectorTime: 0
   inspectorEvent: 
   inspectorTimeoutLabel: 
+--- !u!114 &1499361331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499361201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d2272cc4415e1a4aab05ad3a979f8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableBigScreenAlarm: 1
+  targetHour: 0
+  targetMinute: 0
+  targetSecond: 0
+  useAllowedStatesWhitelist: 0
+  allowedStates: []
+  clickDisablesBoth: 1
+  audioSource: {fileID: 2001911048}
+  alarmClips:
+  - {fileID: 8300000, guid: 25f890000f287694ea0469d561bd19a2, type: 3}
+  alarmText: Wake up! This is your alarm!
+  chatContainer: {fileID: 1679421859}
+  bubbleSprite: {fileID: 21300000, guid: 7f5b8d8ec16099b49a0d8a41bf746138, type: 3}
+  bubbleColor: {r: 0.07450981, g: 0.11764706, b: 0.16862746, a: 1}
+  fontColor: {r: 1, g: 1, b: 1, a: 1}
+  font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+  fontSize: 26
+  bubbleWidth: 600
+  textPadding: 30
+  bubbleSpacing: 30
+  streamSpeed: 20
+  streamAudioSource: {fileID: 1496808479}
+  inspectorEvent: 
+  inspectorTargetTime: 
+  inspectorCurrentTime: 
 --- !u!1 &1502345398
 GameObject:
   m_ObjectHideFlags: 0
@@ -111456,6 +111503,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1499361320}
+    - targetCorrespondingSourceObject: {fileID: 1521260177614848592, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1499361331}
   m_SourcePrefab: {fileID: 100100000, guid: b4defd5a3e5287a4c82647bf9aa7f587, type: 3}
 --- !u!137 &7783119356818458772
 SkinnedMeshRenderer:
@@ -133536,7 +133586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableBigScreenAlarm: 1
-  targetHour: 17
+  targetHour: 0
   targetMinute: 0
   targetSecond: 0
   useAllowedStatesWhitelist: 0
@@ -133556,6 +133606,7 @@ MonoBehaviour:
   textPadding: 30
   bubbleSpacing: 30
   streamSpeed: 20
+  streamAudioSource: {fileID: 1496808479}
   inspectorEvent: 
   inspectorTargetTime: 
   inspectorCurrentTime: 

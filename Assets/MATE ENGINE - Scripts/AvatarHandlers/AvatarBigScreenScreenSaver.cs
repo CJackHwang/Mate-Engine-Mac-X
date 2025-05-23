@@ -20,7 +20,7 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
     [Header("Live Status (Inspector)")]
     [SerializeField] private float inspectorTime;
-    [SerializeField] private string inspectorEvent;
+    public string inspectorEvent;
     [SerializeField] private string inspectorTimeoutLabel;
 
     private static readonly int[] TimeoutSteps = { 30, 60, 300, 900, 1800, 2700, 3600, 5400, 7200, 9000, 10800 };
@@ -259,3 +259,30 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
     }
 
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(AvatarBigScreenScreenSaver))]
+public class AvatarBigScreenScreenSaverEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        AvatarBigScreenScreenSaver script = (AvatarBigScreenScreenSaver)target;
+        if (GUILayout.Button("Trigger Screensaver Now (Debug)"))
+        {
+            // Setzt sofort die beiden bools und aktiviert BigScreen/Saver
+            if (script.TryGetComponent<Animator>(out var anim))
+            {
+                anim.SetBool("isBigScreen", true);
+                anim.SetBool("isBigScreenSaver", true);
+            }
+            if (script.TryGetComponent<AvatarBigScreenHandler>(out var handler))
+            {
+                handler.SendMessage("ActivateBigScreen");
+            }
+            script.inspectorEvent = "Screensaver triggered (Debug)";
+        }
+    }
+}
+#endif
