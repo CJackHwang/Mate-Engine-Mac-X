@@ -57,7 +57,7 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
 
     void Update()
     {
-        LoadSettings(); 
+        LoadSettings();
 
         if (MenuActions.IsAnyMenuOpen())
         {
@@ -92,7 +92,8 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
                 avatarAnimator.SetBool("isBigScreenSaver", false);
                 inspectorEvent = "Screensaver ended by input";
 
-                if (clickDisablesBoth)
+                bool isBigScreenAlarm = avatarAnimator.GetBool("isBigScreenAlarm");
+                if (clickDisablesBoth && !isBigScreenAlarm)
                 {
                     avatarAnimator.SetBool("isBigScreen", false);
                     inspectorEvent = "Exited Screensaver & BigScreen by input";
@@ -100,6 +101,7 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
                         bigScreenHandler.SendMessage("DeactivateBigScreen");
                 }
             }
+
             lastMousePos = GetGlobalMousePosition();
             return;
         }

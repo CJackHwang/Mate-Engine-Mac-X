@@ -53,6 +53,17 @@ public class AvatarWindowHandler : MonoBehaviour
         }
         else if (!controller.isDragging && snappedHWND != IntPtr.Zero)
             FollowSnappedWindow();
+
+        if (animator != null && animator.GetBool("isBigScreenAlarm"))
+        {
+            if (animator.GetBool("isWindowSit"))
+            {
+                animator.SetBool("isWindowSit", false);
+            }
+            snappedHWND = IntPtr.Zero;
+            SetTopMost(true);
+            return; 
+        }
     }
 
     void UpdateCachedWindows()

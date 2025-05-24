@@ -72,7 +72,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
         bigScreenHandler = GetComponent<AvatarBigScreenHandler>();
         avatarAnimator = GetComponent<Animator>();
         alarmActive = false;
-        RemoveAlarmBubble(); 
+        RemoveAlarmBubble();
     }
 
     void Update()
@@ -82,15 +82,6 @@ public class AvatarBigScreenTimer : MonoBehaviour
         targetHour = SaveLoadHandler.Instance.data.bigScreenAlarmHour;
         targetMinute = SaveLoadHandler.Instance.data.bigScreenAlarmMinute;
         alarmText = SaveLoadHandler.Instance.data.bigScreenAlarmText;
-
-        /*
-        if (MenuActions.IsAnyMenuOpen())
-        {
-            inspectorEvent = "Alarm blocked by menu";
-            StopAlarm();
-            return;
-        }
-        */
 
         if (!enableBigScreenAlarm)
         {
@@ -145,14 +136,18 @@ public class AvatarBigScreenTimer : MonoBehaviour
             inspectorEvent = "Alarm time reached! Activating alarm";
             if (avatarAnimator != null)
             {
+                avatarAnimator.SetBool("isBigScreenSaver", false); 
                 avatarAnimator.SetBool("isBigScreen", true);
                 avatarAnimator.SetBool("isBigScreenAlarm", true);
+                avatarAnimator.SetBool("isWindowSit", false);
+                avatarAnimator.SetBool("isSitting", false);
             }
+
             if (bigScreenHandler != null)
                 bigScreenHandler.SendMessage("ActivateBigScreen");
             PlayRandomAlarm();
             alarmActive = true;
-            ShowAlarmBubbleStreamed();
+            StartCoroutine(ShowAlarmBubbleStreamedDelayed());
         }
 
         if (alarmActive && (now.Second != targetSecond || now.Minute != targetMinute || now.Hour != targetHour))
@@ -218,19 +213,22 @@ public class AvatarBigScreenTimer : MonoBehaviour
         {
             avatarAnimator.SetBool("isBigScreen", true);
             avatarAnimator.SetBool("isBigScreenAlarm", true);
+            avatarAnimator.SetBool("isBigScreenSaver", false);
+            avatarAnimator.SetBool("isWindowSit", false);
+            avatarAnimator.SetBool("isSitting", false);
         }
         if (bigScreenHandler != null)
             bigScreenHandler.SendMessage("ActivateBigScreen");
         PlayRandomAlarm();
         alarmActive = true;
         inspectorEvent = "Alarm triggered manually";
-        ShowAlarmBubbleStreamed();
+        StartCoroutine(ShowAlarmBubbleStreamedDelayed());
     }
 
     void ShowAlarmBubbleStreamed()
     {
         if (chatContainer == null) return;
-        RemoveAlarmBubble(); 
+        RemoveAlarmBubble();
 
 
 
@@ -264,7 +262,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
     IEnumerator FakeStreamAlarmText(string fullText)
     {
         if (alarmBubble == null) yield break;
-        alarmBubble.SetText(""); 
+        alarmBubble.SetText("");
         int length = 0;
         float delay = 1f / Mathf.Max(streamSpeed, 1);
 
@@ -273,7 +271,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
             length++;
             alarmBubble.SetText(fullText.Substring(0, length));
             yield return new WaitForSeconds(delay);
-            if (alarmBubble == null) yield break; 
+            if (alarmBubble == null) yield break;
         }
         alarmBubble.SetText(fullText);
         if (streamAudioSource != null && streamAudioSource.isPlaying)
@@ -296,6 +294,12 @@ public class AvatarBigScreenTimer : MonoBehaviour
         if (streamAudioSource != null && streamAudioSource.isPlaying)
             streamAudioSource.Stop();
 
+    }
+
+    IEnumerator ShowAlarmBubbleStreamedDelayed()
+    {
+        yield return new WaitForSeconds(3f); 
+        ShowAlarmBubbleStreamed();
     }
 }
 
