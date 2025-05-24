@@ -38,6 +38,14 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Toggle bigScreenAlarmEnableToggle;
     public InputField bigScreenAlarmTextInput;
 
+    [Header("Menu Hide/Lock Conditions")]
+    [Tooltip("Parameter Blacklist")]
+    public string[] hideIfAnimatorBool;
+
+    [Tooltip("State Blacklist")]
+    public string[] hideIfStateName;
+    private AvatarAnimatorReceiver animatorReceiver;
+
     private static readonly int[] TimeoutSteps = { 30, 60, 300, 900, 1800, 2700, 3600, 5400, 7200, 9000, 10800 };
     private static readonly string[] TimeoutLabels = {
     "30s", "1 min", "5 min", "15 min", "30 min", "45 min", "1 h", "1.5 h", "2 h", "2.5 h", "3 h"
@@ -52,6 +60,51 @@ public class AvatarSettingsMenu : MonoBehaviour
     }
 
     public List<AccessoryToggleEntry> accessoryToggleBindings = new List<AccessoryToggleEntry>();
+
+    private void Update()
+    {
+        var receiver = FindFirstObjectByType<AvatarAnimatorReceiver>();
+        if (menuPanel != null && menuPanel.activeSelf && receiver != null && receiver.avatarAnimator != null)
+        {
+            if (ShouldHideMenu(receiver.avatarAnimator))
+            {
+                menuPanel.SetActive(false);
+                IsMenuOpen = false;
+            }
+        }
+    }
+
+    private bool ShouldHideMenu(Animator animator)
+    {
+        if (hideIfAnimatorBool != null)
+        {
+            foreach (var param in hideIfAnimatorBool)
+            {
+                if (!string.IsNullOrEmpty(param) && HasBoolParameter(animator, param) && animator.GetBool(param))
+                    return true;
+            }
+        }
+        if (hideIfStateName != null)
+        {
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            foreach (var stateName in hideIfStateName)
+            {
+                if (!string.IsNullOrEmpty(stateName) && stateInfo.IsName(stateName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
+    private bool HasBoolParameter(Animator animator, string paramName)
+    {
+        foreach (var param in animator.parameters)
+            if (param.type == AnimatorControllerParameterType.Bool && param.name == paramName)
+                return true;
+        return false;
+    }
+
 
     private void Start()
     {

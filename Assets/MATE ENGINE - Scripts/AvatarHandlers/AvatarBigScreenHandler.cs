@@ -36,7 +36,6 @@ public class AvatarBigScreenHandler : MonoBehaviour
     private Quaternion originalCamRot;
     private float originalFOV;
     private float originalOrthoSize;
-    private float originalCamX, originalCamZ;
     private RECT originalWindowRect;
     private bool originalRectSet = false;
     private Transform bone;
@@ -49,16 +48,13 @@ public class AvatarBigScreenHandler : MonoBehaviour
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT { public int left, top, right, bottom; }
 
-    private delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
-
     [DllImport("user32.dll")]
     private static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
-
     [DllImport("user32.dll")]
     private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
     [DllImport("user32.dll")]
     private static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+    private delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
     public static List<AvatarBigScreenHandler> ActiveHandlers = new List<AvatarBigScreenHandler>();
 
@@ -71,15 +67,13 @@ public class AvatarBigScreenHandler : MonoBehaviour
     {
         ActiveHandlers.Remove(this);
     }
+
     public void ToggleBigScreenFromUI()
     {
-        var isActiveField = GetType().GetField("isBigScreenActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        bool isActive = isActiveField != null && (bool)isActiveField.GetValue(this);
-
-        if (!isActive)
-            SendMessage("ActivateBigScreen");
+        if (!isBigScreenActive)
+            ActivateBigScreen();
         else
-            SendMessage("DeactivateBigScreen");
+            DeactivateBigScreen();
     }
 
     void Start()
@@ -93,8 +87,6 @@ public class AvatarBigScreenHandler : MonoBehaviour
             originalCamRot = MainCamera.transform.rotation;
             originalFOV = MainCamera.fieldOfView;
             originalOrthoSize = MainCamera.orthographicSize;
-            originalCamX = MainCamera.transform.position.x;
-            originalCamZ = MainCamera.transform.position.z;
         }
         if (unityHWND != IntPtr.Zero && GetWindowRect(unityHWND, out RECT r))
         {
@@ -104,10 +96,7 @@ public class AvatarBigScreenHandler : MonoBehaviour
         avatarAnimatorController = GetComponent<AvatarAnimatorController>();
     }
 
-    public void SetAnimator(Animator a)
-    {
-        avatarAnimator = a;
-    }
+    public void SetAnimator(Animator a) => avatarAnimator = a;
 
     void Update()
     {
@@ -123,169 +112,26 @@ public class AvatarBigScreenHandler : MonoBehaviour
             }
         }
         if (isBigScreenActive && MainCamera != null && bone != null && avatarAnimator != null && !isFading && !isInDesktopTransition)
-        {
-            Vector3 avatarScale = avatarAnimator.transform.lossyScale;
-            float scaleFactor = avatarScale.y;
-
-            Vector3 headPos = bone.position;
-            float headHeight = 0.25f;
-            var neck = avatarAnimator.GetBoneTransform(HumanBodyBones.Neck);
-            if (neck != null)
-                headHeight = Mathf.Max(0.12f, Mathf.Abs(headPos.y - neck.position.y));
-            headHeight *= scaleFactor;
-
-            float buffer = 1.4f;
-            float yOffsetScaled = YOffset * scaleFactor;
-            Vector3 camPos = MainCamera.transform.position;
-            camPos.x = originalCamX;
-            camPos.z = originalCamZ;
-            camPos.y = headPos.y + yOffsetScaled;
-            MainCamera.transform.position = camPos;
-            MainCamera.transform.rotation = Quaternion.identity;
-
-            if (TargetZoom > 0f)
-            {
-                if (MainCamera.orthographic)
-                    MainCamera.orthographicSize = TargetZoom * scaleFactor;
-                else
-                    MainCamera.fieldOfView = TargetZoom;
-            }
-            else
-            {
-                if (MainCamera.orthographic)
-                    MainCamera.orthographicSize = headHeight * buffer;
-                else
-                {
-                    float dist = Mathf.Abs(MainCamera.transform.position.z - headPos.z);
-                    MainCamera.fieldOfView = Mathf.Clamp(
-                        2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg,
-                        10f, 60f);
-                }
-            }
-        }
+            UpdateBigScreenCamera();
     }
 
-    void ActivateBigScreen()
+    void UpdateBigScreenCamera()
     {
-        if (isBigScreenActive)
-            return;
-        if (MainCamera != null)
-        {
-            originalCamPos = MainCamera.transform.position;
-            originalCamRot = MainCamera.transform.rotation;
-            originalFOV = MainCamera.fieldOfView;
-            originalOrthoSize = MainCamera.orthographicSize;
-            originalCamX = MainCamera.transform.position.x;
-            originalCamZ = MainCamera.transform.position.z;
-        }
-        if (moveCanvas != null)
-            moveCanvasWasActive = moveCanvas.activeSelf;
-
-        isBigScreenActive = true;
-        if (avatarAnimator != null)
-            avatarAnimator.SetBool("isBigScreen", true);
-        if (avatarAnimatorController != null)
-            avatarAnimatorController.BlockDraggingOverride = true;
-
-        if (moveCanvas != null && moveCanvas.activeSelf)
-            moveCanvas.SetActive(false);
-
-        if (avatarAnimator != null)
-            bone = avatarAnimator.GetBoneTransform(attachBone);
-        else
-            bone = null;
-
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(BigScreenEnterSequence());
-    }
-
-    void DeactivateBigScreen()
-    {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(BigScreenExitSequence());
-    }
-
-    IEnumerator FadeCameraY(bool fadeIn)
-    {
-        isFading = true;
-
-        if (avatarAnimator == null || bone == null || MainCamera == null)
-        {
-            isFading = false;
-            yield break;
-        }
-
-        Vector3 avatarScale = avatarAnimator.transform.lossyScale;
-        float scaleFactor = avatarScale.y;
-        Vector3 headPos = bone.position;
-        float baseY = headPos.y + YOffset * scaleFactor;
-        float fadeY = baseY + FadeYOffset;
-
-        Vector3 camPos = MainCamera.transform.position;
-        float camX = originalCamX;
-        float camZ = originalCamZ;
-
-        float fromY = fadeIn ? fadeY : baseY;
-        float toY = fadeIn ? baseY : fadeY;
-
-        float duration = fadeIn ? FadeInDuration : FadeOutDuration;
-        float time = 0f;
-
-        float headHeight = 0.25f;
+        var scale = avatarAnimator.transform.lossyScale.y;
+        var headPos = bone.position;
         var neck = avatarAnimator.GetBoneTransform(HumanBodyBones.Neck);
-        if (neck != null)
-            headHeight = Mathf.Max(0.12f, Mathf.Abs(headPos.y - neck.position.y));
-        headHeight *= scaleFactor;
-
+        float headHeight = Mathf.Max(0.12f, neck ? Mathf.Abs(headPos.y - neck.position.y) : 0.25f) * scale;
         float buffer = 1.4f;
 
-        while (time < duration)
-        {
-            float t = time / duration;
-            float curve = Mathf.SmoothStep(0, 1, t);
-            camPos.x = camX;
-            camPos.z = camZ;
-            camPos.y = Mathf.Lerp(fromY, toY, curve);
-            MainCamera.transform.position = camPos;
-            MainCamera.transform.rotation = Quaternion.identity;
-
-            if (TargetZoom > 0f)
-            {
-                if (MainCamera.orthographic)
-                    MainCamera.orthographicSize = TargetZoom * scaleFactor;
-                else
-                    MainCamera.fieldOfView = TargetZoom;
-            }
-            else
-            {
-                if (MainCamera.orthographic)
-                    MainCamera.orthographicSize = headHeight * buffer;
-                else
-                {
-                    float dist = Mathf.Abs(MainCamera.transform.position.z - headPos.z);
-                    MainCamera.fieldOfView = Mathf.Clamp(
-                        2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg,
-                        10f, 60f);
-                }
-            }
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        camPos.x = camX;
-        camPos.z = camZ;
-        camPos.y = toY;
+        Vector3 camPos = originalCamPos;
+        camPos.y = headPos.y + YOffset * scale;
         MainCamera.transform.position = camPos;
         MainCamera.transform.rotation = Quaternion.identity;
 
         if (TargetZoom > 0f)
         {
-            if (MainCamera.orthographic)
-                MainCamera.orthographicSize = TargetZoom * scaleFactor;
-            else
-                MainCamera.fieldOfView = TargetZoom;
+            if (MainCamera.orthographic) MainCamera.orthographicSize = TargetZoom * scale;
+            else MainCamera.fieldOfView = TargetZoom;
         }
         else
         {
@@ -295,24 +141,120 @@ public class AvatarBigScreenHandler : MonoBehaviour
             {
                 float dist = Mathf.Abs(MainCamera.transform.position.z - headPos.z);
                 MainCamera.fieldOfView = Mathf.Clamp(
-                    2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg,
-                    10f, 60f);
+                    2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg, 10f, 60f);
             }
         }
+    }
 
+    void ActivateBigScreen()
+    {
+        if (isBigScreenActive) return;
+        SaveCameraState();
+
+        if (moveCanvas != null)
+            moveCanvasWasActive = moveCanvas.activeSelf;
+
+        isBigScreenActive = true;
+        if (avatarAnimator != null) avatarAnimator.SetBool("isBigScreen", true);
+        if (avatarAnimatorController != null) avatarAnimatorController.BlockDraggingOverride = true;
+        if (moveCanvas != null && moveCanvas.activeSelf) moveCanvas.SetActive(false);
+
+        bone = avatarAnimator ? avatarAnimator.GetBoneTransform(attachBone) : null;
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(BigScreenEnterSequence());
+    }
+
+    void DeactivateBigScreen()
+    {
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(BigScreenExitSequence());
+    }
+
+    void SaveCameraState()
+    {
+        if (MainCamera != null)
+        {
+            originalCamPos = MainCamera.transform.position;
+            originalCamRot = MainCamera.transform.rotation;
+            originalFOV = MainCamera.fieldOfView;
+            originalOrthoSize = MainCamera.orthographicSize;
+        }
+    }
+
+    IEnumerator FadeCameraY(bool fadeIn)
+    {
+        isFading = true;
+        if (avatarAnimator == null || bone == null || MainCamera == null)
+        { isFading = false; yield break; }
+
+        var scale = avatarAnimator.transform.lossyScale.y;
+        var headPos = bone.position;
+        float baseY = headPos.y + YOffset * scale;
+        float fadeY = baseY + FadeYOffset;
+
+        Vector3 camPos = MainCamera.transform.position;
+        float fromY = fadeIn ? fadeY : baseY;
+        float toY = fadeIn ? baseY : fadeY;
+        float duration = fadeIn ? FadeInDuration : FadeOutDuration;
+        float time = 0f;
+
+        var neck = avatarAnimator.GetBoneTransform(HumanBodyBones.Neck);
+        float headHeight = Mathf.Max(0.12f, neck ? Mathf.Abs(headPos.y - neck.position.y) : 0.25f) * scale;
+        float buffer = 1.4f;
+
+        while (time < duration)
+        {
+            float curve = Mathf.SmoothStep(0, 1, time / duration);
+            camPos.y = Mathf.Lerp(fromY, toY, curve);
+            MainCamera.transform.position = camPos;
+            MainCamera.transform.rotation = Quaternion.identity;
+            if (TargetZoom > 0f)
+            {
+                if (MainCamera.orthographic) MainCamera.orthographicSize = TargetZoom * scale;
+                else MainCamera.fieldOfView = TargetZoom;
+            }
+            else
+            {
+                if (MainCamera.orthographic)
+                    MainCamera.orthographicSize = headHeight * buffer;
+                else
+                {
+                    float dist = Mathf.Abs(MainCamera.transform.position.z - headPos.z);
+                    MainCamera.fieldOfView = Mathf.Clamp(
+                        2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg, 10f, 60f);
+                }
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        camPos.y = toY;
+        MainCamera.transform.position = camPos;
+        MainCamera.transform.rotation = Quaternion.identity;
+        if (TargetZoom > 0f)
+        {
+            if (MainCamera.orthographic) MainCamera.orthographicSize = TargetZoom * scale;
+            else MainCamera.fieldOfView = TargetZoom;
+        }
+        else
+        {
+            if (MainCamera.orthographic)
+                MainCamera.orthographicSize = headHeight * buffer;
+            else
+            {
+                float dist = Mathf.Abs(MainCamera.transform.position.z - headPos.z);
+                MainCamera.fieldOfView = Mathf.Clamp(
+                    2f * Mathf.Atan((headHeight * buffer) / (2f * dist)) * Mathf.Rad2Deg, 10f, 60f);
+            }
+        }
         isFading = false;
 
         if (!fadeIn)
         {
             isBigScreenActive = false;
-            if (avatarAnimator != null)
-                avatarAnimator.SetBool("isBigScreen", false);
-            if (avatarAnimatorController != null)
-                avatarAnimatorController.BlockDraggingOverride = false;
-
-            if (moveCanvas != null && moveCanvasWasActive)
-                moveCanvas.SetActive(true);
-
+            if (avatarAnimator != null) avatarAnimator.SetBool("isBigScreen", false);
+            if (avatarAnimatorController != null) avatarAnimatorController.BlockDraggingOverride = false;
+            if (moveCanvas != null && moveCanvasWasActive) moveCanvas.SetActive(true);
             if (unityHWND != IntPtr.Zero && originalRectSet)
             {
                 int w = originalWindowRect.right - originalWindowRect.left;
@@ -333,146 +275,77 @@ public class AvatarBigScreenHandler : MonoBehaviour
     {
         List<RECT> monitorRects = new List<RECT>();
         EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdc, ref RECT lprcMonitor, IntPtr data) =>
-        {
-            monitorRects.Add(lprcMonitor);
-            return true;
-        }, IntPtr.Zero);
-
+        { monitorRects.Add(lprcMonitor); return true; }, IntPtr.Zero);
         int idx = 0, maxArea = 0;
         for (int i = 0; i < monitorRects.Count; i++)
         {
             int overlap = OverlapArea(windowRect, monitorRects[i]);
-            if (overlap > maxArea)
-            {
-                idx = i;
-                maxArea = overlap;
-            }
+            if (overlap > maxArea) { idx = i; maxArea = overlap; }
         }
         return monitorRects.Count > 0 ? monitorRects[idx] : new RECT { left = 0, top = 0, right = Screen.currentResolution.width, bottom = Screen.currentResolution.height };
     }
-
     int OverlapArea(RECT a, RECT b)
     {
-        int x1 = Math.Max(a.left, b.left);
-        int x2 = Math.Min(a.right, b.right);
-        int y1 = Math.Max(a.top, b.top);
-        int y2 = Math.Min(a.bottom, b.bottom);
-        int w = x2 - x1;
-        int h = y2 - y1;
+        int x1 = Math.Max(a.left, b.left), x2 = Math.Min(a.right, b.right);
+        int y1 = Math.Max(a.top, b.top), y2 = Math.Min(a.bottom, b.bottom);
+        int w = x2 - x1, h = y2 - y1;
         return (w > 0 && h > 0) ? w * h : 0;
     }
 
-
-    IEnumerator GlideAvatarDesktopOut(float duration = 0.5f)
+    IEnumerator GlideAvatarDesktop(float duration, bool toFadeY)
     {
         isInDesktopTransition = true;
-
         if (avatarAnimator == null || bone == null || MainCamera == null)
-        {
-            isInDesktopTransition = false;
-            yield break;
-        }
+        { isInDesktopTransition = false; yield break; }
 
-        Vector3 avatarScale = avatarAnimator.transform.lossyScale;
-        float scaleFactor = avatarScale.y;
-        Vector3 headPos = bone.position;
-        float baseY = headPos.y + YOffset * scaleFactor;
+        var scale = avatarAnimator.transform.lossyScale.y;
+        var headPos = bone.position;
+        float baseY = headPos.y + YOffset * scale;
         float fadeY = baseY + FadeYOffset;
 
         Vector3 camPos = MainCamera.transform.position;
-        float camX = originalCamX;
-        float camZ = originalCamZ;
-
-        float fromY = baseY;
-        float toY = fadeY;
+        float fromY = toFadeY ? baseY : fadeY;
+        float toY = toFadeY ? fadeY : baseY;
         float time = 0f;
+
         while (time < duration)
         {
-            float t = time / duration;
-            float curve = Mathf.SmoothStep(0, 1, t);
-            camPos.x = camX;
-            camPos.z = camZ;
-            camPos.y = Mathf.Lerp(fromY, toY, curve);
+            camPos.y = Mathf.Lerp(fromY, toY, Mathf.SmoothStep(0, 1, time / duration));
             MainCamera.transform.position = camPos;
             time += Time.deltaTime;
             yield return null;
         }
         camPos.y = toY;
         MainCamera.transform.position = camPos;
-        if (unityHWND != IntPtr.Zero)
+
+        if (toFadeY && unityHWND != IntPtr.Zero)
         {
-            RECT windowRect;
-            if (GetWindowRect(unityHWND, out windowRect))
+            if (GetWindowRect(unityHWND, out RECT windowRect))
             {
                 RECT targetScreen = FindBestMonitorRect(windowRect);
-                int screenWidth = targetScreen.right - targetScreen.left;
-                int screenHeight = targetScreen.bottom - targetScreen.top;
-                int targetX = targetScreen.left;
-                int targetY = targetScreen.top;
-                originalWindowRect = windowRect;
-                originalRectSet = true;
-                MoveWindow(unityHWND, targetX, targetY, screenWidth, screenHeight, true);
+                int sw = targetScreen.right - targetScreen.left, sh = targetScreen.bottom - targetScreen.top;
+                MoveWindow(unityHWND, targetScreen.left, targetScreen.top, sw, sh, true);
+                originalWindowRect = windowRect; originalRectSet = true;
             }
         }
-
-        isInDesktopTransition = false;
-    }
-    IEnumerator GlideAvatarDesktopIn(float duration = 0.5f)
-    {
-        isInDesktopTransition = true;
-
-        if (avatarAnimator == null || bone == null || MainCamera == null)
-        {
-            isInDesktopTransition = false;
-            yield break;
-        }
-
-        Vector3 avatarScale = avatarAnimator.transform.lossyScale;
-        float scaleFactor = avatarScale.y;
-        Vector3 headPos = bone.position;
-        float baseY = headPos.y + YOffset * scaleFactor;
-        float fadeY = baseY + FadeYOffset;
-
-        Vector3 camPos = MainCamera.transform.position;
-        float camX = originalCamX;
-        float camZ = originalCamZ;
-
-        float fromY = fadeY;
-        float toY = baseY;
-        float time = 0f;
-        while (time < duration)
-        {
-            float t = time / duration;
-            float curve = Mathf.SmoothStep(0, 1, t);
-            camPos.x = camX;
-            camPos.z = camZ;
-            camPos.y = Mathf.Lerp(fromY, toY, curve);
-            MainCamera.transform.position = camPos;
-            time += Time.deltaTime;
-            yield return null;
-        }
-        camPos.y = toY;
-        MainCamera.transform.position = camPos;
-        if (MainCamera != null)
+        if (!toFadeY && MainCamera != null)
         {
             MainCamera.transform.position = originalCamPos;
             MainCamera.transform.rotation = originalCamRot;
             MainCamera.fieldOfView = originalFOV;
             MainCamera.orthographicSize = originalOrthoSize;
         }
-
         isInDesktopTransition = false;
     }
 
     IEnumerator BigScreenEnterSequence()
     {
-        yield return StartCoroutine(GlideAvatarDesktopOut(0.4f));
+        yield return StartCoroutine(GlideAvatarDesktop(0.4f, true));
         yield return StartCoroutine(FadeCameraY(true));
     }
-
     IEnumerator BigScreenExitSequence()
     {
         yield return StartCoroutine(FadeCameraY(false));
-        yield return StartCoroutine(GlideAvatarDesktopIn(0.4f));
+        yield return StartCoroutine(GlideAvatarDesktop(0.4f, false));
     }
 }
