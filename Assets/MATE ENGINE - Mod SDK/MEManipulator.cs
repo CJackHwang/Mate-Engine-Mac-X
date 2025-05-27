@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
-[ExecuteInEditMode]
-public class MEReplacer : MonoBehaviour
+public class MEManipulator : MonoBehaviour
 {
     [Serializable]
     public class ReplacementEntry
@@ -14,65 +14,86 @@ public class MEReplacer : MonoBehaviour
 
     public List<ReplacementEntry> replacements = new();
 
-    private MEReceiver receiver;
-    private GameObject lastPatchedVRMModel;
-    private GameObject lastPatchedCustomVRM;
+    private HashSet<Animator> patchedAnimators = new HashSet<Animator>();
 
-    void OnEnable()
+    // Dummy fallback (will be reused for all empty slots)
+    private static AnimationClip _dummyClip;
+    private static AnimationClip DummyClip
     {
-        receiver = FindReceiver();
+        get
+        {
+            if (_dummyClip == null)
+            {
+                _dummyClip = new AnimationClip();
+                _dummyClip.name = "EmptyFallback";
+            }
+            return _dummyClip;
+        }
     }
 
     void Update()
     {
         if (!Application.isPlaying) return;
-        if (receiver == null) receiver = FindReceiver();
-        if (receiver == null) return;
 
-        bool needsPatch = false;
+        var receivers = FindObjectsOfType<AvatarAnimatorReceiver>(true);
 
-        if (receiver.VRMModel && receiver.VRMModel != lastPatchedVRMModel)
+        foreach (var receiver in receivers)
         {
-            lastPatchedVRMModel = receiver.VRMModel;
-            needsPatch = true;
-        }
+            if (receiver == null || receiver.avatarAnimator == null)
+                continue;
 
-        if (receiver.CustomVRM && receiver.CustomVRM != lastPatchedCustomVRM)
-        {
-            lastPatchedCustomVRM = receiver.CustomVRM;
-            needsPatch = true;
-        }
+            var animator = receiver.avatarAnimator;
+            if (patchedAnimators.Contains(animator))
+                continue; // Already patched
 
-        if (needsPatch)
-        {
-            ApplyAllReplacements();
+            ApplyAllReplacementsToAnimator(animator);
+            patchedAnimators.Add(animator);
         }
     }
 
-    MEReceiver FindReceiver()
+    public void ApplyAllReplacementsToAnimator(Animator animator)
     {
-        var all = GameObject.FindObjectsOfType<MEReceiver>(true);
-        foreach (var r in all)
-            if (r.VRMModel != null || r.CustomVRM != null)
-                return r;
-        return null;
-    }
+        GameObject targetRoot = animator.gameObject;
 
-    void ApplyAllReplacements()
-    {
         foreach (var entry in replacements)
         {
             if (!entry.sourceObject) continue;
-
             var overrideAnimator = entry.sourceObject.GetComponent<Animator>();
             if (overrideAnimator != null && overrideAnimator.runtimeAnimatorController != null)
             {
-                var targets = new[] { receiver.VRMModel, receiver.CustomVRM };
-                foreach (var target in targets)
+                RuntimeAnimatorController ctrl = overrideAnimator.runtimeAnimatorController;
+                AnimatorOverrideController overrideCtrl;
+
+                // Always wrap in override controller so we can set slots
+                if (ctrl is AnimatorOverrideController alreadyOverride)
+                    overrideCtrl = alreadyOverride;
+                else
+                    overrideCtrl = new AnimatorOverrideController(ctrl);
+
+                // Ensure HoverReaction and HoverFace are NEVER empty
+                EnsureClipNotEmpty(overrideCtrl, "HoverReaction");
+                EnsureClipNotEmpty(overrideCtrl, "HoverFace");
+
+                animator.runtimeAnimatorController = overrideCtrl;
+
+                // Patch PetVoiceReactionHandler if present
+                var voiceHandler = animator.GetComponent<PetVoiceReactionHandler>();
+                if (voiceHandler != null)
                 {
-                    var anim = target?.GetComponent<Animator>();
-                    if (anim != null)
-                        anim.runtimeAnimatorController = overrideAnimator.runtimeAnimatorController;
+                    var overrideControllerField = typeof(PetVoiceReactionHandler)
+                        .GetField("overrideController", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (overrideControllerField != null)
+                        overrideControllerField.SetValue(voiceHandler, overrideCtrl);
+
+                    var lastControllerField = typeof(PetVoiceReactionHandler)
+                        .GetField("lastController", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (lastControllerField != null)
+                        lastControllerField.SetValue(voiceHandler, overrideCtrl.runtimeAnimatorController);
+
+                    var hasSetupField = typeof(PetVoiceReactionHandler)
+                        .GetField("hasSetup", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (hasSetupField != null)
+                        hasSetupField.SetValue(voiceHandler, false);
                 }
             }
 
@@ -81,20 +102,47 @@ public class MEReplacer : MonoBehaviour
             {
                 if (overrideComp == null) continue;
                 Type t = overrideComp.GetType();
-
-                if (receiver.VRMModel != null)
-                    CopyFieldsAndProperties(receiver.VRMModel, t, overrideComp);
-
-                if (receiver.CustomVRM != null)
-                    CopyFieldsAndProperties(receiver.CustomVRM, t, overrideComp);
+                CopyFieldsAndProperties(targetRoot, t, overrideComp);
 
                 if (overrideComp is Behaviour b)
                     b.enabled = false;
             }
-
             entry.sourceObject.SetActive(false);
         }
     }
+
+    void EnsureClipNotEmpty(AnimatorOverrideController ctrl, string slot)
+    {
+        // Get all override pairs (OriginalClip, OverrideClip)
+        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        ctrl.GetOverrides(overrides);
+
+        bool found = false;
+        for (int i = 0; i < overrides.Count; i++)
+        {
+            if (overrides[i].Key != null && overrides[i].Key.name == slot)
+            {
+                found = true;
+                // If the override is null, fill it with DummyClip
+                if (overrides[i].Value == null)
+                {
+                    ctrl[overrides[i].Key] = DummyClip;
+                }
+                break;
+            }
+        }
+
+        // If not found, try to set the slot by name anyway (Unity will create it if the slot exists in the controller)
+        if (!found)
+        {
+            try
+            {
+                ctrl[slot] = DummyClip;
+            }
+            catch { }
+        }
+    }
+
 
     void CopyFieldsAndProperties(GameObject targetRoot, Type type, MonoBehaviour source)
     {
@@ -146,5 +194,10 @@ public class MEReplacer : MonoBehaviour
             return unityObj == null;
 
         return false;
+    }
+
+    public void ResetPatchedAnimators()
+    {
+        patchedAnimators.Clear();
     }
 }
