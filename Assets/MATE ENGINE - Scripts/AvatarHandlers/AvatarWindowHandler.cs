@@ -62,7 +62,7 @@ public class AvatarWindowHandler : MonoBehaviour
             }
             snappedHWND = IntPtr.Zero;
             SetTopMost(true);
-            return; 
+            return;
         }
     }
 

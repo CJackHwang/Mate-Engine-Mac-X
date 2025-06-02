@@ -44756,6 +44756,8 @@ MonoBehaviour:
   desktopScale: 1
   snapZoneOffset: {x: 0, y: -150}
   snapZoneSize: {x: 90, y: 200}
+  windowMaterial: {fileID: 0}
+  planeZOffset: 0
 --- !u!114 &1499361263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133411,6 +133413,8 @@ MonoBehaviour:
   desktopScale: 1
   snapZoneOffset: {x: 0, y: -150}
   snapZoneSize: {x: 90, y: 200}
+  windowMaterial: {fileID: 2100000, guid: bec5abeebccf0354c86b49405b1cf3a7, type: 2}
+  planeZOffset: 2
 --- !u!114 &8924917334924735506
 MonoBehaviour:
   m_ObjectHideFlags: 0
