@@ -127,6 +127,12 @@ public class SaveLoadHandler : MonoBehaviour
         public int bigScreenAlarmMinute = 0;
         public string bigScreenAlarmText = "Wake up! This is your alarm!";
 
+        public Dictionary<string, float> lightIntensities = new();
+        public Dictionary<string, float> lightSaturations = new();
+        public Dictionary<string, float> lightHues = new();
+        public Dictionary<string, bool> groupToggles = new();
+
+
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
 
 

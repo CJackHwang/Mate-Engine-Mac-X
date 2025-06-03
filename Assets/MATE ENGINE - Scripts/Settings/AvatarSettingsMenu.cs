@@ -51,6 +51,31 @@ public class AvatarSettingsMenu : MonoBehaviour
     "30s", "1 min", "5 min", "15 min", "30 min", "45 min", "1 h", "1.5 h", "2 h", "2.5 h", "3 h"
 };
 
+    [System.Serializable]
+    public class LightControlEntry
+    {
+        public string lightID;
+        public Slider intensitySlider;
+        public Slider saturationSlider;
+        public Slider hueSlider;
+        public float defaultIntensity;
+        public float defaultSaturation;
+        public float defaultHue;
+    }
+
+    [System.Serializable]
+    public class LightToggleEntry
+    {
+        public string activeID;
+        public string nonActiveID;
+        public Toggle checkmark;
+    }
+
+    public List<LightControlEntry> lights = new List<LightControlEntry>();
+    public List<LightToggleEntry> lightToggles = new List<LightToggleEntry>();
+
+    public ColorController colorController;
+
 
     [System.Serializable]
     public class AccessoryToggleEntry
@@ -113,6 +138,58 @@ public class AvatarSettingsMenu : MonoBehaviour
             menuPanel.SetActive(false);
             IsMenuOpen = false;
         }
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+            int idx = i;
+            var entry = lights[i];
+            entry.defaultIntensity = entry.intensitySlider.value;
+            entry.defaultSaturation = entry.saturationSlider.value;
+            entry.defaultHue = entry.hueSlider.value;
+
+            entry.intensitySlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
+            entry.saturationSlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
+            entry.hueSlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
+        }
+        for (int i = 0; i < lightToggles.Count; i++)
+        {
+            int idx = i;
+            var entry = lightToggles[i];
+            if (entry.checkmark != null)
+                entry.checkmark.onValueChanged.AddListener((v) => OnLightToggleChanged(idx, v));
+        }
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+            int idx = i;
+            var entry = lights[i];
+            entry.intensitySlider.onValueChanged.AddListener((v) => {
+                SaveLoadHandler.Instance.data.lightIntensities[entry.lightID] = v;
+                SaveAll();
+            });
+            entry.saturationSlider.onValueChanged.AddListener((v) => {
+                SaveLoadHandler.Instance.data.lightSaturations[entry.lightID] = v;
+                SaveAll();
+            });
+            entry.hueSlider.onValueChanged.AddListener((v) => {
+                SaveLoadHandler.Instance.data.lightHues[entry.lightID] = v;
+                SaveAll();
+            });
+        }
+
+        for (int i = 0; i < lightToggles.Count; i++)
+        {
+            var entry = lightToggles[i];
+            if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
+            {
+                entry.checkmark.onValueChanged.AddListener((v) =>
+                {
+                    SaveLoadHandler.Instance.data.groupToggles[entry.activeID] = v;
+                    SaveAll();
+                });
+            }
+        }
+
 
         windowSizeButton?.onClick.AddListener(CycleWindowSize);
 
@@ -277,6 +354,57 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     }
 
+    private void OnLightToggleChanged(int idx, bool state)
+    {
+        var entry = lightToggles[idx];
+        if (colorController == null) return;
+        colorController.SetGroupEnabled(entry.activeID, state);
+        colorController.SetGroupEnabled(entry.nonActiveID, !state);
+    }
+
+    private void OnLightSliderChanged(int idx)
+    {
+        var entry = lights[idx];
+        if (colorController == null) return;
+        var target = colorController.targets.Find(t => t.id == entry.lightID);
+        if (target != null)
+        {
+            target.intensity = entry.intensitySlider.value;
+            target.saturation = entry.saturationSlider.value;
+            target.hue = entry.hueSlider.value;
+        }
+    }
+    public void ResetAllLightTogglesToDefault()
+    {
+        for (int i = 0; i < lightToggles.Count; i++)
+        {
+            var entry = lightToggles[i];
+            if (entry.checkmark != null)
+                entry.checkmark.SetIsOnWithoutNotify(false);
+
+            OnLightToggleChanged(i, false);
+        }
+    }
+
+
+    public void ResetLightToDefault(int idx)
+    {
+        var entry = lights[idx];
+        entry.intensitySlider.value = entry.defaultIntensity;
+        entry.saturationSlider.value = entry.defaultSaturation;
+        entry.hueSlider.value = entry.defaultHue;
+    }
+    public void ResetAllLightsToDefault()
+    {
+        for (int i = 0; i < lights.Count; i++)
+        {
+            var entry = lights[i];
+            entry.intensitySlider.value = entry.defaultIntensity;
+            entry.saturationSlider.value = entry.defaultSaturation;
+            entry.hueSlider.value = entry.defaultHue;
+        }
+    }
+
     public void LoadAlarmUIFromSettings()
     {
         if (bigScreenAlarmHourDropdown != null)
@@ -362,6 +490,58 @@ public class AvatarSettingsMenu : MonoBehaviour
         eyeBlendSlider?.SetValueWithoutNotify(data.eyeBlend);
         enableIKToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableIK);
 
+        for (int i = 0; i < lights.Count; i++)
+        {
+            var entry = lights[i];
+            if (!string.IsNullOrEmpty(entry.lightID))
+            {
+                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal))
+                    entry.intensitySlider.SetValueWithoutNotify(iVal);
+                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal))
+                    entry.saturationSlider.SetValueWithoutNotify(sVal);
+                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal))
+                    entry.hueSlider.SetValueWithoutNotify(hVal);
+            }
+        }
+
+        for (int i = 0; i < lightToggles.Count; i++)
+        {
+            var entry = lightToggles[i];
+            if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
+            {
+                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState))
+                    entry.checkmark.SetIsOnWithoutNotify(toggleState);
+            }
+        }
+
+        for (int i = 0; i < lightToggles.Count; i++)
+        {
+            var entry = lightToggles[i];
+            if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
+            {
+                bool isOn = false;
+                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState))
+                    isOn = toggleState;
+                OnLightToggleChanged(i, isOn);
+            }
+        }
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+            var entry = lights[i];
+            if (!string.IsNullOrEmpty(entry.lightID))
+            {
+                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal))
+                    entry.intensitySlider.SetValueWithoutNotify(iVal);
+                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal))
+                    entry.saturationSlider.SetValueWithoutNotify(sVal);
+                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal))
+                    entry.hueSlider.SetValueWithoutNotify(hVal);
+            }
+            OnLightSliderChanged(i);
+        }
+
+
         if (graphicsDropdown != null)
         {
             graphicsDropdown.SetValueWithoutNotify(data.graphicsQualityLevel);
@@ -404,6 +584,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.ambientOcclusion = ambientOcclusionToggle?.isOn ?? false;
         data.eyeBlend = eyeBlendSlider?.value ?? 1f;
         data.enableIK = enableIKToggle?.isOn ?? true;
+
 
         foreach (var entry in accessoryToggleBindings)
         {
@@ -479,7 +660,13 @@ public class AvatarSettingsMenu : MonoBehaviour
             uiHueShift = 0f,
             uiSaturation = 0.5f
         };
-
+        ResetAllLightsToDefault();
+        ResetAllLightsToDefault();
+        ResetAllLightTogglesToDefault();
+        SaveLoadHandler.Instance.data.lightIntensities.Clear();
+        SaveLoadHandler.Instance.data.lightSaturations.Clear();
+        SaveLoadHandler.Instance.data.lightHues.Clear();
+        SaveLoadHandler.Instance.data.groupToggles.Clear();
         SaveLoadHandler.Instance.data.bigScreenAlarmHour = 0;
         SaveLoadHandler.Instance.data.bigScreenAlarmMinute = 0;
         SaveLoadHandler.Instance.data.bigScreenAlarmText = "";
