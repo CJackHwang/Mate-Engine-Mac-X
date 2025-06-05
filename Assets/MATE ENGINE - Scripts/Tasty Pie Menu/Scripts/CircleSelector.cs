@@ -135,15 +135,16 @@ namespace Xamin
                 }
             }
 
-
             if (opened)
             {
-                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * Size, .2f);
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * Size, 0.2f);
+                if (Vector3.Distance(transform.localScale, Vector3.one * Size) < 0.001f)
+                    transform.localScale = Vector3.one * Size;
                 _background.color = BackgroundColor;
                 if (UseSeparators != _previousUseSeparators)
                     ChangeSeparatorsState();
 
-                if (transform.localScale.x >= Size - .2f)
+                if (transform.localScale.x >= Size - 0.2f)
                 {
                     buttonCount = buttonsInstances.Count;
                     if (startButCount != buttonCount && buttonSource == ButtonSource.prefabs)
@@ -152,7 +153,7 @@ namespace Xamin
                         return;
                     }
 
-                    _cursor.fillAmount = Mathf.Lerp(_cursor.fillAmount, _desiredFill, .2f);
+                    _cursor.fillAmount = Mathf.Lerp(_cursor.fillAmount, _desiredFill, 0.2f);
 
                     Vector3 screenBounds = Camera.main.WorldToScreenPoint(transform.position);
                     Vector2 vector = (Input.mousePosition - screenBounds);
@@ -167,7 +168,6 @@ namespace Xamin
                             LerpAmount
                         );
                     }
-
                     else
                     {
                         transform.localRotation = Quaternion.Euler(Vector3.forward * zRotation);
@@ -270,11 +270,15 @@ namespace Xamin
             else
             {
                 transform.localScale = Vector3.Lerp(transform.localScale,
-                    (CloseAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10, .2f);
+                    (CloseAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10, 0.2f);
+                Vector3 target = (CloseAnimation == AnimationType.zoomIn) ? Vector3.zero : Vector3.one * 10;
+                if (Vector3.Distance(transform.localScale, target) < 0.001f)
+                    transform.localScale = target;
                 _cursor.color = Color.Lerp(_cursor.color, Color.clear, LerpAmount / 3f);
                 _background.color = Color.Lerp(_background.color, Color.clear, LerpAmount / 3f);
             }
         }
+
 
         public void RefreshAllButtonColors()
         {
