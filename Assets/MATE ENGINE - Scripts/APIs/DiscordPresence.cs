@@ -53,18 +53,20 @@ public class DiscordPresence : MonoBehaviour
     private Animator cachedAnimator;
     private bool wasRPCEnabled = false;
 
+    private long gameStartTimestamp = 0;
+
     void Start()
     {
         wasRPCEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
         if (wasRPCEnabled)
         {
+            InitGameStartTimestamp();
             client = new DiscordRpcClient(appId);
             client.Initialize();
             ResolveAnimator();
             UpdatePresence(force: true);
         }
     }
-
     void Update()
     {
         bool isEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
@@ -75,9 +77,10 @@ public class DiscordPresence : MonoBehaviour
 
             if (isEnabled)
             {
+                InitGameStartTimestamp();
                 client = new DiscordRpcClient(appId);
                 client.Initialize();
-                ResolveAnimator(); // initial try
+                ResolveAnimator();
                 UpdatePresence(force: true);
                 Debug.Log("[DiscordPresence] Enabled and client initialized at runtime.");
             }
@@ -92,20 +95,43 @@ public class DiscordPresence : MonoBehaviour
                 }
             }
         }
-
-        // Ensure animator resolves eventually
         if (wasRPCEnabled && client != null)
         {
             if (cachedAnimator == null)
             {
                 ResolveAnimator();
-                if (cachedAnimator == null) return; // still not ready
+                if (cachedAnimator == null) return;
             }
 
             UpdatePresence();
         }
     }
-
+    void InitGameStartTimestamp()
+    {
+        if (timerMode == TimerMode.FixedStartTime)
+        {
+            if (DateTimeOffset.TryParse(fixedStartTimeISO, out var fixedTime))
+            {
+                gameStartTimestamp = fixedTime.ToUnixTimeMilliseconds();
+            }
+            else
+            {
+                Debug.LogWarning("[DiscordPresence] Invalid fixed timestamp. Using now.");
+                gameStartTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            }
+        }
+        else if (timerMode == TimerMode.StartNow)
+        {
+            if (gameStartTimestamp == 0)
+            {
+                gameStartTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            }
+        }
+        else
+        {
+            gameStartTimestamp = 0;
+        }
+    }
 
     void ResolveAnimator()
     {
@@ -167,7 +193,7 @@ public class DiscordPresence : MonoBehaviour
         {
             presence.Timestamps = new Timestamps
             {
-                StartUnixMilliseconds = (ulong?)GetUnixTimestamp()
+                StartUnixMilliseconds = (ulong?)gameStartTimestamp
             };
         }
 
@@ -200,19 +226,6 @@ public class DiscordPresence : MonoBehaviour
         return "";
     }
 
-    private long GetUnixTimestamp()
-    {
-        if (timerMode == TimerMode.FixedStartTime)
-        {
-            if (DateTimeOffset.TryParse(fixedStartTimeISO, out var fixedTime))
-                return fixedTime.ToUnixTimeMilliseconds();
-
-            Debug.LogWarning("[DiscordPresence] Invalid fixed timestamp. Using now.");
-        }
-
-        return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-    }
-
     void OnApplicationQuit()
     {
         try
@@ -220,7 +233,7 @@ public class DiscordPresence : MonoBehaviour
             if (client != null)
             {
                 client.ClearPresence();
-                client.Dispose(); // This is sufficient
+                client.Dispose();
                 client = null;
                 Debug.Log("[DiscordPresence] Presence cleared and client disposed.");
             }
@@ -230,5 +243,4 @@ public class DiscordPresence : MonoBehaviour
             Debug.LogError("[DiscordPresence] Error during Discord shutdown: " + ex);
         }
     }
-
 }

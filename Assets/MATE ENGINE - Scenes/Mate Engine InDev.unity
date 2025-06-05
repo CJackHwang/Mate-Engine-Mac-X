@@ -376,6 +376,9 @@ MonoBehaviour:
   - isBigScreenSaver
   - isBigScreenAlarm
   hideIfStateName: []
+  lights: []
+  lightToggles: []
+  colorController: {fileID: 0}
   accessoryToggleBindings:
   - ruleName: Steam Halo
     toggle: {fileID: 1343568825}
@@ -703,7 +706,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0491713
+    fadeCurrentValue: 0.04675348
     fadeTarget: 0
     isFading: 1
   - type: 0
@@ -727,7 +730,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0491713
+    fadeCurrentValue: 0.04675348
     fadeTarget: 0
     isFading: 1
   - type: 0
@@ -751,7 +754,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0491713
+    fadeCurrentValue: 0.04675348
     fadeTarget: 0
     isFading: 1
   - type: 0
@@ -15694,7 +15697,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.0983426
+  m_Intensity: 0.09350696
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -34502,7 +34505,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.1966852
+  m_Intensity: 0.18701392
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -36409,7 +36412,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1775918863}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.24911033
+  m_Size: 0.2491103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -42086,7 +42089,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.1475139
+  m_Intensity: 0.14026044
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

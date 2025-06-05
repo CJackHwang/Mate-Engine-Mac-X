@@ -7,36 +7,25 @@ using TMPro;
 
 public class AvatarSettingsMenu : MonoBehaviour
 {
-    public GameObject menuPanel, uniWindowControllerObject, bloomObject, dayNightObject;
-    public Button applyButton, resetButton, windowSizeButton;
+    public GameObject menuPanel, uniWindowControllerObject, bloomObject, dayNightObject, ambientOcclusionObject;
+    public Button applyButton, resetButton, windowSizeButton, refreshAppsListButton;
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider,
-                  avatarSizeSlider, fpsLimitSlider, petVolumeSlider, effectsVolumeSlider, menuVolumeSlider;
+                  avatarSizeSlider, fpsLimitSlider, petVolumeSlider, effectsVolumeSlider, menuVolumeSlider,
+                  headBlendSlider, spineBlendSlider, eyeBlendSlider, hueShiftSlider, saturationSlider,
+                  bigScreenSaverTimeoutSlider;
     public Toggle enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle,
-                  enableParticlesToggle, bloomToggle, dayNightToggle, enableWindowSittingToggle, enableDiscordRPCToggle;
-    public TMP_Dropdown graphicsDropdown;
+                  enableParticlesToggle, bloomToggle, dayNightToggle, enableWindowSittingToggle, enableDiscordRPCToggle,
+                  enableHandHoldingToggle, ambientOcclusionToggle, enableIKToggle,
+                  bigScreenSaverEnableToggle, bigScreenAlarmEnableToggle;
+    public TMP_Dropdown graphicsDropdown, bigScreenAlarmHourDropdown, bigScreenAlarmMinuteDropdown;
+    public TMP_Text bigScreenSaverTimeoutLabel;
+    public InputField bigScreenAlarmTextInput;
     public VRMLoader vrmLoader;
     public bool resetAlsoClearsAllowedApps = false;
     public List<AudioSource> petAudioSources = new(), effectsAudioSources = new(), menuAudioSources = new();
     public static bool IsMenuOpen { get; set; }
-    public Slider headBlendSlider, spineBlendSlider, eyeBlendSlider;
-    public Toggle enableHandHoldingToggle;
-    public Slider hueShiftSlider;
-    public Slider saturationSlider;
-
     private UniWindowController uniWindowController;
     private AvatarParticleHandler currentParticleHandler;
-    public Button refreshAppsListButton;
-    public Toggle ambientOcclusionToggle;
-    public GameObject ambientOcclusionObject;
-    public Toggle enableIKToggle;
-
-    public Slider bigScreenSaverTimeoutSlider;
-    public Toggle bigScreenSaverEnableToggle;
-    public TMP_Text bigScreenSaverTimeoutLabel;
-    public TMP_Dropdown bigScreenAlarmHourDropdown;
-    public TMP_Dropdown bigScreenAlarmMinuteDropdown;
-    public Toggle bigScreenAlarmEnableToggle;
-    public InputField bigScreenAlarmTextInput;
 
     [Header("Menu Hide/Lock Conditions")]
     [Tooltip("Parameter Blacklist")]
@@ -50,7 +39,6 @@ public class AvatarSettingsMenu : MonoBehaviour
     private static readonly string[] TimeoutLabels = {
     "30s", "1 min", "5 min", "15 min", "30 min", "45 min", "1 h", "1.5 h", "2 h", "2.5 h", "3 h"
 };
-
     [System.Serializable]
     public class LightControlEntry
     {
@@ -73,9 +61,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public List<LightControlEntry> lights = new List<LightControlEntry>();
     public List<LightToggleEntry> lightToggles = new List<LightToggleEntry>();
-
     public ColorController colorController;
-
 
     [System.Serializable]
     public class AccessoryToggleEntry
@@ -120,8 +106,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         }
         return false;
     }
-
-
     private bool HasBoolParameter(Animator animator, string paramName)
     {
         foreach (var param in animator.parameters)
@@ -129,7 +113,6 @@ public class AvatarSettingsMenu : MonoBehaviour
                 return true;
         return false;
     }
-
 
     private void Start()
     {
@@ -146,7 +129,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             entry.defaultIntensity = entry.intensitySlider.value;
             entry.defaultSaturation = entry.saturationSlider.value;
             entry.defaultHue = entry.hueSlider.value;
-
             entry.intensitySlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
             entry.saturationSlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
             entry.hueSlider.onValueChanged.AddListener((v) => OnLightSliderChanged(idx));
@@ -163,18 +145,9 @@ public class AvatarSettingsMenu : MonoBehaviour
         {
             int idx = i;
             var entry = lights[i];
-            entry.intensitySlider.onValueChanged.AddListener((v) => {
-                SaveLoadHandler.Instance.data.lightIntensities[entry.lightID] = v;
-                SaveAll();
-            });
-            entry.saturationSlider.onValueChanged.AddListener((v) => {
-                SaveLoadHandler.Instance.data.lightSaturations[entry.lightID] = v;
-                SaveAll();
-            });
-            entry.hueSlider.onValueChanged.AddListener((v) => {
-                SaveLoadHandler.Instance.data.lightHues[entry.lightID] = v;
-                SaveAll();
-            });
+            entry.intensitySlider.onValueChanged.AddListener((v) => { SaveLoadHandler.Instance.data.lightIntensities[entry.lightID] = v; SaveAll(); });
+            entry.saturationSlider.onValueChanged.AddListener((v) => { SaveLoadHandler.Instance.data.lightSaturations[entry.lightID] = v; SaveAll(); });
+            entry.hueSlider.onValueChanged.AddListener((v) => { SaveLoadHandler.Instance.data.lightHues[entry.lightID] = v; SaveAll(); });
         }
 
         for (int i = 0; i < lightToggles.Count; i++)
@@ -184,19 +157,14 @@ public class AvatarSettingsMenu : MonoBehaviour
             {
                 entry.checkmark.onValueChanged.AddListener((v) =>
                 {
-                    SaveLoadHandler.Instance.data.groupToggles[entry.activeID] = v;
-                    SaveAll();
-                });
+                SaveLoadHandler.Instance.data.groupToggles[entry.activeID] = v; SaveAll(); });
             }
         }
 
-
         windowSizeButton?.onClick.AddListener(CycleWindowSize);
 
-        if (uniWindowControllerObject != null)
-            uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
-        else
-            uniWindowController = FindFirstObjectByType<UniWindowController>();
+        if (uniWindowControllerObject != null) uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
+        else uniWindowController = FindFirstObjectByType<UniWindowController>();
 
         refreshAppsListButton?.onClick.AddListener(() =>
         {
@@ -213,10 +181,7 @@ public class AvatarSettingsMenu : MonoBehaviour
                 bigScreenAlarmHourDropdown.AddOptions(hours);
             }
             bigScreenAlarmHourDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmHour);
-            bigScreenAlarmHourDropdown.onValueChanged.AddListener(v => {
-                SaveLoadHandler.Instance.data.bigScreenAlarmHour = v;
-                SaveLoadHandler.Instance.SaveToDisk();
-            });
+            bigScreenAlarmHourDropdown.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.bigScreenAlarmHour = v; SaveLoadHandler.Instance.SaveToDisk(); });
         }
         if (bigScreenAlarmMinuteDropdown != null)
         {
@@ -228,32 +193,22 @@ public class AvatarSettingsMenu : MonoBehaviour
                 bigScreenAlarmMinuteDropdown.AddOptions(minutes);
             }
             bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmMinute);
-            bigScreenAlarmMinuteDropdown.onValueChanged.AddListener(v => {
-                SaveLoadHandler.Instance.data.bigScreenAlarmMinute = v;
-                SaveLoadHandler.Instance.SaveToDisk();
-            });
+            bigScreenAlarmMinuteDropdown.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.bigScreenAlarmMinute = v; SaveLoadHandler.Instance.SaveToDisk(); });
         }
         if (bigScreenAlarmEnableToggle != null)
         {
             bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmEnabled);
-            bigScreenAlarmEnableToggle.onValueChanged.AddListener(v => {
-                SaveLoadHandler.Instance.data.bigScreenAlarmEnabled = v;
-                SaveLoadHandler.Instance.SaveToDisk();
-            });
+            bigScreenAlarmEnableToggle.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.bigScreenAlarmEnabled = v; SaveLoadHandler.Instance.SaveToDisk(); });
         }
         if (bigScreenAlarmTextInput != null)
         {
             bigScreenAlarmTextInput.SetTextWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmText);
-            bigScreenAlarmTextInput.onEndEdit.AddListener(text => {
-                SaveLoadHandler.Instance.data.bigScreenAlarmText = text;
-                SaveLoadHandler.Instance.SaveToDisk();
-            });
+            bigScreenAlarmTextInput.onEndEdit.AddListener(text => { SaveLoadHandler.Instance.data.bigScreenAlarmText = text; SaveLoadHandler.Instance.SaveToDisk(); });
         }
         var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
         applyButton?.onClick.AddListener(ApplySettings);
         resetButton?.onClick.AddListener(ResetToDefaults);
-
         soundThresholdSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.soundThreshold = v; SaveAll(); });
         idleSwitchTimeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.idleSwitchTime = v; SaveAll(); });
         idleTransitionTimeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.idleTransitionTime = v; SaveAll(); });
@@ -262,7 +217,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         petVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.petVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
         effectsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.effectsVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
         menuVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.menuVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
-
         enableDancingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDancing = v; SaveAll(); });
         enableMouseTrackingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableMouseTracking = v; SaveAll(); });
         isTopmostToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.isTopmost = v; ApplySettings(); SaveAll(); });
@@ -271,45 +225,17 @@ public class AvatarSettingsMenu : MonoBehaviour
         dayNightToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.dayNight = v; ApplySettings(); SaveAll(); });
         enableWindowSittingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableWindowSitting = v; SaveAll(); });
         enableDiscordRPCToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDiscordRPC = v; SaveAll(); });
-
         headBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.headBlend = v; SaveAll(); });
         spineBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.spineBlend = v; SaveAll(); });
         enableHandHoldingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableHandHolding = v; SaveAll(); });
-
         bigScreenSaverTimeoutSlider?.onValueChanged.AddListener(OnBigScreenSaverTimeoutSliderChanged);
         bigScreenSaverEnableToggle?.onValueChanged.AddListener(OnBigScreenSaverEnableToggleChanged);
-
-
-        hueShiftSlider?.onValueChanged.AddListener(v => {
-            SaveLoadHandler.Instance.data.uiHueShift = v;
-            var shifter = FindFirstObjectByType<MenuHueShift>();
-            if (shifter != null) shifter.hueShift = v;
-            SaveAll();
-        });
-        saturationSlider?.onValueChanged.AddListener(v => {
-            SaveLoadHandler.Instance.data.uiSaturation = v;
-            var shifter = FindFirstObjectByType<MenuHueShift>();
-            if (shifter != null) shifter.saturation = v;
-            SaveAll();
-        });
-        ambientOcclusionToggle?.onValueChanged.AddListener(v => {
-            SaveLoadHandler.Instance.data.ambientOcclusion = v;
-            ApplySettings();
-            SaveAll();
-        });
-        graphicsDropdown?.onValueChanged.AddListener(i => {
-            SaveLoadHandler.Instance.data.graphicsQualityLevel = i;
-            QualitySettings.SetQualityLevel(i, true);
-            SaveAll();
-        });
-        eyeBlendSlider?.onValueChanged.AddListener(v => {
-            SaveLoadHandler.Instance.data.eyeBlend = v;
-            SaveAll();
-        });
-        enableIKToggle?.onValueChanged.AddListener(v => {
-            SaveLoadHandler.Instance.data.enableIK = v;
-            SaveAll();
-        });
+        hueShiftSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiHueShift = v; var shifter = FindFirstObjectByType<MenuHueShift>(); if (shifter != null) shifter.hueShift = v; SaveAll(); });
+        saturationSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiSaturation = v; var shifter = FindFirstObjectByType<MenuHueShift>(); if (shifter != null) shifter.saturation = v; SaveAll(); });
+        ambientOcclusionToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); SaveAll(); });
+        graphicsDropdown?.onValueChanged.AddListener(i => { SaveLoadHandler.Instance.data.graphicsQualityLevel = i; QualitySettings.SetQualityLevel(i, true); SaveAll(); });
+        eyeBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.eyeBlend = v; SaveAll(); });
+        enableIKToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableIK = v; SaveAll(); });
         foreach (var entry in accessoryToggleBindings)
         {
             if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null)
@@ -334,9 +260,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
             graphicsDropdown.onValueChanged.AddListener((index) =>
             {
-                QualitySettings.SetQualityLevel(index, true);
-                SaveLoadHandler.Instance.data.graphicsQualityLevel = index;
-                SaveLoadHandler.Instance.SaveToDisk();
+                QualitySettings.SetQualityLevel(index, true); SaveLoadHandler.Instance.data.graphicsQualityLevel = index; SaveLoadHandler.Instance.SaveToDisk();
             });
 
             graphicsDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.graphicsQualityLevel);
@@ -348,10 +272,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         var shifter = FindFirstObjectByType<MenuHueShift>();
         if (shifter != null)
         {
-            shifter.hueShift = SaveLoadHandler.Instance.data.uiHueShift;
-            shifter.saturation = SaveLoadHandler.Instance.data.uiSaturation;
+            shifter.hueShift = SaveLoadHandler.Instance.data.uiHueShift; shifter.saturation = SaveLoadHandler.Instance.data.uiSaturation;
         }
-
     }
 
     private void OnLightToggleChanged(int idx, bool state)
@@ -378,10 +300,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     {
         for (int i = 0; i < lightToggles.Count; i++)
         {
-            var entry = lightToggles[i];
-            if (entry.checkmark != null)
-                entry.checkmark.SetIsOnWithoutNotify(false);
-
+            var entry = lightToggles[i]; if (entry.checkmark != null) entry.checkmark.SetIsOnWithoutNotify(false);
             OnLightToggleChanged(i, false);
         }
     }
@@ -407,29 +326,21 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public void LoadAlarmUIFromSettings()
     {
-        if (bigScreenAlarmHourDropdown != null)
-            bigScreenAlarmHourDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmHour);
-        if (bigScreenAlarmMinuteDropdown != null)
-            bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmMinute);
-        if (bigScreenAlarmEnableToggle != null)
-            bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmEnabled);
+        if (bigScreenAlarmHourDropdown != null) bigScreenAlarmHourDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmHour);
+        if (bigScreenAlarmMinuteDropdown != null) bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmMinute);
+        if (bigScreenAlarmEnableToggle != null) bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmEnabled);
     }
 
     private void OnBigScreenSaverTimeoutSliderChanged(float v)
     {
-        int idx = Mathf.Clamp(Mathf.RoundToInt(v), 0, TimeoutSteps.Length - 1);
-        SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = idx;
-        if (bigScreenSaverTimeoutLabel != null)
-            bigScreenSaverTimeoutLabel.text = TimeoutLabels[idx];
-        SaveAll();
+        int idx = Mathf.Clamp(Mathf.RoundToInt(v), 0, TimeoutSteps.Length - 1); SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = idx;
+        if (bigScreenSaverTimeoutLabel != null) bigScreenSaverTimeoutLabel.text = TimeoutLabels[idx]; SaveAll();
     }
 
     private void OnBigScreenSaverEnableToggleChanged(bool v)
     {
-        SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = v;
-        SaveAll();
+        SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = v; SaveAll();
     }
-
 
     private void CycleWindowSize()
     {
@@ -459,10 +370,8 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     public void LoadSettings()
     {
-        foreach (var entry in accessoryToggleBindings)
-            if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null &&
-                SaveLoadHandler.Instance.data.accessoryStates.TryGetValue(entry.ruleName, out bool state))
-                entry.toggle.SetIsOnWithoutNotify(state);
+        foreach (var entry in accessoryToggleBindings) if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null &&
+        SaveLoadHandler.Instance.data.accessoryStates.TryGetValue(entry.ruleName, out bool state)) entry.toggle.SetIsOnWithoutNotify(state);
 
         var data = SaveLoadHandler.Instance.data;
         soundThresholdSlider?.SetValueWithoutNotify(data.soundThreshold);
@@ -495,12 +404,9 @@ public class AvatarSettingsMenu : MonoBehaviour
             var entry = lights[i];
             if (!string.IsNullOrEmpty(entry.lightID))
             {
-                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal))
-                    entry.intensitySlider.SetValueWithoutNotify(iVal);
-                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal))
-                    entry.saturationSlider.SetValueWithoutNotify(sVal);
-                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal))
-                    entry.hueSlider.SetValueWithoutNotify(hVal);
+                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal)) entry.intensitySlider.SetValueWithoutNotify(iVal);
+                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal)) entry.saturationSlider.SetValueWithoutNotify(sVal);
+                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal)) entry.hueSlider.SetValueWithoutNotify(hVal);
             }
         }
 
@@ -509,8 +415,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             var entry = lightToggles[i];
             if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
             {
-                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState))
-                    entry.checkmark.SetIsOnWithoutNotify(toggleState);
+                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState)) entry.checkmark.SetIsOnWithoutNotify(toggleState);
             }
         }
 
@@ -520,8 +425,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
             {
                 bool isOn = false;
-                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState))
-                    isOn = toggleState;
+                if (SaveLoadHandler.Instance.data.groupToggles.TryGetValue(entry.activeID, out bool toggleState)) isOn = toggleState;
                 OnLightToggleChanged(i, isOn);
             }
         }
@@ -531,16 +435,12 @@ public class AvatarSettingsMenu : MonoBehaviour
             var entry = lights[i];
             if (!string.IsNullOrEmpty(entry.lightID))
             {
-                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal))
-                    entry.intensitySlider.SetValueWithoutNotify(iVal);
-                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal))
-                    entry.saturationSlider.SetValueWithoutNotify(sVal);
-                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal))
-                    entry.hueSlider.SetValueWithoutNotify(hVal);
+                if (SaveLoadHandler.Instance.data.lightIntensities.TryGetValue(entry.lightID, out float iVal)) entry.intensitySlider.SetValueWithoutNotify(iVal);
+                if (SaveLoadHandler.Instance.data.lightSaturations.TryGetValue(entry.lightID, out float sVal)) entry.saturationSlider.SetValueWithoutNotify(sVal);
+                if (SaveLoadHandler.Instance.data.lightHues.TryGetValue(entry.lightID, out float hVal)) entry.hueSlider.SetValueWithoutNotify(hVal);
             }
             OnLightSliderChanged(i);
         }
-
 
         if (graphicsDropdown != null)
         {
@@ -551,12 +451,9 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (bigScreenSaverTimeoutSlider != null)
         {
             bigScreenSaverTimeoutSlider.SetValueWithoutNotify(SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex);
-            if (bigScreenSaverTimeoutLabel != null)
-                bigScreenSaverTimeoutLabel.text = TimeoutLabels[SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex];
+            if (bigScreenSaverTimeoutLabel != null) bigScreenSaverTimeoutLabel.text = TimeoutLabels[SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex];
         }
-        if (bigScreenSaverEnableToggle != null)
-            bigScreenSaverEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled);
-
+        if (bigScreenSaverEnableToggle != null) bigScreenSaverEnableToggle.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled);
         RestoreWindowSize();
     }
     public void ApplySettings()
@@ -614,17 +511,13 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         if (currentParticleHandler != null)
         {
-            currentParticleHandler.featureEnabled = data.enableParticles;
-            currentParticleHandler.enabled = data.enableParticles;
+            currentParticleHandler.featureEnabled = data.enableParticles; currentParticleHandler.enabled = data.enableParticles;
         }
 
         PetVoiceReactionHandler.GlobalHoverObjectsEnabled = data.enableParticles;
-
-
         if (uniWindowController != null) uniWindowController.isTopmost = data.isTopmost;
 
-        foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
-            limiter.SetFPSLimit(data.fpsLimit);
+        foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None)) limiter.SetFPSLimit(data.fpsLimit);
 
         UpdateAllCategoryVolumes();
         SaveLoadHandler.Instance.SaveToDisk();
@@ -661,7 +554,6 @@ public class AvatarSettingsMenu : MonoBehaviour
             uiSaturation = 0.5f
         };
         ResetAllLightsToDefault();
-        ResetAllLightsToDefault();
         ResetAllLightTogglesToDefault();
         SaveLoadHandler.Instance.data.lightIntensities.Clear();
         SaveLoadHandler.Instance.data.lightSaturations.Clear();
@@ -672,37 +564,22 @@ public class AvatarSettingsMenu : MonoBehaviour
         SaveLoadHandler.Instance.data.bigScreenAlarmText = "";
         SaveLoadHandler.Instance.data.bigScreenAlarmEnabled = false;
 
-        if (bigScreenAlarmHourDropdown != null)
-            bigScreenAlarmHourDropdown.SetValueWithoutNotify(0);
-        if (bigScreenAlarmMinuteDropdown != null)
-            bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(0);
-        if (bigScreenAlarmEnableToggle != null)
-            bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(false);
-        if (bigScreenAlarmTextInput != null)
-            bigScreenAlarmTextInput.SetTextWithoutNotify("");
-
-
+        if (bigScreenAlarmHourDropdown != null) bigScreenAlarmHourDropdown.SetValueWithoutNotify(0);
+        if (bigScreenAlarmMinuteDropdown != null) bigScreenAlarmMinuteDropdown.SetValueWithoutNotify(0);
+        if (bigScreenAlarmEnableToggle != null) bigScreenAlarmEnableToggle.SetIsOnWithoutNotify(false);
+        if (bigScreenAlarmTextInput != null) bigScreenAlarmTextInput.SetTextWithoutNotify("");
         newData.ambientOcclusion = false;
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(true);
+        if (!resetAlsoClearsAllowedApps) newData.allowedApps = new List<string>(oldData.allowedApps);
 
-        if (!resetAlsoClearsAllowedApps)
-            newData.allowedApps = new List<string>(oldData.allowedApps);
-
-        foreach (var entry in accessoryToggleBindings)
-            if (!string.IsNullOrEmpty(entry.ruleName))
-                newData.accessoryStates[entry.ruleName] = false;
+        foreach (var entry in accessoryToggleBindings) if (!string.IsNullOrEmpty(entry.ruleName)) newData.accessoryStates[entry.ruleName] = false;
 
         SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = 0;
         SaveLoadHandler.Instance.data.bigScreenScreenSaverEnabled = false;
-        if (bigScreenSaverTimeoutSlider != null)
-            bigScreenSaverTimeoutSlider.SetValueWithoutNotify(0);
-        if (bigScreenSaverEnableToggle != null)
-            bigScreenSaverEnableToggle.SetIsOnWithoutNotify(false);
-        if (bigScreenSaverTimeoutLabel != null)
-            bigScreenSaverTimeoutLabel.text = TimeoutLabels[0];
-
-
+        if (bigScreenSaverTimeoutSlider != null) bigScreenSaverTimeoutSlider.SetValueWithoutNotify(0);
+        if (bigScreenSaverEnableToggle != null) bigScreenSaverEnableToggle.SetIsOnWithoutNotify(false);
+        if (bigScreenSaverTimeoutLabel != null) bigScreenSaverTimeoutLabel.text = TimeoutLabels[0];
         SaveLoadHandler.Instance.data = newData;
 
         foreach (var handler in AccessoiresHandler.ActiveHandlers)
@@ -713,7 +590,6 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         SaveLoadHandler.Instance.SaveToDisk();
         LoadSettings();
-
         headBlendSlider?.SetValueWithoutNotify(0.7f);
         spineBlendSlider?.SetValueWithoutNotify(0.5f);
         eyeBlendSlider?.SetValueWithoutNotify(1.0f);
@@ -722,19 +598,14 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
         newData.enableIK = true;
         enableIKToggle?.SetIsOnWithoutNotify(true);
-
         FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
-
         ApplySettings();
 
         var shifter = FindFirstObjectByType<MenuHueShift>();
         if (shifter != null)
         {
-            shifter.hueShift = 0f;
-            shifter.saturation = 0.5f;
+            shifter.hueShift = 0f; shifter.saturation = 0.5f;
         }
-
-
         if (vrmLoader != null) vrmLoader.ResetModel();
     }
 
@@ -745,7 +616,6 @@ public class AvatarSettingsMenu : MonoBehaviour
         foreach (var src in effectsAudioSources) if (src != null) src.volume = GetBaseVolume(src) * effectsVolume;
         foreach (var src in menuAudioSources) if (src != null) src.volume = GetBaseVolume(src) * menuVolume;
     }
-
     private Dictionary<AudioSource, float> baseVolumes = new Dictionary<AudioSource, float>();
 
     private float GetBaseVolume(AudioSource src)
@@ -753,8 +623,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         if (src == null) return 1f;
         if (!baseVolumes.TryGetValue(src, out float baseVol))
         {
-            baseVol = src.volume;
-            baseVolumes[src] = baseVol;
+            baseVol = src.volume; baseVolumes[src] = baseVol;
         }
         return baseVol;
     }

@@ -23,8 +23,7 @@ public class ColorController : MonoBehaviour
         public HumanBodyBones targetBone = HumanBodyBones.Head;
         [Range(0, 1)] public float swingSmoothness = 0.15f;
         public bool blockYMovement = false;
-        [HideInInspector] public Vector3 baseOffset;
-        [HideInInspector] public bool hasBaseOffset = false;
+        [HideInInspector] public Vector3 editorOffset;
         [HideInInspector] public Vector3 currentPosition;
         [HideInInspector] public float originalY;
         public string groupID = "";
@@ -32,6 +31,7 @@ public class ColorController : MonoBehaviour
         [HideInInspector] public float fadeCurrentValue = 0f;
         [HideInInspector] public float fadeTarget = 0f;
         [HideInInspector] public bool isFading = false;
+        [HideInInspector] public bool hasYSet = false;
     }
 
     public List<ColorTarget> targets = new List<ColorTarget>();
@@ -80,6 +80,33 @@ public class ColorController : MonoBehaviour
     void Awake()
     {
         modelRoot = GameObject.Find("Model")?.transform;
+
+        // EditorOffset initialisieren! NUR EINMAL beim Start (Editor-Position - Bone-Position)
+        if (targets != null && modelRoot != null)
+        {
+            // Hole den ersten aktiven Avatar
+            GameObject activeModel = null;
+            for (int i = 0; i < modelRoot.childCount; i++)
+            {
+                var child = modelRoot.GetChild(i);
+                if (child.gameObject.activeInHierarchy)
+                {
+                    activeModel = child.gameObject;
+                    break;
+                }
+            }
+            var receiver = activeModel != null ? activeModel.GetComponent<AvatarAnimatorReceiver>() : null;
+            if (receiver != null && receiver.avatarAnimator != null)
+            {
+                foreach (var t in targets)
+                {
+                    if (t.target == null) continue;
+                    Transform bone = receiver.avatarAnimator.GetBoneTransform(t.targetBone);
+                    if (bone == null) continue;
+                    t.editorOffset = t.target.transform.position - bone.position;
+                }
+            }
+        }
     }
 
     void UpdateCurrentAvatar()
@@ -94,7 +121,8 @@ public class ColorController : MonoBehaviour
                 {
                     currentModel = child.gameObject;
                     currentReceiver = currentModel.GetComponent<AvatarAnimatorReceiver>();
-                    foreach (var t in targets) t.hasBaseOffset = false;
+                    // Kein Offset neu setzen! EditorOffset bleibt immer gleich!
+                    foreach (var t in targets) t.hasYSet = false;
                 }
                 return;
             }
@@ -161,25 +189,28 @@ public class ColorController : MonoBehaviour
                 Transform bone = currentReceiver.avatarAnimator.GetBoneTransform(t.targetBone);
                 if (bone == null) continue;
 
-                Vector3 bonePos = bone.position;
-                if (!t.hasBaseOffset)
+                Vector3 targetPos = bone.position + t.editorOffset;
+
+                if (t.blockYMovement)
                 {
-                    t.baseOffset = t.target.transform.position - bonePos;
-                    t.currentPosition = t.target.transform.position;
-                    t.originalY = t.target.transform.position.y;
-                    t.hasBaseOffset = true;
+                    if (!t.hasYSet)
+                    {
+                        t.originalY = t.target.transform.position.y;
+                        t.hasYSet = true;
+                    }
+                    targetPos.y = t.originalY;
+                }
+                else
+                {
+                    t.hasYSet = false;
                 }
 
-                Vector3 finalTarget = bonePos + t.baseOffset;
-                if (t.blockYMovement)
-                    finalTarget.y = t.originalY;
-
-                t.currentPosition = Vector3.Lerp(t.currentPosition, finalTarget, 1f - t.swingSmoothness);
+                t.currentPosition = Vector3.Lerp(t.currentPosition, targetPos, 1f - t.swingSmoothness);
                 t.target.transform.position = t.currentPosition;
             }
             else
             {
-                t.hasBaseOffset = false;
+                t.hasYSet = false;
             }
         }
     }
