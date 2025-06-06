@@ -65,7 +65,7 @@ public class MenuActions : MonoBehaviour
 
         if (moveCanvas != null)
         {
-            var bigScreen = FindObjectOfType<AvatarBigScreenHandler>();
+            var bigScreen = FindFirstObjectByType<AvatarBigScreenHandler>();
             bool isBigScreen = bigScreen != null && bigScreen.GetType()
                 .GetField("isBigScreenActive", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                 ?.GetValue(bigScreen) as bool? == true;

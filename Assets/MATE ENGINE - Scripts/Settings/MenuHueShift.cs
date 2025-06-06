@@ -58,7 +58,7 @@ public class MenuHueShift : MonoBehaviour
         originalColorBlocks.Clear();
         originalStartColors.Clear();
 
-        var allGraphics = GameObject.FindObjectsOfType<Graphic>(true);
+        var allGraphics = GameObject.FindObjectsByType<Graphic>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         for (int i = 0; i < allGraphics.Length; i++)
         {
             var g = allGraphics[i];
@@ -71,7 +71,7 @@ public class MenuHueShift : MonoBehaviour
             }
         }
 
-        var allSelectables = GameObject.FindObjectsOfType<Selectable>(true);
+        var allSelectables = GameObject.FindObjectsByType<Selectable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         for (int i = 0; i < allSelectables.Length; i++)
         {
             var s = allSelectables[i];
@@ -95,14 +95,13 @@ public class MenuHueShift : MonoBehaviour
             {
                 var cg = childGraphics[j];
                 if (cg is TMPro.TextMeshProUGUI || cg == null) continue;
-                if (cg.GetComponent<MenuHueShiftBlocker>() != null) continue; 
+                if (cg.GetComponent<MenuHueShiftBlocker>() != null) continue;
                 if (!originalColors.ContainsKey(cg))
                 {
                     originalColors[cg] = cg.color;
                     graphics.Add(cg);
                 }
             }
-
         }
 
         for (int i = 0; i < particleSystems.Count; i++)
@@ -113,14 +112,14 @@ public class MenuHueShift : MonoBehaviour
         }
 
         initialized = true;
-        circleSelectors = GameObject.FindObjectsOfType<CircleSelector>(true);
+        circleSelectors = GameObject.FindObjectsByType<CircleSelector>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var cs in circleSelectors)
         {
             if (cs == null || originalCircleColors.ContainsKey(cs)) continue;
             originalCircleColors[cs] = (cs.AccentColor, cs.DisabledColor, cs.BackgroundColor);
         }
-
     }
+
     public void ApplyHueShift()
     {
         for (int i = 0; i < graphics.Count; i++)
@@ -166,6 +165,7 @@ public class MenuHueShift : MonoBehaviour
             cs.BackgroundColor = AdjustColor(kvp.Value.background);
         }
     }
+
     private Color AdjustColor(Color original)
     {
         Color.RGBToHSV(original, out float h, out float s, out float v);
@@ -181,7 +181,7 @@ public class MenuHueShift : MonoBehaviour
         if (!Application.isPlaying || !enabled || !gameObject.activeInHierarchy)
             return;
 
-        var allGraphics = GameObject.FindObjectsOfType<Graphic>(true);
+        var allGraphics = GameObject.FindObjectsByType<Graphic>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var g in allGraphics)
         {
             if (g is TMPro.TextMeshProUGUI || g == null) continue;
@@ -190,11 +190,11 @@ public class MenuHueShift : MonoBehaviour
             {
                 originalColors[g] = g.color;
                 graphics.Add(g);
-                g.color = AdjustColor(g.color); 
+                g.color = AdjustColor(g.color);
             }
         }
 
-        var allSelectables = GameObject.FindObjectsOfType<Selectable>(true);
+        var allSelectables = GameObject.FindObjectsByType<Selectable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var s in allSelectables)
         {
             if (s == null) continue;
@@ -216,7 +216,7 @@ public class MenuHueShift : MonoBehaviour
     public void RefreshNewGraphicsAndSelectables(Transform parent = null)
     {
         var newGraphics = parent == null
-            ? GameObject.FindObjectsOfType<Graphic>(true)
+            ? GameObject.FindObjectsByType<Graphic>(FindObjectsInactive.Include, FindObjectsSortMode.None)
             : parent.GetComponentsInChildren<Graphic>(true);
 
         foreach (var g in newGraphics)
@@ -231,9 +231,8 @@ public class MenuHueShift : MonoBehaviour
             }
         }
 
-
         var newSelectables = parent == null
-            ? GameObject.FindObjectsOfType<Selectable>(true)
+            ? GameObject.FindObjectsByType<Selectable>(FindObjectsInactive.Include, FindObjectsSortMode.None)
             : parent.GetComponentsInChildren<Selectable>(true);
 
         foreach (var s in newSelectables)

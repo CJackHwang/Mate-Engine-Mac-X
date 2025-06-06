@@ -58,7 +58,7 @@ public class UISetOnOff : MonoBehaviour
 
     public void ToggleChibiMode()
     {
-        foreach (var chibi in GameObject.FindObjectsOfType<ChibiToggle>())
+        foreach (var chibi in GameObject.FindObjectsByType<ChibiToggle>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
             chibi.ToggleChibiMode();
     }
 

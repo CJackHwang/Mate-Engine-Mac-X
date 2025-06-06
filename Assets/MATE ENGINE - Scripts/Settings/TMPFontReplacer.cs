@@ -17,7 +17,7 @@ public class TMPFontReplacer : MonoBehaviour
             return;
         }
 
-        TextMeshProUGUI[] allTMPs = FindObjectsOfType<TextMeshProUGUI>(true);
+        TextMeshProUGUI[] allTMPs = Object.FindObjectsByType<TextMeshProUGUI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         int count = 0;
 
         foreach (var tmp in allTMPs)

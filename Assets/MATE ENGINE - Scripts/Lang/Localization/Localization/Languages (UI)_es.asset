@@ -328,6 +328,78 @@ MonoBehaviour:
       solo para depuraci\xF3n; no la uses a menos que sepas lo que est\xE1s haciendo."
     m_Metadata:
       m_Items: []
+  - m_Id: 21396842692468736
+    m_Localized: Activar alarma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21396846479925248
+    m_Localized: "Experimental: \xA1La funci\xF3n de alarma es nueva!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397663471624192
+    m_Localized: Luz AMBI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397935245746176
+    m_Localized: AMBI 1 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397936617283584
+    m_Localized: "AMBI 1 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937200291840
+    m_Localized: AMBI 1 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937758134272
+    m_Localized: AMBI 2 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938295005184
+    m_Localized: "AMBI 2 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938898984960
+    m_Localized: AMBI 2 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397939494576128
+    m_Localized: AMBI 3 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398132755521536
+    m_Localized: "AMBI 3 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398134148030464
+    m_Localized: AMBI 3 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399717254520832
+    m_Localized: Activar luz AMBI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399718462480384
+    m_Localized: Activar luces
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400106955694080
+    m_Localized: Luz global
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400294541746176
+    m_Localized: Intensidad de luz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400296517263360
+    m_Localized: "Saturaci\xF3n de luz"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400297775554560
+    m_Localized: Color de luz
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

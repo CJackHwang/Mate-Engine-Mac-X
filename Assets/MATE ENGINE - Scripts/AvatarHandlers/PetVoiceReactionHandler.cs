@@ -84,7 +84,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
         bool menuBlocked = MenuActions.IsReactionBlocked();
         bool bigScreenBlocked = false;
-        var bigScreen = FindObjectOfType<AvatarBigScreenHandler>();
+        var bigScreen = FindFirstObjectByType<AvatarBigScreenHandler>();
         if (bigScreen != null)
         {
             var isBig = bigScreen.GetType()

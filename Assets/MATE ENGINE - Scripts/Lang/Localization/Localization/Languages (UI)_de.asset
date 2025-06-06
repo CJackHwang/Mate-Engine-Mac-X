@@ -376,6 +376,78 @@ MonoBehaviour:
       was du tust."
     m_Metadata:
       m_Items: []
+  - m_Id: 21396842692468736
+    m_Localized: Alarm aktivieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21396846479925248
+    m_Localized: 'Experimentell: Die Alarmfunktion ist ein neues Test-Feature!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397663471624192
+    m_Localized: Ambientlicht
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397935245746176
+    m_Localized: "AMBI 1 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397936617283584
+    m_Localized: "AMBI 1 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937200291840
+    m_Localized: AMBI 1 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937758134272
+    m_Localized: "AMBI 2 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938295005184
+    m_Localized: "AMBI 2 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938898984960
+    m_Localized: AMBI 2 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397939494576128
+    m_Localized: "AMBI 3 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398132755521536
+    m_Localized: "AMBI 3 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398134148030464
+    m_Localized: AMBI 3 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399717254520832
+    m_Localized: Ambient aktivieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399718462480384
+    m_Localized: Lichter aktivieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400106955694080
+    m_Localized: Globallicht
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400294541746176
+    m_Localized: "Lichtintensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400296517263360
+    m_Localized: "Lichts\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400297775554560
+    m_Localized: Lichtfarbe
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

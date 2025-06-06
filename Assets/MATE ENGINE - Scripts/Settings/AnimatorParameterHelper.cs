@@ -4,7 +4,7 @@ public static class AnimatorParameterHelper
 {
     public static bool IsAnyAnimatorBoolTrue(string parameterName)
     {
-        foreach (var anim in Object.FindObjectsOfType<Animator>(true))
+        foreach (var anim in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             if (anim.runtimeAnimatorController == null) continue;
 

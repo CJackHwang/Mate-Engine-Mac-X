@@ -323,6 +323,79 @@ MonoBehaviour:
       not use it unless you know what you're doing."
     m_Metadata:
       m_Items: []
+  - m_Id: 21396842692468736
+    m_Localized: Enable Alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21396846479925248
+    m_Localized: "EXPERIMENTAL FEATURE: \nTHE ALARM WILL TURN OFF ONCE IT WAS TRIGGERED
+      ONE TIME."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397663471624192
+    m_Localized: Ambient Lights
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397935245746176
+    m_Localized: AMBI 1 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937758134272
+    m_Localized: AMBI 2 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397939494576128
+    m_Localized: AMBI 3 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397936617283584
+    m_Localized: AMBI 1 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938295005184
+    m_Localized: AMBI 2 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398132755521536
+    m_Localized: AMBI 3 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937200291840
+    m_Localized: AMBI 1 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938898984960
+    m_Localized: AMBI 2 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398134148030464
+    m_Localized: AMBI 3 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399717254520832
+    m_Localized: Enable Ambient Light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399718462480384
+    m_Localized: Enable Light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400106955694080
+    m_Localized: Global Light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400294541746176
+    m_Localized: Light Intensity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400296517263360
+    m_Localized: Light Saturation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400297775554560
+    m_Localized: Light Color
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

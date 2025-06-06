@@ -321,7 +321,7 @@ namespace Xamin
         {
             RefreshAllButtonColorsDelayed();
             animatorReceiver = null;
-            foreach (var recv in FindObjectsOfType<AvatarAnimatorReceiver>())
+            foreach (var recv in Object.FindObjectsByType<AvatarAnimatorReceiver>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
             {
                 if (recv != null && recv.isActiveAndEnabled && recv.gameObject.activeInHierarchy
                     && recv.avatarAnimator != null && recv.avatarAnimator.isActiveAndEnabled

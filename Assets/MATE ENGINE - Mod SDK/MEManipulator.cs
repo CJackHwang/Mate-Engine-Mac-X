@@ -34,9 +34,7 @@ public class MEManipulator : MonoBehaviour
     void Update()
     {
         if (!Application.isPlaying) return;
-
-        var receivers = FindObjectsOfType<AvatarAnimatorReceiver>(true);
-
+        var receivers = GameObject.FindObjectsByType<AvatarAnimatorReceiver>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var receiver in receivers)
         {
             if (receiver == null || receiver.avatarAnimator == null)

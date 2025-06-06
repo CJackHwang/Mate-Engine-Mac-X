@@ -229,7 +229,7 @@ public class VRMLoader : MonoBehaviour
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
 
         ReleaseRamAndUnloadAssets();
-
+        SettingsHandlerUtility.ReloadAllSettingsHandlers(); // Should load the settings from all modules and load it to new vrm files
     }
 
 
@@ -396,6 +396,7 @@ public class VRMLoader : MonoBehaviour
             avatarSettingsMenu.ApplySettings();
         }
         ReleaseRamAndUnloadAssets();
+        SettingsHandlerUtility.ReloadAllSettingsHandlers(); // Should load all settings to new VRM Files
 
     }
 
@@ -434,7 +435,7 @@ public class VRMLoader : MonoBehaviour
 
     private void CleanupAllRawImagesInScene()
     {
-        var rawImages = GameObject.FindObjectsOfType<RawImage>(true);
+        var rawImages = GameObject.FindObjectsByType<RawImage>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var rawImage in rawImages)
         {
             rawImage.texture = null;

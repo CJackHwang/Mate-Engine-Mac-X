@@ -10,7 +10,7 @@ public class Switch : MonoBehaviour
     public Material lightOnMat;
     public Material lightOffMat;
 
-    public Light light;
+    public new Light light;
 
     public bool lightOn = true;
 

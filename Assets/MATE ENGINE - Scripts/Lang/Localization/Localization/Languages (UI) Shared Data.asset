@@ -303,6 +303,78 @@ MonoBehaviour:
     m_Key: GC_KILL_INFO
     m_Metadata:
       m_Items: []
+  - m_Id: 21396842692468736
+    m_Key: ENABLE_ALARM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21396846479925248
+    m_Key: ALARM_INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397663471624192
+    m_Key: AMBIENT_LIGHTS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397935245746176
+    m_Key: AMBI_1_INT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397936617283584
+    m_Key: AMBI_1_SAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937200291840
+    m_Key: AMBI_1_COL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397937758134272
+    m_Key: AMBI_2_INT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938295005184
+    m_Key: AMBI_2_SAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397938898984960
+    m_Key: AMBI_2_COL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21397939494576128
+    m_Key: AMBI_3_INT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398132755521536
+    m_Key: AMBI_3_SAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21398134148030464
+    m_Key: AMBI_3_COL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399717254520832
+    m_Key: ENABLE_AMBIENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21399718462480384
+    m_Key: ENABLE_LIGHT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400106955694080
+    m_Key: GLOBAL_LIGHT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400294541746176
+    m_Key: LIGHT_INT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400296517263360
+    m_Key: LIGHT_SAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21400297775554560
+    m_Key: LIGHT_COL
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

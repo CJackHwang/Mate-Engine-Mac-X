@@ -172,5 +172,4 @@ public static class SteamChecker
         return steamDetected;
     }
 
-
 }
