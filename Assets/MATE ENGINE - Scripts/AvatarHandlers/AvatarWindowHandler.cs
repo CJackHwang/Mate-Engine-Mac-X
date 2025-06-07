@@ -213,4 +213,16 @@ public class AvatarWindowHandler : MonoBehaviour
         Vector3 worldPos = new(unityX, unityY, 0), worldSize = new(r.width / basePixel, r.height / basePixel, 0);
         Gizmos.DrawWireCube(worldPos, worldSize);
     }
+
+    public void ForceExitWindowSitting()
+    {
+        snappedHWND = IntPtr.Zero;
+        if (animator != null)
+        {
+            animator.SetBool("isWindowSit", false);
+            animator.SetBool("isSitting", false);
+        }
+        SetTopMost(true);
+    }
+
 }
