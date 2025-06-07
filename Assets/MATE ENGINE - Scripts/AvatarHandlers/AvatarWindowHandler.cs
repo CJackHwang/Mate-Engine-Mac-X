@@ -13,7 +13,7 @@ public class AvatarWindowHandler : MonoBehaviour
     public Vector2 snapZoneSize = new(100, 10);
 
     [Header("Window Sit BlendTree")]
-    public int totalWindowSitAnimations = 4; // Setz das auf die Zahl deiner Sitz-Animationen!
+    public int totalWindowSitAnimations = 4;
     private static readonly int windowSitIndexParam = Animator.StringToHash("WindowSitIndex");
     private bool wasSitting = false;
 

@@ -948,7 +948,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.9998375
+  m_Intensity: 0.9998555
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1727,7 +1727,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.000013087171
+  m_Intensity: 0.000011634591
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -17508,7 +17508,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000026174343
+  m_Intensity: 0.000023269182
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18406,7 +18406,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000019630757
+  m_Intensity: 0.000017451886
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -121077,7 +121077,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.9998375
+    fadeCurrentValue: 0.9998555
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -121101,7 +121101,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000065435856
+    fadeCurrentValue: 0.0000058172955
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -121125,7 +121125,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000065435856
+    fadeCurrentValue: 0.0000058172955
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -121149,7 +121149,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000065435856
+    fadeCurrentValue: 0.0000058172955
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -121669,7 +121669,7 @@ MonoBehaviour:
   desktopScale: 1
   snapZoneOffset: {x: 0, y: -150}
   snapZoneSize: {x: 90, y: 200}
-  totalWindowSitAnimations: 4
+  totalWindowSitAnimations: 7
 --- !u!4 &7391952828367311304
 Transform:
   m_ObjectHideFlags: 0
@@ -128092,7 +128092,6 @@ GameObject:
   - component: {fileID: 8316870361374612500}
   - component: {fileID: 3817119446354356749}
   - component: {fileID: 7290369651463270812}
-  - component: {fileID: 8536052333486738855}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -136012,30 +136011,6 @@ MonoBehaviour:
   eyeBlendSlider: {fileID: 3943044153736898079}
   hueShiftSlider: {fileID: 7982056483961989993}
   saturationSlider: {fileID: 4121549278269442840}
---- !u!114 &8536052333486738855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8199926937260908627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41f71ffcf3b8855468a6baa969025134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parameters:
-  - label: 
-    type: 0
-    componentType: AvatarBigScreenHandler
-    field: TargetZoom
-    min: 0
-    max: 0
-    defaultValue: 0
-    defaultToggle: 0
-    options: []
-    defaultDropdown: 0
-    uiObject: {fileID: 0}
 --- !u!1 &8536327945389812347
 GameObject:
   m_ObjectHideFlags: 0
@@ -148683,7 +148658,7 @@ MonoBehaviour:
   chibiExitSounds:
   - {fileID: 8300000, guid: af7b961a19df09d41bd6114009ee5a0a, type: 3}
   particleEffectObject: {fileID: 971929985}
-  particleDuration: 4
+  particleDuration: 5
 --- !u!114 &8924917334924735499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148862,7 +148837,7 @@ MonoBehaviour:
   desktopScale: 1
   snapZoneOffset: {x: 0, y: -150}
   snapZoneSize: {x: 90, y: 200}
-  totalWindowSitAnimations: 4
+  totalWindowSitAnimations: 7
 --- !u!114 &8924917334924735506
 MonoBehaviour:
   m_ObjectHideFlags: 0
