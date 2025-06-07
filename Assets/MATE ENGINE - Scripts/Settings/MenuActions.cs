@@ -217,7 +217,7 @@ public class MenuActions : MonoBehaviour
 
         if (IsRadialOpen()) radialMenu?.Close();
 
-        AvatarSettingsMenu.IsMenuOpen = false;
+        // AvatarSettingsMenu.IsMenuOpen = false;
     }
 
     void PlayMenuOpenSound() => FindFirstObjectByType<MenuAudioHandler>()?.PlayOpenSound();

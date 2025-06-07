@@ -168,12 +168,14 @@ public class VRMLoader : MonoBehaviour
         AssignAnimatorController(currentModel);
         InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
+        /*
         var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
         if (avatarSettingsMenu != null)
         {
             avatarSettingsMenu.LoadSettings();
             avatarSettingsMenu.ApplySettings();
         }
+        */
 
         string displayName = Path.GetFileNameWithoutExtension(path);
         string author = "Unknown";
@@ -388,13 +390,14 @@ public class VRMLoader : MonoBehaviour
 
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
-
+        /*
         var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
         if (avatarSettingsMenu != null)
         {
             avatarSettingsMenu.LoadSettings();
             avatarSettingsMenu.ApplySettings();
         }
+        */
         ReleaseRamAndUnloadAssets();
         SettingsHandlerUtility.ReloadAllSettingsHandlers(); // Should load all settings to new VRM Files
 

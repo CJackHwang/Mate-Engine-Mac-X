@@ -7,7 +7,7 @@ public class AccessoiresHandler : MonoBehaviour
     public class AccessoryRule
     {
         public string ruleName;
-        public bool isEnabled = true;
+        public bool isEnabled = false;
         public HumanBodyBones targetBone;
         public GameObject linkedObject;
         [Range(0f, 1f)] public float smoothness = 0f;
@@ -54,51 +54,6 @@ public class AccessoiresHandler : MonoBehaviour
         }
     }
 
-    public void LoadAccessoryStatesFromSave()
-    {
-        if (SaveLoadHandler.Instance == null) return;
-        var save = SaveLoadHandler.Instance.data.accessoryStates;
-
-        foreach (var rule in rules)
-        {
-            if (save.TryGetValue(rule.ruleName, out bool enabled))
-            {
-                rule.isEnabled = enabled;
-            }
-        }
-    }
-
-    public void SaveAccessoryStatesToSave()
-    {
-        if (SaveLoadHandler.Instance == null) return;
-        var save = SaveLoadHandler.Instance.data.accessoryStates;
-
-        foreach (var rule in rules)
-        {
-            if (!string.IsNullOrEmpty(rule.ruleName))
-            {
-                save[rule.ruleName] = rule.isEnabled;
-            }
-        }
-    }
-
-    public void ResetAccessoryStatesToDefault()
-    {
-        foreach (var rule in rules)
-        {
-            rule.isEnabled = false; 
-        }
-    }
-
-    public void ClearAccessoryStatesFromSave()
-    {
-        if (SaveLoadHandler.Instance == null) return;
-        foreach (var rule in rules)
-        {
-            SaveLoadHandler.Instance.data.accessoryStates.Remove(rule.ruleName);
-        }
-    }
-
     void Update()
     {
         foreach (var kvp in trackingMap)
@@ -129,7 +84,6 @@ public class AccessoiresHandler : MonoBehaviour
                 tracking.obj.transform.rotation = tracking.currentRotation;
             }
         }
-
     }
 
     public static readonly List<AccessoiresHandler> ActiveHandlers = new List<AccessoiresHandler>();
@@ -144,9 +98,8 @@ public class AccessoiresHandler : MonoBehaviour
     {
         ActiveHandlers.Remove(this);
     }
-
-
 }
+
 public static class SteamChecker
 {
     private static bool initialized = false;
@@ -171,5 +124,4 @@ public static class SteamChecker
     {
         return steamDetected;
     }
-
 }

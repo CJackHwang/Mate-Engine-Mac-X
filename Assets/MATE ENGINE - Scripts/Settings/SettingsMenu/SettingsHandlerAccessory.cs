@@ -13,8 +13,6 @@ public class SettingsHandlerAccessory : MonoBehaviour
 
     public List<AccessoryToggleEntry> accessoryToggleBindings = new List<AccessoryToggleEntry>();
 
-    private bool isResetting = false;
-
     private void Start()
     {
         SetupListeners();
@@ -28,11 +26,12 @@ public class SettingsHandlerAccessory : MonoBehaviour
             if (!string.IsNullOrEmpty(entry.ruleName) && entry.toggle != null)
             {
                 string key = entry.ruleName;
+                // RemoveAllListeners entfernt, damit Unity-UI-Sound erhalten bleibt!
                 entry.toggle.onValueChanged.AddListener((v) =>
                 {
-                    if (isResetting) return; // nicht auf Event reagieren beim Reset!
                     SaveLoadHandler.Instance.data.accessoryStates[key] = v;
                     UpdateAccessoryObjects();
+                    ForceRefreshSceneObjects();
                     SaveLoadHandler.Instance.SaveToDisk();
                 });
             }
@@ -51,18 +50,17 @@ public class SettingsHandlerAccessory : MonoBehaviour
             }
         }
         UpdateAccessoryObjects();
+        ForceRefreshSceneObjects();
     }
 
     public void ApplySettings()
     {
         UpdateAccessoryObjects();
+        ForceRefreshSceneObjects();
     }
 
     public void ResetToDefaults()
     {
-        isResetting = true;
-
-        // States und UI updaten ohne Events zu triggern
         foreach (var entry in accessoryToggleBindings)
         {
             if (!string.IsNullOrEmpty(entry.ruleName))
@@ -73,22 +71,9 @@ public class SettingsHandlerAccessory : MonoBehaviour
             }
         }
 
-        // Accessoire-Objekte im Scene aus
-        foreach (var handler in AccessoiresHandler.ActiveHandlers)
-        {
-            foreach (var rule in handler.rules)
-            {
-                rule.isEnabled = false;
-                if (rule.linkedObject != null)
-                    rule.linkedObject.SetActive(false);
-            }
-        }
-
+        UpdateAccessoryObjects();
+        ForceRefreshSceneObjects();
         SaveLoadHandler.Instance.SaveToDisk();
-        isResetting = false;
-
-        // Jetzt alles neu laden, damit es KEINEN Sprung gibt
-        LoadSettings();
     }
 
     private void UpdateAccessoryObjects()
@@ -103,6 +88,18 @@ public class SettingsHandlerAccessory : MonoBehaviour
                     if (rule.ruleName == entry.ruleName)
                         rule.isEnabled = toggleOn;
                 }
+            }
+        }
+    }
+
+    private void ForceRefreshSceneObjects()
+    {
+        foreach (var handler in AccessoiresHandler.ActiveHandlers)
+        {
+            foreach (var rule in handler.rules)
+            {
+                if (rule.linkedObject != null)
+                    rule.linkedObject.SetActive(rule.isEnabled);
             }
         }
     }

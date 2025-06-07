@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -628,3 +629,4 @@ public class AvatarSettingsMenu : MonoBehaviour
         return baseVol;
     }
 }
+*/

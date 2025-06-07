@@ -25,7 +25,6 @@ public class SaveLoadHandler : MonoBehaviour
 
         LoadFromDisk();
         ApplyAllSettingsToAllAvatars();
-        LoadAccessoryStatesToAll();
 
         var limiters = FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None);
         foreach (var limiter in limiters)
@@ -39,8 +38,6 @@ public class SaveLoadHandler : MonoBehaviour
     {
         try
         {
-            SaveAccessoryStatesFromAll();
-
             string dir = Path.GetDirectoryName(FilePath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -68,7 +65,7 @@ public class SaveLoadHandler : MonoBehaviour
             catch (System.Exception e)
             {
                 Debug.LogError("[SaveLoadHandler] Failed to load: " + e);
-                data = new SettingsData(); 
+                data = new SettingsData();
             }
         }
         else
@@ -109,7 +106,7 @@ public class SaveLoadHandler : MonoBehaviour
         public bool enableWindowSitting = false;
         public bool ambientOcclusion = false;
 
-        public float uiHueShift = 0f;   
+        public float uiHueShift = 0f;
         public float uiSaturation = 0.5f;
 
         public bool enableDiscordRPC = true;
@@ -119,11 +116,11 @@ public class SaveLoadHandler : MonoBehaviour
         public string selectedLocaleCode = "en";
         public bool enableIK = true;
 
-        public int bigScreenScreenSaverTimeoutIndex = 0; 
+        public int bigScreenScreenSaverTimeoutIndex = 0;
         public bool bigScreenScreenSaverEnabled = false;
 
         public bool bigScreenAlarmEnabled = false;
-        public int bigScreenAlarmHour = 0;  
+        public int bigScreenAlarmHour = 0;
         public int bigScreenAlarmMinute = 0;
         public string bigScreenAlarmText = "Wake up! This is your alarm!";
 
@@ -132,13 +129,10 @@ public class SaveLoadHandler : MonoBehaviour
         public Dictionary<string, float> lightHues = new();
         public Dictionary<string, bool> groupToggles = new();
 
-
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
-
-
         public int graphicsQualityLevel = 1;
 
-        // Steam DLCS
+        // <<<<<< DAS FEHLT: HIER ZURÜCK! >>>>>
         public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
     }
 
@@ -191,7 +185,6 @@ public class SaveLoadHandler : MonoBehaviour
                 holder.enableHandHolding = data.enableHandHolding;
             }
 
-
             if (avatar.animator != null &&
                 avatar.animator.isActiveAndEnabled &&
                 avatar.animator.runtimeAnimatorController != null)
@@ -201,25 +194,6 @@ public class SaveLoadHandler : MonoBehaviour
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }
-
-
-        }
-    }
-
-    // DLCs and Steam
-    public static void LoadAccessoryStatesToAll()
-    {
-        foreach (var handler in AccessoiresHandler.ActiveHandlers)
-        {
-            handler.LoadAccessoryStatesFromSave();
-        }
-    }
-
-    public static void SaveAccessoryStatesFromAll()
-    {
-        foreach (var handler in AccessoiresHandler.ActiveHandlers)
-        {
-            handler.SaveAccessoryStatesToSave();
         }
     }
 }

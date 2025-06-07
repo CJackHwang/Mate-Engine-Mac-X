@@ -948,7 +948,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.99967045
+  m_Intensity: 0.9996759
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1727,7 +1727,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.000026510244
+  m_Intensity: 0.000026068406
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -17508,7 +17508,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.00005302049
+  m_Intensity: 0.000052136813
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18277,7 +18277,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000039765368
+  m_Intensity: 0.00003910261
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -67286,7 +67286,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
@@ -118407,7 +118407,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 16
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
@@ -121077,7 +121077,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.99967045
+    fadeCurrentValue: 0.9996759
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -121101,7 +121101,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000013255122
+    fadeCurrentValue: 0.000013034203
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -121125,7 +121125,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000013255122
+    fadeCurrentValue: 0.000013034203
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -121149,7 +121149,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000013255122
+    fadeCurrentValue: 0.000013034203
     fadeTarget: 0
     isFading: 1
     hasYSet: 0

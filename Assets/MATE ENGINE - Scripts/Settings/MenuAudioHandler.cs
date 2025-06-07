@@ -69,7 +69,8 @@ public class MenuAudioHandler : MonoBehaviour
     {
         while (true)
         {
-            bool isOpen = AvatarSettingsMenu.IsMenuOpen || AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive;
+            bool isOpen = /* AvatarSettingsMenu.IsMenuOpen || */AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive;
+
 
             if (!hasPlayedStartupSound && SaveLoadHandler.Instance?.data != null)
             {
