@@ -12,6 +12,11 @@ public class AvatarWindowHandler : MonoBehaviour
     public Vector2 snapZoneOffset = new(0, -5);
     public Vector2 snapZoneSize = new(100, 10);
 
+    [Header("Window Sit BlendTree")]
+    public int totalWindowSitAnimations = 4; // Setz das auf die Zahl deiner Sitz-Animationen!
+    private static readonly int windowSitIndexParam = Animator.StringToHash("WindowSitIndex");
+    private bool wasSitting = false;
+
     IntPtr snappedHWND = IntPtr.Zero, unityHWND = IntPtr.Zero;
     Vector2 snapOffset;
     Vector2 lastDesktopPosition;
@@ -33,6 +38,14 @@ public class AvatarWindowHandler : MonoBehaviour
     {
         if (unityHWND == IntPtr.Zero || animator == null || controller == null) return;
         if (!SaveLoadHandler.Instance.data.enableWindowSitting) return;
+
+        bool isSittingNow = animator != null && animator.GetBool("isWindowSit");
+        if (isSittingNow && !wasSitting)
+        {
+            int sitIdx = UnityEngine.Random.Range(0, totalWindowSitAnimations);
+            animator.SetFloat(windowSitIndexParam, sitIdx);
+        }
+        wasSitting = isSittingNow;
 
         var unityPos = GetUnityWindowPosition();
         UpdateCachedWindows();
