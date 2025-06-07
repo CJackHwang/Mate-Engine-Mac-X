@@ -160,6 +160,64 @@ namespace LLMUnity
             InitGrammar();
             InitHistory();
         }
+        /*
+        void Start()
+        {
+            string promptPath = Path.Combine(Application.persistentDataPath, "character_prompt.txt");
+
+            if (File.Exists(promptPath))
+            {
+                string loadedPrompt = File.ReadAllText(promptPath);
+                SetPrompt(loadedPrompt, true);
+                Debug.Log("[LLM] Character prompt loaded: " + loadedPrompt.Substring(0, Mathf.Min(50, loadedPrompt.Length)) + "...");
+            }
+            else
+            {
+                File.WriteAllText(promptPath, this.prompt);
+                Debug.Log("[LLM] Character prompt file not found. Created new one with default system prompt.");
+                SetPrompt(this.prompt, true);
+            }
+        }
+        */
+
+        void Start()
+        {
+            string promptPath = Path.Combine(Application.persistentDataPath, "ZomeAI_prompt.txt");
+            string finalPrompt = this.prompt;
+
+            if (File.Exists(promptPath))
+            {
+                finalPrompt = File.ReadAllText(promptPath);
+                Debug.Log("[LLM] Character prompt loaded: " + finalPrompt.Substring(0, Mathf.Min(50, finalPrompt.Length)) + "...");
+            }
+            else
+            {
+                File.WriteAllText(promptPath, finalPrompt);
+                Debug.Log("[LLM] Character prompt file not found. Created new one with default system prompt.");
+            }
+
+            StartCoroutine(ApplyPromptToChat0WhenReady(finalPrompt));
+        }
+
+        System.Collections.IEnumerator ApplyPromptToChat0WhenReady(string prompt)
+        {
+            int maxWait = 200; 
+            while ((chat == null || chat.Count == 0 || chat[0].role != "system") && maxWait-- > 0)
+                yield return null;
+
+            if (chat != null && chat.Count > 0 && chat[0].role == "system")
+            {
+                var sysMsg = chat[0];
+                sysMsg.content = prompt;
+                chat[0] = sysMsg;
+            }
+            else
+            {
+                chat.Insert(0, new ChatMessage { role = "system", content = prompt });
+            }
+            this.prompt = prompt;
+        }
+
 
         protected override void OnValidate()
         {

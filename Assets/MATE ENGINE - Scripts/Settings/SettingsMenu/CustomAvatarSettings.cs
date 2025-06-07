@@ -29,7 +29,7 @@ public class CustomAvatarSettings : MonoBehaviour
     private Dictionary<string, bool> toggleValues = new();
     private Dictionary<string, int> dropdownValues = new();
 
-    private string fileName = "saved_settings.json";
+    private string fileName = "modded_settings.json";
     private string FilePath => Path.Combine(Application.persistentDataPath, fileName);
 
     [Serializable]
