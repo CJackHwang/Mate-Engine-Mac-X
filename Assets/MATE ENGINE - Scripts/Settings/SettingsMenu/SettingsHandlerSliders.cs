@@ -13,6 +13,7 @@ public class SettingsHandlerSliders : MonoBehaviour
     public Slider eyeBlendSlider;
     public Slider hueShiftSlider;
     public Slider saturationSlider;
+    public Slider windowSitYOffsetSlider;
 
     private void Start()
     {
@@ -80,6 +81,11 @@ public class SettingsHandlerSliders : MonoBehaviour
             if (shifter != null) shifter.saturation = v;
             SaveAll();
         });
+        windowSitYOffsetSlider?.onValueChanged.AddListener(v =>
+        {
+            SaveLoadHandler.Instance.data.windowSitYOffset = v;
+            SaveAll();
+        });
 
         LoadSettings();
         ApplySettings();
@@ -104,6 +110,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         eyeBlendSlider?.SetValueWithoutNotify(data.eyeBlend);
         hueShiftSlider?.SetValueWithoutNotify(data.uiHueShift);
         saturationSlider?.SetValueWithoutNotify(data.uiSaturation);
+        windowSitYOffsetSlider?.SetValueWithoutNotify(data.windowSitYOffset);
     }
 
     public void ApplySettings()
@@ -123,7 +130,10 @@ public class SettingsHandlerSliders : MonoBehaviour
             shifter.hueShift = data.uiHueShift;
             shifter.saturation = data.uiSaturation;
         }
-
+        foreach (var handler in FindObjectsByType<AvatarWindowHandler>(FindObjectsSortMode.None))
+        {
+            handler.windowSitYOffset = SaveLoadHandler.Instance.data.windowSitYOffset;
+        }
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();
     }
 
@@ -139,6 +149,8 @@ public class SettingsHandlerSliders : MonoBehaviour
         eyeBlendSlider?.SetValueWithoutNotify(1.0f);
         hueShiftSlider?.SetValueWithoutNotify(0f);
         saturationSlider?.SetValueWithoutNotify(0.5f);
+        windowSitYOffsetSlider?.SetValueWithoutNotify(0f);
+
 
         var data = SaveLoadHandler.Instance.data;
         data.soundThreshold = 0.2f;
@@ -151,6 +163,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         data.eyeBlend = 1.0f;
         data.uiHueShift = 0f;
         data.uiSaturation = 0.5f;
+        data.windowSitYOffset = 0f;
 
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();

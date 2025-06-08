@@ -124,6 +124,8 @@ public class SaveLoadHandler : MonoBehaviour
         public int bigScreenAlarmMinute = 0;
         public string bigScreenAlarmText = "Wake up! This is your alarm!";
 
+        public float windowSitYOffset = 0f;
+
         public Dictionary<string, float> lightIntensities = new();
         public Dictionary<string, float> lightSaturations = new();
         public Dictionary<string, float> lightHues = new();
@@ -131,8 +133,6 @@ public class SaveLoadHandler : MonoBehaviour
 
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
         public int graphicsQualityLevel = 1;
-
-        // <<<<<< DAS FEHLT: HIER ZURÜCK! >>>>>
         public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
     }
 
@@ -194,6 +194,12 @@ public class SaveLoadHandler : MonoBehaviour
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }
+
+            foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
+            {
+                handler.windowSitYOffset = data.windowSitYOffset;
+            }
+
         }
     }
 }

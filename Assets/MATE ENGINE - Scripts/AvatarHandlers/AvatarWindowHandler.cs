@@ -17,12 +17,21 @@ public class AvatarWindowHandler : MonoBehaviour
     private static readonly int windowSitIndexParam = Animator.StringToHash("WindowSitIndex");
     private bool wasSitting = false;
 
+    [Header("User Y-Offset Slider")]
+    [Range(-0.015f, 0.015f)]
+    public float windowSitYOffset = 0f;
+
+    [Header("Fine-Tune")]
+    float snapFraction;
+    public float baseOffset = 40f;
+    public float baseScale = 1f;
+
     IntPtr snappedHWND = IntPtr.Zero, unityHWND = IntPtr.Zero;
     Vector2 snapOffset;
     Vector2 lastDesktopPosition;
     readonly List<WindowEntry> cachedWindows = new();
     Rect pinkZoneDesktopRect;
-    float snapFraction, baseScale = 1f, baseOffset = 40f;
+    // float snapFraction, baseScale = 1f, baseOffset = 40f;
     Animator animator;
     AvatarAnimatorController controller;
     readonly System.Text.StringBuilder classNameBuffer = new(256);
@@ -161,7 +170,8 @@ public class AvatarWindowHandler : MonoBehaviour
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
             float yOffset = GetUnityWindowHeight() + snapZoneOffset.y + snapZoneSize.y * 0.5f;
             float scale = transform.localScale.y, scaleOffset = (baseScale - scale) * baseOffset;
-            int targetY = win.rect.Top - (int)(yOffset + scaleOffset) + verticalOffset;
+            float windowSitOffset = windowSitYOffset * GetUnityWindowHeight();
+            int targetY = win.rect.Top - (int)(yOffset + scaleOffset) + verticalOffset + Mathf.RoundToInt(windowSitOffset);
             SetUnityWindowPosition(targetX, targetY);
             return;
         }
@@ -177,7 +187,8 @@ public class AvatarWindowHandler : MonoBehaviour
             int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
             float yOffset = GetUnityWindowHeight() + snapZoneOffset.y + snapZoneSize.y * 0.5f;
             float scale = transform.localScale.y, scaleOffset = (baseScale - scale) * baseOffset;
-            int targetY = win.rect.Top - (int)(yOffset + scaleOffset) + verticalOffset;
+            float windowSitOffset = windowSitYOffset * GetUnityWindowHeight();
+            int targetY = win.rect.Top - (int)(yOffset + scaleOffset) + verticalOffset + Mathf.RoundToInt(windowSitOffset);
             SetUnityWindowPosition(targetX, targetY);
             SetWindowPos(unityHWND, win.hwnd, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
             return;
