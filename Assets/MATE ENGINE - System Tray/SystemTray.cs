@@ -23,7 +23,6 @@ public class SystemTray : MonoBehaviour
 
     void Awake()
     {
-        // Menü bei JEDEM Open dynamisch bauen lassen!
         TrayIcon.OnBuildMenu = BuildMenu;
         TrayIcon.Init("App", iconName, icon, BuildMenu());
     }
@@ -40,7 +39,6 @@ public class SystemTray : MonoBehaviour
                 context.Add((label, () =>
                 {
                     ToggleAction(action);
-                    // Nach Toggle-Click: Menü beim nächsten Open eh frisch.
                 }
                 ));
             }
@@ -49,7 +47,7 @@ public class SystemTray : MonoBehaviour
                 context.Add((action.label, () => ButtonAction(action)));
             }
         }
-        context.Add(("Quit", QuitApp));
+        context.Add(("Quit MateEngine", QuitApp));
         return context;
     }
 

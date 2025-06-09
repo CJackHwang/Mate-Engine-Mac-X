@@ -1340,7 +1340,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.99997216
+  m_Intensity: 0.9999805
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2447,7 +2447,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.0000022409176
+  m_Intensity: 0.0000015744974
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18832,7 +18832,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.0000044818353
+  m_Intensity: 0.000003148995
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20194,7 +20194,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.0000033613765
+  m_Intensity: 0.0000023617463
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -21057,12 +21057,12 @@ MonoBehaviour:
     type: 0
     handlerObject: {fileID: 8199926937260908627}
     toggleField: ambientOcclusionToggle
-    methodName: LoadSettings
+    methodName: ApplySettings
   - label: Enable IK Fix
     type: 0
     handlerObject: {fileID: 8199926937260908627}
     toggleField: enableIKToggle
-    methodName: LoadSettings
+    methodName: ApplySettings
   - label: Enable Window Sitting
     type: 0
     handlerObject: {fileID: 8199926937260908627}
@@ -124376,7 +124376,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.99997216
+    fadeCurrentValue: 0.9999805
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -124400,7 +124400,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000011204588
+    fadeCurrentValue: 0.0000007872487
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124424,7 +124424,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000011204588
+    fadeCurrentValue: 0.0000007872487
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124448,7 +124448,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000011204588
+    fadeCurrentValue: 0.0000007872487
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
