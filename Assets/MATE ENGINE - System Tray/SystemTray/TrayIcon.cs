@@ -19,6 +19,8 @@ namespace Utils
         private static Action OnLeftClick;
 
         private static WndProcDelegate wndProcDelegate;
+        public static Func<List<(string, Action)>> OnBuildMenu;
+
 
         /// <summary>Create a System Tray Icon</summary>
         /// <param name="appName">An internal classifier (not visible)</param>
@@ -169,18 +171,35 @@ namespace Utils
             IntPtr hMenu = WinAPI.CreatePopupMenu();
             if (hMenu == IntPtr.Zero) return;
 
-            foreach (var pair in ActionMappings)
+            var menuEntries = OnBuildMenu != null ? OnBuildMenu() : null;
+
+            MenuActions = new Dictionary<string, Action>();
+            ActionMappings = new Dictionary<uint, string>();
+            uint commandId = 1000;
+
+            if (menuEntries != null)
             {
-                if (pair.Value == SEPARATOR)
-                    WinAPI.AppendMenu(hMenu, MF_SEPARATOR, 0, null);
-                else
-                    WinAPI.AppendMenu(hMenu, MF_STRING, pair.Key, pair.Value);
+                foreach (var entry in menuEntries)
+                {
+                    if (entry.Item1 == Utils.TrayIcon.SEPARATOR)
+                    {
+                        WinAPI.AppendMenu(hMenu, MF_SEPARATOR, 0, null);
+                    }
+                    else
+                    {
+                        WinAPI.AppendMenu(hMenu, MF_STRING, commandId, entry.Item1);
+                        MenuActions[entry.Item1] = entry.Item2;
+                        ActionMappings[commandId] = entry.Item1;
+                        commandId++;
+                    }
+                }
             }
 
             WinAPI.SetForegroundWindow(messageWindowHandle);
             WinAPI.TrackPopupMenuEx(hMenu, TPM_LEFTALIGN | TPM_BOTTOMALIGN | TPM_LEFTBUTTON, pt.X, pt.Y, messageWindowHandle, IntPtr.Zero);
             WinAPI.DestroyMenu(hMenu);
         }
+
 
         private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
