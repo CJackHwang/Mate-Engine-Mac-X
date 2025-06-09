@@ -1340,7 +1340,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.9999286
+  m_Intensity: 0.9999597
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2447,7 +2447,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.000005743586
+  m_Intensity: 0.0000032434643
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18832,7 +18832,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000011487172
+  m_Intensity: 0.0000064869287
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20194,7 +20194,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000008615379
+  m_Intensity: 0.0000048651964
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20949,6 +20949,8 @@ GameObject:
   - component: {fileID: 1520083670}
   - component: {fileID: 1520083669}
   - component: {fileID: 1520083668}
+  - component: {fileID: 1520083671}
+  - component: {fileID: 1520083672}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -21006,6 +21008,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1395823394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1520083671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520083667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d6393985df1b144a6bafbc4dab8d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 9f10f237f30d6744499268635ed8bc75, type: 3}
+  iconName: MateEngine
+--- !u!114 &1520083672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520083667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfeabf21a63382144aec3bc54f138f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1554093025
 GameObject:
   m_ObjectHideFlags: 0
@@ -124302,7 +124330,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.9999286
+    fadeCurrentValue: 0.9999597
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -124326,7 +124354,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000002871793
+    fadeCurrentValue: 0.0000016217322
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124350,7 +124378,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000002871793
+    fadeCurrentValue: 0.0000016217322
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124374,7 +124402,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000002871793
+    fadeCurrentValue: 0.0000016217322
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
