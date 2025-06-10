@@ -46,6 +46,11 @@ public class AvatarBigScreenTimer : MonoBehaviour
     [Header("Stream Audio")]
     public AudioSource streamAudioSource;
 
+    private float alarmInputBlockUntil = 0f;
+    [Header("Alarm Cooldown")]
+    public float alarmInputBlockDuration = 5f; 
+
+
     [Header("Live Status (Inspector)")]
     [SerializeField] private string inspectorEvent;
     [SerializeField] private string inspectorTargetTime;
@@ -104,6 +109,11 @@ public class AvatarBigScreenTimer : MonoBehaviour
 
         if (isBigScreen && isBigScreenAlarm && alarmActive)
         {
+            if (Time.time < alarmInputBlockUntil)
+            {
+                inspectorEvent = $"Alarm active! Cooldown ({(alarmInputBlockUntil - Time.time):F1}s)";
+                return;
+            }
             inspectorEvent = "Alarm active! Waiting for user input";
             if (IsGlobalUserInput())
             {
@@ -123,6 +133,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
             return;
         }
 
+
         if (useAllowedStatesWhitelist && !IsInAllowedState())
         {
             inspectorEvent = "Alarm blocked by state";
@@ -136,7 +147,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
             inspectorEvent = "Alarm time reached! Activating alarm";
             if (avatarAnimator != null)
             {
-                avatarAnimator.SetBool("isBigScreenSaver", false); 
+                avatarAnimator.SetBool("isBigScreenSaver", false);
                 avatarAnimator.SetBool("isBigScreen", true);
                 avatarAnimator.SetBool("isBigScreenAlarm", true);
                 avatarAnimator.SetBool("isWindowSit", false);
@@ -147,8 +158,10 @@ public class AvatarBigScreenTimer : MonoBehaviour
                 bigScreenHandler.SendMessage("ActivateBigScreen");
             PlayRandomAlarm();
             alarmActive = true;
+            alarmInputBlockUntil = Time.time + alarmInputBlockDuration; 
             StartCoroutine(ShowAlarmBubbleStreamedDelayed());
         }
+
 
         if (alarmActive && (now.Second != targetSecond || now.Minute != targetMinute || now.Hour != targetHour))
         {
@@ -221,9 +234,11 @@ public class AvatarBigScreenTimer : MonoBehaviour
             bigScreenHandler.SendMessage("ActivateBigScreen");
         PlayRandomAlarm();
         alarmActive = true;
+        alarmInputBlockUntil = Time.time + alarmInputBlockDuration;
         inspectorEvent = "Alarm triggered manually";
         StartCoroutine(ShowAlarmBubbleStreamedDelayed());
     }
+
 
     void ShowAlarmBubbleStreamed()
     {
