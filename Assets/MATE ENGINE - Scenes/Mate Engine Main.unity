@@ -1469,7 +1469,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.9999817
+  m_Intensity: 0.9999826
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2576,7 +2576,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.000001472126
+  m_Intensity: 0.0000013997396
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18961,7 +18961,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000002944252
+  m_Intensity: 0.0000027994793
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20324,7 +20324,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000002208189
+  m_Intensity: 0.0000020996094
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -124507,7 +124507,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.9999817
+    fadeCurrentValue: 0.9999826
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -124531,7 +124531,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000000736063
+    fadeCurrentValue: 0.0000006998698
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124555,7 +124555,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000000736063
+    fadeCurrentValue: 0.0000006998698
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124579,7 +124579,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.000000736063
+    fadeCurrentValue: 0.0000006998698
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
