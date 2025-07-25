@@ -1469,7 +1469,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.9999838
+  m_Intensity: 0.999986
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2576,7 +2576,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.0000013087307
+  m_Intensity: 0.0000011250119
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18961,7 +18961,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.0000026174614
+  m_Intensity: 0.0000022500237
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20324,7 +20324,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000001963096
+  m_Intensity: 0.0000016875179
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -21198,7 +21198,6 @@ MonoBehaviour:
     handlerObject: {fileID: 8199926937260908627}
     toggleField: enableWindowSittingToggle
     methodName: LoadSettings
-  showAppInTaskbar: 0
 --- !u!114 &1520083672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22075,8 +22074,11 @@ MonoBehaviour:
   totalIdleAnimations: 16
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
-  DANCE_CLIP_COUNT: 13
+  DANCE_CLIP_COUNT: 14
   enableDancing: 1
+  enableDanceSwitch: 0
+  DANCE_SWITCH_TIME: 15
+  DANCE_TRANSITION_TIME: 2
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 1
@@ -44892,8 +44894,11 @@ MonoBehaviour:
   totalIdleAnimations: 16
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
-  DANCE_CLIP_COUNT: 13
+  DANCE_CLIP_COUNT: 14
   enableDancing: 1
+  enableDanceSwitch: 0
+  DANCE_SWITCH_TIME: 15
+  DANCE_TRANSITION_TIME: 2
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 0
@@ -90165,7 +90170,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1931729262191726083}
   m_Direction: 2
   m_Value: 0.60248226
-  m_Size: 0.19886364
+  m_Size: 0.19886361
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -124508,7 +124513,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.9999838
+    fadeCurrentValue: 0.999986
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -124532,7 +124537,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.00000065436535
+    fadeCurrentValue: 0.00000056250593
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124556,7 +124561,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.00000065436535
+    fadeCurrentValue: 0.00000056250593
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124580,7 +124585,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.00000065436535
+    fadeCurrentValue: 0.00000056250593
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -139483,6 +139488,39 @@ MonoBehaviour:
     options: []
     defaultDropdown: 0
     uiObject: {fileID: 1716594591}
+  - label: Debug Enable Dance Switch
+    type: 1
+    componentType: AvatarAnimatorController
+    field: enableDanceSwitch
+    min: -10
+    max: 10
+    defaultValue: 1
+    defaultToggle: 0
+    options: []
+    defaultDropdown: 0
+    uiObject: {fileID: 0}
+  - label: Debug Dance Switch Time
+    type: 0
+    componentType: AvatarAnimatorController
+    field: DANCE_SWITCH_TIME
+    min: 5
+    max: 30
+    defaultValue: 15
+    defaultToggle: 0
+    options: []
+    defaultDropdown: 0
+    uiObject: {fileID: 0}
+  - label: Debug Dance Transition Time
+    type: 0
+    componentType: AvatarAnimatorController
+    field: DANCE_TRANSITION_TIME
+    min: 1
+    max: 5
+    defaultValue: 2
+    defaultToggle: 0
+    options: []
+    defaultDropdown: 0
+    uiObject: {fileID: 0}
 --- !u!1 &8536327945389812347
 GameObject:
   m_ObjectHideFlags: 0
