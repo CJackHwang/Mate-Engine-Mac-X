@@ -1469,7 +1469,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.9999829
+  m_Intensity: 0.99998504
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2576,7 +2576,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.26999998, b: 0.96203995, a: 1}
-  m_Intensity: 0.0000013764106
+  m_Intensity: 0.0000012032451
   m_Range: 0.5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18961,7 +18961,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.0000027528213
+  m_Intensity: 0.0000024064902
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -20324,7 +20324,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0, g: 0.44799995, b: 1, a: 1}
-  m_Intensity: 0.000002064616
+  m_Intensity: 0.0000018048677
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -22076,6 +22076,9 @@ MonoBehaviour:
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 13
   enableDancing: 1
+  enableDanceSwitch: 0
+  DANCE_SWITCH_TIME: 15
+  DANCE_TRANSITION_TIME: 2
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 1
@@ -44893,6 +44896,9 @@ MonoBehaviour:
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 13
   enableDancing: 1
+  enableDanceSwitch: 0
+  DANCE_SWITCH_TIME: 15
+  DANCE_TRANSITION_TIME: 2
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 0
@@ -124507,7 +124513,7 @@ MonoBehaviour:
     groupID: avatar_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.9999829
+    fadeCurrentValue: 0.99998504
     fadeTarget: 1
     isFading: 1
     hasYSet: 0
@@ -124531,7 +124537,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000006882053
+    fadeCurrentValue: 0.00000060162256
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124555,7 +124561,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000006882053
+    fadeCurrentValue: 0.00000060162256
     fadeTarget: 0
     isFading: 1
     hasYSet: 0
@@ -124579,7 +124585,7 @@ MonoBehaviour:
     groupID: ambi_lights
     exclusiveTags:
     - lights
-    fadeCurrentValue: 0.0000006882053
+    fadeCurrentValue: 0.00000060162256
     fadeTarget: 0
     isFading: 1
     hasYSet: 0

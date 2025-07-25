@@ -12,7 +12,13 @@ public class AvatarAnimatorController : MonoBehaviour
     public int totalIdleAnimations = 10;
     public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
     public int DANCE_CLIP_COUNT = 5;
-    public bool enableDancing = true;
+
+    [Header("Dancing")]
+    public bool enableDancing = true;           
+    public bool enableDanceSwitch = true;
+    public float DANCE_SWITCH_TIME = 15f;
+    public float DANCE_TRANSITION_TIME = 2f;       
+
     public bool BlockDraggingOverride = false;
 
     private static readonly int danceIndexParam = Animator.StringToHash("DanceIndex");
@@ -23,9 +29,9 @@ public class AvatarAnimatorController : MonoBehaviour
 
     private MMDevice defaultDevice;
     private MMDeviceEnumerator enumerator;
-    private Coroutine soundCheckCoroutine, idleTransitionCoroutine;
-    private float lastSoundCheckTime, idleTimer;
-    private int idleState;
+    private Coroutine soundCheckCoroutine, idleTransitionCoroutine, danceTransitionCoroutine;
+    private float lastSoundCheckTime, idleTimer, danceTimer;
+    private int idleState, danceState;
     private float dragLockTimer;
     private bool mouseHeld;
     public bool isDragging, isDancing, isIdle;
@@ -67,13 +73,20 @@ public class AvatarAnimatorController : MonoBehaviour
     void StartDancing()
     {
         isDancing = true;
+        danceTimer = 0f;
+        danceState = Random.Range(0, DANCE_CLIP_COUNT);
         animator.SetBool(isDancingParam, true);
-        animator.SetFloat(danceIndexParam, Random.Range(0, DANCE_CLIP_COUNT));
+        animator.SetFloat(danceIndexParam, danceState);
     }
     void SetDancing(bool value)
     {
         isDancing = value;
         animator.SetBool(isDancingParam, value);
+        if (!value && danceTransitionCoroutine != null)
+        {
+            StopCoroutine(danceTransitionCoroutine);
+            danceTransitionCoroutine = null;
+        }
     }
 
     bool IsValidAppPlaying()
@@ -144,6 +157,23 @@ public class AvatarAnimatorController : MonoBehaviour
             idleState = next;
         }
         UpdateIdleStatus();
+
+        if (isDancing && enableDanceSwitch)
+        {
+            danceTimer += Time.deltaTime;
+            if (danceTimer > DANCE_SWITCH_TIME)
+            {
+                danceTimer = 0f;
+                int nextDance = (danceState + 1) % DANCE_CLIP_COUNT;
+                if (nextDance == 0) animator.SetFloat(danceIndexParam, 0);
+                else
+                {
+                    if (danceTransitionCoroutine != null) StopCoroutine(danceTransitionCoroutine);
+                    danceTransitionCoroutine = StartCoroutine(SmoothDanceTransition(nextDance));
+                }
+                danceState = nextDance;
+            }
+        }
     }
     void SetDragging(bool value)
     {
@@ -173,12 +203,25 @@ public class AvatarAnimatorController : MonoBehaviour
         animator.SetFloat(idleIndexParam, newIdle);
     }
 
+    IEnumerator SmoothDanceTransition(int newDance)
+    {
+        float elapsed = 0f, start = animator.GetFloat(danceIndexParam);
+        while (elapsed < DANCE_TRANSITION_TIME)
+        {
+            elapsed += Time.deltaTime;
+            animator.SetFloat(danceIndexParam, Mathf.Lerp(start, newDance, elapsed / DANCE_TRANSITION_TIME));
+            yield return null;
+        }
+        animator.SetFloat(danceIndexParam, newDance);
+    }
+
     public bool IsInIdleState() => isIdle;
 
     void CleanupAudioResources()
     {
         if (soundCheckCoroutine != null) { StopCoroutine(soundCheckCoroutine); soundCheckCoroutine = null; }
         if (idleTransitionCoroutine != null) { StopCoroutine(idleTransitionCoroutine); idleTransitionCoroutine = null; }
+        if (danceTransitionCoroutine != null) { StopCoroutine(danceTransitionCoroutine); danceTransitionCoroutine = null; }
         defaultDevice?.Dispose(); defaultDevice = null;
         enumerator?.Dispose(); enumerator = null;
     }
