@@ -83,6 +83,9 @@ public class SaveLoadHandler : MonoBehaviour
         public float soundThreshold = 0.2f;
         public float idleSwitchTime = 10f;
         public float idleTransitionTime = 1f;
+        public bool enableDanceSwitch = false; 
+        public float danceSwitchTime = 15f;
+        public float danceTransitionTime = 2f;
         public float avatarSize = 1.0f;
         public bool enableDancing = true;
         public bool enableMouseTracking = true;
@@ -160,6 +163,9 @@ public class SaveLoadHandler : MonoBehaviour
             avatar.enableDancing = data.enableDancing;
             avatar.allowedApps = new List<string>(data.allowedApps);
             avatar.transform.localScale = Vector3.one * data.avatarSize;
+            avatar.DANCE_SWITCH_TIME = data.danceSwitchTime;
+            avatar.DANCE_TRANSITION_TIME = data.danceTransitionTime;
+            avatar.enableDanceSwitch = data.enableDanceSwitch;
 
             foreach (var tracker in avatar.GetComponentsInChildren<AvatarMouseTracking>(true))
             {

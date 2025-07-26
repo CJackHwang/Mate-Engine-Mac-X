@@ -16,6 +16,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle enableHandHoldingToggle;
     public Toggle ambientOcclusionToggle;
     public Toggle enableIKToggle;
+    public Toggle enableDanceSwitchToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -43,6 +44,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableHandHoldingToggle?.onValueChanged.AddListener(OnEnableHandHoldingChanged);
         ambientOcclusionToggle?.onValueChanged.AddListener(OnAmbientOcclusionChanged);
         enableIKToggle?.onValueChanged.AddListener(OnEnableIKChanged);
+        enableDanceSwitchToggle?.onValueChanged.AddListener(OnEnableDanceSwitchChanged);
 
         LoadSettings();
         ApplySettings();
@@ -61,6 +63,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     private void OnEnableHandHoldingChanged(bool v) { SaveLoadHandler.Instance.data.enableHandHolding = v; ApplySettings(); Save(); }
     private void OnAmbientOcclusionChanged(bool v) { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); Save(); }
     private void OnEnableIKChanged(bool v) { SaveLoadHandler.Instance.data.enableIK = v; ApplySettings(); Save(); }
+    private void OnEnableDanceSwitchChanged(bool v) { SaveLoadHandler.Instance.data.enableDanceSwitch = v; Save(); }
 
     #endregion
 
@@ -78,6 +81,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableHandHoldingToggle?.SetIsOnWithoutNotify(data.enableHandHolding);
         ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
         enableIKToggle?.SetIsOnWithoutNotify(data.enableIK);
+        enableDanceSwitchToggle?.SetIsOnWithoutNotify(data.enableDanceSwitch);
         ApplySettings();
     }
 
@@ -123,6 +127,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
         enableIKToggle?.SetIsOnWithoutNotify(true);
+        enableDanceSwitchToggle?.SetIsOnWithoutNotify(false);
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
@@ -136,6 +141,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.enableHandHolding = true;
         data.ambientOcclusion = false;
         data.enableIK = true;
+        data.enableDanceSwitch = false;
 
         SaveLoadHandler.Instance.SaveToDisk();
         ApplySettings();

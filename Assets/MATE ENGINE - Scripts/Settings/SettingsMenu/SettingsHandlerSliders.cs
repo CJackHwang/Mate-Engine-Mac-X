@@ -14,6 +14,8 @@ public class SettingsHandlerSliders : MonoBehaviour
     public Slider hueShiftSlider;
     public Slider saturationSlider;
     public Slider windowSitYOffsetSlider;
+    public Slider danceSwitchTimeSlider;
+    public Slider danceTransitionTimeSlider;
 
     private void Start()
     {
@@ -86,6 +88,18 @@ public class SettingsHandlerSliders : MonoBehaviour
             SaveLoadHandler.Instance.data.windowSitYOffset = v;
             SaveAll();
         });
+        danceSwitchTimeSlider?.onValueChanged.AddListener(v =>
+        {
+            SaveLoadHandler.Instance.data.danceSwitchTime = v;
+            SaveAll();
+        });
+
+        danceTransitionTimeSlider?.onValueChanged.AddListener(v =>
+        {
+            SaveLoadHandler.Instance.data.danceTransitionTime = v;
+            SaveAll();
+        });
+
 
         LoadSettings();
         ApplySettings();
@@ -111,6 +125,8 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.SetValueWithoutNotify(data.uiHueShift);
         saturationSlider?.SetValueWithoutNotify(data.uiSaturation);
         windowSitYOffsetSlider?.SetValueWithoutNotify(data.windowSitYOffset);
+        danceSwitchTimeSlider?.SetValueWithoutNotify(data.danceSwitchTime);
+        danceTransitionTimeSlider?.SetValueWithoutNotify(data.danceTransitionTime);
     }
 
     public void ApplySettings()
@@ -150,6 +166,9 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.SetValueWithoutNotify(0f);
         saturationSlider?.SetValueWithoutNotify(0.5f);
         windowSitYOffsetSlider?.SetValueWithoutNotify(0f);
+        danceSwitchTimeSlider?.SetValueWithoutNotify(15f);
+        danceTransitionTimeSlider?.SetValueWithoutNotify(2f);
+
 
 
         var data = SaveLoadHandler.Instance.data;
@@ -164,6 +183,8 @@ public class SettingsHandlerSliders : MonoBehaviour
         data.uiHueShift = 0f;
         data.uiSaturation = 0.5f;
         data.windowSitYOffset = 0f;
+        data.danceSwitchTime = 15f;
+        data.danceTransitionTime = 2f;
 
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();
