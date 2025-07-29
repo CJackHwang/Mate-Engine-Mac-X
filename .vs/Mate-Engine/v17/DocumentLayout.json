@@ -3,16 +3,43 @@
   "WorkspaceRootPath": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\mac\\home\\documents\\github\\mate-engine\\assets\\editor\\menucontentmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\menucontentmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\mac\\home\\documents\\github\\mate-engine\\assets\\deleteaihistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\deleteaihistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\mac\\home\\documents\\github\\mate-engine\\assets\\editor\\menucontenteditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\menucontenteditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\avatarhandlers\\avatarsleepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\avatarsleepcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\avatarhandlers\\avatartaskbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\avatartaskbarcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\settings\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\settings\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\settings\\settingsmenu\\settingshandlertoggles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\settings\\settingsmenu\\settingshandlertoggles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\settings\\settingsmenu\\settingshandlersliders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\settings\\settingsmenu\\settingshandlersliders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Editor\\MenuContentManager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\assets\\mate engine - scripts\\avatarhandlers\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\avataranimatorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentEditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Editor\\MenuContentEditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,32 +54,116 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MenuContentManager.cs",
-              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Editor\\MenuContentManager.cs",
-              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
-              "RelativeToolTip": "Assets\\Editor\\MenuContentManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Title": "DeleteAIHistory.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\DeleteAIHistory.cs",
+              "RelativeDocumentMoniker": "Assets\\DeleteAIHistory.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\DeleteAIHistory.cs",
+              "RelativeToolTip": "Assets\\DeleteAIHistory.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAIwCYAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T07:08:38.126Z",
+              "WhenOpened": "2025-07-27T15:27:10.302Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AvatarSleepController.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T12:07:00.327Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AvatarTaskbarController.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T12:05:27.433Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SettingsHandlerToggles.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
+              "ViewState": "AgIAAHYAAAAAZ2ZmZiYpwIEAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T08:00:58.816Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "settings.json",
+              "DocumentMoniker": "C:\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
+              "ToolTip": "C:\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
+              "ViewState": "AgIAACAAAAAAmpmZmZkOwBAAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-26T07:39:39.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SettingsHandlerSliders.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
+              "ViewState": "AgIAAKIAAAAAjZmZmVkgwK0AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T07:30:59.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SaveLoadHandler.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
+              "ViewState": "AgIAAJQAAAAglZmZmVkuwKgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T07:30:09.22Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MenuContentManager.cs",
+              "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Editor\\MenuContentManager.cs",
+              "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
+              "RelativeToolTip": "Assets\\Editor\\MenuContentManager.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-26T07:08:38.126Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "MenuContentEditor.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentEditor.cs",
               "RelativeDocumentMoniker": "Assets\\Editor\\MenuContentEditor.cs",
               "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentEditor.cs",
               "RelativeToolTip": "Assets\\Editor\\MenuContentEditor.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAQwFEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADkAAAAAAAAAAAAQwFIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-26T07:03:34.322Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "AvatarAnimatorController.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
