@@ -14,7 +14,7 @@
 
 A free, lightweight alternative to **Desktop Mate** with custom VRM support and modding. Fewer limitations, more freedom.
 
-- **App License**: Mixed — GNU AGPL v3 & Copyrighted Components  
+- **App License**: Mixed — GNU AGPL v3 & MateProv2 License
   *Please read the license terms carefully.*
 - **Default Avatar License**: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/)  
   *Do not redistribute this model in your builds.*
@@ -24,7 +24,7 @@ A free, lightweight alternative to **Desktop Mate** with custom VRM support and 
 
 ## About the Project
 
-**Mate Engine** was created as a free alternative to **Desktop Mate**.
+**Mate Engine** was created as a free alternative to **Desktop Mate** and others.
 
 Why? Because **Desktop Mate** charges **$10–$25 USD** for single character models—prices comparable to full games on Steam. On top of that, modding and custom models were disabled in later versions.
 
