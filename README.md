@@ -46,6 +46,7 @@ Want to try with a free model?
 ---
 
 ## Feature Comparison
+Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 
 | Feature                 | Desktop Mate | Phase Pal | MateEngine |
 |--------------------------|--------------|-----------|------------|
@@ -68,7 +69,7 @@ Want to try with a free model?
 | Touch Regions            | ❌           | ❌        | ✅         |
 | Avatar SFX               | ❌           | ❌        | ✅         |
 | Particle Effects         | ❌           | ❌        | ✅         |
-| FPS Control              | ❌           | ❌        | ✅         |
+| FPS Control              | ❌           | ✅        | ✅         |
 | Always On Top Toggle     | ❌           | ✅        | ✅         |
 | Chibi Mode               | ❌           | ❌        | ✅         |
 | Post Processing Bloom    | ❌           | ❌        | ✅         |
@@ -93,35 +94,6 @@ Want to try with a free model?
 | Anti Cheat Safe          | ❌           | ❌        | ✅         |
 | Sleep                    | ❌           | ❌        | ✅         |
 | Compatible with Games    | ❌           | ❌        | ✅         |
-
-
-
-| Feature                                      | Desktop Mate | Mate Engine |
-|----------------------------------------------|--------------|-------------|
-| Custom Shader Support                                  | ❌           | ✅          |
-| Advanced .ME Model Format                                   | ❌           | ✅          |
-| Mod Support                                   | ❌           | ✅          |
-| Custom Model Support (.VRM, .ME)        | ❌           | ✅          |
-| Window Sitting                     | ✅           | ⏸ (In Version 1.5.0)|
-| Taskbar Sitting                    | ✅           | ⏸ |
-| Dragging Animation                            | ✅           | ✅          |
-| Idle Animation                                | ✅           | ✅          |
-| Hiding on Edge of Screen                      | ✅           | ❌          |
-| Head Movement                                 | ✅           | ✅          |
-| Eye Movement                                  | ❌           | ✅          |
-| Spine Movement                                | ❌           | ✅          |
-| Hand Movement                                 | ✅           | ✅          |
-| Alarm / Timed Animation                       | ✅           | ❌          |
-| Dance Animation                               | ❌           | ✅          |
-| Touch Reactions (Head / Sensitive Area)       | ⏸            | ✅          |
-| Sound Effects                                 | ⏸ (On Paid Models Only)           | ✅          |
-| Particle Effects                              | ❌           | ✅          |
-| Smooth Animation Transitions                  | ❌ (Glitches between Animations)           | ✅          |
-| FPS Control                                   | ❌           | ✅          |
-| Always-on-Top Toggle                          | ❌           | ✅          |
-| Open Source                                   | ❌           | ✅          |
-| Chibi Mode                                    | ❌           | ✅          |
-
 ---
 
 ## Steam Release Support
@@ -279,31 +251,56 @@ If you like it, share it or support it — but most of all, enjoy it.
 [初音ミク VRMをダウンロード](https://booth.pm/en/items/3226395)
 
 ---
-
 ## 機能比較
 
-| 機能                                           | Desktop Mate | Mate Engine |
-|-----------------------------------------------|--------------|-------------|
-| ウィンドウ／タスクバーに座る                   | ✅           | ❌（計画中）|
-| ドラッグ中アニメーション                        | ✅           | ✅          |
-| 待機アニメーション                              | ✅           | ✅          |
-| 画面端に隠れる機能                              | ✅           | ❌          |
-| 頭の動き                                       | ✅           | ✅          |
-| 目の動き                                       | ❌           | ✅          |
-| 背骨の動き                                     | ❌           | ✅          |
-| 手の動き                                       | ✅           | ✅          |
-| アラーム／タイマーアニメーション               | ✅           | ❌          |
-| ダンスアニメーション                            | ❌           | ✅          |
-| タッチリアクション（頭・敏感部位）             | ❌           | ✅          |
-| サウンドエフェクト                              | ❌           | ✅          |
-| パーティクルエフェクト                          | ❌           | ✅          |
-| スムーズなアニメーション遷移                    | ❌           | ✅          |
-| FPS切り替え機能                                 | ❌           | ✅          |
-| 最前面表示の切り替えボタン                      | ❌           | ✅          |
-| VRMモデルのネイティブ読み込み                   | ❌           | ✅          |
-| Mod対応                                         | ❌           | ✅          |
-| オープンソース                                  | ❌           | ✅          |
-| ちびキャラモード                                 | ❌           | ✅          |
+「Desktop Mate」 「Phase Pal (Playtest Alpha)」 「MateEngine」の比較
+
+| 機能              | Desktop Mate | Phase Pal | MateEngine |
+| --------------- | ------------ | --------- | ---------- |
+| オープンソース         | ❌            | ❌         | ✅          |
+| Mod サポート        | ❌            | ❌         | ✅          |
+| カスタム VRM        | ❌            | ✅         | ✅          |
+| カスタムシェーダー       | ❌            | ❌         | ✅          |
+| .ME ファイル形式      | ❌            | ❌         | ✅          |
+| ウィンドウ上に座る       | ✅            | ✅         | ✅          |
+| タスクバー上に座る       | ✅            | ✅         | ✅          |
+| アイドルアニメーション     | ✅            | ✅         | ✅          |
+| ドラッグアニメーション     | ✅            | ✅         | ✅          |
+| 音楽に合わせてダンス      | ❌            | ❌         | ✅          |
+| 頭部トラッキング        | ✅            | ✅         | ✅          |
+| 背骨トラッキング        | ❌            | ❌         | ✅          |
+| 目のトラッキング        | ❌            | ❌         | ✅          |
+| 手の動き            | ❌            | ❌         | ✅          |
+| アラーム / タイマー     | ✅            | ✅         | ✅          |
+| スクリーンセーバー       | ❌            | ❌         | ✅          |
+| タッチ領域           | ❌            | ❌         | ✅          |
+| アバター効果音 (SFX)   | ❌            | ❌         | ✅          |
+| パーティクルエフェクト     | ❌            | ❌         | ✅          |
+| FPS 制御          | ❌            | ✅         | ✅          |
+| 常に最前面表示切替       | ❌            | ✅         | ✅          |
+| ちびキャラモード        | ❌            | ❌         | ✅          |
+| ポストプロセス ブルーム    | ❌            | ❌         | ✅          |
+| ポストプロセス AO      | ❌            | ❌         | ✅          |
+| MSAA x8 サポート    | ❌            | ❌         | ✅          |
+| ビッグスクリーンモード     | ❌            | ❌         | ✅          |
+| システムアイコン        | ✅            | ❌         | ✅          |
+| システムアイコン設定      | ❌            | ❌         | ✅          |
+| スムーズなアニメーション遷移  | ❌            | ❌         | ✅          |
+| Steam ワークショップ   | ❌            | ✅         | ❌          |
+| 内蔵 SDK          | ❌            | ❌         | ✅          |
+| AI チャット         | ❌            | ✅         | ✅          |
+| 高度な AI 機能       | ❌            | ✅         | ❌          |
+| AI API 機能       | ❌            | ✅         | ❌          |
+| 無料利用可能          | ✅            | ✅         | ✅          |
+| 多言語サポート         | ❌            | ✅         | ✅          |
+| AI ボイス          | ❌            | ✅         | ❌          |
+| アニメーション Modding | ❌            | ❌         | ✅          |
+| CPU 使用率         | 普通           | 非常に良い     | 非常に良い      |
+| GPU 使用率         | 普通           | 良い        | 良い         |
+| RAM 使用率         | 非常に良い        | 非常に悪い     | 良い         |
+| アンチチート安全        | ❌            | ❌         | ✅          |
+| スリープ機能          | ❌            | ❌         | ✅          |
+| ゲームとの互換性        | ❌            | ❌         | ✅          |
 
 ---
 
