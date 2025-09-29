@@ -79,7 +79,7 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | System Icon              | ✅           | ❌        | ✅         |
 | System Icon Settings     | ❌           | ❌        | ✅         |
 | Smooth Anim Transitions  | ❌           | ❌        | ✅         |
-| Steam Workshop           | ❌           | ✅        | ❌         |
+| Steam Workshop           | ❌           | ✅        | ✅         |
 | Built-In SDK             | ❌           | ❌        | ✅         |
 | AI Chat                  | ❌           | ✅        | ✅         |
 | Advanced AI Functions    | ❌           | ✅        | ❌         |
@@ -247,7 +247,7 @@ If you like it, share it or support it — but most of all, enjoy it.
 | システムアイコン        | ✅            | ❌         | ✅          |
 | システムアイコン設定      | ❌            | ❌         | ✅          |
 | スムーズなアニメーション遷移  | ❌            | ❌         | ✅          |
-| Steam ワークショップ   | ❌            | ✅         | ❌          |
+| Steam ワークショップ   | ❌            | ✅         | ✅          |
 | 内蔵 SDK          | ❌            | ❌         | ✅          |
 | AI チャット         | ❌            | ✅         | ✅          |
 | 高度な AI 機能       | ❌            | ✅         | ❌          |
