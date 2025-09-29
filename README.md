@@ -133,47 +133,12 @@ Mate Engine offers smoother animation transitions than Desktop Mate, avoiding th
 
 ---
 
-## Key Features
-
-- **Idle Animations** – Loops while resting on your desktop  
-- **Drag Animation** – Floats while being moved  
-- **Dance Animation (Experimental)** – Reacts to music from Spotify, Firefox, etc.  
-- **VRM Loader** – Supports any valid `.VRM` model  
-- **Touch Regions** – Supports face/head interaction  
-- **Custom Modding** – Drop in effects, sounds, and more  
-- **Options Menu** – Right-click or press `M` to open the settings  
-- **Always-on-Top Toggle**, **FPS Control**, **Chibi Mode**, and more
-
----
-
-## Upcoming Features (Pre-Release 5–10)
-
-- **Wallpaper Engine Integration** – Embed the pet directly into wallpapers  
-- **Window & Taskbar Sitting** – Sit on any desktop app title bar  
-- **Menu Color Customization** – Stylize your UI with custom themes  
-
----
-
 ## How to Use
 
 1. Go to the **Releases** section (on the right-hand panel).  
 2. Download the ZIP file marked as a public release (not source code).  
 3. Unzip and run `MateEngineX.exe`.  
 4. Right-click the avatar or press `M` to open the settings menu.
-
----
-
-## Frequently Asked Questions
-
-**Q: My VRM won’t load or inject!**  
-A: This usually means your `.VRM` is incorrectly exported. Common issues include broken armatures or unsupported shaders. Use official exporters and test compatibility.
-
-**Q: Is Hatsune Miku included?**  
-A: No. Download her separately from [this Booth page](https://booth.pm/en/items/3226395).
-
-**Need help with conversion?**  
-Check this official guide: [VRM Conversion Guide](https://vrm.dev/en/vrm/how_to_make_vrm/)  
-(Note: I can't provide support for model conversion.)
 
 ---
 
@@ -204,10 +169,6 @@ You can verify safety by scanning the app on [VirusTotal](https://www.virustotal
 Thanks for checking out **Mate Engine**!  
 This project is made with love and designed to stay free forever.  
 If you like it, share it or support it — but most of all, enjoy it.
-
-
-
-
 
 ---------------------------------------------------------------------
 
