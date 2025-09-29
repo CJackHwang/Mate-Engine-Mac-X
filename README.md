@@ -47,6 +47,55 @@ Want to try with a free model?
 
 ## Feature Comparison
 
+| Feature                 | Desktop Mate | Phase Pal | MateEngine |
+|--------------------------|--------------|-----------|------------|
+| Open Source              | ❌           | ❌        | ✅         |
+| Mod Support              | ❌           | ❌        | ✅         |
+| Custom VRM               | ❌           | ✅        | ✅         |
+| Custom Shaders           | ❌           | ❌        | ✅         |
+| .ME File Format          | ❌           | ❌        | ✅         |
+| Window Sitting           | ✅           | ✅        | ✅         |
+| Taskbar Sitting          | ✅           | ✅        | ✅         |
+| Idle Animation           | ✅           | ✅        | ✅         |
+| Dragging Animation       | ✅           | ✅        | ✅         |
+| Dance to Music           | ❌           | ❌        | ✅         |
+| Head Tracking            | ✅           | ✅        | ✅         |
+| Spine Tracking           | ❌           | ❌        | ✅         |
+| Eye Tracking             | ❌           | ❌        | ✅         |
+| Hand Movement            | ❌           | ❌        | ✅         |
+| Alarm / Timer            | ✅           | ✅        | ✅         |
+| ScreenSaver              | ❌           | ❌        | ✅         |
+| Touch Regions            | ❌           | ❌        | ✅         |
+| Avatar SFX               | ❌           | ❌        | ✅         |
+| Particle Effects         | ❌           | ❌        | ✅         |
+| FPS Control              | ❌           | ❌        | ✅         |
+| Always On Top Toggle     | ❌           | ✅        | ✅         |
+| Chibi Mode               | ❌           | ❌        | ✅         |
+| Post Processing Bloom    | ❌           | ❌        | ✅         |
+| Post Processing AO       | ❌           | ❌        | ✅         |
+| MSAA x8 Support          | ❌           | ❌        | ✅         |
+| Big Screen Mode          | ❌           | ❌        | ✅         |
+| System Icon              | ✅           | ❌        | ✅         |
+| System Icon Settings     | ❌           | ❌        | ✅         |
+| Smooth Anim Transitions  | ❌           | ❌        | ✅         |
+| Steam Workshop           | ❌           | ✅        | ❌         |
+| Built-In SDK             | ❌           | ❌        | ✅         |
+| AI Chat                  | ❌           | ✅        | ✅         |
+| Advanced AI Functions    | ❌           | ✅        | ❌         |
+| AI API Functions         | ❌           | ✅        | ❌         |
+| Free To Use              | ✅           | ✅        | ✅         |
+| Multi Language Support   | ❌           | ✅        | ✅         |
+| AI Voices                | ❌           | ✅        | ❌         |
+| Animation Modding        | ❌           | ❌        | ✅         |
+| CPU Usage                | Moderate     | Very Good | Very Good  |
+| GPU Usage                | Moderate     | Good      | Good       |
+| RAM Usage                | Very Good    | Very Bad  | Good       |
+| Anti Cheat Safe          | ❌           | ❌        | ✅         |
+| Sleep                    | ❌           | ❌        | ✅         |
+| Compatible with Games    | ❌           | ❌        | ✅         |
+
+
+
 | Feature                                      | Desktop Mate | Mate Engine |
 |----------------------------------------------|--------------|-------------|
 | Custom Shader Support                                  | ❌           | ✅          |
