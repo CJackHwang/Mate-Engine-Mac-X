@@ -3941,6 +3941,82 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7489401256387694265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2648848847894001257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6953136546461614400}
+  - component: {fileID: 3935289571424911943}
+  m_Layer: 0
+  m_Name: MateAPI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6953136546461614400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648848847894001257}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.498084, y: 0.6921275, z: -0.02358829}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5904936161840342959}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3935289571424911943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648848847894001257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6952c57b87eaf743a883c84002171c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isScriptLoader: 0
+  entries:
+  - name: Face Light
+    tag: 
+    gameObjects:
+    - {fileID: 6044382302035958612}
+  - name: Bear
+    tag: 
+    gameObjects:
+    - {fileID: 6890296817075269414}
+  - name: PonPon
+    tag: 
+    gameObjects:
+    - {fileID: 5591546506657738453}
+  - name: Headphones
+    tag: 
+    gameObjects:
+    - {fileID: 7387389657266579266}
+  - name: Sleeves
+    tag: 
+    gameObjects:
+    - {fileID: 1225351878204699808}
+  - name: Necklace
+    tag: 
+    gameObjects:
+    - {fileID: 5227326032176658945}
+  - name: 
+    tag: 
+    gameObjects: []
+  - name: 
+    tag: 
+    gameObjects: []
 --- !u!1 &2678301847006274524
 GameObject:
   m_ObjectHideFlags: 0
@@ -5273,6 +5349,7 @@ Transform:
   - {fileID: 6133237296973065204}
   - {fileID: 8900967139978567805}
   - {fileID: 6827368684710029571}
+  - {fileID: 6953136546461614400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8917457745839064720

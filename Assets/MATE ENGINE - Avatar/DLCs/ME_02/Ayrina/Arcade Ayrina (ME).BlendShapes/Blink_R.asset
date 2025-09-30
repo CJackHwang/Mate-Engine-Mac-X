@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37562b39ff933b245ac2f35d87edbcd6, type: 3}
   m_Name: Blink_R
   m_EditorClassIdentifier: 
-  m_prefab: {fileID: 0}
+  m_prefab: {fileID: 544929681019354470, guid: fbc328fc8fb443c44943f731a851bdb9, type: 3}
   BlendShapeName: Blink_R
   Preset: 17
-  Values: []
+  Values:
+  - RelativePath: Body
+    Index: 21
+    Weight: 100
   MaterialValues: []
   IsBinary: 0
