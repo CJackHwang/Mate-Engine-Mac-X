@@ -1,3 +1,9 @@
+# Note-Worthy Community Mods:
+
+Custom Dance Player
+https://github.com/maoxig/MateEngine-CustomDancePlayer
+
+
 # 🌐 Language / 言語選択
 
 - [English](#English)
