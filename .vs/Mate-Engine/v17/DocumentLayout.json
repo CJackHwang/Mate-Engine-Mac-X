@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\systemstarthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\blendshapeuiblock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\blendshapeuiblock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\systemstarthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\systemstarthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -75,6 +79,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "BlendshapeUIBlock.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\BlendshapeUIBlock.cs",
+              "RelativeDocumentMoniker": "Assets\\BlendshapeUIBlock.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\BlendshapeUIBlock.cs",
+              "RelativeToolTip": "Assets\\BlendshapeUIBlock.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAswF4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-30T15:07:47.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "SystemStartHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\SystemStartHandler.cs",
               "RelativeDocumentMoniker": "Assets\\SystemStartHandler.cs",
@@ -82,12 +99,11 @@
               "RelativeToolTip": "Assets\\SystemStartHandler.cs",
               "ViewState": "AgIAAIUAAAAAAAAAAAAswLAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-30T13:28:14.021Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-30T13:28:14.021Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "VoicePack.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\VoicePack.cs",
               "RelativeDocumentMoniker": "Assets\\VoicePack.cs",
@@ -99,19 +115,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "TestFix.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\TestFix.cs",
               "RelativeDocumentMoniker": "Assets\\TestFix.cs",
               "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\TestFix.cs",
               "RelativeToolTip": "Assets\\TestFix.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T16:42:05.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-28T16:42:05.828Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "BoneColliderFixer.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\BoneColliderFixer.cs",
               "RelativeDocumentMoniker": "Assets\\BoneColliderFixer.cs",
@@ -119,12 +134,11 @@
               "RelativeToolTip": "Assets\\BoneColliderFixer.cs",
               "ViewState": "AgIAAAgBAAAAAAAAAAAAABUBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-28T15:16:59.251Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-28T15:16:59.251Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "AvatarTaskbarController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarTaskbarController.cs",
@@ -136,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "SettingsHandlerToggles.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
@@ -148,7 +162,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "settings.json",
               "DocumentMoniker": "C:\\Users\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\shiny\\AppData\\LocalLow\\Shinymoon\\MateEngineX\\settings.json",
@@ -160,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SettingsHandlerSliders.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerSliders.cs",
@@ -172,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
@@ -184,7 +198,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AvatarLibraryMenu.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\VRMLoader\\AvatarLibraryMenu.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\VRMLoader\\AvatarLibraryMenu.cs",
@@ -196,7 +210,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "BlendTreeLooper.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\BlendTreeLooper.cs",
               "RelativeDocumentMoniker": "Assets\\BlendTreeLooper.cs",
@@ -208,19 +222,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "MenuContentManager.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
               "ToolTip": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
               "RelativeToolTip": "..\\..\\..\\..\\..\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentManager.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-26T07:08:38.126Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-26T07:08:38.126Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "MenuContentEditor.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentEditor.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\Editor\\MenuContentEditor.cs",
@@ -232,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "AvatarAnimatorController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
@@ -244,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AvatarSleepController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSleepController.cs",
@@ -256,7 +269,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "DeleteAIHistory.cs",
               "DocumentMoniker": "C:\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\DeleteAIHistory.cs",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Mac\\Home\\Documents\\Github\\Mate-Engine\\Assets\\DeleteAIHistory.cs",
