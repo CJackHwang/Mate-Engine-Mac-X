@@ -14,7 +14,7 @@
 
 A free, lightweight alternative to **Desktop Mate** with custom VRM support and modding. Fewer limitations, more freedom.
 
-- **App License**: Mixed — GNU AGPL v3 & Copyrighted Components  
+- **App License**: Mixed — GNU AGPL v3 & MateProv2 License
   *Please read the license terms carefully.*
 - **Default Avatar License**: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/)  
   *Do not redistribute this model in your builds.*
@@ -24,7 +24,7 @@ A free, lightweight alternative to **Desktop Mate** with custom VRM support and 
 
 ## About the Project
 
-**Mate Engine** was created as a free alternative to **Desktop Mate**.
+**Mate Engine** was created as a free alternative to **Desktop Mate** and others.
 
 Why? Because **Desktop Mate** charges **$10–$25 USD** for single character models—prices comparable to full games on Steam. On top of that, modding and custom models were disabled in later versions.
 
@@ -46,33 +46,54 @@ Want to try with a free model?
 ---
 
 ## Feature Comparison
+Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 
-| Feature                                      | Desktop Mate | Mate Engine |
-|----------------------------------------------|--------------|-------------|
-| Custom Shader Support                                  | ❌           | ✅          |
-| Advanced .ME Model Format                                   | ❌           | ✅          |
-| Mod Support                                   | ❌           | ✅          |
-| Custom Model Support (.VRM, .ME)        | ❌           | ✅          |
-| Window Sitting                     | ✅           | ⏸ (In Version 1.5.0)|
-| Taskbar Sitting                    | ✅           | ⏸ |
-| Dragging Animation                            | ✅           | ✅          |
-| Idle Animation                                | ✅           | ✅          |
-| Hiding on Edge of Screen                      | ✅           | ❌          |
-| Head Movement                                 | ✅           | ✅          |
-| Eye Movement                                  | ❌           | ✅          |
-| Spine Movement                                | ❌           | ✅          |
-| Hand Movement                                 | ✅           | ✅          |
-| Alarm / Timed Animation                       | ✅           | ❌          |
-| Dance Animation                               | ❌           | ✅          |
-| Touch Reactions (Head / Sensitive Area)       | ⏸            | ✅          |
-| Sound Effects                                 | ⏸ (On Paid Models Only)           | ✅          |
-| Particle Effects                              | ❌           | ✅          |
-| Smooth Animation Transitions                  | ❌ (Glitches between Animations)           | ✅          |
-| FPS Control                                   | ❌           | ✅          |
-| Always-on-Top Toggle                          | ❌           | ✅          |
-| Open Source                                   | ❌           | ✅          |
-| Chibi Mode                                    | ❌           | ✅          |
-
+| Feature                 | Desktop Mate | Phase Pal (Alpha) | MateEngine |
+|--------------------------|--------------|-----------|------------|
+| Open Source              | ❌           | ❌        | ✅         |
+| Mod Support              | ❌           | ❌        | ✅         |
+| Custom VRM               | ❌           | ✅        | ✅         |
+| Custom Shaders           | ❌           | ❌        | ✅         |
+| .ME File Format          | ❌           | ❌        | ✅         |
+| Window Sitting           | ✅           | ✅        | ✅         |
+| Taskbar Sitting          | ✅           | ✅        | ✅         |
+| Idle Animation           | ✅           | ✅        | ✅         |
+| Dragging Animation       | ✅           | ✅        | ✅         |
+| Dance to Music           | ❌           | ❌        | ✅         |
+| Head Tracking            | ✅           | ✅        | ✅         |
+| Spine Tracking           | ❌           | ❌        | ✅         |
+| Eye Tracking             | ❌           | ❌        | ✅         |
+| Hand Movement            | ❌           | ❌        | ✅         |
+| Alarm / Timer            | ✅           | ✅        | ✅         |
+| ScreenSaver              | ❌           | ❌        | ✅         |
+| Touch Regions            | ❌           | ❌        | ✅         |
+| Avatar SFX               | ❌           | ❌        | ✅         |
+| Particle Effects         | ❌           | ❌        | ✅         |
+| FPS Control              | ❌           | ✅        | ✅         |
+| Always On Top Toggle     | ❌           | ✅        | ✅         |
+| Chibi Mode               | ❌           | ❌        | ✅         |
+| Post Processing Bloom    | ❌           | ❌        | ✅         |
+| Post Processing AO       | ❌           | ❌        | ✅         |
+| MSAA x8 Support          | ❌           | ❌        | ✅         |
+| Big Screen Mode          | ❌           | ❌        | ✅         |
+| System Icon              | ✅           | ❌        | ✅         |
+| System Icon Settings     | ❌           | ❌        | ✅         |
+| Smooth Anim Transitions  | ❌           | ❌        | ✅         |
+| Steam Workshop           | ❌           | ✅        | ✅         |
+| Built-In SDK             | ❌           | ❌        | ✅         |
+| AI Chat                  | ❌           | ✅        | ✅         |
+| Advanced AI Functions    | ❌           | ✅        | ❌         |
+| AI API Functions         | ❌           | ✅        | ❌         |
+| Free To Use              | ✅           | ✅        | ✅         |
+| Multi Language Support   | ❌           | ✅        | ✅         |
+| AI Voices                | ❌           | ✅        | ❌         |
+| Animation Modding        | ❌           | ❌        | ✅         |
+| CPU Usage                | Moderate     | Very Good | Very Good  |
+| GPU Usage                | Moderate     | Good      | Good       |
+| RAM Usage                | Very Good    | Very Bad  | Good       |
+| Anti Cheat Safe          | ❌           | ❌        | ✅         |
+| Sleep                    | ❌           | ❌        | ✅         |
+| Compatible with Games    | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
@@ -112,47 +133,12 @@ Mate Engine offers smoother animation transitions than Desktop Mate, avoiding th
 
 ---
 
-## Key Features
-
-- **Idle Animations** – Loops while resting on your desktop  
-- **Drag Animation** – Floats while being moved  
-- **Dance Animation (Experimental)** – Reacts to music from Spotify, Firefox, etc.  
-- **VRM Loader** – Supports any valid `.VRM` model  
-- **Touch Regions** – Supports face/head interaction  
-- **Custom Modding** – Drop in effects, sounds, and more  
-- **Options Menu** – Right-click or press `M` to open the settings  
-- **Always-on-Top Toggle**, **FPS Control**, **Chibi Mode**, and more
-
----
-
-## Upcoming Features (Pre-Release 5–10)
-
-- **Wallpaper Engine Integration** – Embed the pet directly into wallpapers  
-- **Window & Taskbar Sitting** – Sit on any desktop app title bar  
-- **Menu Color Customization** – Stylize your UI with custom themes  
-
----
-
 ## How to Use
 
 1. Go to the **Releases** section (on the right-hand panel).  
 2. Download the ZIP file marked as a public release (not source code).  
 3. Unzip and run `MateEngineX.exe`.  
 4. Right-click the avatar or press `M` to open the settings menu.
-
----
-
-## Frequently Asked Questions
-
-**Q: My VRM won’t load or inject!**  
-A: This usually means your `.VRM` is incorrectly exported. Common issues include broken armatures or unsupported shaders. Use official exporters and test compatibility.
-
-**Q: Is Hatsune Miku included?**  
-A: No. Download her separately from [this Booth page](https://booth.pm/en/items/3226395).
-
-**Need help with conversion?**  
-Check this official guide: [VRM Conversion Guide](https://vrm.dev/en/vrm/how_to_make_vrm/)  
-(Note: I can't provide support for model conversion.)
 
 ---
 
@@ -183,10 +169,6 @@ You can verify safety by scanning the app on [VirusTotal](https://www.virustotal
 Thanks for checking out **Mate Engine**!  
 This project is made with love and designed to stay free forever.  
 If you like it, share it or support it — but most of all, enjoy it.
-
-
-
-
 
 ---------------------------------------------------------------------
 
@@ -230,31 +212,56 @@ If you like it, share it or support it — but most of all, enjoy it.
 [初音ミク VRMをダウンロード](https://booth.pm/en/items/3226395)
 
 ---
-
 ## 機能比較
 
-| 機能                                           | Desktop Mate | Mate Engine |
-|-----------------------------------------------|--------------|-------------|
-| ウィンドウ／タスクバーに座る                   | ✅           | ❌（計画中）|
-| ドラッグ中アニメーション                        | ✅           | ✅          |
-| 待機アニメーション                              | ✅           | ✅          |
-| 画面端に隠れる機能                              | ✅           | ❌          |
-| 頭の動き                                       | ✅           | ✅          |
-| 目の動き                                       | ❌           | ✅          |
-| 背骨の動き                                     | ❌           | ✅          |
-| 手の動き                                       | ✅           | ✅          |
-| アラーム／タイマーアニメーション               | ✅           | ❌          |
-| ダンスアニメーション                            | ❌           | ✅          |
-| タッチリアクション（頭・敏感部位）             | ❌           | ✅          |
-| サウンドエフェクト                              | ❌           | ✅          |
-| パーティクルエフェクト                          | ❌           | ✅          |
-| スムーズなアニメーション遷移                    | ❌           | ✅          |
-| FPS切り替え機能                                 | ❌           | ✅          |
-| 最前面表示の切り替えボタン                      | ❌           | ✅          |
-| VRMモデルのネイティブ読み込み                   | ❌           | ✅          |
-| Mod対応                                         | ❌           | ✅          |
-| オープンソース                                  | ❌           | ✅          |
-| ちびキャラモード                                 | ❌           | ✅          |
+「Desktop Mate」 「Phase Pal (Playtest Alpha)」 「MateEngine」の比較
+
+| 機能              | Desktop Mate | Phase Pal | MateEngine |
+| --------------- | ------------ | --------- | ---------- |
+| オープンソース         | ❌            | ❌         | ✅          |
+| Mod サポート        | ❌            | ❌         | ✅          |
+| カスタム VRM        | ❌            | ✅         | ✅          |
+| カスタムシェーダー       | ❌            | ❌         | ✅          |
+| .ME ファイル形式      | ❌            | ❌         | ✅          |
+| ウィンドウ上に座る       | ✅            | ✅         | ✅          |
+| タスクバー上に座る       | ✅            | ✅         | ✅          |
+| アイドルアニメーション     | ✅            | ✅         | ✅          |
+| ドラッグアニメーション     | ✅            | ✅         | ✅          |
+| 音楽に合わせてダンス      | ❌            | ❌         | ✅          |
+| 頭部トラッキング        | ✅            | ✅         | ✅          |
+| 背骨トラッキング        | ❌            | ❌         | ✅          |
+| 目のトラッキング        | ❌            | ❌         | ✅          |
+| 手の動き            | ❌            | ❌         | ✅          |
+| アラーム / タイマー     | ✅            | ✅         | ✅          |
+| スクリーンセーバー       | ❌            | ❌         | ✅          |
+| タッチ領域           | ❌            | ❌         | ✅          |
+| アバター効果音 (SFX)   | ❌            | ❌         | ✅          |
+| パーティクルエフェクト     | ❌            | ❌         | ✅          |
+| FPS 制御          | ❌            | ✅         | ✅          |
+| 常に最前面表示切替       | ❌            | ✅         | ✅          |
+| ちびキャラモード        | ❌            | ❌         | ✅          |
+| ポストプロセス ブルーム    | ❌            | ❌         | ✅          |
+| ポストプロセス AO      | ❌            | ❌         | ✅          |
+| MSAA x8 サポート    | ❌            | ❌         | ✅          |
+| ビッグスクリーンモード     | ❌            | ❌         | ✅          |
+| システムアイコン        | ✅            | ❌         | ✅          |
+| システムアイコン設定      | ❌            | ❌         | ✅          |
+| スムーズなアニメーション遷移  | ❌            | ❌         | ✅          |
+| Steam ワークショップ   | ❌            | ✅         | ✅          |
+| 内蔵 SDK          | ❌            | ❌         | ✅          |
+| AI チャット         | ❌            | ✅         | ✅          |
+| 高度な AI 機能       | ❌            | ✅         | ❌          |
+| AI API 機能       | ❌            | ✅         | ❌          |
+| 無料利用可能          | ✅            | ✅         | ✅          |
+| 多言語サポート         | ❌            | ✅         | ✅          |
+| AI ボイス          | ❌            | ✅         | ❌          |
+| アニメーション Modding | ❌            | ❌         | ✅          |
+| CPU 使用率         | 普通           | 非常に良い     | 非常に良い      |
+| GPU 使用率         | 普通           | 良い        | 良い         |
+| RAM 使用率         | 非常に良い        | 非常に悪い     | 良い         |
+| アンチチート安全        | ❌            | ❌         | ✅          |
+| スリープ機能          | ❌            | ❌         | ✅          |
+| ゲームとの互換性        | ❌            | ❌         | ✅          |
 
 ---
 
