@@ -100,6 +100,8 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Anti Cheat Safe          | ❌           | ❌        | ✅         |
 | Sleep                    | ❌           | ❌        | ✅         |
 | Compatible with Games    | ❌           | ❌        | ✅         |
+| Start with PC    | ❌           | ❌        | ✅         |
+| Blendshape Edit Support    | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
