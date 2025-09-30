@@ -54,7 +54,7 @@ Want to try with a free model?
 ## Feature Comparison
 Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 
-| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine(1.9.8) |
+| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (1.9.8) |
 |--------------------------|--------------|-----------|------------|
 | Open Source              | ❌           | ❌        | ✅         |
 | Mod Support              | ❌           | ❌        | ✅         |
