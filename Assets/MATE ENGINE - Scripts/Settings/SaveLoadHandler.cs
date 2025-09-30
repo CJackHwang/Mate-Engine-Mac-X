@@ -137,6 +137,9 @@ public class SaveLoadHandler : MonoBehaviour
         public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
         public int graphicsQualityLevel = 1;
         public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
+
+        public bool startWithWindows = false;
+
     }
 
     public static void SyncAllowedAppsToAllAvatars()
