@@ -183,6 +183,7 @@ public class CustomAvatarSettings : MonoBehaviour
         }
     }
 
+    /*
     IEnumerable<Component> FindAllComponentsOfType(string typeName)
     {
         foreach (var go in Resources.FindObjectsOfTypeAll<GameObject>())
@@ -193,6 +194,22 @@ public class CustomAvatarSettings : MonoBehaviour
                     yield return c;
         }
     }
+    */
+
+    IEnumerable<Component> FindAllComponentsOfType(string typeName)
+    {
+        foreach (var go in Resources.FindObjectsOfTypeAll<GameObject>())
+        {
+            if (!go.scene.IsValid()) continue;
+            foreach (var c in go.GetComponents<Component>())
+            {
+                if (c == null) continue;
+                if (c.GetType().Name == typeName)
+                    yield return c;
+            }
+        }
+    }
+
 
     void SaveToDisk()
     {
