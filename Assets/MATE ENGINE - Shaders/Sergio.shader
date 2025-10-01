@@ -1,10 +1,17 @@
-Shader "MateEngine/Sergio"
+Shader "UI/SimpleMask"
 {
     SubShader
     {
-        Tags { "Queue" = "Geometry-1" }
+        // Standard-UI RenderQueue
+        Tags { "Queue"="Overlay-1" "IgnoreProjector"="True" "RenderType"="Transparent" "CanUseSpriteAtlas"="True" }
+
+        // Kein Farboutput, aber Depth schreiben
         ColorMask 0
         ZWrite On
+        ZTest Always
+        Cull Off
+        Lighting Off
+
         Pass {}
     }
 }

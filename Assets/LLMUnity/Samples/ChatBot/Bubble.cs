@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
 using LLMUnity;
@@ -169,7 +169,7 @@ namespace LLMUnitySamples
         protected GameObject placeholderObject;
 
         public InputBubble(Transform parent, BubbleUI ui, string name, string message, int lineHeight = 4) :
-        base(parent, ui, name, emptyLines(message, lineHeight))
+            base(parent, ui, name, emptyLines(message, lineHeight))
         {
             Text textObjext = bubbleObject.GetComponent<Text>();
             RectTransform bubbleRectTransform = bubbleObject.GetComponent<RectTransform>();
@@ -177,7 +177,21 @@ namespace LLMUnitySamples
             placeholderObject = CreatePlaceholderObject(bubbleObject.transform, bubbleRectTransform, textObjext.text);
             inputFieldObject = CreateInputFieldObject(bubbleObject.transform, textObjext, placeholderObject.GetComponent<Text>());
             inputField = inputFieldObject.GetComponent<InputField>();
+
+            // <<< Hier Orders fixen NUR für InputBubble >>>
+            Canvas textCanvas = bubbleObject.GetComponent<Canvas>();
+            if (textCanvas != null)
+            {
+                textCanvas.sortingOrder = 2;
+            }
+
+            Canvas imgCanvas = imageObject.GetComponent<Canvas>();
+            if (imgCanvas != null)
+            {
+                imgCanvas.sortingOrder = 2;
+            }
         }
+
 
         static string emptyLines(string message, int lineHeight)
         {

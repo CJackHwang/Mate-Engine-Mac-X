@@ -25,6 +25,11 @@ public class MenuHueShift : MonoBehaviour
     private CircleSelector[] circleSelectors;
     private Dictionary<CircleSelector, (Color accent, Color disabled, Color background)> originalCircleColors = new();
 
+
+    [Header("Hue-Shift Materials (optional)")]
+    public List<Material> extraHueMaterials = new List<Material>();
+
+
     private bool initialized = false;
 
     void Start()
@@ -143,6 +148,7 @@ public class MenuHueShift : MonoBehaviour
             mod.selectedColor = AdjustColor(original.selectedColor);
             mod.disabledColor = AdjustColor(original.disabledColor);
             s.colors = mod;
+            ApplyHueToMaterials();
         }
 
         foreach (var kvp in originalStartColors)
@@ -211,6 +217,7 @@ public class MenuHueShift : MonoBehaviour
                 }
             }
         }
+        ApplyHueToMaterials();
     }
 
     public void RefreshNewGraphicsAndSelectables(Transform parent = null)
@@ -252,4 +259,38 @@ public class MenuHueShift : MonoBehaviour
             }
         }
     }
+
+    private static readonly int PID_OverlayHueShift = Shader.PropertyToID("_OverlayHueShift");
+    private static readonly int PID_OverlaySatMul = Shader.PropertyToID("_OverlaySatMul");
+
+    private void ApplyHueToMaterials()
+    {
+        // 1) Alle Graphics im Pool: falls sie ein Material mit den Properties verwenden, setzen
+        for (int i = 0; i < graphics.Count; i++)
+        {
+            var g = graphics[i];
+            if (g == null) continue;
+            var mat = g.material; // instanziert ggf. UI-Mats pro Element (ok für UI)
+            if (mat != null && mat.HasProperty(PID_OverlayHueShift))
+            {
+                mat.SetFloat(PID_OverlayHueShift, hueShift);
+                if (mat.HasProperty(PID_OverlaySatMul))
+                    mat.SetFloat(PID_OverlaySatMul, Mathf.Clamp(saturation * 2f, 0f, 2f));
+            }
+        }
+
+        // 2) Optional: explizit hinterlegte Materialien (z.B. Player-/AI-Text-Mats)
+        for (int i = 0; i < extraHueMaterials.Count; i++)
+        {
+            var m = extraHueMaterials[i];
+            if (m == null) continue;
+            if (m.HasProperty(PID_OverlayHueShift))
+            {
+                m.SetFloat(PID_OverlayHueShift, hueShift);
+                if (m.HasProperty(PID_OverlaySatMul))
+                    m.SetFloat(PID_OverlaySatMul, Mathf.Clamp(saturation * 2f, 0f, 2f));
+            }
+        }
+    }
+
 }
