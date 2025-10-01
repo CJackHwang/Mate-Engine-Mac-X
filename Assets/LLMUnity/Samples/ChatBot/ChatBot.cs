@@ -64,6 +64,7 @@ namespace LLMUnitySamples
         [Header("Rounded Sprite Radius")]
         [Range(0, 64)]
         public int cornerRadius = 16; // wählt 9-slice Sprite
+        private bool layoutDirty;
 
         private InputBubble inputBubble;
         private List<Bubble> chatBubbles = new List<Bubble>();
@@ -126,6 +127,11 @@ namespace LLMUnitySamples
             _ = llmCharacter.Warmup(WarmUpCallback);
         }
 
+        private void MarkLayoutDirty()
+        {
+            layoutDirty = true;
+        }
+
         void OnDisable()
         {
             if (streamAudioSource != null && streamAudioSource.isPlaying)
@@ -139,7 +145,8 @@ namespace LLMUnitySamples
         {
             Bubble bubble = new Bubble(chatContainer, isPlayerMessage ? playerUI : aiUI, isPlayerMessage ? "PlayerBubble" : "AIBubble", message);
             chatBubbles.Add(bubble);
-            bubble.OnResize(UpdateBubblePositions);
+            bubble.OnResize(MarkLayoutDirty);
+
 
             // --- Material für Bubble-Hintergrund (Image) setzen ---
             var image = bubble.GetRectTransform().GetComponentInChildren<Image>(true);
@@ -239,13 +246,22 @@ namespace LLMUnitySamples
             if (streamAudioSource != null)
                 streamAudioSource.Play();
 
-            // Chat-Request
-            Task chatTask = llmCharacter.Chat(message, aiBubble.SetText, () =>
-            {
-                if (streamAudioSource != null && streamAudioSource.isPlaying)
-                    StartCoroutine(FadeOutStreamAudio());
-                AllowInput();
-            });
+            Task chatTask = llmCharacter.Chat(
+                message,
+                (partial) => { aiBubble.SetText(partial); layoutDirty = true; },
+                () =>
+                {
+                    aiBubble.SetText(aiBubble.GetText());
+                    layoutDirty = true;
+
+                    if (streamAudioSource != null && streamAudioSource.isPlaying)
+                        StartCoroutine(FadeOutStreamAudio());
+
+                    AllowInput();
+                }
+            );
+
+
 
             inputBubble.SetText("");
         }
@@ -385,5 +401,21 @@ namespace LLMUnitySamples
                 onValidateWarning = false;
             }
         }
+
+        void LateUpdate()
+        {
+            if (!layoutDirty) return;
+            layoutDirty = false;
+
+            UpdateBubblePositions(); // jetzt 1× pro Frame
+                                     // Bei Bedarf unten bleiben, wenn User bereits am Ende war:
+            if (autoScrollOnNewMessage && (!respectUserScroll || IsAtBottom()))
+            {
+                if (scrollRect != null) scrollRect.verticalNormalizedPosition = 0f;
+            }
+        }
+
     }
+
+
 }
