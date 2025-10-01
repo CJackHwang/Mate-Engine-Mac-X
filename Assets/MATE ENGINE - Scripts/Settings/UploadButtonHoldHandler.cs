@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -25,11 +24,41 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     public AudioClip tickSound;
     public AudioClip completeSound;
 
+    [SerializeField] private string fallbackUpload = "Upload";
+    [SerializeField] private string fallbackUpdate = "Update";
+    [SerializeField] private string fallbackPngMissing = "PNG Missing";
+
     private Coroutine holdRoutine;
     private bool isHolding = false;
 
+    private LocalizedString currentLocString;
+
+    private void OnEnable()
+    {
+        CancelHoldIfRunning();
+        SetInteractable(true);
+        UpdateButtonLabel();
+    }
+
+    private void OnDisable()
+    {
+        CancelHoldIfRunning();
+        SetInteractable(true);
+        UpdateButtonLabel();
+        if (currentLocString != null)
+        {
+            currentLocString.StringChanged -= OnLocalizedChanged;
+            currentLocString = null;
+        }
+    }
+
     private void Start()
     {
+        if (entry != null && !entry.isOwner)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         UpdateButtonLabel();
     }
 
@@ -41,16 +70,14 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
                 new ExtensionFilter("Image", "png")
             }, false);
 
-            if (paths.Length == 0 || !File.Exists(paths[0]))
-                return;
+            if (paths.Length == 0 || !File.Exists(paths[0])) return;
 
             FileInfo fi = new FileInfo(paths[0]);
             if (fi.Length > 700 * 1024)
             {
                 if (errorText != null)
                 {
-                    var localizedString = new LocalizedString("Languages (UI)", "PNG_TOO_BIG");
-                    localizedString.StringChanged += (value) => errorText.text = value;
+                    SetErrorByKey("PNG_TOO_BIG", "PNG too big");
                 }
                 return;
             }
@@ -77,9 +104,8 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
                 }
             }
 
-            var menu = FindFirstObjectByType<AvatarLibraryMenu>();
-            if (menu != null)
-                menu.ReloadAvatars();
+            var menu = GameObject.FindFirstObjectByType<AvatarLibraryMenu>();
+            if (menu != null) menu.ReloadAvatars();
 
             if (errorText != null) errorText.text = "";
             UpdateButtonLabel();
@@ -107,18 +133,51 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     {
         if (string.IsNullOrEmpty(entry.thumbnailPath) || !File.Exists(entry.thumbnailPath))
             return false;
-
         FileInfo fi = new FileInfo(entry.thumbnailPath);
         return fi.Length > 700 * 1024;
+    }
+
+    private void SetErrorByKey(string key, string fallback)
+    {
+        if (errorText == null) return;
+        errorText.text = fallback;
+        var ls = new LocalizedString("Languages (UI)", key);
+        ls.StringChanged += (val) => { if (errorText != null) errorText.text = val; };
+    }
+
+    private void SetLabelImmediate(string text)
+    {
+        if (labelText != null) labelText.text = text;
+    }
+
+    private void OnLocalizedChanged(string val)
+    {
+        if (labelText != null) labelText.text = val;
+    }
+
+    private void SetLabelByKey(string key, string fallback)
+    {
+        if (labelText == null) return;
+        if (currentLocString != null) currentLocString.StringChanged -= OnLocalizedChanged;
+
+        labelText.text = fallback;
+        currentLocString = new LocalizedString("Languages (UI)", key);
+        currentLocString.StringChanged += OnLocalizedChanged;
     }
 
     private void UpdateButtonLabel()
     {
         if (labelText == null) return;
+        if (IsThumbnailMissing() || IsThumbnailTooBig())
+        {
+            SetLabelByKey("PNG_MISSING", fallbackPngMissing);
+            return;
+        }
 
-        string key = IsThumbnailMissing() ? "PNG_MISSING" : (IsThumbnailTooBig() ? "PNG_MISSING" : "UPLOAD");
-        var localized = new LocalizedString("Languages (UI)", key);
-        localized.StringChanged += (val) => labelText.text = val;
+        if (entry != null && entry.steamFileId > 0)
+            SetLabelByKey("UPDATE", fallbackUpdate);
+        else
+            SetLabelByKey("UPLOAD", fallbackUpload);
     }
 
     private IEnumerator HoldToUpload()
@@ -128,9 +187,8 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
         int lastSecond = -1;
         float pitch = 1f;
         bool completed = false;
-
-        if (labelText != null) labelText.text = "5";
-        GetComponent<Button>().interactable = false;
+        SetLabelImmediate(Mathf.CeilToInt(duration).ToString());
+        SetInteractable(false);
 
         while (isHolding && timeHeld < duration)
         {
@@ -140,7 +198,7 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
             if (currentSecond != lastSecond)
             {
                 lastSecond = currentSecond;
-                if (labelText != null) labelText.text = currentSecond.ToString();
+                SetLabelImmediate(currentSecond.ToString());
 
                 if (audioSource != null && tickSound != null)
                 {
@@ -149,14 +207,13 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
                     pitch += 0.1f;
                 }
             }
-
             yield return null;
         }
 
         if (timeHeld >= duration && isHolding)
         {
             completed = true;
-            if (labelText != null) labelText.text = "0";
+            SetLabelImmediate("0");
 
             if (audioSource != null && completeSound != null)
             {
@@ -168,15 +225,61 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
 
             if (SteamWorkshopHandler.Instance != null)
                 SteamWorkshopHandler.Instance.UploadToWorkshop(entry, progressSlider);
-
-            if (labelText != null) labelText.text = "Uploaded";
-            yield return new WaitForSeconds(1.5f);
+            SetLabelImmediate("Uploaded");
+            yield return StartCoroutine(WaitForSteamIdAndRelabel(entry.filePath, 20f));
         }
 
         if (!completed)
-            UpdateButtonLabel();
-
-        GetComponent<Button>().interactable = true;
+            UpdateButtonLabel(); 
+        SetInteractable(true);
         holdRoutine = null;
+    }
+
+    private IEnumerator WaitForSteamIdAndRelabel(string filePath, float timeoutSeconds)
+    {
+        float t = 0f;
+        string avatarsJsonPath = Path.Combine(Application.persistentDataPath, "avatars.json");
+
+        while (t < timeoutSeconds)
+        {
+            try
+            {
+                if (File.Exists(avatarsJsonPath))
+                {
+                    var json = File.ReadAllText(avatarsJsonPath);
+                    var list = JsonConvert.DeserializeObject<List<AvatarLibraryMenu.AvatarEntry>>(json);
+                    var match = list?.FirstOrDefault(e => e.filePath == filePath);
+
+                    if (match != null && match.steamFileId != 0)
+                    {
+                        entry.steamFileId = match.steamFileId;
+                        entry.isSteamWorkshop = match.isSteamWorkshop;
+                        SetLabelByKey("UPDATE", fallbackUpdate);
+                        yield break;
+                    }
+                }
+            }
+            catch { /* retry */ }
+
+            yield return new WaitForSeconds(0.5f);
+            t += 0.5f;
+        }
+        UpdateButtonLabel();
+    }
+
+    private void CancelHoldIfRunning()
+    {
+        isHolding = false;
+        if (holdRoutine != null)
+        {
+            StopCoroutine(holdRoutine);
+            holdRoutine = null;
+        }
+    }
+
+    private void SetInteractable(bool value)
+    {
+        var btn = GetComponent<Button>();
+        if (btn != null) btn.interactable = value;
     }
 }

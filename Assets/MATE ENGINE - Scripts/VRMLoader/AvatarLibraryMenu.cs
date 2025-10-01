@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.Audio;
 using System.Collections;
+using System;
 
 public class AvatarLibraryMenu : MonoBehaviour
 {
@@ -28,6 +29,10 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     [Header("DLC Avatars")]
     public List<DLCEntry> dlcAvatars = new List<DLCEntry>();
+
+    private Coroutine liveUpdateRoutine;
+    [SerializeField] private float liveUpdateInterval = 3f;
+
 
     private string avatarsJsonPath => Path.Combine(Application.persistentDataPath, "avatars.json");
     private string thumbnailsFolder => Path.Combine(Application.persistentDataPath, "Thumbnails");
@@ -51,14 +56,17 @@ public class AvatarLibraryMenu : MonoBehaviour
         public string displayName;
         public string author;
         public string version;
-        public string fileType; // VRM0.X or VRM1.X
+        public string fileType;
         public string filePath;
         public string thumbnailPath;
         public int polygonCount;
         public bool isSteamWorkshop = false;
         public ulong steamFileId = 0;
         public bool isNSFW = false;
+
+        public bool isOwner = false;
     }
+
 
     private void Start()
     {
@@ -72,11 +80,39 @@ public class AvatarLibraryMenu : MonoBehaviour
     public void OpenLibrary()
     {
         libraryPanel.SetActive(true);
+
+        var auto = FindFirstObjectByType<SteamWorkshopAutoLoader>();
+        if (auto != null)
+        {
+            auto.RefreshWorkshopAvatars();
+        }
+
+        if (liveUpdateRoutine != null) StopCoroutine(liveUpdateRoutine);
+        liveUpdateRoutine = StartCoroutine(LiveUpdateWhileOpen());
     }
 
     public void CloseLibrary()
     {
         libraryPanel.SetActive(false);
+        if (liveUpdateRoutine != null) { StopCoroutine(liveUpdateRoutine); liveUpdateRoutine = null; }
+    }
+
+    private IEnumerator LiveUpdateWhileOpen()
+    {
+        var auto = FindFirstObjectByType<SteamWorkshopAutoLoader>();
+        while (libraryPanel != null && libraryPanel.activeInHierarchy)
+        {
+            if (auto != null)
+            {
+                auto.RefreshWorkshopAvatars();
+                if (auto.hadChangesLastRun)
+                {
+                    ReloadAvatars();
+                }
+            }
+
+            yield return new WaitForSeconds(liveUpdateInterval);
+        }
     }
 
     private void LoadAvatarList()
@@ -95,7 +131,37 @@ public class AvatarLibraryMenu : MonoBehaviour
                 Debug.LogError("[AvatarLibraryMenu] Failed to load avatars.json: " + e.Message);
             }
         }
+
+        try
+        {
+            string workshopDir = Path.GetFullPath(Path.Combine(Application.persistentDataPath, "Steam Workshop"));
+            bool changed = false;
+
+            foreach (var e in avatarEntries)
+            {
+                if (!e.isOwner)
+                {
+                    string full = string.IsNullOrEmpty(e.filePath) ? "" : Path.GetFullPath(e.filePath);
+                    bool isLocal = !string.IsNullOrEmpty(full) && File.Exists(full) &&
+                                   !full.StartsWith(workshopDir, StringComparison.OrdinalIgnoreCase);
+
+                    if (!e.isSteamWorkshop && e.steamFileId == 0 && isLocal)
+                    {
+                        e.isOwner = true;
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                string newJson = JsonConvert.SerializeObject(avatarEntries, Formatting.Indented);
+                File.WriteAllText(avatarsJsonPath, newJson);
+            }
+        }
+        catch { }
     }
+
 
     private void RefreshUI()
     {
@@ -256,19 +322,6 @@ public class AvatarLibraryMenu : MonoBehaviour
 
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() => LoadAvatar(entry.filePath));
-        /*
-        removeButton.onClick.RemoveAllListeners();
-        removeButton.onClick.AddListener(() =>
-        {
-            if (entry.isSteamWorkshop && entry.steamFileId != 0)
-            {
-                if (SteamWorkshopHandler.Instance != null)
-                    SteamWorkshopHandler.Instance.UnsubscribeAndDelete(new Steamworks.PublishedFileId_t(entry.steamFileId));
-            }
-            RemoveAvatar(entry);
-        });
-       */
-
         var holdHandler = removeButton.GetComponent<DeleteButtonHoldHandler>();
         if (holdHandler == null)
             holdHandler = removeButton.gameObject.AddComponent<DeleteButtonHoldHandler>();
@@ -276,8 +329,9 @@ public class AvatarLibraryMenu : MonoBehaviour
         holdHandler.labelText = removeButton.GetComponentInChildren<TMP_Text>();
         holdHandler.audioSource = item.GetComponentInChildren<AudioSource>();
 
-
-        if (uploadButton != null)
+        if (uploadButton != null) uploadButton.gameObject.SetActive(entry.isOwner);
+        if (uploadSlider != null) uploadSlider.gameObject.SetActive(false);
+        if (uploadButton != null && uploadButton.gameObject.activeSelf)
         {
             uploadButton.onClick.RemoveAllListeners();
             uploadButton.onClick.AddListener(() =>
@@ -294,7 +348,6 @@ public class AvatarLibraryMenu : MonoBehaviour
                 }
             });
 
-
             var handler = uploadButton.GetComponent<UploadButtonHoldHandler>();
             if (handler != null)
             {
@@ -307,11 +360,13 @@ public class AvatarLibraryMenu : MonoBehaviour
             }
         }
 
+
         if (uploadSlider != null)
         {
             uploadSlider.gameObject.SetActive(false);
         }
     }
+
 
 
     private void LoadAvatar(string path)
@@ -369,8 +424,12 @@ public class AvatarLibraryMenu : MonoBehaviour
             filePath = filePath,
             thumbnailPath = thumbnailPath,
             polygonCount = polygonCount,
-            isNSFW = false
+            isNSFW = false,
+
+
+            isOwner = true
         };
+
 
         entries.Add(newEntry);
 

@@ -181,7 +181,17 @@ public class SteamWorkshopHandler : MonoBehaviour
                 if (item.filePath == updatedEntry.filePath)
                 {
                     item.steamFileId = updatedEntry.steamFileId;
-                    item.isSteamWorkshop = true;
+
+                    string workshopDir = Path.GetFullPath(Path.Combine(Application.persistentDataPath, "Steam Workshop"));
+                    string fileFull = string.IsNullOrEmpty(item.filePath) ? "" : Path.GetFullPath(item.filePath);
+                    bool isInsideWorkshop = !string.IsNullOrEmpty(fileFull) &&
+                                            fileFull.StartsWith(workshopDir, StringComparison.OrdinalIgnoreCase);
+                    item.isSteamWorkshop = isInsideWorkshop;
+
+                    if (!isInsideWorkshop)
+                    {
+                        item.isOwner = true; 
+                    }
                     break;
                 }
             }
@@ -193,6 +203,7 @@ public class SteamWorkshopHandler : MonoBehaviour
             Debug.LogError("[SteamWorkshopHandler] Failed to save steamFileId: " + e.Message);
         }
     }
+
 
     private void OpenWorkshopPage(ulong fileId)
     {
