@@ -11,10 +11,14 @@ public class SwingFollowEntry
     [HideInInspector] public Vector2 baseOffset;
     [HideInInspector] public bool hasBaseOffset;
     [HideInInspector] public Vector2 currentPosition;
-    [HideInInspector] public float originalY; 
-    [Tooltip("Blockiert vertikale Bewegung. Y-Position bleibt wie im Editor.")]
+    [HideInInspector] public float originalY;
+
     public bool blockYMovement = false;
+
+    [Range(0f, 100f), Tooltip("0 - 100")]
+    public float yThreshold = 0f;
 }
+
 public class SwingController : MonoBehaviour
 {
     public List<SwingFollowEntry> follows = new();
@@ -77,20 +81,21 @@ public class SwingController : MonoBehaviour
                 entry.baseOffset.x = currentAnchored.x - targetLocal.x;
                 entry.baseOffset.y = 0f;
                 entry.currentPosition = currentAnchored;
-                entry.originalY = currentAnchored.y; 
+                entry.originalY = currentAnchored.y;
                 entry.hasBaseOffset = true;
             }
 
             Vector2 finalTarget = targetLocal + entry.baseOffset;
 
-            if (!entry.blockYMovement)
+            if (entry.blockYMovement || entry.yThreshold >= 100f)
             {
-                float boneDeltaY = targetLocal.y - entry.originalY;
-                finalTarget.y = entry.originalY + boneDeltaY;
+                finalTarget.y = entry.originalY;
             }
             else
             {
-                finalTarget.y = entry.originalY;
+                float boneDeltaY = targetLocal.y - entry.originalY;
+                float factor = 1f - (entry.yThreshold / 100f);
+                finalTarget.y = entry.originalY + boneDeltaY * factor;
             }
 
             entry.currentPosition = Vector2.Lerp(entry.currentPosition, finalTarget, 1f - entry.smoothness);

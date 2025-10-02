@@ -12,7 +12,9 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLEOUTLINE_ON
+  - _OUTLINESHIMMER_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -65,25 +67,44 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BubbleOutline: 0
     - _BumpScale: 1
+    - _CornerRadius: 0.28
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EdgeSoftness: 0.01
+    - _EnableOutline: 1
     - _FadeBottomEnd: 0.322
     - _FadeBottomStart: 0.01
     - _FadeEnd: 0.632
     - _FadeStart: 0
     - _FadeTopEnd: 0.742
     - _FadeTopStart: 0.643
+    - _GlassBlurRadius: 7.67
+    - _GlassDistort: 0.15
+    - _GlassEnabled: 0
+    - _GlassOpacity: 0.65
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OverlayHueShift: 0
+    - _OutlineAlign: 0
+    - _OutlineAmount: 0.35
+    - _OutlineIntensity: 2
+    - _OutlinePulseSpeed: 0
+    - _OutlinePulseStrength: 0
+    - _OutlineRepeat: 4
+    - _OutlineShimmer: 1
+    - _OutlineSoftness: 1
+    - _OutlineSpeed: 5
+    - _OutlineThickness: 2
+    - _OutlineWidth: 20
+    - _OverlayHueShift: 0.94100326
     - _OverlayOpacity: 0
-    - _OverlaySatMul: 1
+    - _OverlaySatMul: 1.9990169
     - _OverlayShare: 0.261
     - _OverlaySpaceMode: 0
     - _OverlayUseLuma: 0
@@ -96,6 +117,9 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FillColor: {r: 0.11999995, g: 0.11999995, b: 0.19999996, a: 1}
+    - _GlassTint: {r: 1, g: 1, b: 1, a: 0.35}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverlayColor: {r: 0.23082057, g: 0.3331257, b: 0.5377358, a: 1}
     - _OverlayOffset: {r: 0, g: 0, b: 0, a: 0}
     - _OverlayScale: {r: 1, g: 1, b: 0, a: 0}
