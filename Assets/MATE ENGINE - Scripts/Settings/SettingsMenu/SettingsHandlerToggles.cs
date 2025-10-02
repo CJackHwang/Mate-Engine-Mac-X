@@ -17,6 +17,8 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle ambientOcclusionToggle;
     public Toggle enableIKToggle;
     public Toggle enableDanceSwitchToggle;
+    public Toggle enableRandomMessagesToggle; 
+
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -45,6 +47,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.onValueChanged.AddListener(OnAmbientOcclusionChanged);
         enableIKToggle?.onValueChanged.AddListener(OnEnableIKChanged);
         enableDanceSwitchToggle?.onValueChanged.AddListener(OnEnableDanceSwitchChanged);
+        enableRandomMessagesToggle?.onValueChanged.AddListener(OnEnableRandomMessagesChanged);
 
         LoadSettings();
         ApplySettings();
@@ -64,6 +67,13 @@ public class SettingsHandlerToggles : MonoBehaviour
     private void OnAmbientOcclusionChanged(bool v) { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); Save(); }
     private void OnEnableIKChanged(bool v) { SaveLoadHandler.Instance.data.enableIK = v; ApplySettings(); Save(); }
     private void OnEnableDanceSwitchChanged(bool v) { SaveLoadHandler.Instance.data.enableDanceSwitch = v; Save(); }
+    private void OnEnableRandomMessagesChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.enableRandomMessages = v;
+        ApplySettings();
+        Save();
+    }
+
 
     #endregion
 
@@ -82,12 +92,29 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
         enableIKToggle?.SetIsOnWithoutNotify(data.enableIK);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(data.enableDanceSwitch);
+        enableRandomMessagesToggle?.SetIsOnWithoutNotify(data.enableRandomMessages);
         ApplySettings();
     }
 
     public void ApplySettings()
     {
         var data = SaveLoadHandler.Instance.data;
+
+        // Random Messages
+        foreach (var arm in Resources.FindObjectsOfTypeAll<AvatarRandomMessages>())
+        {
+            arm.enableRandomMessages = data.enableRandomMessages;
+            if (data.enableRandomMessages && arm.isActiveAndEnabled)
+            {
+                arm.StopAllCoroutines();
+                arm.StartCoroutine("RandomMessageLoop");
+            }
+            else
+            {
+                arm.StopAllCoroutines();
+            }
+        }
+
 
         // Visuals
         if (bloomObject != null) bloomObject.SetActive(data.bloom);
@@ -128,6 +155,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
         enableIKToggle?.SetIsOnWithoutNotify(true);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(false);
+        enableRandomMessagesToggle?.SetIsOnWithoutNotify(false);
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
@@ -142,6 +170,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.ambientOcclusion = false;
         data.enableIK = true;
         data.enableDanceSwitch = false;
+        data.enableRandomMessages = false;
 
         SaveLoadHandler.Instance.SaveToDisk();
         ApplySettings();

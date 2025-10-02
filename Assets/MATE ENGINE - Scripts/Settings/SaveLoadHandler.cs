@@ -139,6 +139,7 @@ public class SaveLoadHandler : MonoBehaviour
         public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
 
         public bool startWithWindows = false;
+        public bool enableRandomMessages = false;
 
     }
 
