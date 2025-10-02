@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
+using System.Reflection;
 
 public class SystemTray : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class SystemTray : MonoBehaviour
         public string toggleField;
         public string methodName;
     }
-    public enum TrayActionType { Toggle, Button }
+
+    public enum TrayActionType { Toggle, Button, Method }
 
     [SerializeField] private Texture2D icon;
     [SerializeField] private string iconName;
@@ -38,7 +40,7 @@ public class SystemTray : MonoBehaviour
                 string label = (state ? "✔ " : "✖ ") + action.label;
                 context.Add((label, () => { ToggleAction(action); }));
             }
-            else if (action.type == TrayActionType.Button)
+            else if (action.type == TrayActionType.Button || action.type == TrayActionType.Method)
             {
                 context.Add((action.label, () => ButtonAction(action)));
             }
@@ -48,10 +50,7 @@ public class SystemTray : MonoBehaviour
         string toggleLabel = hidden ? "✖ Show App in Taskbar" : "✔ Hide App from Taskbar";
         context.Add((toggleLabel, () =>
         {
-            if (app != null)
-            {
-                app.ToggleAppMode();
-            }
+            if (app != null) app.ToggleAppMode();
         }
         ));
 
@@ -62,15 +61,19 @@ public class SystemTray : MonoBehaviour
     private bool GetToggleState(TrayAction action)
     {
         if (action.handlerObject == null || string.IsNullOrEmpty(action.toggleField)) return false;
-        var mono = action.handlerObject.GetComponent<MonoBehaviour>();
-        if (mono == null) return false;
-        var type = mono.GetType();
-        var field = type.GetField(action.toggleField);
-        if (field != null && field.FieldType == typeof(Toggle))
+
+        var monos = action.handlerObject.GetComponents<MonoBehaviour>();
+        foreach (var mono in monos)
         {
-            var toggle = field.GetValue(mono) as Toggle;
-            if (toggle != null)
-                return toggle.isOn;
+            if (mono == null) continue;
+            var type = mono.GetType();
+            var field = type.GetField(action.toggleField, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (field != null && field.FieldType == typeof(Toggle))
+            {
+                var toggle = field.GetValue(mono) as Toggle;
+                if (toggle != null)
+                    return toggle.isOn;
+            }
         }
         return false;
     }
@@ -78,16 +81,21 @@ public class SystemTray : MonoBehaviour
     private void ToggleAction(TrayAction action)
     {
         if (action.handlerObject == null || string.IsNullOrEmpty(action.toggleField)) return;
-        var mono = action.handlerObject.GetComponent<MonoBehaviour>();
-        if (mono == null) return;
-        var type = mono.GetType();
-        var field = type.GetField(action.toggleField);
-        if (field != null && field.FieldType == typeof(Toggle))
+
+        var monos = action.handlerObject.GetComponents<MonoBehaviour>();
+        foreach (var mono in monos)
         {
-            var toggle = field.GetValue(mono) as Toggle;
-            if (toggle != null)
+            if (mono == null) continue;
+            var type = mono.GetType();
+            var field = type.GetField(action.toggleField, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (field != null && field.FieldType == typeof(Toggle))
             {
-                toggle.isOn = !toggle.isOn;
+                var toggle = field.GetValue(mono) as Toggle;
+                if (toggle != null)
+                {
+                    toggle.isOn = !toggle.isOn;
+                    return;
+                }
             }
         }
     }
@@ -95,12 +103,19 @@ public class SystemTray : MonoBehaviour
     private void ButtonAction(TrayAction action)
     {
         if (action.handlerObject == null || string.IsNullOrEmpty(action.methodName)) return;
-        var mono = action.handlerObject.GetComponent<MonoBehaviour>();
-        if (mono == null) return;
-        var type = mono.GetType();
-        var method = type.GetMethod(action.methodName);
-        if (method != null)
-            method.Invoke(mono, null);
+
+        var monos = action.handlerObject.GetComponents<MonoBehaviour>();
+        foreach (var mono in monos)
+        {
+            if (mono == null) continue;
+            var type = mono.GetType();
+            var method = type.GetMethod(action.methodName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            if (method != null && method.GetParameters().Length == 0)
+            {
+                method.Invoke(mono, null);
+                return;
+            }
+        }
     }
 
     private void QuitApp()

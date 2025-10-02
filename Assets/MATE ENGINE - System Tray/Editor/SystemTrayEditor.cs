@@ -24,7 +24,7 @@ public class SystemTrayEditor : Editor
 
         list.elementHeightCallback = index =>
         {
-            return EditorGUIUtility.singleLineHeight * 6 + 10;
+            return EditorGUIUtility.singleLineHeight * 6 + 12;
         };
 
         list.drawElementCallback = (rect, index, active, focused) =>
@@ -37,47 +37,77 @@ public class SystemTrayEditor : Editor
             var methodName = element.FindPropertyRelative("methodName");
 
             float y = rect.y + 2;
-            float height = EditorGUIUtility.singleLineHeight;
-            float spacing = 2;
+            float h = EditorGUIUtility.singleLineHeight;
+            float s = 2;
 
-            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, height), label, new GUIContent("Label"));
-            y += height + spacing;
-            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, height), type, new GUIContent("Type"));
-            y += height + spacing;
-            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, height), handlerObject, new GUIContent("Handler Object"));
-            y += height + spacing;
+            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, h), label, new GUIContent("Label"));
+            y += h + s;
+            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, h), type, new GUIContent("Type"));
+            y += h + s;
+            EditorGUI.PropertyField(new Rect(rect.x, y, rect.width, h), handlerObject, new GUIContent("Handler Object"));
+            y += h + s;
 
             if (handlerObject.objectReferenceValue != null)
             {
-                MonoBehaviour handler = ((GameObject)handlerObject.objectReferenceValue).GetComponent<MonoBehaviour>();
-                if (handler != null)
+                var go = handlerObject.objectReferenceValue as GameObject;
+                if (go != null)
                 {
-                    var handlerType = handler.GetType();
-                    if ((SystemTray.TrayActionType)type.enumValueIndex == SystemTray.TrayActionType.Toggle)
+                    var actionType = (SystemTray.TrayActionType)type.enumValueIndex;
+
+                    if (actionType == SystemTray.TrayActionType.Toggle)
                     {
-                        var fields = new List<string>();
-                        foreach (var f in handlerType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+                        var comp = go.GetComponent<MonoBehaviour>();
+                        if (comp != null)
                         {
-                            if (f.FieldType == typeof(Toggle))
-                                fields.Add(f.Name);
+                            var fields = new List<string>();
+                            foreach (var f in comp.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
+                            {
+                                if (f.FieldType == typeof(Toggle)) fields.Add(f.Name);
+                            }
+                            int currentIdx = fields.IndexOf(toggleField.stringValue);
+                            int shownIdx = Mathf.Clamp(currentIdx < 0 ? 0 : currentIdx, 0, Math.Max(fields.Count - 1, 0));
+                            int newIdx = EditorGUI.Popup(new Rect(rect.x, y, rect.width, h), "Toggle Field", shownIdx, fields.ToArray());
+                            if (fields.Count > 0 && newIdx != currentIdx) toggleField.stringValue = fields[newIdx];
                         }
-                        int selIdx = Mathf.Max(0, fields.IndexOf(toggleField.stringValue));
-                        selIdx = EditorGUI.Popup(new Rect(rect.x, y, rect.width, height),
-                            "Toggle Field", selIdx, fields.ToArray());
-                        toggleField.stringValue = fields.Count > 0 ? fields[selIdx] : "";
                     }
-                    else if ((SystemTray.TrayActionType)type.enumValueIndex == SystemTray.TrayActionType.Button)
+                    else if (actionType == SystemTray.TrayActionType.Button)
                     {
-                        var methods = new List<string>();
-                        foreach (var m in handlerType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                        var comp = go.GetComponent<MonoBehaviour>();
+                        if (comp != null)
                         {
-                            if (m.GetParameters().Length == 0 && m.ReturnType == typeof(void))
-                                methods.Add(m.Name);
+                            var methods = new List<string>();
+                            foreach (var m in comp.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                            {
+                                if (m.GetParameters().Length == 0 && m.ReturnType == typeof(void)) methods.Add(m.Name);
+                            }
+                            int currentIdx = methods.IndexOf(methodName.stringValue);
+                            int shownIdx = Mathf.Clamp(currentIdx < 0 ? 0 : currentIdx, 0, Math.Max(methods.Count - 1, 0));
+                            int newIdx = EditorGUI.Popup(new Rect(rect.x, y, rect.width, h), "Method", shownIdx, methods.ToArray());
+                            if (methods.Count > 0 && newIdx != currentIdx) methodName.stringValue = methods[newIdx];
                         }
-                        int selIdx = Mathf.Max(0, methods.IndexOf(methodName.stringValue));
-                        selIdx = EditorGUI.Popup(new Rect(rect.x, y, rect.width, height),
-                            "Method", selIdx, methods.ToArray());
-                        methodName.stringValue = methods.Count > 0 ? methods[selIdx] : "";
+                    }
+                    else if (actionType == SystemTray.TrayActionType.Method)
+                    {
+                        var display = new List<string>();
+                        var values = new List<string>();
+                        var comps = go.GetComponents<MonoBehaviour>();
+                        foreach (var c in comps)
+                        {
+                            if (c == null) continue;
+                            var t = c.GetType();
+                            foreach (var m in t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                            {
+                                if (m.GetParameters().Length == 0 && m.ReturnType == typeof(void))
+                                {
+                                    display.Add(t.Name + "." + m.Name);
+                                    values.Add(m.Name);
+                                }
+                            }
+                        }
+                        int currentIdx = values.IndexOf(methodName.stringValue);
+                        int shownIdx = Mathf.Clamp(currentIdx < 0 ? 0 : currentIdx, 0, Math.Max(values.Count - 1, 0));
+                        int newIdx = EditorGUI.Popup(new Rect(rect.x, y, rect.width, h), "Method", shownIdx, display.ToArray());
+                        if (values.Count > 0 && newIdx != currentIdx) methodName.stringValue = values[newIdx];
                     }
                 }
             }
@@ -87,11 +117,8 @@ public class SystemTrayEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        var iconProp = serializedObject.FindProperty("icon");
-        var iconNameProp = serializedObject.FindProperty("iconName");
-        EditorGUILayout.PropertyField(iconProp);
-        EditorGUILayout.PropertyField(iconNameProp);
-
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("icon"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("iconName"));
         list.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
     }
