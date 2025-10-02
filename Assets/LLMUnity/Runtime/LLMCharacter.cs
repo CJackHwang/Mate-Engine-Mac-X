@@ -19,6 +19,7 @@ namespace LLMUnity
     {
         /// <summary> file to save the chat history.
         /// The file will be saved within the persistentDataPath directory. </summary>
+        /// 
         [Tooltip("file to save the chat history. The file will be saved within the persistentDataPath directory.")]
         [LLM] public string save = "";
         /// <summary> save the LLM cache. Speeds up the prompt calculation when reloading from history but also requires ~100MB of space per character. </summary>
