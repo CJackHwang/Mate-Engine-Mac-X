@@ -3777,10 +3777,10 @@ Shader "Hidden/Locked/.poiyomi/Poiyomi Toon/235e22e86b4a1b04cb9b0e6d70c076e1"
 				{
 					emissionTex = UNITY_SAMPLE_TEX2D_SAMPLER(_EmissionMap, _MainTex, ((.5 + poiLight.nDotV * .5) * float4(1,1,0,0).xy) + _Time.x * 5.0);
 				}
-				emissionColor0 = emissionTex.rgb * lerp(1, poiFragData.baseColor, mixBaseColor).rgb * poiThemeColor(poiMods, float4(1.414214,1.414214,1.414214,1).rgb, 0.0);
+				emissionColor0 = emissionTex.rgb * lerp(1, poiFragData.baseColor, mixBaseColor).rgb * poiThemeColor(poiMods, float4(1.498039,1.498039,1.498039,1).rgb, 0.0);
 				emissionAlpha = emissionTex.a;
 				#else
-				emissionColor0 = lerp(1, poiFragData.baseColor, mixBaseColor).rgb * poiThemeColor(poiMods, float4(1.414214,1.414214,1.414214,1).rgb, 0.0);
+				emissionColor0 = lerp(1, poiFragData.baseColor, mixBaseColor).rgb * poiThemeColor(poiMods, float4(1.498039,1.498039,1.498039,1).rgb, 0.0);
 				#endif
 				float3 inverseLighting = saturate((1.0 - poiLight.directColor) * sqrt(poiLight.directColor));
 				emissionColor0 = lerp(emissionColor0.rgb, emissionColor0.rgb * inverseLighting, 0.0);
