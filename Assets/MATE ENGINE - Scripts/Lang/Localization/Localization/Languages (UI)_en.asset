@@ -500,6 +500,42 @@ MonoBehaviour:
     m_Localized: "Mmm\u2026 this macaron is so fluffy~ I could nap forever\u2026"
     m_Metadata:
       m_Items: []
+  - m_Id: 64485837908254720
+    m_Localized: Sakura Halo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485839854411776
+    m_Localized: Retro Halo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485841104314368
+    m_Localized: Event Based Messages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486049066295296
+    m_Localized: Enable Dance transitions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115202080768
+    m_Localized: Dance Change Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115827032064
+    m_Localized: Dance transition Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486267505647616
+    m_Localized: Start With System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486353119780864
+    m_Localized: AI System Prompt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486586960617472
+    m_Localized: Del. CHAT HISTORY
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

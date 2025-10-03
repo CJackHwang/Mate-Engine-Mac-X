@@ -176,13 +176,13 @@ namespace Poi.Tools.ShaderTranslator
             if(!context.ThryShaderEditor.PropertyDictionary.TryGetValue(propertyName, out var thryProperty))
                 return;
 
-            var propType = thryProperty.MaterialProperty.type;
+            var propType = thryProperty.MaterialProperty.propertyType;
             switch(propType)
             {
-                case MaterialProperty.PropType.Color:
+                case UnityEngine.Rendering.ShaderPropertyType.Color:
                     thryProperty.ColorValue = (Color)value;
                     break;
-                case MaterialProperty.PropType.Vector:
+                case UnityEngine.Rendering.ShaderPropertyType.Vector:
                     Vector4 vectorValue = default;
 
                     if(value is Vector2 vec2)
@@ -199,17 +199,17 @@ namespace Poi.Tools.ShaderTranslator
 
                     thryProperty.VectorValue = vectorValue;
                     break;
-                case MaterialProperty.PropType.Texture:
+                case UnityEngine.Rendering.ShaderPropertyType.Texture:
                     if(isTextureSTValue)
                         thryProperty.MaterialProperty.textureScaleAndOffset = (Vector4)value;
                     else
                         thryProperty.TextureValue = (Texture)value;
                     break;
 #if UNITY_2022_1_OR_NEWER
-                case MaterialProperty.PropType.Int:
+                case UnityEngine.Rendering.ShaderPropertyType.Int:
 #endif
-                case MaterialProperty.PropType.Float:
-                case MaterialProperty.PropType.Range:
+                case UnityEngine.Rendering.ShaderPropertyType.Float:
+                case UnityEngine.Rendering.ShaderPropertyType.Range:
                     thryProperty.FloatValue = 1f; // Ok so, hear me out. Either Thry or Unity doesn't seem to like it when I'm setting a value that's 0 to 0, and when the stored shader value loads, it gets overwritten. Setting it to something else fixes it
                     thryProperty.FloatValue = Convert.ToSingle(value);
                     break;

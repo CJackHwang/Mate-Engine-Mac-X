@@ -27,8 +27,32 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e089f78eacf83043bf59c183d73acae
+    m_Address: Kazakh (kk)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7029f7bd18c27a24b93019b195c6403e
     m_Address: Japanese (ja)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 713202f1003a7fc499956364062efe59
+    m_Address: Turkish (tr)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a7036832de3ad1478555c32ca1dcf95
+    m_Address: Polish (pl)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f1d0628d8ef6974597cfc0517f46c6a
+    m_Address: Ukrainian (uk)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale

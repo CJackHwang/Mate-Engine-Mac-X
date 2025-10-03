@@ -27,7 +27,7 @@ namespace Poi.Tools.ShaderTranslator
                 {
                     name = ShaderUtil.GetPropertyName(shader, i),
                     description = ShaderUtil.GetPropertyDescription(shader, i),
-                    type = (MaterialProperty.PropType)ShaderUtil.GetPropertyType(shader, i),
+                    type = (UnityEngine.Rendering.ShaderPropertyType)ShaderUtil.GetPropertyType(shader, i),
                     attributes = shader.GetPropertyAttributes(i),
                 };
 
@@ -35,18 +35,18 @@ namespace Poi.Tools.ShaderTranslator
 
                 switch(prop.type)
                 {
-                    case MaterialProperty.PropType.Color:
+                    case UnityEngine.Rendering.ShaderPropertyType.Color:
                         break;
-                    case MaterialProperty.PropType.Range:
+                    case UnityEngine.Rendering.ShaderPropertyType.Range:
                         prop.rangeLimits = shader.GetPropertyRangeLimits(i);
                         break;
-                    case MaterialProperty.PropType.Vector:
+                    case UnityEngine.Rendering.ShaderPropertyType.Vector:
                         prop.defaultVector2Value = shader.GetPropertyDefaultVectorValue(i);
                         break;
-                    case MaterialProperty.PropType.Float:
+                    case UnityEngine.Rendering.ShaderPropertyType.Float:
                         prop.defaultFloatValue = shader.GetPropertyDefaultFloatValue(i);
                         break;
-                    case MaterialProperty.PropType.Texture:
+                    case UnityEngine.Rendering.ShaderPropertyType.Texture:
                         prop.defaultTextureName = shader.GetPropertyTextureDefaultName(i);
                         textureStProp = new ShaderProperty()
                         {
@@ -56,7 +56,7 @@ namespace Poi.Tools.ShaderTranslator
                         };
                         break;
 #if UNITY_2021_1_OR_NEWER
-                    case MaterialProperty.PropType.Int:
+                    case UnityEngine.Rendering.ShaderPropertyType.Int:
                         prop.defaultIntValue = Convert.ToInt32(shader.GetPropertyDefaultFloatValue(i));
                         break;
 #elif UNITY_2022_1_OR_NEWER
@@ -84,13 +84,13 @@ namespace Poi.Tools.ShaderTranslator
                 ShaderProperty prop = Properties[i];
                 switch(prop.type)
                 {
-                    case MaterialProperty.PropType.Color:
+                    case UnityEngine.Rendering.ShaderPropertyType.Color:
                         dict[prop] = material.GetColor(prop.name);
                         break;
-                    case MaterialProperty.PropType.Vector:
+                    case UnityEngine.Rendering.ShaderPropertyType.Vector:
                         dict[prop] = material.GetVector(prop.name);
                         break;
-                    case MaterialProperty.PropType.Texture:
+                    case UnityEngine.Rendering.ShaderPropertyType.Texture:
                         dict[prop] = material.GetTexture(prop.name);
 
                         // Grab the next property which should be the _ST property representing scale and offset
@@ -100,12 +100,12 @@ namespace Poi.Tools.ShaderTranslator
                         dict[stProp] = new Vector4(texScale.x, texScale.y, texOffset.x, texOffset.y);
                         break;
 #if UNITY_2022_1_OR_NEWER
-                    case MaterialProperty.PropType.Int:
+                    case UnityEngine.Rendering.ShaderPropertyType.Int:
                         dict[prop] = material.GetInt(prop.name);
                         break;
 #endif
-                    case MaterialProperty.PropType.Float:
-                    case MaterialProperty.PropType.Range:
+                    case UnityEngine.Rendering.ShaderPropertyType.Float:
+                    case UnityEngine.Rendering.ShaderPropertyType.Range:
                         dict[prop] = material.GetFloat(prop.name);
                         break;
                     default:

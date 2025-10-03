@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11239019241472
-    m_Localized: "Tanzstart-Lautst\xE4rkeschwelle\n"
+    m_Localized: "Tanz-Lautst\xE4rkeschwelle\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11241108004864
@@ -59,13 +59,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11245612687360
-    m_Localized: 'Speich.
-
-'
+    m_Localized: Speichern
     m_Metadata:
       m_Items: []
   - m_Id: 11320741060608
-    m_Localized: "Zur\xFCcks.\n"
+    m_Localized: "Zur\xFCcksetzen"
     m_Metadata:
       m_Items: []
   - m_Id: 11321303097344
@@ -93,17 +91,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23684911718400
-    m_Localized: Avatar Lautst.
+    m_Localized: "Avatar Lautst\xE4rke"
     m_Metadata:
       m_Items: []
   - m_Id: 24123241652224
-    m_Localized: 'Effekt Lautst.
-
-'
+    m_Localized: "Effekt Lautst\xE4rke"
     m_Metadata:
       m_Items: []
   - m_Id: 24123816271872
-    m_Localized: "Men\xFC Lautst.\n"
+    m_Localized: "Men\xFC Lautst.\xE4rke"
     m_Metadata:
       m_Items: []
   - m_Id: 24124437028864
@@ -187,7 +183,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1494416451690496
-    m_Localized: "Diese Funktion kann in Spielen mit Anti-Cheat zu einem Bann f\xFChren."
+    m_Localized: "Diese Funktion k\xF6nnte in Spielen mit Anti-Cheat zu einem Bann
+      f\xFChren."
     m_Metadata:
       m_Items: []
   - m_Id: 1971210921435136
@@ -226,10 +223,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2012023386791936
     m_Localized: "Diese App befindet sich noch in der Entwicklung, und mit der Zeit
-      k\xF6nnten neue Funktionen hinzukommen. Sie wurde von der Anime-Community f\xFCr
+      werden neue Funktionen hinzukommen. Die App wurde von der Anime-Community f\xFCr
       die Anime-Community entwickelt. Es kann einige kleinere Probleme geben \u2013
       wenn du welche findest, kannst du sie \xFCber das Optionen-Men\xFC melden,
-      indem du mit der rechten Maustaste auf das Haustier klickst und das Fehler-Symbol
+      indem du mit der rechten Maustaste auf deinen Mate klickst und das Fehler-Symbol
       ausw\xE4hlst."
     m_Metadata:
       m_Items: []
@@ -253,8 +250,8 @@ MonoBehaviour:
     m_Localized: "Um ein eigenes Modell zu verwenden, brauchst du eine .VRM-Datei.
       Du kannst benutzerdefinierte VRM-Modelle auf Webseiten wie Booth.jp und VRoidHub
       herunterladen. Sobald du eine .VRM-Datei hast, \xF6ffne das Optionsmen\xFC
-      und klicke auf den \u201EVRM\u201C-Button. Dadurch \xF6ffnet sich der Datei-Explorer,
-      in dem du deine Datei ausw\xE4hlen kannst."
+      und klicke unten auf den \u201EVRM\u201C-Button. Dadurch \xF6ffnet sich der
+      Datei-Explorer, in dem du deine Datei ausw\xE4hlen kannst."
     m_Metadata:
       m_Items: []
   - m_Id: 2012431912001536
@@ -267,7 +264,7 @@ MonoBehaviour:
       einer fehlerhaften Armatur beim Export. In solchen F\xE4llen solltest du die
       offizielle UniVRM-Dokumentation pr\xFCfen. Manche Programme versuchen, defekte
       Modelle zu reparieren \u2013 MateEngine tut das nicht (und wird es auch nicht).
-      Du bist selbst daf\xFCr verantwortlich, dass dein VRM korrekt exportiert ist."
+      Du bist selbst daf\xFCr verantwortlich, dass deine VRM korrekt exportiert ist."
     m_Metadata:
       m_Items: []
   - m_Id: 2024289331044352
@@ -292,11 +289,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7781828886781952
-    m_Localized: "Kopf\xFCberblendung"
+    m_Localized: "Kopf Bewegungsintensit\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 7781852853035008
-    m_Localized: "Wirbels\xE4ulenmischung"
+    m_Localized: "Wirbels\xE4ulen Bewegungsintensit\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 7781877666537472
@@ -320,7 +317,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9724442586374144
-    m_Localized: Bild korr.
+    m_Localized: Bild korrigieren
     m_Metadata:
       m_Items: []
   - m_Id: 9725012508401664
@@ -332,11 +329,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9844627515367424
-    m_Localized: "Augen\xFCberblendung"
+    m_Localized: "Augen Bewegungsintensit\xE4t"
     m_Metadata:
       m_Items: []
   - m_Id: 11144201018269696
-    m_Localized: "Inverse Kinematik F\xFC\xDFe"
+    m_Localized: "Inversive Kinematik F\xFC\xDFe"
     m_Metadata:
       m_Items: []
   - m_Id: 11144228465795072
@@ -453,19 +450,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 64079105226743808
-    m_Localized: "Kyaa~ put me down\u2026!!"
+    m_Localized: Kyaa~ setz mich ab..!
     m_Metadata:
       m_Items: []
   - m_Id: 64086005318197248
-    m_Localized: "Don\u2019t lift me up like that, it\u2019s embarrassing~!"
+    m_Localized: Heb mich nicht so, das ist ja peinlich~
     m_Metadata:
       m_Items: []
   - m_Id: 64086006849118208
-    m_Localized: "Please\u2026 set me gently back on the floor~"
+    m_Localized: Bitte, ganz sachte wieder auf den boden >.<
     m_Metadata:
       m_Items: []
   - m_Id: 64086008195489792
-    m_Localized: "Kyaa! It\u2019s too high! Hey, let me down!"
+    m_Localized: Kyaa! Das ist zu hoch! Hey lass mich runter!
     m_Metadata:
       m_Items: []
   - m_Id: 64086009676079104
@@ -473,83 +470,120 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 64086226806808576
-    m_Localized: "This isn\u2019t a princess carry~! Let me down~!"
+    m_Localized: Das ist keine Prinzessin Kutsche~! Lass mich runter~!
     m_Metadata:
       m_Items: []
   - m_Id: 64086278308667392
-    m_Localized: Let me down!! >_<!!
+    m_Localized: Lass mich runter! >_<!!
     m_Metadata:
       m_Items: []
   - m_Id: 64086678092947456
-    m_Localized: Hehe, look at me spin~ am I cute?
+    m_Localized: Hehe schau mal wie ich mich drehe ^^
     m_Metadata:
       m_Items: []
   - m_Id: 64086768543113216
-    m_Localized: Eee~ watch my moves, master~!
+    m_Localized: Eee~ schau wie ich tanze, master >.o ~!
     m_Metadata:
       m_Items: []
   - m_Id: 64087092846698496
-    m_Localized: "Kyaa, I can\u2019t stop moving~ so fun!"
+    m_Localized: "Kyaa, ich kann nicht aufh\xF6ren mich zu bewegen~ so spa\xDFig!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087094838992896
-    m_Localized: "Ufufu~ I\u2019m your idol on stage now\u266A"
+    m_Localized: "Ufufu~ Ich bin jetzt dein Idol auf der B\xFChne\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 64087097229746176
-    m_Localized: "Dance battle?! I\u2019ll never lose~!"
+    m_Localized: Dance battle?! Das velier ich nicht~!
     m_Metadata:
       m_Items: []
   - m_Id: 64087099624693760
-    m_Localized: Dance Dance Dance!! >_<
+    m_Localized: Tanz Tanz Tanz Tanz! >_<
     m_Metadata:
       m_Items: []
   - m_Id: 64087382320783360
-    m_Localized: Relaxing time~ finally a break!
+    m_Localized: Entspannungs Zeit~ endlich eine Pause!
     m_Metadata:
       m_Items: []
   - m_Id: 64087412918231040
-    m_Localized: "Hehe, I\u2019ll just sit here and watch you work."
+    m_Localized: Ich setz mich einfach mal hier hin und sieh dir beim Arbeiten zu~
     m_Metadata:
       m_Items: []
   - m_Id: 64087414772113408
-    m_Localized: "Mmm\u2026 comfy spot, don\u2019t mind me~"
+    m_Localized: "Bequemes pl\xE4tzchen. Beachte mich garnicht~"
     m_Metadata:
       m_Items: []
   - m_Id: 64087416336588800
-    m_Localized: "I\u2019ll cheer for you while you\u2019re busy, master~!"
+    m_Localized: "Ich werde dich anfeuern solange du besch\xE4ftigt bist, Meister~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087417628434432
-    m_Localized: "Nyaa~ I\u2019ll stay here quietly, promise~"
+    m_Localized: "Nyaa~ Ich bleib hier Mucksm\xE4uschenstill, versprochen~"
     m_Metadata:
       m_Items: []
   - m_Id: 64087418794450944
-    m_Localized: "Working hard? I\u2019ll keep you company~"
+    m_Localized: Hart am arbeiten? Ich werde dir gesellschaft leisten~
     m_Metadata:
       m_Items: []
   - m_Id: 64088019687219200
-    m_Localized: "Shhh\u2026 don\u2019t disturb me, I\u2019m recharging cuteness~"
+    m_Localized: "Shhh... st\xF6r mich nicht, ich lade s\xFC\xDFheit auf~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088020911955968
-    m_Localized: Every pet deserves a macaron nap spot, right?
+    m_Localized: Jedes Haustier verdient ein macaron schlafplatz, nicht wahr?
     m_Metadata:
       m_Items: []
   - m_Id: 64088021570461696
-    m_Localized: "Ehehe~ my pillow smells like sugar\u2026 so dreamy~"
+    m_Localized: Ehehe~ mein kissen riecht nacht Zucker.... so traumhaft~
     m_Metadata:
       m_Items: []
   - m_Id: 64088022228967424
-    m_Localized: "So soft\u2026 I\u2019m melting into it~"
+    m_Localized: So sanft... ich schmelze hinein~
     m_Metadata:
       m_Items: []
   - m_Id: 64088022841335808
-    m_Localized: Sweet dreams on a sweet pillow, ehehe~
+    m_Localized: "S\xFC\xDFe Tr\xE4ume auf einem s\xFC\xDFen kissen, ehehe~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088023474675712
-    m_Localized: "Mmm\u2026 this macaron is so fluffy~ I could nap forever\u2026"
+    m_Localized: "Mmm... dieses macaron ist so fluffig~ ich k\xF6nnte f\xFCr immer
+      schlafen..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485837908254720
+    m_Localized: Sakura Heiligenschein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485839854411776
+    m_Localized: Retro Heiligenschein
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485841104314368
+    m_Localized: Event basierte Nachrichten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486049066295296
+    m_Localized: "Aktiviere Tanz\xFCbergang"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115202080768
+    m_Localized: Tanzwechselzeit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115827032064
+    m_Localized: "Tanz \xDCbergangszeit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486267505647616
+    m_Localized: Starte mit dem System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486353119780864
+    m_Localized: KI Chat Befehle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486586960617472
+    m_Localized: "L\xF6sche Chatverlauf"
     m_Metadata:
       m_Items: []
   references:

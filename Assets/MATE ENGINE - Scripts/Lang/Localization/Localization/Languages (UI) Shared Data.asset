@@ -479,6 +479,42 @@ MonoBehaviour:
     m_Key: ACTION_SITTING_06
     m_Metadata:
       m_Items: []
+  - m_Id: 64485837908254720
+    m_Key: ITEM_SAKURA_HALO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485839854411776
+    m_Key: ITEM_RETRO_HALO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485841104314368
+    m_Key: OPTION_EVENT_MESSAGES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486049066295296
+    m_Key: OPTION_DANCE_TRANSITIONS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115202080768
+    m_Key: OPTION_DANCE_TRANSITIONS_CHANGE_TIME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115827032064
+    m_Key: OPTION_DANCE_TRANSITIONS_TRANSITION_TIME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486267505647616
+    m_Key: OPTION_START_WITH_SYSTEM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486353119780864
+    m_Key: INPUT_AI_SYSTEM_PROMPT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486586960617472
+    m_Key: BUTTON_DELETE_CHAT_HISTORY
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

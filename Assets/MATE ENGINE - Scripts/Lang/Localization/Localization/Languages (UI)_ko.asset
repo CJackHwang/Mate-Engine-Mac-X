@@ -355,12 +355,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21396842692468736
-    m_Localized: "\uC54C\uB78C \uD65C\uC131\uD654"
+    m_Localized: "\uC54C\uB78C \uCF1C\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 21396846479925248
-    m_Localized: "\uC2E4\uD5D8\uC801: \uC54C\uB78C \uAE30\uB2A5\uC740 \uC0C8\uB85C\uC6B4
-      \uD14C\uC2A4\uD2B8 \uAE30\uB2A5\uC785\uB2C8\uB2E4!"
+    m_Localized: "\uC2E4\uD5D8\uC801 \uAE30\uB2A5: \uC54C\uB78C\uC740 1\uD68C \uC791\uB3D9
+      \uD6C4 \uAEBC\uC9D1\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 21397663471624192
@@ -404,11 +404,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21399717254520832
-    m_Localized: "AMBI \uB77C\uC774\uD2B8 \uD65C\uC131\uD654"
+    m_Localized: "\uC5E0\uBE44\uC5B8\uD2B8 \uB77C\uC774\uD2B8 \uCF1C\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 21399718462480384
-    m_Localized: "\uB77C\uC774\uD2B8 \uD65C\uC131\uD654"
+    m_Localized: "\uC870\uBA85 \uCF1C\uAE30"
     m_Metadata:
       m_Items: []
   - m_Id: 21400106955694080
@@ -416,119 +416,173 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21400294541746176
-    m_Localized: "\uB77C\uC774\uD2B8 \uAC15\uB3C4"
+    m_Localized: "\uC870\uBA85 \uAC15\uB3C4"
     m_Metadata:
       m_Items: []
   - m_Id: 21400296517263360
-    m_Localized: "\uB77C\uC774\uD2B8 \uCC44\uB3C4"
+    m_Localized: "\uC870\uBA85 \uCC44\uB3C4"
     m_Metadata:
       m_Items: []
   - m_Id: 21400297775554560
-    m_Localized: "\uB77C\uC774\uD2B8 \uC0C9\uC0C1"
+    m_Localized: "\uC870\uBA85 \uC0C9\uC0C1"
     m_Metadata:
       m_Items: []
   - m_Id: 63722729174507520
-    m_Localized: Update
+    m_Localized: "\uC5C5\uB370\uC774\uD2B8"
     m_Metadata:
       m_Items: []
   - m_Id: 64079105226743808
-    m_Localized: "Kyaa~ put me down\u2026!!"
+    m_Localized: "\uAE84\uC544~ \uB0B4\uB824\uC918\uC5B4\u2026!!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086005318197248
-    m_Localized: "Don\u2019t lift me up like that, it\u2019s embarrassing~!"
+    m_Localized: "\uADF8\uB807\uAC8C \uB4E4\uC5B4 \uC62C\uB9AC\uC9C0 \uB9C8, \uBD80\uB044\uB7FD\uB2E8
+      \uB9D0\uC774\uC57C~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086006849118208
-    m_Localized: "Please\u2026 set me gently back on the floor~"
+    m_Localized: "\uC81C\uBC1C\u2026 \uBC14\uB2E5\uC5D0 \uC0B4\uC9DD\uCFF5 \uB0B4\uB824\uB194
+      \uC918~"
     m_Metadata:
       m_Items: []
   - m_Id: 64086008195489792
-    m_Localized: "Kyaa! It\u2019s too high! Hey, let me down!"
+    m_Localized: "\uAE84\uC544! \uB108\uBB34 \uB192\uC544! \uC57C, \uB098 \uC880
+      \uB0B4\uB824\uC918!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086009676079104
-    m_Localized: ahhhhhhh..!!! >_<
+    m_Localized: "\uC544\uC544\uC544\uC544\uC559\u2026!!! >_<"
     m_Metadata:
       m_Items: []
   - m_Id: 64086226806808576
-    m_Localized: "This isn\u2019t a princess carry~! Let me down~!"
+    m_Localized: "\uC774\uAC70 \uACF5\uC8FC\uB2D8 \uC548\uAE30 \uC544\uB2C8\uAC70\uB4E0?!
+      \uB2F9\uC7A5 \uB0B4\uB824\uB194~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086278308667392
-    m_Localized: Let me down!! >_<!!
+    m_Localized: "\uB0B4\uB824\uC918\uC5B4!! >_<!!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086678092947456
-    m_Localized: Hehe, look at me spin~ am I cute?
+    m_Localized: "\uD5E4\uD5E4, \uB098 \uB3C4\uB294 \uAC70 \uBD10~ \uADC0\uC5EC\uC6CC?"
     m_Metadata:
       m_Items: []
   - m_Id: 64086768543113216
-    m_Localized: Eee~ watch my moves, master~!
+    m_Localized: "\uC5D0\uD5E4\uD5F7~ \uC8FC\uC778\uB2D8, \uB0B4 \uBAB8\uC9D3\uC744
+      \uBCF4\uB77C\uAD6C~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087092846698496
-    m_Localized: "Kyaa, I can\u2019t stop moving~ so fun!"
+    m_Localized: "\uAE84\uC544, \uC6C0\uC9C1\uC784\uC774 \uBA48\uCD94\uC9C8 \uC54A\uC544~
+      \uB108\uBB34 \uC7AC\uBC0C\uC5B4!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087094838992896
-    m_Localized: "Ufufu~ I\u2019m your idol on stage now\u266A"
+    m_Localized: "\uC6B0\uD6C4\uD6D7~ \uB098 \uC9C0\uAE08 \uBB34\uB300 \uC704 \uC544\uC774\uB3CC\uC774\uB2F7\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 64087097229746176
-    m_Localized: "Dance battle?! I\u2019ll never lose~!"
+    m_Localized: "\uB304\uC2A4 \uBC30\uD2C0?! \uB09C \uC808\uB300 \uC548 \uC9C4\uB2E4\uAD6C~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087099624693760
-    m_Localized: Dance Dance Dance!! >_<
+    m_Localized: "\uB304\uC2A4 \uB304\uC2A4 \uB304\uC2A4!! >_<"
     m_Metadata:
       m_Items: []
   - m_Id: 64087382320783360
-    m_Localized: Relaxing time~ finally a break!
+    m_Localized: "\uB9B4\uB799\uC2A4 \uD0C0\uC784~ \uB4DC\uB514\uC5B4 \uC26C\uB294
+      \uC2DC\uAC04!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087412918231040
-    m_Localized: "Hehe, I\u2019ll just sit here and watch you work."
+    m_Localized: "\uD5E4\uD5E4, \uB09C \uC5EC\uAE30 \uC549\uC544\uC11C \uC8FC\uC778\uB2D8
+      \uC77C\uD558\uB294 \uAC70 \uAD6C\uACBD\uD560\uB798."
     m_Metadata:
       m_Items: []
   - m_Id: 64087414772113408
-    m_Localized: "Mmm\u2026 comfy spot, don\u2019t mind me~"
+    m_Localized: "\uC74C\u2026 \uD3ED\uC2E0\uD55C \uC790\uB9AC\uB124, \uC2E0\uACBD
+      \uC4F0\uC9C0 \uB9C8~"
     m_Metadata:
       m_Items: []
   - m_Id: 64087416336588800
-    m_Localized: "I\u2019ll cheer for you while you\u2019re busy, master~!"
+    m_Localized: "\uC8FC\uC778\uB2D8 \uBC14\uC060 \uB54C \uB0B4\uAC00 \uC5F4\uC2EC\uD788
+      \uC751\uC6D0\uD574 \uC904\uAC8C~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087417628434432
-    m_Localized: "Nyaa~ I\u2019ll stay here quietly, promise~"
+    m_Localized: "\uC27F! \uC5EC\uAE30\uC11C \uAF3C\uC9DD \uC54A\uACE0 \uC788\uC744
+      \uAC70\uC57C, \uC9C4\uC9DC\uC57C!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087418794450944
-    m_Localized: "Working hard? I\u2019ll keep you company~"
+    m_Localized: "\uC5F4\uC2EC\uD788 \uC77C\uD574? \uB0B4\uAC00 \uC606\uC5D0 \uC788\uC5B4
+      \uC904\uAC8C~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088019687219200
-    m_Localized: "Shhh\u2026 don\u2019t disturb me, I\u2019m recharging cuteness~"
+    m_Localized: "\uC27F\u2026 \uBC29\uD574\uD558\uC9C0 \uB9C8, \uADC0\uC5EC\uC6C0
+      \uCDA9\uC804 \uC911\uC774\uAC70\uB4E0~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088020911955968
-    m_Localized: Every pet deserves a macaron nap spot, right?
+    m_Localized: "\uBAA8\uB4E0 \uD3AB\uC740 \uB9C8\uCE74\uB871 \uB0AE\uC7A0 \uC790\uB9AC\uAC00
+      \uC788\uC5B4\uC57C\uC9C0, \uADF8\uCE58?"
     m_Metadata:
       m_Items: []
   - m_Id: 64088021570461696
-    m_Localized: "Ehehe~ my pillow smells like sugar\u2026 so dreamy~"
+    m_Localized: "\uC5D0\uD5E4\uD5F7~ \uB0B4 \uBCA0\uAC1C\uC5D0\uC11C \uB2EC\uCF64\uD55C
+      \uC124\uD0D5 \uB0C4\uC0C8\uB098\u2026 \uAFC8\uACB0 \uAC19\uC544~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088022228967424
-    m_Localized: "So soft\u2026 I\u2019m melting into it~"
+    m_Localized: "\uB108\uBB34 \uBD80\uB4DC\uB7EC\uC6CC\u2026 \uB179\uC544\uB0B4\uB9AC\uB294
+      \uAC83 \uAC19\uC544~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088022841335808
-    m_Localized: Sweet dreams on a sweet pillow, ehehe~
+    m_Localized: "\uB2EC\uCF64\uD55C \uBCA0\uAC1C \uC704\uC5D0\uC11C \uB2EC\uCF64\uD55C
+      \uAFC8\uC744, \uC5D0\uD5E4\uD5F7~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088023474675712
-    m_Localized: "Mmm\u2026 this macaron is so fluffy~ I could nap forever\u2026"
+    m_Localized: "\uC74C\u2026 \uC774 \uB9C8\uCE74\uB871 \uB108\uBB34 \uD3ED\uC2E0\uD574~
+      \uC601\uC6D0\uD788 \uB0AE\uC7A0 \uC798 \uC218 \uC788\uACA0\uC5B4\u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485837908254720
+    m_Localized: "\uC0AC\uCFE0\uB77C \uD5E4\uC77C\uB85C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485839854411776
+    m_Localized: "\uB808\uD2B8\uB85C \uD5E4\uC77C\uB85C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485841104314368
+    m_Localized: "\uC774\uBCA4\uD2B8 \uAE30\uBC18 \uBA54\uC2DC\uC9C0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486049066295296
+    m_Localized: "\uB304\uC2A4 \uC804\uD658 \uD65C\uC131\uD654"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115202080768
+    m_Localized: "\uB304\uC2A4 \uBCC0\uACBD \uC2DC\uAC04"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115827032064
+    m_Localized: "\uB304\uC2A4 \uC804\uD658 \uC2DC\uAC04"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486267505647616
+    m_Localized: "\uC2DC\uC2A4\uD15C \uC2DC\uC791 \uC2DC \uC2E4\uD589"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486353119780864
+    m_Localized: "AI \uC2DC\uC2A4\uD15C \uD504\uB86C\uD504\uD2B8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486586960617472
+    m_Localized: "\uCC44\uD305 \uAE30\uB85D \uC0AD\uC81C"
     m_Metadata:
       m_Items: []
   references:

@@ -29,9 +29,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11236599128064
-    m_Localized: 'Temps de transition d''animation
-
-'
+    m_Localized: "Dur\xE9e de la transition entre les animations\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11239019241472
@@ -53,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11244643803136
-    m_Localized: "T\xEAte suit la souris\n"
+    m_Localized: "La t\xEAte suit la souris\n"
     m_Metadata:
       m_Items: []
   - m_Id: 11245205839872
@@ -95,7 +93,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23684911718400
-    m_Localized: 'Vol. de l''animal
+    m_Localized: 'Vol. du compagnon
 
 '
     m_Metadata:
@@ -275,11 +273,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2024395421769728
-    m_Localized: v
+    m_Localized: Finir
     m_Metadata:
       m_Items: []
   - m_Id: 2024529517862912
-    m_Localized: Retour
+    m_Localized: "Pr\xE9c\xE9dent"
     m_Metadata:
       m_Items: []
   - m_Id: 2024532080582656
@@ -287,11 +285,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7781828886781952
-    m_Localized: "Fusion de t\xEAte"
+    m_Localized: "Mix anim./suivi pour la t\xEAte"
     m_Metadata:
       m_Items: []
   - m_Id: 7781852853035008
-    m_Localized: Fusion de colonne
+    m_Localized: "Mix anim./suivi pour la colone vert\xE9brale"
     m_Metadata:
       m_Items: []
   - m_Id: 7781877666537472
@@ -315,11 +313,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9724442586374144
-    m_Localized: Corr. img
+    m_Localized: Corriger l'image
     m_Metadata:
       m_Items: []
   - m_Id: 9725012508401664
-    m_Localized: "T\xE9l\xE9charger"
+    m_Localized: Envoyer
     m_Metadata:
       m_Items: []
   - m_Id: 9722136935522304
@@ -327,17 +325,17 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 9844627515367424
-    m_Localized: Fusion des yeux
+    m_Localized: Mix anim./suivi pour les yeux
     m_Metadata:
       m_Items: []
   - m_Id: 11144201018269696
-    m_Localized: "Pieds en Cin\xE9matique Inverse"
+    m_Localized: "Cin\xE9matique Inverse pour les pieds"
     m_Metadata:
       m_Items: []
   - m_Id: 11144228465795072
-    m_Localized: "La plupart des mod\xE8les auront une meilleure apparence avec les
-      pieds IK activ\xE9s. Sinon, d\xE9sactivez-les pour un style de mouvement plus
-      f\xE9minin."
+    m_Localized: "La plupart des mod\xE8les auront une meilleure apparence avec la
+      cin\xE9matique inverse des pieds activ\xE9e. Sinon, d\xE9sactivez-la pour un
+      style de mouvement plus f\xE9minin."
     m_Metadata:
       m_Items: []
   - m_Id: 11147404514418688
@@ -355,11 +353,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14037793143513088
-    m_Localized: "Minuterie de veille d\u2019\xE9cran"
+    m_Localized: "Minuterie d'\xE9conomiseur d'\xE9cran"
     m_Metadata:
       m_Items: []
   - m_Id: 14037795504906240
-    m_Localized: "D\xE9bogage"
+    m_Localized: "D\xE9bogage (debug)"
     m_Metadata:
       m_Items: []
   - m_Id: 14037796842889216
@@ -367,9 +365,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 14037800621957120
-    m_Localized: "Effectue une collecte des d\xE9chets forc\xE9e. Il s\u2019agit
-      d\u2019une fonction de d\xE9bogage \u2013 n\u2019utilisez-la que si vous savez
-      ce que vous faites."
+    m_Localized: "Effectue un nettoyage de la m\xE9moire forc\xE9 (Garbage Collection).
+      Il s\u2019agit d\u2019une fonction de d\xE9bogage (debug) \u2013 ne l'utilisez
+      que si vous savez ce que vous faites."
     m_Metadata:
       m_Items: []
   - m_Id: 21396842692468736
@@ -377,12 +375,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21396846479925248
-    m_Localized: "Exp\xE9rimental : la fonction alarme est une nouvelle fonctionnalit\xE9
-      de test !"
+    m_Localized: "Fonctionnalit\xE9 Exp\xE9rimentale :\nL'alarme va se couper une
+      fois qu'elle a \xE9t\xE9 d\xE9clench\xE9e une fois."
     m_Metadata:
       m_Items: []
   - m_Id: 21397663471624192
-    m_Localized: "Lumi\xE8re AMBI"
+    m_Localized: "Lumi\xE8re ambiante"
     m_Metadata:
       m_Items: []
   - m_Id: 21397935245746176
@@ -422,7 +420,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21399717254520832
-    m_Localized: "Activer la lumi\xE8re AMBI"
+    m_Localized: "Activer la lumi\xE8re ambiante"
     m_Metadata:
       m_Items: []
   - m_Id: 21399718462480384
@@ -446,23 +444,24 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 63722729174507520
-    m_Localized: Update
+    m_Localized: "Mise \xE0 jour"
     m_Metadata:
       m_Items: []
   - m_Id: 64079105226743808
-    m_Localized: "Kyaa~ put me down\u2026!!"
+    m_Localized: "Kyaa~ repose moi par terre \u2026!!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086005318197248
-    m_Localized: "Don\u2019t lift me up like that, it\u2019s embarrassing~!"
+    m_Localized: "Arr\xEAte de me porter comme \xE7a, c\u2019est trop embarrassant
+      ~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086006849118208
-    m_Localized: "Please\u2026 set me gently back on the floor~"
+    m_Localized: S'il te plait ... repose moi doucement au sol ~
     m_Metadata:
       m_Items: []
   - m_Id: 64086008195489792
-    m_Localized: "Kyaa! It\u2019s too high! Hey, let me down!"
+    m_Localized: Kyaa ! C'est trop haut ! Repose moi sur le sol !
     m_Metadata:
       m_Items: []
   - m_Id: 64086009676079104
@@ -470,83 +469,123 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 64086226806808576
-    m_Localized: "This isn\u2019t a princess carry~! Let me down~!"
+    m_Localized: "Ce n'est pas comme \xE7a qu'on porte une princesse ~! Laisse moi
+      descendre ~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64086278308667392
-    m_Localized: Let me down!! >_<!!
+    m_Localized: Laisse moi descendre !!>_<!!
     m_Metadata:
       m_Items: []
   - m_Id: 64086678092947456
-    m_Localized: Hehe, look at me spin~ am I cute?
+    m_Localized: Hehe, regarde moi tourner~ je suis pas mignone ?
     m_Metadata:
       m_Items: []
   - m_Id: 64086768543113216
-    m_Localized: Eee~ watch my moves, master~!
+    m_Localized: "Eee~ regarde mes mouvements, ma\xEEtre ~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087092846698496
-    m_Localized: "Kyaa, I can\u2019t stop moving~ so fun!"
+    m_Localized: "Kyaa, je ne peut pas arr\xEAter de bouger~ trop amusant!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087094838992896
-    m_Localized: "Ufufu~ I\u2019m your idol on stage now\u266A"
+    m_Localized: "Ufufu~ C'est moi ton idole sur sc\xE8ne maintenant\u266A"
     m_Metadata:
       m_Items: []
   - m_Id: 64087097229746176
-    m_Localized: "Dance battle?! I\u2019ll never lose~!"
+    m_Localized: Bataille de danse ?! je n'ai jamais perdu~!
     m_Metadata:
       m_Items: []
   - m_Id: 64087099624693760
-    m_Localized: Dance Dance Dance!! >_<
+    m_Localized: Danse Danse Danse !! >_<
     m_Metadata:
       m_Items: []
   - m_Id: 64087382320783360
-    m_Localized: Relaxing time~ finally a break!
+    m_Localized: "C'est l'heure de se d\xE9tendre ! enfin une pause !"
     m_Metadata:
       m_Items: []
   - m_Id: 64087412918231040
-    m_Localized: "Hehe, I\u2019ll just sit here and watch you work."
+    m_Localized: Hehe, je vais juste m'assoir et te regarder travailler.
     m_Metadata:
       m_Items: []
   - m_Id: 64087414772113408
-    m_Localized: "Mmm\u2026 comfy spot, don\u2019t mind me~"
+    m_Localized: "Mmm \u2026 quel endroit confortable, ne fais pas attention \xE0
+      moi ~"
     m_Metadata:
       m_Items: []
   - m_Id: 64087416336588800
-    m_Localized: "I\u2019ll cheer for you while you\u2019re busy, master~!"
+    m_Localized: "Je vais t'encourager pendant que tu es occup\xE9, ma\xEEtre ~!"
     m_Metadata:
       m_Items: []
   - m_Id: 64087417628434432
-    m_Localized: "Nyaa~ I\u2019ll stay here quietly, promise~"
+    m_Localized: Nyaa~ je reste ici gentiment, promis~
     m_Metadata:
       m_Items: []
   - m_Id: 64087418794450944
-    m_Localized: "Working hard? I\u2019ll keep you company~"
+    m_Localized: Tu travailles dur ? Je te tiens compagnie ~!
     m_Metadata:
       m_Items: []
   - m_Id: 64088019687219200
-    m_Localized: "Shhh\u2026 don\u2019t disturb me, I\u2019m recharging cuteness~"
+    m_Localized: "Shhh \u2026 ne me d\xE9range pas, je recharge mon charme ~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088020911955968
-    m_Localized: Every pet deserves a macaron nap spot, right?
+    m_Localized: "Tous les compagnons m\xE9ritent bien un coussin macaron pour la
+      sieste, non ?"
     m_Metadata:
       m_Items: []
   - m_Id: 64088021570461696
-    m_Localized: "Ehehe~ my pillow smells like sugar\u2026 so dreamy~"
+    m_Localized: "Ehehe ~ mon coussin sent le sucre \u2026 le r\xEAve ~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088022228967424
-    m_Localized: "So soft\u2026 I\u2019m melting into it~"
+    m_Localized: "Trop moelleux \u2026 je disparais dedans ~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088022841335808
-    m_Localized: Sweet dreams on a sweet pillow, ehehe~
+    m_Localized: "Doux r\xEAves sur un coussin moelleux, ehehe~"
     m_Metadata:
       m_Items: []
   - m_Id: 64088023474675712
-    m_Localized: "Mmm\u2026 this macaron is so fluffy~ I could nap forever\u2026"
+    m_Localized: "Mmm \u2026 ce macaron est si doux ~ je pourrais dormir pour toujours
+      \u2026"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485837908254720
+    m_Localized: Halo de fleurs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485839854411776
+    m_Localized: Halo Retro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64485841104314368
+    m_Localized: "Messages Bas\xE9s sur les \xE9v\xE9nements"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486049066295296
+    m_Localized: Activer les transitions entre les danses
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115202080768
+    m_Localized: Temps pour changer de danse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486115827032064
+    m_Localized: "Dur\xE9e de la transition entre deux danses"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486267505647616
+    m_Localized: "D\xE9marrer avec l'ordinateur"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486353119780864
+    m_Localized: "Prompt pour le Syst\xE8me IA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64486586960617472
+    m_Localized: Supprimer l'Historique de Discussion
     m_Metadata:
       m_Items: []
   references:

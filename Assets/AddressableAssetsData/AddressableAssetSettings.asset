@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: da47376fc21048246a6d81428534a2ed
   m_currentHash:
     serializedVersion: 2
-    Hash: 4735793b381ecb639a4a732b3309c80f
+    Hash: 5182a98f13c60cb398d262ecef29776c
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -33,6 +33,7 @@ MonoBehaviour:
   m_UniqueBundleIds: 0
   m_EnableJsonCatalog: 0
   m_NonRecursiveBuilding: 1
+  m_AllowNestedBundleFolders: 0
   m_CCDEnabled: 0
   m_maxConcurrentWebRequests: 3
   m_UseUWRForLocalBundles: 0
@@ -63,13 +64,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c723451c90a7544e9984dc9f7067846, type: 2}
   - {fileID: 11400000, guid: 52f8b1929cbeb1d4992f7cb67afa3254, type: 2}
   - {fileID: 11400000, guid: 3f2c4c4b3153dc24daa387df970a51df, type: 2}
+  - {fileID: 11400000, guid: 3423cd41ce4c67e47b08e93cc9c56760, type: 2}
   - {fileID: 11400000, guid: 85d0df20d55f4ea4e9a000ffbcc9c6d4, type: 2}
   - {fileID: 11400000, guid: d797f4507b0c8f441b04b0670fd20f4e, type: 2}
   - {fileID: 11400000, guid: 107fd3cac4f14ff47b8df1f4690a84ff, type: 2}
   - {fileID: 11400000, guid: 8177ef7591730354aa9acd34f9ba7194, type: 2}
+  - {fileID: 11400000, guid: e36690252a2d44143956add1cfcc5f66, type: 2}
   - {fileID: 11400000, guid: 967f0bd9cde882f43b274d290c5f7274, type: 2}
+  - {fileID: 11400000, guid: a42dc559423bfeb45b7be2b09dc9f690, type: 2}
   - {fileID: 11400000, guid: 5be60131a593f8e4fa96013661a6eaff, type: 2}
   - {fileID: 11400000, guid: 7b77f1d7a373e0d4f94a35ed7d00bc19, type: 2}
+  - {fileID: 11400000, guid: 21969c97996f7144dbd7f9e377ce434b, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -119,6 +124,10 @@ MonoBehaviour:
     - Locale-de
     - Locale-fr
     - Locale-ko
+    - Locale-tr
+    - Locale-uk
+    - Locale-pl
+    - Locale-kk
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: b3872fb0d834b5f44a47164918e9fd81, type: 2}
