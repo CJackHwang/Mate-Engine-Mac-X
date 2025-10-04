@@ -25,17 +25,32 @@ public class VRMLoader : MonoBehaviour
 
     private GameObject currentModel;
     private bool isLoading = false;
-    private string modelPathKey = "SavedPathModel";
+    private const string LegacyModelPathKey = "SavedPathModel";
 
     void Start()
     {
-        if (PlayerPrefs.HasKey(modelPathKey))
+
+        string savedPath = SaveLoadHandler.Instance != null
+            ? SaveLoadHandler.Instance.data.selectedModelPath
+            : null;
+
+        if (string.IsNullOrEmpty(savedPath) && PlayerPrefs.HasKey(LegacyModelPathKey))
         {
-            string savedPath = PlayerPrefs.GetString(modelPathKey);
-            if (!string.IsNullOrEmpty(savedPath))
-                LoadVRM(savedPath);
+            savedPath = PlayerPrefs.GetString(LegacyModelPathKey);
+            if (SaveLoadHandler.Instance != null)
+            {
+                SaveLoadHandler.Instance.data.selectedModelPath = savedPath;
+                SaveLoadHandler.Instance.SaveToDisk();
+            }
+            PlayerPrefs.DeleteKey(LegacyModelPathKey);
+            PlayerPrefs.Save();
         }
+
+
+        if (!string.IsNullOrEmpty(savedPath))
+            LoadVRM(savedPath);
     }
+
 
     public void OpenFileDialogAndLoadVRM()
     {
@@ -55,8 +70,12 @@ public class VRMLoader : MonoBehaviour
         if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
         {
             LoadAssetBundleModel(path);
-            PlayerPrefs.SetString(modelPathKey, path);
-            PlayerPrefs.Save();
+            if (SaveLoadHandler.Instance != null)
+            {
+                SaveLoadHandler.Instance.data.selectedModelPath = path;
+                SaveLoadHandler.Instance.SaveToDisk();
+            }
+
             return;
         }
         if (IsDLCReference(path))
@@ -66,8 +85,12 @@ public class VRMLoader : MonoBehaviour
             {
                 GameObject instance = Instantiate(prefab);
                 FinalizeLoadedModel(instance, path);
-                PlayerPrefs.SetString(modelPathKey, path);
-                PlayerPrefs.Save();
+                if (SaveLoadHandler.Instance != null)
+                {
+                    SaveLoadHandler.Instance.data.selectedModelPath = path;
+                    SaveLoadHandler.Instance.SaveToDisk();
+                }
+
             }
             else
             {
@@ -122,8 +145,12 @@ public class VRMLoader : MonoBehaviour
             if (loadedModel == null) return;
 
             FinalizeLoadedModel(loadedModel, path);
-            PlayerPrefs.SetString(modelPathKey, path);
-            PlayerPrefs.Save();
+            if (SaveLoadHandler.Instance != null)
+            {
+                SaveLoadHandler.Instance.data.selectedModelPath = path;
+                SaveLoadHandler.Instance.SaveToDisk();
+            }
+
         }
         catch (Exception ex)
         {
@@ -258,13 +285,19 @@ public class VRMLoader : MonoBehaviour
 
         ClearPreviousCustomModel(skipRawImageCleanup: true);
         EnableMainModel();
-        PlayerPrefs.DeleteKey(modelPathKey);
-        PlayerPrefs.Save();
+
+        if (SaveLoadHandler.Instance != null)
+        {
+            SaveLoadHandler.Instance.data.selectedModelPath = "";
+            SaveLoadHandler.Instance.SaveToDisk();
+        }
 
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
+
         ReleaseRamAndUnloadAssets();
     }
+
 
     private void DisableMainModel()
     {
@@ -385,23 +418,20 @@ public class VRMLoader : MonoBehaviour
     {
         ClearPreviousCustomModel(skipRawImageCleanup: true);
         EnableMainModel();
-        PlayerPrefs.DeleteKey(modelPathKey);
-        PlayerPrefs.Save();
+
+        if (SaveLoadHandler.Instance != null)
+        {
+            SaveLoadHandler.Instance.data.selectedModelPath = "";
+            SaveLoadHandler.Instance.SaveToDisk();
+        }
 
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
-        /*
-        var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
-        if (avatarSettingsMenu != null)
-        {
-            avatarSettingsMenu.LoadSettings();
-            avatarSettingsMenu.ApplySettings();
-        }
-        */
-        ReleaseRamAndUnloadAssets();
-        SettingsHandlerUtility.ReloadAllSettingsHandlers(); // Should load all settings to new VRM Files
 
+        ReleaseRamAndUnloadAssets();
+        SettingsHandlerUtility.ReloadAllSettingsHandlers();
     }
+
 
     private void ReleaseRamAndUnloadAssets()
     {

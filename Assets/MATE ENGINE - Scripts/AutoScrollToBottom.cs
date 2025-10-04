@@ -6,23 +6,18 @@ using System.Collections;
 public class StickyAutoScroll : MonoBehaviour
 {
     [Header("Refs")]
-    public ScrollRect scrollRect;        // dein ScrollRect
-    public RectTransform content;        // scrollRect.content; auto-resolve falls leer
-    public RectTransform viewport;       // scrollRect.viewport; auto-resolve falls leer
+    public ScrollRect scrollRect;
+    public RectTransform content;
+    public RectTransform viewport;
 
     [Header("Behaviour")]
-    [Tooltip("Immer nach unten kleben (ignoriert Nutzer-Scroll).")]
     public bool forceAlways = true;
-    [Tooltip("Nur kleben, wenn Nutzer ohnehin unten ist (<= Toleranz).")]
     [Range(0f, 1f)] public float bottomTolerance = 0.05f;
 
     [Header("Smoothing")]
-    [Tooltip("Dauer der Smooth-Bewegung (unscaled time).")]
     public float smoothDuration = 0.25f;
-    [Tooltip("Wartezeit bis Layout als stabil gilt, bevor gescrollt wird.")]
     public float settleTime = 0.08f;
 
-    // intern
     float _lastHeight = -1f;
     int _lastChildCount = -1;
     float _settleTimer = 0f;
@@ -51,14 +46,12 @@ public class StickyAutoScroll : MonoBehaviour
 
     void OnEnable()
     {
-        // Beim Öffnen smooth ganz nach unten
         if (isActiveAndEnabled)
             StartCoroutine(ScrollAfterLayout());
     }
 
     IEnumerator ScrollAfterLayout()
     {
-        // 2 Frames warten, bis Layout/ContentSizeFitter fertig ist
         yield return null;
         Canvas.ForceUpdateCanvases();
         yield return null;
@@ -70,13 +63,11 @@ public class StickyAutoScroll : MonoBehaviour
     {
         if (!scrollRect || !content || !viewport) return;
 
-        // Content-Änderungen erkennen (Höhe / Kinderanzahl)
         float h = content.rect.height;
         int cc = content.childCount;
 
         if (!Mathf.Approximately(h, _lastHeight) || cc != _lastChildCount)
         {
-            // Beim Streaming wächst h fast jedes Frame → wir „debouncen“
             _settleTimer = settleTime;
             if (_settleCo == null) _settleCo = StartCoroutine(SettleThenStick());
         }
@@ -100,7 +91,6 @@ public class StickyAutoScroll : MonoBehaviour
 
     bool IsAtBottom(float tol)
     {
-        // 0 = unten, 1 = oben
         return scrollRect.verticalNormalizedPosition <= tol;
     }
 
@@ -114,13 +104,11 @@ public class StickyAutoScroll : MonoBehaviour
     {
         if (!content || !viewport) yield break;
 
-        // Ziel-Y = max(0, contentHeight - viewportHeight)
         Canvas.ForceUpdateCanvases();
         float viewH = viewport.rect.height;
         float contH = content.rect.height;
         float targetY = Mathf.Max(0f, contH - viewH);
 
-        // aktuelles Y (ScrollRect bewegt content nach oben = +Y)
         float startY = content.anchoredPosition.y;
         float dur = Mathf.Max(0.01f, smoothDuration);
         float t = 0f;
@@ -129,7 +117,6 @@ public class StickyAutoScroll : MonoBehaviour
         {
             t += Time.unscaledDeltaTime;
             float u = t / dur;
-            // Ease-Out
             float k = 1f - Mathf.Pow(1f - u, 3f);
 
             float y = Mathf.Lerp(startY, targetY, k);
@@ -137,8 +124,6 @@ public class StickyAutoScroll : MonoBehaviour
 
             yield return null;
 
-            // Falls Content während der Animation weiter wächst (Streaming),
-            // Ziel neu evaluieren, aber ohne Jump:
             Canvas.ForceUpdateCanvases();
             viewH = viewport.rect.height;
             contH = content.rect.height;
@@ -149,7 +134,6 @@ public class StickyAutoScroll : MonoBehaviour
         _smoothCo = null;
     }
 
-    // Optional: direkte API
     public void JumpToBottomImmediate()
     {
         if (!content || !viewport) return;

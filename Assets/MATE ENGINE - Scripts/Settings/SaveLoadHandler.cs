@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 public class SaveLoadHandler : MonoBehaviour
 {
@@ -9,8 +10,15 @@ public class SaveLoadHandler : MonoBehaviour
 
     public SettingsData data;
 
-    private string fileName = "settings.json";
-    private string FilePath => Path.Combine(Application.persistentDataPath, fileName);
+    // Multi-Instance Variablen
+    private static string fileName = "settings.json";
+    private static string customDataDir = null;
+
+    private string BaseDir => string.IsNullOrEmpty(customDataDir)
+        ? Application.persistentDataPath
+        : Path.Combine(Application.persistentDataPath, customDataDir);
+
+    private string FilePath => Path.Combine(BaseDir, fileName);
 
     private void Awake()
     {
@@ -23,6 +31,17 @@ public class SaveLoadHandler : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // Kommandozeilen-Argumente lesen
+        var args = Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i].Equals("--savefile", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                fileName = args[i + 1].Trim('"');
+
+            if (args[i].Equals("--datadir", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                customDataDir = args[i + 1].Trim('"');
+        }
+
         LoadFromDisk();
         ApplyAllSettingsToAllAvatars();
 
@@ -34,6 +53,7 @@ public class SaveLoadHandler : MonoBehaviour
         }
     }
 
+    // Speichern
     public void SaveToDisk()
     {
         try
@@ -46,12 +66,13 @@ public class SaveLoadHandler : MonoBehaviour
             File.WriteAllText(FilePath, json);
             Debug.Log("[SaveLoadHandler] Saved settings to: " + FilePath);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogError("[SaveLoadHandler] Failed to save: " + e);
         }
     }
 
+    // Laden
     public void LoadFromDisk()
     {
         if (File.Exists(FilePath))
@@ -62,7 +83,7 @@ public class SaveLoadHandler : MonoBehaviour
                 data = JsonConvert.DeserializeObject<SettingsData>(json);
                 Debug.Log("[SaveLoadHandler] Loaded settings from: " + FilePath);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Debug.LogError("[SaveLoadHandler] Failed to load: " + e);
                 data = new SettingsData();
@@ -74,7 +95,7 @@ public class SaveLoadHandler : MonoBehaviour
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class SettingsData
     {
         public enum WindowSizeState { Normal, Big, Small }
@@ -83,7 +104,7 @@ public class SaveLoadHandler : MonoBehaviour
         public float soundThreshold = 0.2f;
         public float idleSwitchTime = 10f;
         public float idleTransitionTime = 1f;
-        public bool enableDanceSwitch = false; 
+        public bool enableDanceSwitch = false;
         public float danceSwitchTime = 15f;
         public float danceTransitionTime = 2f;
         public float avatarSize = 1.0f;
@@ -92,7 +113,7 @@ public class SaveLoadHandler : MonoBehaviour
         public int fpsLimit = 90;
         public bool isTopmost = true;
 
-        public List<string> allowedApps = new List<string>();
+        public List<string> allowedApps = new();
         public bool bloom = false;
         public bool dayNight = true;
 
@@ -134,13 +155,15 @@ public class SaveLoadHandler : MonoBehaviour
         public Dictionary<string, float> lightHues = new();
         public Dictionary<string, bool> groupToggles = new();
 
-        public Dictionary<string, bool> modStates = new Dictionary<string, bool>();
+        public Dictionary<string, bool> modStates = new();
         public int graphicsQualityLevel = 1;
-        public Dictionary<string, bool> accessoryStates = new Dictionary<string, bool>();
+        public Dictionary<string, bool> accessoryStates = new();
 
         public bool startWithWindows = false;
         public bool enableRandomMessages = false;
 
+        // 🔹 Avatar-Pfad: merkt den aktuell geladenen Avatar (VRM, .me, DLC, Prefab-Name)
+        public string selectedModelPath = "";
     }
 
     public static void SyncAllowedAppsToAllAvatars()
@@ -149,9 +172,7 @@ public class SaveLoadHandler : MonoBehaviour
         var list = new List<string>(Instance.data.allowedApps);
 
         foreach (var avatar in allAvatars)
-        {
             avatar.allowedApps = list;
-        }
     }
 
     public static void ApplyAllSettingsToAllAvatars()
@@ -180,9 +201,7 @@ public class SaveLoadHandler : MonoBehaviour
             }
 
             foreach (var ik in avatar.GetComponentsInChildren<IKFix>(true))
-            {
                 ik.enableIK = data.enableIK;
-            }
 
             foreach (var handler in avatar.GetComponentsInChildren<AvatarParticleHandler>(true))
             {
@@ -191,9 +210,7 @@ public class SaveLoadHandler : MonoBehaviour
             }
 
             foreach (var holder in avatar.GetComponentsInChildren<HandHolder>(true))
-            {
                 holder.enableHandHolding = data.enableHandHolding;
-            }
 
             if (avatar.animator != null &&
                 avatar.animator.isActiveAndEnabled &&
@@ -206,10 +223,7 @@ public class SaveLoadHandler : MonoBehaviour
             }
 
             foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
-            {
                 handler.windowSitYOffset = data.windowSitYOffset;
-            }
-
         }
     }
 }
