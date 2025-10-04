@@ -175,6 +175,9 @@ public class AvatarRandomMessages : MonoBehaviour
 
         if (streamAudioSource != null) { streamAudioSource.Stop(); streamAudioSource.Play(); }
         if (streamCoroutine != null) StopCoroutine(streamCoroutine);
+
+        if (avatarAnimator != null) avatarAnimator.SetBool("isTalking", true);
+
         streamCoroutine = StartCoroutine(FakeStreamText(finalText));
         if (despawnCoroutine != null) StopCoroutine(despawnCoroutine);
         despawnCoroutine = StartCoroutine(DespawnAfterDelay());
@@ -212,6 +215,10 @@ public class AvatarRandomMessages : MonoBehaviour
         }
         activeBubble.SetText(fullText);
         if (streamAudioSource != null && streamAudioSource.isPlaying) streamAudioSource.Stop();
+
+
+        if (avatarAnimator != null) avatarAnimator.SetBool("isTalking", false);
+
         streamCoroutine = null;
     }
 
@@ -234,6 +241,9 @@ public class AvatarRandomMessages : MonoBehaviour
         if (activeBubble != null) { activeBubble.Destroy(); activeBubble = null; }
         if (streamAudioSource != null && streamAudioSource.isPlaying) streamAudioSource.Stop();
         isBubbleActive = false;
+
+
+        if (avatarAnimator != null) avatarAnimator.SetBool("isTalking", false);
     }
 
     bool IsInAllowedState()
