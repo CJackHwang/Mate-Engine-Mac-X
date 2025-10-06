@@ -162,8 +162,10 @@ public class SaveLoadHandler : MonoBehaviour
         public bool startWithWindows = false;
         public bool enableRandomMessages = false;
 
-        // 🔹 Avatar-Pfad: merkt den aktuell geladenen Avatar (VRM, .me, DLC, Prefab-Name)
+
         public string selectedModelPath = "";
+        public int contextLength = 4096; 
+
     }
 
     public static void SyncAllowedAppsToAllAvatars()
