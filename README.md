@@ -1,19 +1,21 @@
-# Support MateEngine on Steam!
-Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
-Or use it for free here! Any Purchase on Steam will help Developement and future updates!
+# 在Steam上支持MateEngine！
+在Steam上购买：https://store.steampowered.com/app/3625270/MateEngine/
+也可以在此免费使用！在Steam上的任何购买都将有助于开发和未来的更新！
 
 
 
-# Note-Worthy Community Mods:
+# 值得关注的社区模组：
 
-Custom Dance Player
+自定义舞蹈播放器
 https://github.com/maoxig/MateEngine-CustomDancePlayer
 
 
-# 🌐 Language / 言語選択
+# 🌐 Language / 言語選択 / 语言选择
 
 - [English](#English)
+- [中文](#Chinese)
 - [日本語](#Japanese)
+
 
 ---
 
@@ -185,6 +187,189 @@ This project is made with love and designed to stay free forever.
 If you like it, share it or support it — but most of all, enjoy it.
 
 ---------------------------------------------------------------------
+
+
+
+## Chinese
+
+![Mate Engine Preview](https://i.imgur.com/5cHHH8c.jpeg)
+
+# Mate Engine（伙伴引擎）
+
+一款免费、轻量级的 **Desktop Mate** 替代品，支持自定义VRM模型和模组功能。更少限制，更多自由。
+
+- **应用程序许可证**：混合 — GNU AGPL v3 & MateProv2许可证
+  *请仔细阅读许可证条款。*
+- **默认角色许可证**：由 [Yorshka Shop](https://yorshkasencho.booth.pm/) 保留所有权利
+  *请勿在您的构建中重新分发此模型。*
+- **QWEN 2.5 1.5b LLM**：*Apache许可证 版本2.0，2004年1月*
+
+---
+
+## 关于项目
+
+**Mate Engine** 是作为 **Desktop Mate** 等软件的免费替代品而创建的。
+
+为什么？因为 **Desktop Mate** 对单个角色模型收取 **10–25美元** —— 这与Steam上全价游戏相当。更糟糕的是，后续版本禁用了模组功能和自定义模型。
+
+**Mate Engine** 解决了这两个问题：
+
+- 它是**完全免费**的
+- 它支持**自定义VRM角色**
+- 它是**开源且支持模组**的
+
+![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
+
+---
+
+## 免费初音未来支持
+
+想尝试免费模型吗？
+[下载初音未来VRM模型](https://booth.pm/en/items/3226395)
+
+---
+
+## 功能对比
+"Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine" 的功能对比
+
+| 功能对比                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (1.9.8) |
+|--------------------------|--------------|-----------|------------|
+| 开源                    | ❌           | ❌        | ✅         |
+| 模组支持                | ❌           | ❌        | ✅         |
+| 自定义VRM               | ❌           | ✅        | ✅         |
+| 自定义着色器            | ❌           | ❌        | ✅         |
+| .ME文件格式             | ❌           | ❌        | ✅         |
+| 窗口坐立                | ✅           | ✅        | ✅         |
+| 任务栏坐立              | ✅           | ✅        | ✅         |
+| 待机动画                | ✅           | ✅        | ✅         |
+| 拖拽动画                | ✅           | ✅        | ✅         |
+| 随音乐起舞              | ❌           | ❌        | ✅         |
+| 头部追踪                | ✅           | ✅        | ✅         |
+| 脊柱追踪                | ❌           | ❌        | ✅         |
+| 眼部追踪                | ❌           | ❌        | ✅         |
+| 手部动作                | ❌           | ❌        | ✅         |
+| 闹钟/计时器             | ✅           | ✅        | ✅         |
+| 屏幕保护                | ❌           | ❌        | ✅         |
+| 触摸区域                | ❌           | ❌        | ✅         |
+| 角色音效                | ❌           | ❌        | ✅         |
+| 粒子效果                | ❌           | ❌        | ✅         |
+| FPS控制                 | ❌           | ✅        | ✅         |
+| 始终置顶切换            | ❌           | ✅        | ✅         |
+| 迷你模式                | ❌           | ❌        | ✅         |
+| 后处理光晕              | ❌           | ❌        | ✅         |
+| 后处理环境光遮蔽        | ❌           | ❌        | ✅         |
+| MSAA x8支持             | ❌           | ❌        | ✅         |
+| 大屏幕模式              | ❌           | ❌        | ✅         |
+| 系统图标                | ✅           | ❌        | ✅         |
+| 系统图标设置            | ❌           | ❌        | ✅         |
+| 平滑动画过渡            | ❌           | ❌        | ✅         |
+| Steam创意工坊           | ❌           | ✅        | ✅         |
+| 内置SDK                 | ❌           | ❌        | ✅         |
+| AI聊天                  | ❌           | ✅        | ✅         |
+| 高级AI功能              | ❌           | ✅        | ❌         |
+| AI API功能              | ❌           | ✅        | ❌         |
+| 免费使用                | ✅           | ✅        | ✅         |
+| 多语言支持              | ❌           | ✅        | ✅         |
+| AI语音                  | ❌           | ✅        | ❌         |
+| 动画模组                | ❌           | ❌        | ✅         |
+| CPU使用率               | 中等         | 非常好    | 非常好     |
+| GPU使用率               | 中等         | 良好      | 良好       |
+| RAM使用率               | 非常好       | 非常差    | 良好       |
+| 反作弊安全              | ❌           | ❌        | ✅         |
+| 睡眠功能                | ❌           | ❌        | ✅         |
+| 游戏兼容性              | ❌           | ❌        | ✅         |
+| 随电脑启动              | ❌           | ❌        | ✅         |
+| 表情编辑支持            | ❌           | ❌        | ✅         |
+---
+
+## Steam发布支持
+
+![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
+
+**资金进度：** $239.34 / $100  
+**目标日期：** 2025年3月26日
+
+感谢社区的大力支持，**Mate Engine** 将以 **$3.99** 的价格在Steam上发布 —— 但它在GitHub上永远是**免费**的。
+
+**顶级支持者：**
+- Gra**** Ja***** – $94.00  
+- Co**** Da***** – $96.00  
+- Dym**** Sk***** – $5.59  
+- Dreezer – $45.00
+
+如果您想帮助未来更新或支付Steam费用，可以通过**PayPal**捐赠：
+**johnson@soultechno.de**  
+(*请添加备注："MateEngine Donation"*)
+
+---
+
+## 更流畅的过渡
+
+![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
+
+Mate Engine提供比Desktop Mate更流畅的动画过渡，避免了商业替代品中常见的卡顿和突然变化。
+
+---
+
+## 性能
+
+![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
+
+**Mate Engine** 轻巧高效。RAM使用量取决于角色的纹理大小。例如，高质量的"Alice"模型使用约190MB的纹理内存，导致约200MB的总RAM使用量。使用较轻的模型将进一步减少这一消耗。
+
+---
+
+## 主要功能
+
+- **待机动画** – 在桌面上循环播放
+- **拖拽动画** – 移动时轻轻漂浮
+- **跳舞功能（实验性）** – 对Spotify或Firefox等中的音乐做出反应
+- **VRM导入** – 可以使用任何正确的`.VRM`模型
+- **触摸反应** – 对脸部和头部的触摸做出反应
+- **自定义模组支持** – 自由添加声音、粒子等
+- **选项菜单** – 右键点击角色或按`M`键打开
+- **FPS设置、始终置顶、迷你模式** 等功能也已搭载
+
+---
+
+## 使用方法
+
+1. 前往右侧的**Releases**部分。
+2. 下载标记为公开发布的ZIP文件（非源代码）。
+3. 解压缩并运行`MateEngineX.exe`。
+4. 右键点击角色或按`M`键打开设置菜单。
+
+---
+
+## 开发者指南
+
+想贡献代码？设置很简单：
+
+1. 克隆此仓库并解压文件夹。
+2. 打开**Unity Hub** → **从磁盘添加项目**
+3. 选择`Mate-Engine-BRANCH`文件夹
+4. 加载项目，然后打开场景：
+   `Scenes - USED FOR MATE ENGINE > Mate Engine Main`
+
+> ⚠️ 除非您在开发分支上，否则请避免打开*Mate Engine InDev*等场景。
+
+---
+
+## 防病毒软件注意事项
+
+如果**Windows Defender**标记`Trojan:Script/Wacatac.B1ml`，**请不要担心** —— 这是由于应用程序未经过数字签名而导致的**误报**。
+
+您可以在[VirusTotal](https://www.virustotal.com/)上扫描应用程序以验证安全性。
+
+---
+
+## 最后的话
+
+感谢您查看**Mate Engine**！
+这个项目是用爱制作的，并旨在永远免费提供。
+如果您喜欢它，请分享或支持它 —— 但最重要的是，享受它。
+
+--------------------------------------------------------------------
 
 
 
