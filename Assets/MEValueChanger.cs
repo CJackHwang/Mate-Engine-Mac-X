@@ -129,7 +129,23 @@ public class MEValueChanger : MonoBehaviour
         showUI = showUIOnStart;
         LoadSettings();
         if (autoLoadOnStart) TryAutoLoad();
+        TryAttachCustomVRM();
         if (showUI) ApplyDeactivateWhileOpen(true);
+    }
+
+    void TryAttachCustomVRM()
+    {
+        var loader = FindFirstObjectByType<VRMLoader>();
+        if (loader != null)
+        {
+            var clone = loader.GetCurrentModel();
+            if (clone != null && !targets.Exists(t => t.targetObject == clone))
+            {
+                var newEntry = new MEValueRuntimeEntry { targetObject = clone };
+                targets.Add(newEntry);
+                RefreshTargetLists(newEntry);
+            }
+        }
     }
 
     void Update()

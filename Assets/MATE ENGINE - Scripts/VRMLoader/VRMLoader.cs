@@ -195,14 +195,12 @@ public class VRMLoader : MonoBehaviour
         AssignAnimatorController(currentModel);
         InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
-        /*
-        var avatarSettingsMenu = FindFirstObjectByType<AvatarSettingsMenu>();
-        if (avatarSettingsMenu != null)
+        var changer = FindFirstObjectByType<MEValueChanger>();
+        if (changer != null)
         {
-            avatarSettingsMenu.LoadSettings();
-            avatarSettingsMenu.ApplySettings();
+            changer.SendMessage("TryAttachCustomVRM", SendMessageOptions.DontRequireReceiver);
         }
-        */
+
 
         string displayName = Path.GetFileNameWithoutExtension(path);
         string author = "Unknown";
@@ -500,4 +498,9 @@ public class VRMLoader : MonoBehaviour
         }
         return null;
     }
+    public GameObject GetCurrentModel()
+    {
+        return currentModel;
+    }
+
 }
