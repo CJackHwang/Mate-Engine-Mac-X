@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarhandlers\\handholder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\handholder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - packages\\vrm\\runtime\\springbone\\vrmspringbone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\springbone\\vrmspringbone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\avatarhandlers\\avatarswaycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\avatarswaycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\spherecollider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\spherecollider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarSwayController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\AvatarSwayController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\springbonesystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\springbonesystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\springbonesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8A88BCFC-4B4B-164B-5FBF-5446ACB8DE4A}|VRM.csproj|solutionrelative:assets\\mate engine - packages\\vrm\\runtime\\springbone\\logic\\springbonesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +26,59 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HandHolder.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\HandHolder.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\HandHolder.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\HandHolder.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\HandHolder.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAADwv+AAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "SphereCollider.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAA7wBYAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T01:29:33.486Z",
+              "WhenOpened": "2025-10-09T01:50:14.232Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AvatarSwayController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSwayController.cs",
-              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSwayController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSwayController.cs",
-              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarSwayController.cs",
-              "ViewState": "AgIAAMgAAAAAAAAAAAAswP8AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "SpringBoneSystem.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAswLsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T01:10:52.229Z"
+              "WhenOpened": "2025-10-09T01:50:50.683Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AvatarSwayController.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarSwayController.cs",
-              "RelativeDocumentMoniker": "Assets\\AvatarSwayController.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarSwayController.cs",
-              "RelativeToolTip": "Assets\\AvatarSwayController.cs",
+              "DocumentIndex": 3,
+              "Title": "SpringBoneSettings.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T00:24:22.686Z"
+              "WhenOpened": "2025-10-09T01:50:23.599Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VRMSpringBone.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAswKkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T01:42:20.192Z",
+              "EditorCaption": ""
             }
           ]
         }
