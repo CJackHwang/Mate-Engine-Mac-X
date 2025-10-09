@@ -1,9 +1,6 @@
 # Support MateEngine on Steam!
 Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
 Or use it for free here! Any Purchase on Steam will help Developement and future updates!
-# 在Steam上支持MateEngine！
-在Steam上购买：https://store.steampowered.com/app/3625270/MateEngine/
-也可以在此免费使用！在Steam上的任何购买都将有助于开发和未来的更新！
 
 
 # Note-Worthy Community Mods:
@@ -414,6 +411,10 @@ Mate Engineの開発に参加するのはとても簡単です：
 - **默认角色许可证**：由 [Yorshka Shop](https://yorshkasencho.booth.pm/) 保留所有权利
   *请勿在您的构建中重新分发此模型。*
 - **QWEN 2.5 1.5b LLM**：*Apache许可证 版本2.0，2004年1月*
+
+# 在Steam上支持MateEngine！
+在Steam上购买：https://store.steampowered.com/app/3625270/MateEngine/
+也可以在此免费使用！在Steam上的任何购买都将有助于开发和未来的更新！
 
 ---
 
