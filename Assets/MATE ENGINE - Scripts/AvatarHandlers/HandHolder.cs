@@ -6,7 +6,6 @@ public class HandHolder : MonoBehaviour
     [Header("World-Space Interaction")]
     public float screenInteractionRadius = 0.2f;
     public Color screenInteractionRadiusColor = new Color(0.2f, 0.7f, 1f, 0.2f);
-
     public float preZoneMargin = 0.1f;
     public Color preZoneMarginColor = new Color(0.1f, 0.5f, 1f, 0.15f);
 
@@ -18,8 +17,10 @@ public class HandHolder : MonoBehaviour
 
     [Header("Blending")]
     public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
+
     [Header("Forward Reach Settings")]
     public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
+
     [Header("Elbow Hint Settings")]
     public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
 
@@ -70,13 +71,13 @@ public class HandHolder : MonoBehaviour
             rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
             return;
         }
+
         if (MenuActions.IsHandTrackingBlocked())
         {
             leftIKWeight = Mathf.MoveTowards(leftIKWeight, 0f, Time.deltaTime / blendOutTime);
             rightIKWeight = Mathf.MoveTowards(rightIKWeight, 0f, Time.deltaTime / blendOutTime);
             return;
         }
-
 
         if (!IsInAllowedState())
         {
@@ -142,9 +143,16 @@ public class HandHolder : MonoBehaviour
 
     void OnAnimatorIK(int layerIndex)
     {
-        if (!enableHandHolding || !IsValid() || !IsInAllowedState())
+        if (avatarAnimator == null) return;
+
+        if (!IsValid())
         {
-            ResetIK();
+            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
+            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
+            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0f);
+            avatarAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
+            avatarAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
+            avatarAnimator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0f);
             return;
         }
 
@@ -213,10 +221,4 @@ public class HandHolder : MonoBehaviour
 #endif
 
     bool IsValid() => avatarAnimator && leftHand && rightHand && chest && leftShoulder && rightShoulder;
-
-    void ResetIK()
-    {
-        ApplyIK(AvatarIKGoal.LeftHand, AvatarIKHint.LeftElbow, 0f, Vector3.zero, null, true, Quaternion.identity);
-        ApplyIK(AvatarIKGoal.RightHand, AvatarIKHint.RightElbow, 0f, Vector3.zero, null, false, Quaternion.identity);
-    }
 }
