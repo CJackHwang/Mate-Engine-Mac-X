@@ -14,13 +14,10 @@ public class MEValueRuntimeEntry
     [NonSerialized] public bool foldout;
     [NonSerialized] public Component[] comps;
     [NonSerialized] public string[] compNames;
-    [NonSerialized] public int compIndex = -1;
-    [NonSerialized] public List<MemberEntry> memberEntries;
+    [NonSerialized] public Dictionary<Component, List<MemberEntry>> membersPerComp = new Dictionary<Component, List<MemberEntry>>();
+    [NonSerialized] public Dictionary<Component, bool> compFoldouts = new Dictionary<Component, bool>();
     [NonSerialized] public Vector2 scrollMembers;
     [NonSerialized] public bool showAnimatorParams;
-    [NonSerialized] public bool compDropdownOpen;
-    [NonSerialized] public Vector2 compDropdownScroll;
-    [NonSerialized] public Rect compDropdownButtonRect;
 }
 
 public class MemberEntry
@@ -117,10 +114,7 @@ public class MEValueChanger : MonoBehaviour
     private string status;
     private float statusUntil;
 
-    private static GUIStyle ddPanelStyle, ddItemStyle, ddItemHoverStyle, ddItemSelectedStyle;
-    private static Texture2D ddTexPanel, ddTexItem, ddTexHover, ddTexSelected, whiteTex;
-    private MEValueRuntimeEntry overlayDropdownOwner;
-    private Rect overlayDropdownAnchorRect;
+    private static Texture2D whiteTex;
 
     private readonly Dictionary<GameObject, bool> prevActive = new Dictionary<GameObject, bool>();
 
@@ -166,8 +160,6 @@ public class MEValueChanger : MonoBehaviour
 
     void DrawWindow(int id)
     {
-        overlayDropdownOwner = null;
-
         GUILayout.Label("Playmode only. Changes are not saved unless you Save a profile.", GUI.skin.box);
 
         GUILayout.BeginHorizontal();
@@ -210,39 +202,45 @@ public class MEValueChanger : MonoBehaviour
                 {
                     if (e.comps == null || e.compNames == null) BuildComponentList(e);
 
-                    GUILayout.Space(6);
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Component", GUILayout.Width(80));
-                    DrawComponentDropdown(e);
-                    GUILayout.EndHorizontal();
-
-                    if (e.compIndex >= 0 && e.compIndex < (e.comps?.Length ?? 0))
+                    if (e.comps != null)
                     {
-                        if (e.memberEntries == null) BuildMemberList(e);
-
-                        GUILayout.Space(6);
-                        GUILayout.Label("Editable Fields / Properties", GUI.skin.box);
-
-                        e.scrollMembers = GUILayout.BeginScrollView(e.scrollMembers, GUILayout.MinHeight(380));
-                        if (e.memberEntries != null && e.memberEntries.Count > 0)
+                        for (int c = 0; c < e.comps.Length; c++)
                         {
-                            for (int m = 0; m < e.memberEntries.Count; m++)
+                            var comp = e.comps[c];
+                            if (!e.compFoldouts.ContainsKey(comp)) e.compFoldouts[comp] = false;
+                            e.compFoldouts[comp] = Foldout(e.compFoldouts[comp], comp ? comp.GetType().Name : "(Missing)");
+
+                            if (e.compFoldouts[comp])
                             {
-                                DrawMemberRow(e, e.memberEntries[m]);
-                            }
-                        }
-                        else
-                        {
-                            GUILayout.Label("No editable members found.");
-                        }
-                        GUILayout.EndScrollView();
+                                if (!e.membersPerComp.ContainsKey(comp) || e.membersPerComp[comp] == null)
+                                    BuildMemberList(e, comp);
 
-                        var anim = e.comps[e.compIndex] as Animator;
-                        if (anim != null)
-                        {
-                            GUILayout.Space(6);
-                            e.showAnimatorParams = Foldout(e.showAnimatorParams, "Animator Parameters");
-                            if (e.showAnimatorParams) DrawAnimatorParams(anim);
+                                GUILayout.Space(6);
+                                GUILayout.Label("Editable Fields / Properties", GUI.skin.box);
+
+                                e.scrollMembers = GUILayout.BeginScrollView(e.scrollMembers, GUILayout.MinHeight(240));
+                                var list = e.membersPerComp.ContainsKey(comp) ? e.membersPerComp[comp] : null;
+                                if (list != null && list.Count > 0)
+                                {
+                                    for (int m = 0; m < list.Count; m++)
+                                    {
+                                        DrawMemberRow(comp, list[m]);
+                                    }
+                                }
+                                else
+                                {
+                                    GUILayout.Label("No editable members found.");
+                                }
+                                GUILayout.EndScrollView();
+
+                                var anim = comp as Animator;
+                                if (anim != null)
+                                {
+                                    GUILayout.Space(6);
+                                    e.showAnimatorParams = Foldout(e.showAnimatorParams, "Animator Parameters");
+                                    if (e.showAnimatorParams) DrawAnimatorParams(anim);
+                                }
+                            }
                         }
                     }
                 }
@@ -252,11 +250,6 @@ public class MEValueChanger : MonoBehaviour
         }
 
         GUILayout.EndScrollView();
-
-        if (overlayDropdownOwner != null && overlayDropdownOwner.compDropdownOpen)
-        {
-            DrawComponentDropdownOverlay(overlayDropdownOwner, overlayDropdownAnchorRect);
-        }
 
         GUI.DragWindow(new Rect(0, 0, 10000, 20));
     }
@@ -268,8 +261,9 @@ public class MEValueChanger : MonoBehaviour
 
     void RefreshTargetLists(MEValueRuntimeEntry e)
     {
-        e.comps = null; e.compNames = null; e.compIndex = -1;
-        e.memberEntries = null;
+        e.comps = null; e.compNames = null;
+        e.membersPerComp.Clear();
+        e.compFoldouts.Clear();
         if (e.targetObject != null) BuildComponentList(e);
     }
 
@@ -278,33 +272,29 @@ public class MEValueChanger : MonoBehaviour
         if (e.targetObject == null) return;
         e.comps = e.targetObject.GetComponents<Component>();
         var names = new List<string>(e.comps.Length);
-        for (int j = 0; j < e.comps.Length; j++)
-            names.Add(e.comps[j] ? e.comps[j].GetType().Name : "(Missing)");
+        for (int j = 0; j < e.comps.Length; j++) names.Add(e.comps[j] ? e.comps[j].GetType().Name : "(Missing)");
         e.compNames = names.ToArray();
-        e.compIndex = e.comps.Length > 0 ? Mathf.Clamp(e.compIndex, 0, e.comps.Length - 1) : -1;
-        BuildMemberList(e);
     }
 
-    void BuildMemberList(MEValueRuntimeEntry e)
+    void BuildMemberList(MEValueRuntimeEntry e, Component comp)
     {
-        e.memberEntries = new List<MemberEntry>();
-        if (e.comps == null || e.compIndex < 0 || e.compIndex >= e.comps.Length) return;
-        var comp = e.comps[e.compIndex];
         if (!comp) return;
-
+        var list = new List<MemberEntry>();
         var t = comp.GetType();
         const BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
-        foreach (var f in t.GetFields(flags)) BuildMemberFromInfo(e, comp, f, f.FieldType);
+        foreach (var f in t.GetFields(flags)) BuildMemberFromInfo(list, comp, f, f.FieldType);
         foreach (var p in t.GetProperties(flags))
         {
             if (!p.CanWrite || !p.CanRead) continue;
             if (p.GetIndexParameters()?.Length > 0) continue;
-            BuildMemberFromInfo(e, comp, p, p.PropertyType);
+            BuildMemberFromInfo(list, comp, p, p.PropertyType);
         }
+
+        e.membersPerComp[comp] = list;
     }
 
-    void BuildMemberFromInfo(MEValueRuntimeEntry e, Component comp, MemberInfo mi, Type mt)
+    void BuildMemberFromInfo(List<MemberEntry> list, Component comp, MemberInfo mi, Type mt)
     {
         if (!IsSupportedType(mt)) return;
         var me = new MemberEntry { member = mi, type = mt, displayName = (mi is FieldInfo ? "F: " : "P: ") + mi.Name + " (" + SimpleTypeName(mt) + ")" };
@@ -408,7 +398,7 @@ public class MEValueChanger : MonoBehaviour
             me.editCache = GetValueString(comp, mi, mt);
         }
 
-        e.memberEntries.Add(me);
+        list.Add(me);
     }
 
     static bool IsSupportedType(Type tp)
@@ -463,9 +453,8 @@ public class MEValueChanger : MonoBehaviour
         return v != null ? v.ToString() : "null";
     }
 
-    void DrawMemberRow(MEValueRuntimeEntry e, MemberEntry entry)
+    void DrawMemberRow(Component comp, MemberEntry entry)
     {
-        var comp = e.comps[e.compIndex];
         GUILayout.BeginHorizontal();
         GUILayout.Label(entry.displayName, GUILayout.Width(300));
 
@@ -677,101 +666,12 @@ public class MEValueChanger : MonoBehaviour
         return GUILayout.Toggle(state, (state ? "▼ " : "► ") + title, "Button");
     }
 
-    void DrawComponentDropdown(MEValueRuntimeEntry e)
-    {
-        InitDropdownStyles();
-
-        string current = (e.compNames != null && e.compIndex >= 0 && e.compIndex < e.compNames.Length)
-            ? e.compNames[e.compIndex]
-            : "(none)";
-
-        Rect btnRect = GUILayoutUtility.GetRect(new GUIContent(current), GUI.skin.button, GUILayout.ExpandWidth(true));
-        if (GUI.Button(btnRect, current + "  ▾"))
-        {
-            bool newState = !e.compDropdownOpen;
-            for (int j = 0; j < targets.Count; j++) if (targets[j] != e) targets[j].compDropdownOpen = false;
-            e.compDropdownOpen = newState;
-        }
-
-        if (e.compDropdownOpen)
-        {
-            overlayDropdownOwner = e;
-            overlayDropdownAnchorRect = btnRect;
-        }
-    }
-
-    void DrawComponentDropdownOverlay(MEValueRuntimeEntry e, Rect anchorRect)
-    {
-        float rowH = 24f;
-        int count = e.compNames != null ? e.compNames.Length : 0;
-        float listH = Mathf.Min(240f, rowH * count);
-        Rect listRect = new Rect(anchorRect.x, anchorRect.yMax, anchorRect.width, listH);
-
-        GUI.Box(listRect, GUIContent.none, ddPanelStyle);
-        Rect viewRect = new Rect(0, 0, listRect.width - 16f, rowH * count);
-        e.compDropdownScroll = GUI.BeginScrollView(listRect, e.compDropdownScroll, viewRect);
-
-        if (e.compNames != null)
-        {
-            for (int i = 0; i < e.compNames.Length; i++)
-            {
-                Rect rowRect = new Rect(0, i * rowH, viewRect.width, rowH - 2f);
-                bool hovered = rowRect.Contains(Event.current.mousePosition);
-                GUIStyle style = i == e.compIndex ? ddItemSelectedStyle : (hovered ? ddItemHoverStyle : ddItemStyle);
-                if (GUI.Button(rowRect, e.compNames[i], style))
-                {
-                    if (e.compIndex != i)
-                    {
-                        e.compIndex = i;
-                        BuildMemberList(e);
-                    }
-                    e.compDropdownOpen = false;
-                }
-            }
-        }
-        GUI.EndScrollView();
-
-        if (Event.current.type == EventType.MouseDown)
-        {
-            if (!listRect.Contains(Event.current.mousePosition) && !anchorRect.Contains(Event.current.mousePosition))
-                e.compDropdownOpen = false;
-        }
-    }
-
     Texture2D MakeTex(Color c)
     {
         var t = new Texture2D(1, 1, TextureFormat.RGBA32, false);
         t.SetPixel(0, 0, c);
         t.Apply();
         return t;
-    }
-
-    void InitDropdownStyles()
-    {
-        if (ddPanelStyle != null) return;
-        ddTexPanel = MakeTex(new Color(0.12f, 0.12f, 0.12f, 1f));
-        ddTexItem = MakeTex(new Color(0.18f, 0.18f, 0.18f, 1f));
-        ddTexHover = MakeTex(new Color(0.26f, 0.26f, 0.26f, 1f));
-        ddTexSelected = MakeTex(new Color(0.33f, 0.33f, 0.33f, 1f));
-        whiteTex = MakeTex(Color.white);
-
-        ddPanelStyle = new GUIStyle(GUI.skin.box);
-        ddPanelStyle.normal.background = ddTexPanel;
-        ddPanelStyle.padding = new RectOffset(0, 0, 0, 0);
-        ddPanelStyle.margin = new RectOffset(0, 0, 0, 0);
-
-        ddItemStyle = new GUIStyle(GUI.skin.label);
-        ddItemStyle.normal.background = ddTexItem;
-        ddItemStyle.normal.textColor = Color.white;
-        ddItemStyle.alignment = TextAnchor.MiddleLeft;
-        ddItemStyle.padding = new RectOffset(8, 8, 2, 2);
-
-        ddItemHoverStyle = new GUIStyle(ddItemStyle);
-        ddItemHoverStyle.normal.background = ddTexHover;
-
-        ddItemSelectedStyle = new GUIStyle(ddItemStyle);
-        ddItemSelectedStyle.normal.background = ddTexSelected;
-        ddItemSelectedStyle.fontStyle = FontStyle.Bold;
     }
 
     void DrawAnimatorParams(Animator anim)
@@ -871,94 +771,100 @@ public class MEValueChanger : MonoBehaviour
             var e = targets[ti];
             if (e == null || e.targetObject == null) continue;
             if (e.comps == null || e.compNames == null) BuildComponentList(e);
-            if (e.compIndex < 0 || e.compIndex >= e.comps.Length) continue;
-            if (e.memberEntries == null) BuildMemberList(e);
 
-            var comp = e.comps[e.compIndex];
-            var td = new PerTarget
+            for (int ci = 0; ci < (e.comps?.Length ?? 0); ci++)
             {
-                targetIndex = ti,
-                compIndex = e.compIndex,
-                compTypeName = comp ? comp.GetType().AssemblyQualifiedName : ""
-            };
+                var comp = e.comps[ci];
+                if (!comp) continue;
+                if (!e.membersPerComp.ContainsKey(comp) || e.membersPerComp[comp] == null) BuildMemberList(e, comp);
 
-            for (int m = 0; m < e.memberEntries.Count; m++)
-            {
-                var me = e.memberEntries[m];
-                string name = me.member is FieldInfo fi ? fi.Name : ((PropertyInfo)me.member).Name;
-                var kv = new MemberKV { memberName = name, isProperty = me.member is PropertyInfo };
+                var td = new PerTarget
+                {
+                    targetIndex = ti,
+                    compIndex = ci,
+                    compTypeName = comp.GetType().AssemblyQualifiedName
+                };
 
-                if (me.isColor)
+                var list = e.membersPerComp[comp];
+                for (int m = 0; m < list.Count; m++)
                 {
-                    var c = (Color)GetMemberValue(me.member, comp);
-                    kv.kind = "color"; kv.rf = c.r; kv.gf = c.g; kv.bf = c.b; kv.af = c.a;
-                }
-                else if (me.isColor32)
-                {
-                    var c32 = (Color32)GetMemberValue(me.member, comp);
-                    kv.kind = "color32"; kv.r8 = c32.r; kv.g8 = c32.g; kv.b8 = c32.b; kv.a8 = c32.a;
-                }
-                else if (me.isV2)
-                {
-                    var v = (Vector2)GetMemberValue(me.member, comp);
-                    kv.kind = "v2"; kv.v2x = v.x; kv.v2y = v.y;
-                }
-                else if (me.isV3)
-                {
-                    var v = (Vector3)GetMemberValue(me.member, comp);
-                    kv.kind = "v3"; kv.v3x = v.x; kv.v3y = v.y; kv.v3z = v.z;
-                }
-                else if (me.isV4)
-                {
-                    var v = (Vector4)GetMemberValue(me.member, comp);
-                    kv.kind = "v4"; kv.v4x = v.x; kv.v4y = v.y; kv.v4z = v.z; kv.v4w = v.w;
-                }
-                else if (me.isQuat)
-                {
-                    var q = (Quaternion)GetMemberValue(me.member, comp);
-                    kv.kind = "quat"; kv.qx = q.x; kv.qy = q.y; kv.qz = q.z; kv.qw = q.w;
-                }
-                else if (me.isRect)
-                {
-                    var r = (Rect)GetMemberValue(me.member, comp);
-                    kv.kind = "rect"; kv.rx = r.x; kv.ry = r.y; kv.rw = r.width; kv.rh = r.height;
-                }
-                else if (me.isEnum)
-                {
-                    kv.kind = "enum";
-                    kv.enumType = me.type.AssemblyQualifiedName;
-                    var cur = GetMemberValue(me.member, comp);
-                    kv.enumName = cur != null ? cur.ToString() : me.enumNames[Mathf.Clamp(me.enumIndex, 0, me.enumNames.Length - 1)];
-                }
-                else if (me.isAudioClip)
-                {
-                    kv.kind = "audioclip";
-                    kv.audioPath = me.audioPathCache ?? "";
-                }
-                else if (me.type == typeof(string))
-                {
-                    kv.kind = "string";
-                    kv.s = (string)GetMemberValue(me.member, comp) ?? "";
-                }
-                else if (me.type == typeof(float))
-                {
-                    kv.kind = "float";
-                    kv.f = (float)GetMemberValue(me.member, comp);
-                }
-                else if (me.type == typeof(int))
-                {
-                    kv.kind = "int";
-                    kv.i = (int)GetMemberValue(me.member, comp);
-                }
-                else if (me.type == typeof(bool))
-                {
-                    kv.kind = "bool";
-                    kv.b = (bool)GetMemberValue(me.member, comp);
+                    var me = list[m];
+                    string name = me.member is FieldInfo fi ? fi.Name : ((PropertyInfo)me.member).Name;
+                    var kv = new MemberKV { memberName = name, isProperty = me.member is PropertyInfo };
+
+                    if (me.isColor)
+                    {
+                        var c = (Color)GetMemberValue(me.member, comp);
+                        kv.kind = "color"; kv.rf = c.r; kv.gf = c.g; kv.bf = c.b; kv.af = c.a;
+                    }
+                    else if (me.isColor32)
+                    {
+                        var c32 = (Color32)GetMemberValue(me.member, comp);
+                        kv.kind = "color32"; kv.r8 = c32.r; kv.g8 = c32.g; kv.b8 = c32.b; kv.a8 = c32.a;
+                    }
+                    else if (me.isV2)
+                    {
+                        var v = (Vector2)GetMemberValue(me.member, comp);
+                        kv.kind = "v2"; kv.v2x = v.x; kv.v2y = v.y;
+                    }
+                    else if (me.isV3)
+                    {
+                        var v = (Vector3)GetMemberValue(me.member, comp);
+                        kv.kind = "v3"; kv.v3x = v.x; kv.v3y = v.y; kv.v3z = v.z;
+                    }
+                    else if (me.isV4)
+                    {
+                        var v = (Vector4)GetMemberValue(me.member, comp);
+                        kv.kind = "v4"; kv.v4x = v.x; kv.v4y = v.y; kv.v4z = v.z; kv.v4w = v.w;
+                    }
+                    else if (me.isQuat)
+                    {
+                        var q = (Quaternion)GetMemberValue(me.member, comp);
+                        kv.kind = "quat"; kv.qx = q.x; kv.qy = q.y; kv.qz = q.z; kv.qw = q.w;
+                    }
+                    else if (me.isRect)
+                    {
+                        var r = (Rect)GetMemberValue(me.member, comp);
+                        kv.kind = "rect"; kv.rx = r.x; kv.ry = r.y; kv.rw = r.width; kv.rh = r.height;
+                    }
+                    else if (me.isEnum)
+                    {
+                        kv.kind = "enum";
+                        kv.enumType = me.type.AssemblyQualifiedName;
+                        var cur = GetMemberValue(me.member, comp);
+                        kv.enumName = cur != null ? cur.ToString() : me.enumNames[Mathf.Clamp(me.enumIndex, 0, me.enumNames.Length - 1)];
+                    }
+                    else if (me.isAudioClip)
+                    {
+                        kv.kind = "audioclip";
+                        kv.audioPath = me.audioPathCache ?? "";
+                    }
+                    else if (me.type == typeof(string))
+                    {
+                        kv.kind = "string";
+                        kv.s = (string)GetMemberValue(me.member, comp) ?? "";
+                    }
+                    else if (me.type == typeof(float))
+                    {
+                        kv.kind = "float";
+                        kv.f = (float)GetMemberValue(me.member, comp);
+                    }
+                    else if (me.type == typeof(int))
+                    {
+                        kv.kind = "int";
+                        kv.i = (int)GetMemberValue(me.member, comp);
+                    }
+                    else if (me.type == typeof(bool))
+                    {
+                        kv.kind = "bool";
+                        kv.b = (bool)GetMemberValue(me.member, comp);
+                    }
+
+                    td.members.Add(kv);
                 }
 
-                td.members.Add(kv);
+                pf.targets.Add(td);
             }
-            pf.targets.Add(td);
         }
 
         var dir = GetBaseDir();
@@ -1008,19 +914,19 @@ public class MEValueChanger : MonoBehaviour
             }
             if (cidx < 0 || cidx >= (e.comps?.Length ?? 0)) continue;
 
-            e.compIndex = cidx;
-            BuildMemberList(e);
+            var comp = e.comps[cidx];
+            if (!e.membersPerComp.ContainsKey(comp) || e.membersPerComp[comp] == null) BuildMemberList(e, comp);
+            var memberEntries = e.membersPerComp[comp];
 
-            var comp = e.comps[e.compIndex];
             for (int m = 0; m < td.members.Count; m++)
             {
                 var kv = td.members[m];
                 MemberEntry match = null;
-                if (e.memberEntries != null)
+                if (memberEntries != null)
                 {
-                    for (int r = 0; r < e.memberEntries.Count; r++)
+                    for (int r = 0; r < memberEntries.Count; r++)
                     {
-                        var mr = e.memberEntries[r];
+                        var mr = memberEntries[r];
                         string n = mr.member is FieldInfo fi ? fi.Name : ((PropertyInfo)mr.member).Name;
                         if (n == kv.memberName) { match = mr; break; }
                     }

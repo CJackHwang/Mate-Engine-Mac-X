@@ -7,6 +7,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public class VoiceRegion
     {
         public string name;
+        public bool IsHusbando;
         public HumanBodyBones targetBone;
         public Vector3 offset, worldOffset;
         public float hoverRadius = 50f;
@@ -20,7 +21,10 @@ public class PetVoiceReactionHandler : MonoBehaviour
         [HideInInspector] public bool wasHovering;
         [HideInInspector] public Transform bone;
     }
+
+
     class HoverInstance { public GameObject obj; public float despawnTime; }
+
     public static bool GlobalHoverObjectsEnabled = true;
     public Animator avatarAnimator;
     public List<VoiceRegion> regions = new();
@@ -28,11 +32,15 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public string hoverTriggerParam = "HoverTrigger", hoverFaceTriggerParam = "HoverFaceTrigger";
     public bool showDebugGizmos = true;
     [SerializeField] public List<string> stateWhitelist = new();
+
     Camera cachedCamera;
     readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
     AnimatorOverrideController overrideController;
     RuntimeAnimatorController lastController;
     bool hasSetup;
+
+    static readonly int isMaleHash = Animator.StringToHash("isMale");
+
     void Start() { if (!hasSetup) TrySetup(); }
     public void SetAnimator(Animator a) { avatarAnimator = a; hasSetup = false; }
 
@@ -75,6 +83,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
         hasSetup = true;
     }
+
     void Update()
     {
         if (!hasSetup) TrySetup();
@@ -109,7 +118,9 @@ public class PetVoiceReactionHandler : MonoBehaviour
             float dist = Vector2.Distance(mouse, screen);
             bool hovering = dist <= screenRadius;
 
-            if (hovering && !region.wasHovering && IsStateAllowed() && !anyBlocked)
+            bool genderAllowed = IsRegionAllowedByGender(region);
+
+            if (hovering && !region.wasHovering && IsStateAllowed() && !anyBlocked && genderAllowed)
             {
                 region.wasHovering = true;
                 TriggerAnim(region, true);
@@ -152,7 +163,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
                     }
                 }
             }
-            else if ((!hovering || anyBlocked) && region.wasHovering)
+            else if ((!hovering || anyBlocked || !genderAllowed) && region.wasHovering)
             {
                 region.wasHovering = false;
                 TriggerAnim(region, false);
@@ -173,6 +184,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
             }
         }
     }
+
     void TriggerAnim(VoiceRegion region, bool state)
     {
         if (region.hoverAnimation && overrideController != null)
@@ -197,6 +209,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         if (region.enableLayeredSound && region.layeredVoiceClips.Count > 0)
             layeredAudioSource.PlayOneShot(region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)]);
     }
+
     bool IsStateAllowed()
     {
         if (avatarAnimator == null || stateWhitelist == null || stateWhitelist.Count == 0)
@@ -205,6 +218,22 @@ public class PetVoiceReactionHandler : MonoBehaviour
         foreach (var allowed in stateWhitelist)
             if (!string.IsNullOrEmpty(allowed) && currentState.IsName(allowed))
                 return true;
+        return false;
+    }
+
+    bool IsRegionAllowedByGender(VoiceRegion region)
+    {
+        if (avatarAnimator == null) return true;
+        if (!HasParam(isMaleHash)) return true;
+        bool isMale = avatarAnimator.GetFloat(isMaleHash) > 0.5f;
+        return region.IsHusbando ? isMale : !isMale;
+    }
+
+    bool HasParam(int hash)
+    {
+        var ps = avatarAnimator.parameters;
+        for (int i = 0; i < ps.Length; i++)
+            if (ps[i].nameHash == hash) return true;
         return false;
     }
 
@@ -223,6 +252,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
     }
 #endif
 }
+
 public static class ListExt
 {
     public static T MinByOrDefault<T, TKey>(this List<T> list, System.Func<T, TKey> selector) where TKey : System.IComparable<TKey>

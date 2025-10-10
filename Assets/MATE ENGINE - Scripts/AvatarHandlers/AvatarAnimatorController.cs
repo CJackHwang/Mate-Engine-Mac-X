@@ -36,8 +36,16 @@ public class AvatarAnimatorController : MonoBehaviour
     private bool mouseHeld;
     public bool isDragging, isDancing, isIdle;
 
+    [Header("Character Mode")]
+    public bool enableHusbandoMode = false;
+    private static readonly int isMaleParam = Animator.StringToHash("isMale");
+    private static readonly int isFemaleParam = Animator.StringToHash("isFemale");
+
+
     void OnEnable()
     {
+        animator.SetFloat(isFemaleParam, enableHusbandoMode ? 0f : 1f);
+        animator.SetFloat(isMaleParam, enableHusbandoMode ? 1f : 0f);
         animator ??= GetComponent<Animator>();
         Application.runInBackground = true;
         enumerator = new MMDeviceEnumerator();
@@ -122,6 +130,9 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void Update()
     {
+        animator.SetFloat(isFemaleParam, enableHusbandoMode ? 0f : 1f);
+        animator.SetFloat(isMaleParam, enableHusbandoMode ? 1f : 0f);
+
         if (BlockDraggingOverride || MenuActions.IsMovementBlocked() || TutorialMenu.IsActive)
         {
             if (isDragging) SetDragging(false);
