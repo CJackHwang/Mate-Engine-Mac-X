@@ -16,6 +16,7 @@ namespace MateEngine.EditorKit
                 if (_title != null) return _title;
                 _title = new GUIStyle(EditorStyles.boldLabel);
                 _title.alignment = TextAnchor.MiddleLeft;
+                _title.normal.textColor = Color.white;
                 _title.fontSize = 12;
                 return _title;
             }
@@ -31,7 +32,8 @@ namespace MateEngine.EditorKit
                 return _box;
             }
         }
-        public static Color HeaderBg => EditorGUIUtility.isProSkin ? new Color(0.13f, 0.13f, 0.13f, 1f) : new Color(0.85f, 0.85f, 0.85f, 1f);
+        public static Color HeaderBg => new Color32(0x9c, 0x7a, 0xff, 0xff);
+
         public static Color HeaderBorder => EditorGUIUtility.isProSkin ? new Color(1f, 1f, 1f, 0.06f) : new Color(0f, 0f, 0f, 0.08f);
     }
 
