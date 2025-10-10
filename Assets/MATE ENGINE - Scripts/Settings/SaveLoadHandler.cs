@@ -162,10 +162,9 @@ public class SaveLoadHandler : MonoBehaviour
         public bool startWithWindows = false;
         public bool enableRandomMessages = false;
 
-
         public string selectedModelPath = "";
-        public int contextLength = 4096; 
-
+        public int contextLength = 4096;
+        public bool enableHusbandoMode = false;
     }
 
     public static void SyncAllowedAppsToAllAvatars()
@@ -193,6 +192,7 @@ public class SaveLoadHandler : MonoBehaviour
             avatar.DANCE_SWITCH_TIME = data.danceSwitchTime;
             avatar.DANCE_TRANSITION_TIME = data.danceTransitionTime;
             avatar.enableDanceSwitch = data.enableDanceSwitch;
+            avatar.enableHusbandoMode = data.enableHusbandoMode;
 
             foreach (var tracker in avatar.GetComponentsInChildren<AvatarMouseTracking>(true))
             {
@@ -223,6 +223,7 @@ public class SaveLoadHandler : MonoBehaviour
                 avatar.isDancing = false;
                 avatar.isDragging = false;
             }
+
 
             foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
                 handler.windowSitYOffset = data.windowSitYOffset;

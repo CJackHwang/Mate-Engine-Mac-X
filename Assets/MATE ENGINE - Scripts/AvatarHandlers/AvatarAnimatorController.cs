@@ -45,14 +45,17 @@ public class AvatarAnimatorController : MonoBehaviour
 
     void OnEnable()
     {
-        animator.SetFloat(isFemaleParam, enableHusbandoMode ? 0f : 1f);
-        animator.SetFloat(isMaleParam, enableHusbandoMode ? 1f : 0f);
         animator ??= GetComponent<Animator>();
         Application.runInBackground = true;
         enumerator = new MMDeviceEnumerator();
         defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+
+        animator.SetFloat(isFemaleParam, enableHusbandoMode ? 0f : 1f);
+        animator.SetFloat(isMaleParam, enableHusbandoMode ? 1f : 0f);
+
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
     }
+
     void OnDisable() => CleanupAudioResources();
     void OnDestroy() => CleanupAudioResources();
     void OnApplicationQuit() => CleanupAudioResources();

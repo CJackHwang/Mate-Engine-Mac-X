@@ -17,8 +17,8 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle ambientOcclusionToggle;
     public Toggle enableIKToggle;
     public Toggle enableDanceSwitchToggle;
-    public Toggle enableRandomMessagesToggle; 
-
+    public Toggle enableRandomMessagesToggle;
+    public Toggle enableHusbandoModeToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -48,7 +48,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableIKToggle?.onValueChanged.AddListener(OnEnableIKChanged);
         enableDanceSwitchToggle?.onValueChanged.AddListener(OnEnableDanceSwitchChanged);
         enableRandomMessagesToggle?.onValueChanged.AddListener(OnEnableRandomMessagesChanged);
-
+        enableHusbandoModeToggle?.onValueChanged.AddListener(OnEnableHusbandoModeChanged);
         LoadSettings();
         ApplySettings();
     }
@@ -73,6 +73,13 @@ public class SettingsHandlerToggles : MonoBehaviour
         ApplySettings();
         Save();
     }
+    private void OnEnableHusbandoModeChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.enableHusbandoMode = v;
+        ApplySettings();
+        Save();
+    }
+
 
 
     #endregion
@@ -93,6 +100,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableIKToggle?.SetIsOnWithoutNotify(data.enableIK);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(data.enableDanceSwitch);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(data.enableRandomMessages);
+        enableHusbandoModeToggle?.SetIsOnWithoutNotify(data.enableHusbandoMode);
         ApplySettings();
     }
 
@@ -156,6 +164,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableIKToggle?.SetIsOnWithoutNotify(true);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(false);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(false);
+        enableHusbandoModeToggle?.SetIsOnWithoutNotify(false);
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
@@ -171,7 +180,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.enableIK = true;
         data.enableDanceSwitch = false;
         data.enableRandomMessages = false;
-
+        data.enableHusbandoMode = false;
         SaveLoadHandler.Instance.SaveToDisk();
         ApplySettings();
     }
