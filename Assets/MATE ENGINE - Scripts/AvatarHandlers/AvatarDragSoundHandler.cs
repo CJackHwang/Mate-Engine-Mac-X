@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AvatarDragSoundHandler : MonoBehaviour
 {
+    [Header("Sound Settings")]
     public AudioSource dragStartSound, dragStopSound;
     [Range(0, 100)] public float maxHighPitchPercent = 10f, maxLowPitchPercent = 10f;
 

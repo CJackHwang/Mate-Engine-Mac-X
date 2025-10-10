@@ -6,6 +6,7 @@ using System.Collections.Generic;
 [DisallowMultipleComponent]
 public class UniversalBlendshapes : MonoBehaviour
 {
+    [Header("Universal Preview")]
     [Range(0f, 1f)] public float Blink, Blink_L, Blink_R, LookUp, LookDown, LookLeft, LookRight, Neutral;
     [Range(0f, 1f)] public float A, I, U, E, O, Joy, Angry, Sorrow, Fun;
     public float fadeSpeed = 5f, safeTimeout = 2f, minHoldTime = 0.1f;

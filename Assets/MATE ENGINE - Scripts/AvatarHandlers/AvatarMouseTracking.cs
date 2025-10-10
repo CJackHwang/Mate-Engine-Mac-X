@@ -14,6 +14,7 @@ public class TrackingPermission
 [RequireComponent(typeof(Animator))]
 public class AvatarMouseTracking : MonoBehaviour
 {
+    [Header("Mouse Tracking Settings")]
     public bool enableMouseTracking = true;
     public List<TrackingPermission> trackingPermissions = new();
 

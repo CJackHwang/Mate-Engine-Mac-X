@@ -28,6 +28,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public static bool GlobalHoverObjectsEnabled = true;
     public Animator avatarAnimator;
     public List<VoiceRegion> regions = new();
+    [Header("Source Settings")]
     public AudioSource voiceAudioSource, layeredAudioSource;
     public string hoverTriggerParam = "HoverTrigger", hoverFaceTriggerParam = "HoverFaceTrigger";
     public bool showDebugGizmos = true;

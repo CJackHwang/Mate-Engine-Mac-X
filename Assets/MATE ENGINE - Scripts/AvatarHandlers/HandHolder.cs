@@ -15,25 +15,13 @@ public class HandHolder : MonoBehaviour
 
     public float followSpeed = 10f;
 
-    [Header("Blending")]
+    [Header("Hand Tracking Settings")]
     public float maxIKWeight = 1f, blendInTime = 1f, blendOutTime = 1f;
-
-    [Header("Forward Reach Settings")]
     public float maxHandDistance = 0.8f, minForwardOffset = 0.2f, verticalOffset = 0.05f;
-
-    [Header("Elbow Hint Settings")]
     public float elbowHintDistance = 0.25f, elbowHintBackOffset = 0.1f, elbowHintHeightOffset = -0.05f;
-
-    [Header("Allowed Animator States")]
     public string[] allowedStates = { "Idle", "HoverReaction" };
-
-    [Header("Animator Source")]
     public Animator avatarAnimator;
-
-    [Header("Gizmos")]
     public bool showDebugGizmos = true;
-
-    [Header("Enable Hand Holding")]
     public bool enableHandHolding = true;
 
     private Camera mainCam;

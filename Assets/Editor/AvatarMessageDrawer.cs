@@ -9,20 +9,23 @@ public class AvatarMessageDrawer : PropertyDrawer
     const float LabelW = 70f;
     const float StateLabelW = 60f;
     const float OnBtnW = 72f;
+    const float HusbandoBtnW = 90f;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var keyProp = property.FindPropertyRelative("locKey");
         var stateProp = property.FindPropertyRelative("state");
         var activeProp = property.FindPropertyRelative("onActive");
+        var husbandoProp = property.FindPropertyRelative("isHusbando");
 
         float h = EditorGUIUtility.singleLineHeight;
-        bool narrow = position.width < 480f;
+        bool narrow = position.width < 560f;
 
         if (!narrow)
         {
-            float rightStart = position.x + position.width - OnBtnW;
-            Rect onBtn = new Rect(rightStart, position.y, OnBtnW, h);
+            float rightStart = position.x + position.width - (OnBtnW + Gutter + HusbandoBtnW);
+            Rect husbandoBtn = new Rect(position.x + position.width - HusbandoBtnW, position.y, HusbandoBtnW, h);
+            Rect onBtn = new Rect(husbandoBtn.x - Gutter - OnBtnW, position.y, OnBtnW, h);
 
             float leftWidth = (onBtn.x - Gutter) - position.x;
             float col1W = Mathf.Floor(leftWidth * 0.55f);
@@ -42,6 +45,12 @@ public class AvatarMessageDrawer : PropertyDrawer
 
             bool newOn = GUI.Toggle(onBtn, activeProp.boolValue, activeProp.boolValue ? "On" : "Off", EditorStyles.miniButton);
             if (newOn != activeProp.boolValue) activeProp.boolValue = newOn;
+
+            var prev = GUI.color;
+            if (husbandoProp.boolValue) GUI.color = new Color(0.55f, 0.7f, 1f);
+            bool newH = GUI.Toggle(husbandoBtn, husbandoProp.boolValue, "Husbando", EditorStyles.miniButton);
+            GUI.color = prev;
+            if (newH != husbandoProp.boolValue) husbandoProp.boolValue = newH;
         }
         else
         {
@@ -52,7 +61,8 @@ public class AvatarMessageDrawer : PropertyDrawer
             keyProp.stringValue = EditorGUI.TextField(kField, GUIContent.none, keyProp.stringValue);
 
             float y3 = y2 + h + Pad;
-            Rect onBtn = new Rect(position.x + position.width - OnBtnW, y3, OnBtnW, h);
+            Rect husbandoBtn = new Rect(position.x + position.width - HusbandoBtnW, y3, HusbandoBtnW, h);
+            Rect onBtn = new Rect(husbandoBtn.x - Gutter - OnBtnW, y3, OnBtnW, h);
 
             float leftWidth = (onBtn.x - Gutter) - position.x;
             Rect sLabel = new Rect(position.x, y3, StateLabelW, h);
@@ -63,6 +73,12 @@ public class AvatarMessageDrawer : PropertyDrawer
 
             bool newOn = GUI.Toggle(onBtn, activeProp.boolValue, activeProp.boolValue ? "On" : "Off", EditorStyles.miniButton);
             if (newOn != activeProp.boolValue) activeProp.boolValue = newOn;
+
+            var prev = GUI.color;
+            if (husbandoProp.boolValue) GUI.color = new Color(0.55f, 0.7f, 1f);
+            bool newH = GUI.Toggle(husbandoBtn, husbandoProp.boolValue, "Husbando", EditorStyles.miniButton);
+            GUI.color = prev;
+            if (newH != husbandoProp.boolValue) husbandoProp.boolValue = newH;
         }
     }
 

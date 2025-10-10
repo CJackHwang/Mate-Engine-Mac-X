@@ -3,7 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\mevaluechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\editor\\avatarmessagedrawer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\avatarmessagedrawer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\editor\\meeditorcategories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\meeditorcategories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarhandlers\\avatarrandommessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\avatarrandommessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\avatarhandlers\\petvoicereactionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\avatarhandlers\\petvoicereactionhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\mate engine - scripts\\mevaluechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\mevaluechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -62,7 +78,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "MECavityEffect.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MECavityEffect.cs",
               "RelativeDocumentMoniker": "Assets\\MECavityEffect.cs",
@@ -76,6 +92,58 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "AvatarMessageDrawer.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\AvatarMessageDrawer.cs",
+              "RelativeDocumentMoniker": "Assets\\Editor\\AvatarMessageDrawer.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\AvatarMessageDrawer.cs",
+              "RelativeToolTip": "Assets\\Editor\\AvatarMessageDrawer.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAowFsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T04:35:18.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AvatarRandomMessages.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarRandomMessages.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarRandomMessages.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarRandomMessages.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarRandomMessages.cs",
+              "ViewState": "AgIAAOwAAAAAAAAAAAAUwB8BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T04:31:42.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MEEditorCategories.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEEditorCategories.cs",
+              "RelativeDocumentMoniker": "Assets\\Editor\\MEEditorCategories.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\Editor\\MEEditorCategories.cs",
+              "RelativeToolTip": "Assets\\Editor\\MEEditorCategories.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAowKEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T04:30:18.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PetVoiceReactionHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\PetVoiceReactionHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\PetVoiceReactionHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\PetVoiceReactionHandler.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\PetVoiceReactionHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T04:20:41.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "MEValueChanger.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\MEValueChanger.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\MEValueChanger.cs",
@@ -83,12 +151,11 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\MEValueChanger.cs",
               "ViewState": "AgIAADMEAAAAAAAAAAAowGIEAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T14:33:33.451Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-09T14:33:33.451Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "LLM.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\LLMUnity\\Runtime\\LLM.cs",
               "RelativeDocumentMoniker": "Assets\\LLMUnity\\Runtime\\LLM.cs",
@@ -100,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "SettingsHandlerDropdowns.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerDropdowns.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerDropdowns.cs",
@@ -112,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "AvatarAnimatorController.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\AvatarHandlers\\AvatarAnimatorController.cs",
@@ -124,7 +191,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "METoonUberFX.shader",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Shaders\\METoonUberFX.shader",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Shaders\\METoonUberFX.shader",
@@ -132,11 +199,12 @@
               "RelativeToolTip": "Assets\\MATE ENGINE - Shaders\\METoonUberFX.shader",
               "ViewState": "AgIAAJQBAAAAAAAAAAAAwJQBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
-              "WhenOpened": "2025-10-09T03:14:02.161Z"
+              "WhenOpened": "2025-10-09T03:14:02.161Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "METoonUberFX.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\METoonUberFX.cs",
               "RelativeDocumentMoniker": "Assets\\METoonUberFX.cs",
@@ -147,7 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "MECavityEffect.shader",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Shaders\\MECavityEffect.shader",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Shaders\\MECavityEffect.shader",
@@ -159,7 +227,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "SphereCollider.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SphereCollider.cs",
@@ -171,7 +239,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "SpringBoneSystem.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSystem.cs",
@@ -183,7 +251,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "SpringBoneSettings.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\Logic\\SpringBoneSettings.cs",
@@ -195,7 +263,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "VRMSpringBone.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM\\Runtime\\SpringBone\\VRMSpringBone.cs",

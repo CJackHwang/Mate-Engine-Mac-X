@@ -6,6 +6,7 @@ using System.Collections;
 
 public class AvatarAnimatorController : MonoBehaviour
 {
+    [Header("State Values")]
     public Animator animator;
     public float SOUND_THRESHOLD = 0.02f;
     public List<string> allowedApps = new();

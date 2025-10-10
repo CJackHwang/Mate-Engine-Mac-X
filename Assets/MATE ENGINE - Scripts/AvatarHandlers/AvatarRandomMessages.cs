@@ -9,10 +9,11 @@ using UnityEngine.Localization.Tables;
 public class AvatarMessage
 {
     [TextArea(1, 3)]
-    public string text = "Hello!";      
-    public string locKey = "";          
+    public string text = "Hello!";
+    public string locKey = "";
     public string state = "Idle";
     public bool onActive = false;
+    public bool isHusbando = false;
 }
 
 public class AvatarRandomMessages : MonoBehaviour
@@ -26,7 +27,7 @@ public class AvatarRandomMessages : MonoBehaviour
     [Range(5, 20)] public int despawnTime = 10;
     [Range(0, 100)] public int onActiveChance = 100;
 
-    public List<AvatarMessage> messages = new List<AvatarMessage>();
+    public List<AvatarMessage> messages = new();
 
     public Transform chatContainer;
     public Sprite bubbleSprite;
@@ -43,7 +44,7 @@ public class AvatarRandomMessages : MonoBehaviour
 
     public bool useAllowedStatesWhitelist = false;
     public string[] allowedStates = { "Idle" };
-    public List<GameObject> blockObjects = new List<GameObject>();
+    public List<GameObject> blockObjects = new();
 
     [SerializeField] private string inspectorEvent;
 
@@ -55,6 +56,8 @@ public class AvatarRandomMessages : MonoBehaviour
 
     private Animator avatarAnimator;
     private string lastAnimatorStateName = "";
+
+    static readonly int isMaleHash = Animator.StringToHash("isMale");
 
     void Start()
     {
@@ -87,7 +90,7 @@ public class AvatarRandomMessages : MonoBehaviour
 
             if (currentStateName != lastAnimatorStateName)
             {
-                var candidates = messages.FindAll(m => m.onActive && !string.IsNullOrEmpty(m.state) && current.IsName(m.state));
+                var candidates = messages.FindAll(m => m.onActive && !string.IsNullOrEmpty(m.state) && current.IsName(m.state) && IsMessageAllowedByGender(m));
                 if (candidates.Count > 0)
                 {
                     if (UnityEngine.Random.Range(0, 100) < onActiveChance)
@@ -142,7 +145,7 @@ public class AvatarRandomMessages : MonoBehaviour
     void ShowRandomMessage()
     {
         if (!enableRandomMessages) return;
-        var idlePool = messages.FindAll(m => !m.onActive);
+        var idlePool = messages.FindAll(m => !m.onActive && IsMessageAllowedByGender(m));
         if (idlePool.Count == 0) return;
         ShowSpecificMessage(idlePool[UnityEngine.Random.Range(0, idlePool.Count)]);
     }
@@ -198,7 +201,6 @@ public class AvatarRandomMessages : MonoBehaviour
         return msg.text;
     }
 
-
     IEnumerator FakeStreamText(string fullText)
     {
         if (activeBubble == null) yield break;
@@ -215,7 +217,6 @@ public class AvatarRandomMessages : MonoBehaviour
         }
         activeBubble.SetText(fullText);
         if (streamAudioSource != null && streamAudioSource.isPlaying) streamAudioSource.Stop();
-
 
         if (avatarAnimator != null) avatarAnimator.SetBool("isTalking", false);
 
@@ -242,7 +243,6 @@ public class AvatarRandomMessages : MonoBehaviour
         if (streamAudioSource != null && streamAudioSource.isPlaying) streamAudioSource.Stop();
         isBubbleActive = false;
 
-
         if (avatarAnimator != null) avatarAnimator.SetBool("isTalking", false);
     }
 
@@ -257,7 +257,23 @@ public class AvatarRandomMessages : MonoBehaviour
     bool IsBlockedByObjects()
     {
         if (blockObjects == null || blockObjects.Count == 0) return false;
-        foreach (var go in blockObjects) { if (go != null && go.activeInHierarchy) return true; }
+        foreach (var go in blockObjects) if (go != null && go.activeInHierarchy) return true;
+        return false;
+    }
+
+    bool IsMessageAllowedByGender(AvatarMessage msg)
+    {
+        if (avatarAnimator == null) return true;
+        if (!HasParam(isMaleHash)) return true;
+        bool isMale = avatarAnimator.GetFloat(isMaleHash) > 0.5f;
+        return msg.isHusbando ? isMale : !isMale;
+    }
+
+    bool HasParam(int hash)
+    {
+        var ps = avatarAnimator.parameters;
+        for (int i = 0; i < ps.Length; i++)
+            if (ps[i].nameHash == hash) return true;
         return false;
     }
 
@@ -269,4 +285,3 @@ public class AvatarRandomMessages : MonoBehaviour
         return stateInfo.IsName("") ? "" : stateInfo.shortNameHash.ToString();
     }
 }
-
