@@ -328,7 +328,7 @@ namespace CustomDancePlayer
 
 
         // Attempts auto-play with timeout
-        private IEnumerator TryAutoPlay()
+        public IEnumerator TryAutoPlay()
         {
             yield return new WaitForSeconds(3f);
             float timeout = 10f;
@@ -348,7 +348,7 @@ namespace CustomDancePlayer
             }
         }
 
-        private void OnPlayPauseBtnClick()
+        public void OnPlayPauseBtnClick()
         {
             if (!_settingsHandler.data.isPlaying && DanceFileDropdown.value >= 0)
             {
