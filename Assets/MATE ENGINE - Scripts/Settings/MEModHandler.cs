@@ -23,15 +23,43 @@ public class MEModHandler : MonoBehaviour
         modFolderPath = Path.Combine(Application.persistentDataPath, "Mods");
         Directory.CreateDirectory(modFolderPath);
         loadModButton.onClick.AddListener(OpenFileDialogAndLoadMod);
+        StartCoroutine(DeferredLoadAllMods());
+    }
+
+    IEnumerator DeferredLoadAllMods()
+    {
+        CustomDancePlayer.DanceResourceManager mgr = null;
+        CustomDancePlayer.DancePlayerUIManager ui = null;
+        float timeout = 5f, elapsed = 0f;
+        while (elapsed < timeout)
+        {
+            mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
+            ui = FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>();
+            if (mgr != null && ui != null) break;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        if (mgr == null) yield break;
         LoadAllModsInFolder();
     }
 
     void LoadAllModsInFolder()
     {
+        var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
+        var ui = FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>();
+
+        for (int i = modListContainer.childCount - 1; i >= 0; i--)
+            Destroy(modListContainer.GetChild(i).gameObject);
+        loadedMods.Clear();
+
         foreach (var file in Directory.GetFiles(modFolderPath, "*.me"))
             LoadMod(file);
+
         foreach (var file in Directory.GetFiles(modFolderPath, "*.unity3d"))
             LoadUnity3D(file, addToUI: true, respectSavedState: true);
+
+        mgr?.RefreshDanceFileList();
+        ui?.RefreshDropdown();
     }
 
     void OpenFileDialogAndLoadMod()
@@ -45,41 +73,37 @@ public class MEModHandler : MonoBehaviour
         File.Copy(src, dest, true);
 
         if (dest.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
+        {
             LoadMod(dest);
+        }
         else if (dest.EndsWith(".unity3d", StringComparison.OrdinalIgnoreCase))
+        {
             LoadUnity3D(dest, addToUI: true, respectSavedState: false);
+            FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
+        }
     }
 
     void LoadUnity3D(string path, bool addToUI, bool respectSavedState)
     {
         var name = Path.GetFileNameWithoutExtension(path);
+
+        int exist = loadedMods.FindIndex(m => m.name == name && m.type == ModType.Unity3D);
+        if (exist >= 0) loadedMods.RemoveAt(exist);
+
         bool enable = true;
         if (respectSavedState && SaveLoadHandler.Instance.data.modStates.TryGetValue(name, out var s)) enable = s;
 
         var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
-        if (mgr == null)
+        if (enable && mgr != null)
         {
-            Debug.LogError("[MEModHandler] DanceResourceManager not found");
-            return;
-        }
-
-        if (enable)
-        {
+            try { mgr.UnregisterInjected(name); } catch { }
             var bundle = AssetBundle.LoadFromFile(path);
-            if (bundle == null)
-            {
-                Debug.LogError("[MEModHandler] Failed to load .unity3d: " + path);
-            }
-            else
-            {
-                mgr.RegisterDanceBundle(bundle, name);
-            }
+            if (bundle != null) mgr.RegisterDanceBundle(bundle, name);
         }
 
         var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null };
         loadedMods.Add(entry);
         if (addToUI) AddToModListUI(entry, initialState: enable);
-        FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
     }
 
     void LoadMod(string path)
@@ -120,18 +144,10 @@ public class MEModHandler : MonoBehaviour
         if (!string.IsNullOrEmpty(bundlePath) && File.Exists(bundlePath))
         {
             var bundle = AssetBundle.LoadFromFile(bundlePath);
-            if (bundle == null)
-            {
-                Debug.LogError("[MEModHandler] Failed to load AssetBundle: " + bundlePath);
-                return;
-            }
+            if (bundle == null) return;
 
             var prefab = bundle.LoadAsset<GameObject>(modName);
-            if (prefab == null)
-            {
-                Debug.LogError("[MEModHandler] Prefab not found: " + modName);
-                return;
-            }
+            if (prefab == null) return;
 
             var instance = Instantiate(prefab);
             bundle.Unload(false);
@@ -143,8 +159,6 @@ public class MEModHandler : MonoBehaviour
             AddToModListUI(entry, initialState: GetSavedStateOrDefault(modName, true));
             return;
         }
-
-        Debug.LogWarning("[MEModHandler] Unsupported mod format: " + path);
     }
 
     void ApplyReferencePaths(GameObject root, Dictionary<string, string> refPaths, Dictionary<string, string> sceneLinks)
@@ -257,6 +271,7 @@ public class MEModHandler : MonoBehaviour
                     if (mgr == null) return;
                     if (a)
                     {
+                        try { mgr.UnregisterInjected(mod.name); } catch { }
                         var bundle = AssetBundle.LoadFromFile(mod.localPath);
                         if (bundle != null) mgr.RegisterDanceBundle(bundle, mod.name);
                     }
