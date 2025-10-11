@@ -3,11 +3,9 @@ using System.Collections;
 using UnityEngine;
 
 namespace CustomDancePlayer
-{ // Manages dance playback logic and state updates
-
+{
     public class DancePlayerCore : MonoBehaviour
     {
-
         [Header("Dependency References")]
         public DanceAvatarHelper avatarHelper;
         public DanceResourceManager resourceManager;
@@ -15,9 +13,9 @@ namespace CustomDancePlayer
 
         public enum PlayMode { Sequence, Loop, Random }
 
-
         private DanceSettingsHandler _settingsHandler;
         private Coroutine _startAnimationCoroutine;
+
         public bool IsPlaying
         {
             get => _settingsHandler.data.isPlaying;
@@ -30,18 +28,13 @@ namespace CustomDancePlayer
 
         void Start()
         {
-
             _settingsHandler = DanceSettingsHandler.Instance;
         }
 
-        // Initializes player with playlist
         public void InitPlayer()
         {
-            if (_settingsHandler  == null)
-            {
-                _settingsHandler = DanceSettingsHandler.Instance;
-            }
-            if (_settingsHandler.data.autoPlayOnStart && resourceManager.DanceFileList.Count > 0 && _settingsHandler.data.currentPlayIndex >= 0)
+            if (_settingsHandler == null) _settingsHandler = DanceSettingsHandler.Instance;
+            if (_settingsHandler.data.autoPlayOnStart && resourceManager.GetTotalDanceCount() > 0 && _settingsHandler.data.currentPlayIndex >= 0)
             {
                 PlayDanceByIndex(_settingsHandler.data.currentPlayIndex);
             }
@@ -49,15 +42,12 @@ namespace CustomDancePlayer
 
         public bool PlayDanceByIndex(int index)
         {
-            if (resourceManager.DanceFileList.Count == 0 || index < 0 || index >= resourceManager.DanceFileList.Count || !avatarHelper.IsAvatarAvailable())
-            {
-                return false;
-            }
+            if (!avatarHelper.IsAvatarAvailable()) return false;
+            if (resourceManager.GetTotalDanceCount() == 0 || index < 0 || index >= resourceManager.GetTotalDanceCount()) return false;
 
             _settingsHandler.data.currentPlayIndex = index;
-            string targetFileName = resourceManager.DanceFileList[index];
 
-            if (!resourceManager.LoadDanceResource(targetFileName))
+            if (!resourceManager.PrepareByIndex(index, avatarHelper))
             {
                 _settingsHandler.data.isPlaying = false;
                 DanceSettingsHandler.OnSettingChanged();
@@ -73,7 +63,6 @@ namespace CustomDancePlayer
             if (avatarHelper.CurrentOverrideController != null)
             {
                 Destroy(avatarHelper.CurrentOverrideController);
-
             }
 
             if (avatarHelper.TargetSMR != null)
@@ -86,40 +75,40 @@ namespace CustomDancePlayer
                 avatarHelper.SetupDummyForDance();
             }
 
-            avatarHelper.CurrentAudioSource.Play();
-            _settingsHandler.data.isPlaying = true;
-            _settingsHandler.data.audioStartTime = Time.time;
-
-            // Due to DSF buffer causing audio startup delay, must wait for audio to actually start playing before starting animation
-            float extraDelay = Mathf.Clamp(_settingsHandler.data.animationStartDelay, 0f, 1f);
-            _startAnimationCoroutine = StartCoroutine(
-                WaitForAudioThenStartAnimation(
-                    avatarHelper.CurrentAnimator,
-                    resourceManager.CurrentAnimationClip,
-                    extraDelay
-                )
-            );
-            if (uiManager != null)
+            if (avatarHelper.CurrentAudioSource != null && resourceManager.CurrentAudioClip != null)
             {
-                uiManager.UpdateDropdownValue(); 
+                avatarHelper.CurrentAudioSource.Play();
+                _settingsHandler.data.isPlaying = true;
+                _settingsHandler.data.audioStartTime = Time.time;
+                float extraDelay = Mathf.Clamp(_settingsHandler.data.animationStartDelay, 0f, 1f);
+                _startAnimationCoroutine = StartCoroutine(
+                    WaitForAudioThenStartAnimation(
+                        avatarHelper.CurrentAnimator,
+                        resourceManager.CurrentAnimationClip,
+                        extraDelay
+                    )
+                );
+            }
+            else
+            {
+                ApplyAnimationImmediately(avatarHelper.CurrentAnimator, resourceManager.CurrentAnimationClip);
+                _settingsHandler.data.isPlaying = true;
             }
 
+            if (uiManager != null) uiManager.UpdateDropdownValue();
             DanceSettingsHandler.OnSettingChanged();
             return true;
         }
 
-        // Applies animation immediately
         private void ApplyAnimationImmediately(Animator animator, AnimationClip clip)
         {
             if (animator == null || clip == null) return;
-
             avatarHelper.SetupAnimation(clip);
         }
 
-
         public void PlayNext()
         {
-            if (resourceManager.DanceFileList.Count == 0) return;
+            if (resourceManager.GetTotalDanceCount() == 0) return;
 
             int nextIndex = _settingsHandler.data.currentPlayIndex;
 
@@ -127,7 +116,7 @@ namespace CustomDancePlayer
             {
                 case PlayMode.Sequence:
                     nextIndex = _settingsHandler.data.currentPlayIndex + 1;
-                    if (nextIndex >= resourceManager.DanceFileList.Count)
+                    if (nextIndex >= resourceManager.GetTotalDanceCount())
                     {
                         StopPlay();
                         return;
@@ -140,8 +129,8 @@ namespace CustomDancePlayer
                     System.Random random = new System.Random();
                     do
                     {
-                        nextIndex = random.Next(0, resourceManager.DanceFileList.Count);
-                    } while (resourceManager.DanceFileList.Count > 1 && nextIndex == _settingsHandler.data.currentPlayIndex);
+                        nextIndex = random.Next(0, resourceManager.GetTotalDanceCount());
+                    } while (resourceManager.GetTotalDanceCount() > 1 && nextIndex == _settingsHandler.data.currentPlayIndex);
                     break;
             }
 
@@ -150,7 +139,7 @@ namespace CustomDancePlayer
 
         public void PlayPrev()
         {
-            if (resourceManager.DanceFileList.Count == 0) return;
+            if (resourceManager.GetTotalDanceCount() == 0) return;
             PlayDanceByIndex(Mathf.Max(0, _settingsHandler.data.currentPlayIndex - 1));
         }
 
@@ -205,12 +194,11 @@ namespace CustomDancePlayer
                     if (extraDelay > 0.001f)
                         yield return new WaitForSeconds(extraDelay);
 
-
                     ApplyAnimationImmediately(animator, clip);
                     yield break;
                 }
 
-                yield return null; 
+                yield return null;
             }
 
             ApplyAnimationImmediately(animator, clip);
@@ -218,12 +206,12 @@ namespace CustomDancePlayer
 
         public string GetCurrentPlayFileName()
         {
-            if (resourceManager.DanceFileList.Count == 0 || _settingsHandler.data.currentPlayIndex < 0 || _settingsHandler.data.currentPlayIndex >= resourceManager.DanceFileList.Count)
-            {
-                return "Not Playing";
-            }
-            string fileName = resourceManager.DanceFileList[_settingsHandler.data.currentPlayIndex];
-            return fileName.EndsWith(".unity3d", StringComparison.OrdinalIgnoreCase) ? fileName.Substring(0, fileName.Length - ".unity3d".Length) : fileName;
+            int idx = _settingsHandler.data.currentPlayIndex;
+            var total = resourceManager.GetTotalDanceCount();
+            if (total == 0 || idx < 0 || idx >= total) return "Not Playing";
+            var entries = resourceManager.GetAllDanceEntries();
+            if (idx < entries.Count && entries[idx] != null && !string.IsNullOrEmpty(entries[idx].id)) return entries[idx].id;
+            return "Not Playing";
         }
     }
 }

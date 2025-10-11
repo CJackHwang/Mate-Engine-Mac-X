@@ -11,7 +11,6 @@ using System.Collections;
 
 public class MEModHandler : MonoBehaviour
 {
-    [Header("UI References")]
     public Button loadModButton;
     public Transform modListContainer;
     public GameObject modEntryPrefab;
@@ -23,7 +22,6 @@ public class MEModHandler : MonoBehaviour
     {
         modFolderPath = Path.Combine(Application.persistentDataPath, "Mods");
         Directory.CreateDirectory(modFolderPath);
-
         loadModButton.onClick.AddListener(OpenFileDialogAndLoadMod);
         LoadAllModsInFolder();
     }
@@ -32,18 +30,56 @@ public class MEModHandler : MonoBehaviour
     {
         foreach (var file in Directory.GetFiles(modFolderPath, "*.me"))
             LoadMod(file);
+        foreach (var file in Directory.GetFiles(modFolderPath, "*.unity3d"))
+            LoadUnity3D(file, addToUI: true, respectSavedState: true);
     }
 
     void OpenFileDialogAndLoadMod()
     {
-        var ext = new[] { new ExtensionFilter("Mod Files", "me") };
-        var paths = StandaloneFileBrowser.OpenFilePanel("Select Mod", ".", ext, false);
-        if (paths.Length > 0 && !string.IsNullOrEmpty(paths[0]))
-        {
-            var dest = Path.Combine(modFolderPath, Path.GetFileName(paths[0]));
-            File.Copy(paths[0], dest, true);
+        var ext = new[] { new ExtensionFilter("MateEngine Files", "me", "unity3d") };
+        var paths = StandaloneFileBrowser.OpenFilePanel("Select Mod or Dance Asset", ".", ext, false);
+        if (paths.Length == 0 || string.IsNullOrEmpty(paths[0])) return;
+
+        var src = paths[0];
+        var dest = Path.Combine(modFolderPath, Path.GetFileName(src));
+        File.Copy(src, dest, true);
+
+        if (dest.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
             LoadMod(dest);
+        else if (dest.EndsWith(".unity3d", StringComparison.OrdinalIgnoreCase))
+            LoadUnity3D(dest, addToUI: true, respectSavedState: false);
+    }
+
+    void LoadUnity3D(string path, bool addToUI, bool respectSavedState)
+    {
+        var name = Path.GetFileNameWithoutExtension(path);
+        bool enable = true;
+        if (respectSavedState && SaveLoadHandler.Instance.data.modStates.TryGetValue(name, out var s)) enable = s;
+
+        var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
+        if (mgr == null)
+        {
+            Debug.LogError("[MEModHandler] DanceResourceManager not found");
+            return;
         }
+
+        if (enable)
+        {
+            var bundle = AssetBundle.LoadFromFile(path);
+            if (bundle == null)
+            {
+                Debug.LogError("[MEModHandler] Failed to load .unity3d: " + path);
+            }
+            else
+            {
+                mgr.RegisterDanceBundle(bundle, name);
+            }
+        }
+
+        var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null };
+        loadedMods.Add(entry);
+        if (addToUI) AddToModListUI(entry, initialState: enable);
+        FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
     }
 
     void LoadMod(string path)
@@ -62,7 +98,6 @@ public class MEModHandler : MonoBehaviour
         Dictionary<string, string> refPaths = new();
         Dictionary<string, string> sceneLinks = new();
 
-        // Load reference_paths.json
         if (File.Exists(refPathJson))
         {
             var json = File.ReadAllText(refPathJson);
@@ -71,7 +106,6 @@ public class MEModHandler : MonoBehaviour
                 refPaths[obj.keys[i]] = obj.values[i];
         }
 
-        // Load scene_links.json
         if (File.Exists(sceneLinksPath))
         {
             var json = File.ReadAllText(sceneLinksPath);
@@ -80,7 +114,6 @@ public class MEModHandler : MonoBehaviour
                 sceneLinks[obj.keys[i]] = obj.values[i];
         }
 
-        // Load bundle
         foreach (var file in Directory.GetFiles(temp, "*.bundle"))
             bundlePath = file;
 
@@ -96,7 +129,7 @@ public class MEModHandler : MonoBehaviour
             var prefab = bundle.LoadAsset<GameObject>(modName);
             if (prefab == null)
             {
-                Debug.LogError("[MEModHandler] Could not find prefab named " + modName + " inside bundle.");
+                Debug.LogError("[MEModHandler] Prefab not found: " + modName);
                 return;
             }
 
@@ -105,13 +138,13 @@ public class MEModHandler : MonoBehaviour
 
             ApplyReferencePaths(instance, refPaths, sceneLinks);
 
-            var entry = new ModEntry { name = modName, instance = instance, localPath = path };
+            var entry = new ModEntry { name = modName, instance = instance, localPath = path, type = ModType.ME };
             loadedMods.Add(entry);
-            AddToModListUI(entry);
+            AddToModListUI(entry, initialState: GetSavedStateOrDefault(modName, true));
             return;
         }
 
-        Debug.LogWarning($"[MEModHandler] Unsupported mod format: {path}");
+        Debug.LogWarning("[MEModHandler] Unsupported mod format: " + path);
     }
 
     void ApplyReferencePaths(GameObject root, Dictionary<string, string> refPaths, Dictionary<string, string> sceneLinks)
@@ -142,7 +175,6 @@ public class MEModHandler : MonoBehaviour
                         string part = parts[i];
                         int listIndex = -1;
 
-                        // Listenindex erkennen
                         if (part.Contains("["))
                         {
                             int start = part.IndexOf('[');
@@ -190,24 +222,13 @@ public class MEModHandler : MonoBehaviour
         }
     }
 
-
-
-    [Serializable]
-    class RefPathMap
+    bool GetSavedStateOrDefault(string key, bool def)
     {
-        public List<string> keys = new();
-        public List<string> values = new();
+        if (SaveLoadHandler.Instance.data.modStates.TryGetValue(key, out var state)) return state;
+        return def;
     }
 
-    [Serializable]
-    class SceneLinkMap
-    {
-        public List<string> keys = new();
-        public List<string> values = new();
-    }
-
-
-    void AddToModListUI(ModEntry mod)
+    void AddToModListUI(ModEntry mod, bool initialState)
     {
         var entry = Instantiate(modEntryPrefab, modListContainer);
         entry.name = "Mod_" + mod.name;
@@ -217,42 +238,67 @@ public class MEModHandler : MonoBehaviour
         var tog = entry.GetComponentInChildren<Toggle>(true);
         if (tog != null)
         {
-            var isOn = true;
-            if (SaveLoadHandler.Instance.data.modStates.TryGetValue(mod.name, out var s)) isOn = s;
-            tog.isOn = isOn;
-            mod.instance.SetActive(isOn);
-            tog.onValueChanged.AddListener(a => {
-                mod.instance.SetActive(a);
-                SaveLoadHandler.Instance.data.modStates[mod.name] = a;
-                SaveLoadHandler.Instance.SaveToDisk();
-            });
+            tog.isOn = initialState;
+            if (mod.type == ModType.ME)
+            {
+                if (mod.instance != null) mod.instance.SetActive(initialState);
+                tog.onValueChanged.AddListener(a =>
+                {
+                    if (mod.instance != null) mod.instance.SetActive(a);
+                    SaveLoadHandler.Instance.data.modStates[mod.name] = a;
+                    SaveLoadHandler.Instance.SaveToDisk();
+                });
+            }
+            else
+            {
+                tog.onValueChanged.AddListener(a =>
+                {
+                    var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
+                    if (mgr == null) return;
+                    if (a)
+                    {
+                        var bundle = AssetBundle.LoadFromFile(mod.localPath);
+                        if (bundle != null) mgr.RegisterDanceBundle(bundle, mod.name);
+                    }
+                    else
+                    {
+                        mgr.UnregisterInjected(mod.name);
+                    }
+                    SaveLoadHandler.Instance.data.modStates[mod.name] = a;
+                    SaveLoadHandler.Instance.SaveToDisk();
+                    FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
+                });
+            }
         }
 
         var btn = entry.GetComponentInChildren<Button>(true);
         if (btn != null) btn.onClick.AddListener(() => RemoveMod(mod, entry));
+
         var hueShifter = FindFirstObjectByType<MenuHueShift>();
-        if (hueShifter != null)
-            hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
+        if (hueShifter != null) hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
 
     void RemoveMod(ModEntry mod, GameObject ui)
     {
-        Destroy(mod.instance);
+        if (mod.type == ModType.ME)
+        {
+            if (mod.instance != null) Destroy(mod.instance);
+        }
+        else
+        {
+            var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
+            if (mgr != null) mgr.UnregisterInjected(mod.name);
+            FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
+        }
+
         if (File.Exists(mod.localPath)) File.Delete(mod.localPath);
         loadedMods.Remove(mod);
         Destroy(ui);
     }
 
-    private void SetNestedField(object obj, string fieldPath, string raw, Dictionary<string, GameObject> lookup)
-    {
-        // ... (dein bestehender Feldsetter bleibt hier unverändert)
-    }
+    private void SetNestedField(object obj, string fieldPath, string raw, Dictionary<string, GameObject> lookup) { }
 
-    object ParseValue(string raw, Type ft, Dictionary<string, GameObject> lookup)
-    {
-        // ... (dein bestehender Parser bleibt hier ebenfalls gleich)
-        return null;
-    }
+    object ParseValue(string raw, Type ft, Dictionary<string, GameObject> lookup) { return null; }
 
     Type ResolveType(string name)
     {
@@ -263,7 +309,10 @@ public class MEModHandler : MonoBehaviour
         return null;
     }
 
-    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; }
+    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public ModType type; }
+    enum ModType { ME, Unity3D }
+    [Serializable] class RefPathMap { public List<string> keys = new(); public List<string> values = new(); }
+    [Serializable] class SceneLinkMap { public List<string> keys = new(); public List<string> values = new(); }
     [Serializable] class ObjectInfo { public string name, path; public List<string> components; }
     [Serializable] class ObjectList { public List<ObjectInfo> objects; }
     [Serializable] class FieldValue { public string objectPath, componentType, fieldName, value; }

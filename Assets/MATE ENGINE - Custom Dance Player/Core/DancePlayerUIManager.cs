@@ -7,11 +7,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CustomDancePlayer
-{ // Manages UI interactions and updates
+{
     public class DancePlayerUIManager : MonoBehaviour
     {
         public Canvas TargetCanvas;
-        [Header("Main Panel")]
         public Text CurrentPlayText;
         public Slider ProgressSlider;
         public Dropdown DanceFileDropdown;
@@ -24,20 +23,15 @@ namespace CustomDancePlayer
         public TMP_Text PlayModeText;
         public TMP_Text AvatarStatusText;
         public TMP_Text ToggleKeyText;
-
-
         public Button AdvancedToggleBtn;
         public TMP_Text AdvancedToggleBtnText;
         public GameObject MainPanelRoot;
         public GameObject SettingsPanelRoot;
         public ScrollRect SettingsScrollRect;
-
-        [Header("Advanced Settings")]
         public Slider VolumeSlider;
         public TMP_Text VolumeValueText;
         public Slider AnimationStartDelaySlider;
         public TMP_Text AnimationStartDelayValueText;
-
         public Toggle EnableUIPanelFollow;
         public Toggle EnableShadowFollow;
         public Toggle EnableWindowFollow;
@@ -46,34 +40,25 @@ namespace CustomDancePlayer
         public Toggle HidePanelOnStartToggle;
         public Toggle EnableGlobalHotkey;
 
-
-
-        // Core Components
         [Header("Core Components")]
         public DancePlayerCore playerCore;
         public DanceAvatarHelper avatarHelper;
         public DanceResourceManager resourceManager;
 
         private DanceSettingsHandler _settingsHandler;
-        // Other Components
         private HipsFollower _hipsFollower;
         private DanceShadowFollower _shadowFollower;
         private DanceWindowFollower _danceWindowFollower;
         private DanceCameraDistKeeper _danceCameraDistKeeper;
         private GlobalHotkeyListener _globalHotkeyListener;
 
-
         private bool _isAdvancedOpen;
-
-        // TODO remove them
         private MenuActions _gameMenuActions;
         private MenuEntry _myUIMenuEntry;
         private bool _isMyUIAddedToMenuList;
 
-
         void Start()
         {
-            // Other Components
             _danceWindowFollower = FindFirstObjectByType<DanceWindowFollower>();
             _danceCameraDistKeeper = FindFirstObjectByType<DanceCameraDistKeeper>();
             _hipsFollower = FindFirstObjectByType<HipsFollower>();
@@ -97,7 +82,6 @@ namespace CustomDancePlayer
                 StartCoroutine(TryAutoPlay());
             }
 
-            // TODO remove them
             _gameMenuActions = UnityEngine.Object.FindFirstObjectByType<MenuActions>();
             _myUIMenuEntry = new MenuEntry
             {
@@ -116,7 +100,6 @@ namespace CustomDancePlayer
             HandleKeyToggleUI();
         }
 
-        // Initializes UI elements
         private void InitUI()
         {
             CurrentPlayText.text = playerCore.GetCurrentPlayFileName();
@@ -125,46 +108,30 @@ namespace CustomDancePlayer
             UpdateDropdownValue();
         }
 
-        // Public method to set panel visibility
         public void SetPanelVisible(bool visible)
         {
-            if (TargetCanvas == null)
-            {
-                return;
-            }
-
+            if (TargetCanvas == null) return;
             GameObject targetCanvasObject = TargetCanvas.gameObject;
             if (targetCanvasObject.activeSelf != visible)
             {
                 targetCanvasObject.SetActive(visible);
-
-                if (visible)
-                {
-                    AddMyUIToGameMenuList();
-                }
+                if (visible) AddMyUIToGameMenuList();
             }
         }
 
-        // Handles UI toggle key press
         private void HandleKeyToggleUI()
         {
             if (TargetCanvas == null) return;
-            if (IsInTextInputState())
-                return;
+            if (IsInTextInputState()) return;
             if (Input.GetKeyDown(_settingsHandler.data.toggleKey))
             {
                 GameObject targetCanvasObject = TargetCanvas.gameObject;
                 bool newVisibleState = !targetCanvasObject.activeSelf;
                 targetCanvasObject.SetActive(newVisibleState);
-
-                if (newVisibleState)
-                {
-                    AddMyUIToGameMenuList();
-                }
+                if (newVisibleState) AddMyUIToGameMenuList();
             }
         }
 
-        // Binds UI events to handlers
         private void BindButtonEvents()
         {
             PrevBtn.onClick.AddListener(playerCore.PlayPrev);
@@ -213,6 +180,7 @@ namespace CustomDancePlayer
                     DanceSettingsHandler.OnSettingChanged();
                 });
             }
+
             if (AutoPlayOnStartToggle != null)
             {
                 AutoPlayOnStartToggle.isOn = _settingsHandler.data.autoPlayOnStart;
@@ -233,7 +201,6 @@ namespace CustomDancePlayer
                 });
             }
 
-            // Other Components related toggles
             if (EnableUIPanelFollow != null && _hipsFollower != null)
             {
                 EnableUIPanelFollow.isOn = _settingsHandler.data.enableDanceUIFollow;
@@ -257,8 +224,6 @@ namespace CustomDancePlayer
                     DanceSettingsHandler.OnSettingChanged();
                 });
             }
-
-
 
             if (EnableWindowFollow != null && _danceWindowFollower != null)
             {
@@ -297,21 +262,19 @@ namespace CustomDancePlayer
             }
         }
 
-        // Updates UI elements in real-time
         private void UpdateUI()
         {
             CurrentPlayText.text = playerCore.GetCurrentPlayFileName();
             AvatarStatusText.text = avatarHelper.IsAvatarAvailable() ? "Avatar Status: Connected" : "Avatar Status: Not Connected";
             PlayModeText.text = GetPlayModeText();
 
-            bool isPlayerReady = avatarHelper.IsAvatarAvailable() && resourceManager.DanceFileList.Count > 0;
+            bool isPlayerReady = avatarHelper.IsAvatarAvailable() && resourceManager.GetTotalDanceCount() > 0;
             PlayPauseBtn.interactable = isPlayerReady && !_settingsHandler.data.isPlaying;
             PrevBtn.interactable = isPlayerReady && _settingsHandler.data.isPlaying;
             NextBtn.interactable = isPlayerReady && _settingsHandler.data.isPlaying;
             StopBtn.interactable = isPlayerReady && _settingsHandler.data.isPlaying;
             DanceFileDropdown.interactable = isPlayerReady && !_settingsHandler.data.isPlaying;
             RefreshBtn.interactable = !_settingsHandler.data.isPlaying;
-
 
             if (_settingsHandler.data.isPlaying && resourceManager.CurrentAudioClip != null)
             {
@@ -325,9 +288,6 @@ namespace CustomDancePlayer
             }
         }
 
-
-
-        // Attempts auto-play with timeout
         public IEnumerator TryAutoPlay()
         {
             yield return new WaitForSeconds(3f);
@@ -341,7 +301,8 @@ namespace CustomDancePlayer
             }
 
             if (avatarHelper.IsAvatarAvailable() &&
-                _settingsHandler.data.currentPlayIndex >= 0 && DanceFileDropdown.options.Count > 0 &&
+                _settingsHandler.data.currentPlayIndex >= 0 &&
+                DanceFileDropdown.options.Count > 0 &&
                 _settingsHandler.data.currentPlayIndex < DanceFileDropdown.options.Count)
             {
                 OnPlayPauseBtnClick();
@@ -372,44 +333,46 @@ namespace CustomDancePlayer
                 _ => "Sequence"
             };
         }
+
         public void UpdateDropdownValue()
         {
-            if (DanceFileDropdown == null || DanceFileDropdown.options.Count == 0)
-                return; 
-
+            if (DanceFileDropdown == null || DanceFileDropdown.options.Count == 0) return;
             int targetIndex = _settingsHandler.data.currentPlayIndex;
             if (targetIndex < 0 || targetIndex >= DanceFileDropdown.options.Count)
             {
                 targetIndex = 0;
-                _settingsHandler.data.currentPlayIndex = targetIndex; 
+                _settingsHandler.data.currentPlayIndex = targetIndex;
                 DanceSettingsHandler.OnSettingChanged();
             }
-
             if (DanceFileDropdown.value != targetIndex)
             {
                 DanceFileDropdown.value = targetIndex;
                 DanceFileDropdown.captionText.text = DanceFileDropdown.options[targetIndex].text;
             }
         }
-        // Refreshes dropdown with dance files
+
         public void RefreshDropdown()
         {
             DanceFileDropdown.ClearOptions();
             resourceManager.RefreshDanceFileList();
-            var danceFiles = resourceManager.DanceFileList;
-
-            if (danceFiles.Count == 0)
+            var names = resourceManager.GetDisplayNames();
+            if (names.Count == 0)
             {
-                DanceFileDropdown.options.Add(new Dropdown.OptionData("No dance files (put in CustomDances folder)"));
+                DanceFileDropdown.options.Add(new Dropdown.OptionData("No dances found"));
+                _settingsHandler.data.currentPlayIndex = -1;
+                DanceSettingsHandler.OnSettingChanged();
+                return;
             }
-            else
+            foreach (var n in names) DanceFileDropdown.options.Add(new Dropdown.OptionData(n));
+            if (_settingsHandler.data.currentPlayIndex < 0 || _settingsHandler.data.currentPlayIndex >= names.Count)
             {
-                DanceFileDropdown.AddOptions(danceFiles.Select(file => file.EndsWith(".unity3d", StringComparison.OrdinalIgnoreCase)
-                    ? file.Substring(0, file.Length - ".unity3d".Length) : file).ToList());
+                _settingsHandler.data.currentPlayIndex = 0;
+                DanceSettingsHandler.OnSettingChanged();
             }
+            DanceFileDropdown.value = _settingsHandler.data.currentPlayIndex;
+            DanceFileDropdown.captionText.text = names[_settingsHandler.data.currentPlayIndex];
         }
 
-        // Updates toggle key text
         public void UpdateToggleKeyText()
         {
             if (ToggleKeyText != null)
@@ -418,7 +381,6 @@ namespace CustomDancePlayer
             }
         }
 
-        // Checks if in text input state
         private bool IsInTextInputState()
         {
             if (EventSystem.current == null) return false;
@@ -426,35 +388,24 @@ namespace CustomDancePlayer
             return selectedObj != null && (selectedObj.GetComponent<InputField>() != null || selectedObj.GetComponent<TMP_InputField>() != null);
         }
 
-        // Toggles advanced panel visibility
         private void ToggleAdvancedPanel()
         {
             _isAdvancedOpen = !_isAdvancedOpen;
             MainPanelRoot.SetActive(!_isAdvancedOpen);
             SettingsPanelRoot.SetActive(_isAdvancedOpen);
             AdvancedToggleBtnText.text = _isAdvancedOpen ? "Back" : "Settings";
-
-            if (_isAdvancedOpen && SettingsScrollRect != null)
-            {
-                SettingsScrollRect.verticalNormalizedPosition = 1f;
-            }
+            if (_isAdvancedOpen && SettingsScrollRect != null) SettingsScrollRect.verticalNormalizedPosition = 1f;
         }
+
         public void AddMyUIToGameMenuList()
         {
-            if (_gameMenuActions == null || _isMyUIAddedToMenuList || _myUIMenuEntry == null)
-                return;
-
-
-            bool isAlreadyInList = _gameMenuActions.menuEntries.Exists(
-                entry => entry.menu == gameObject
-            );
+            if (_gameMenuActions == null || _isMyUIAddedToMenuList || _myUIMenuEntry == null) return;
+            bool isAlreadyInList = _gameMenuActions.menuEntries.Exists(entry => entry.menu == gameObject);
             if (!isAlreadyInList)
             {
                 _gameMenuActions.menuEntries.Add(_myUIMenuEntry);
                 _isMyUIAddedToMenuList = true;
             }
         }
-
     }
 }
-
