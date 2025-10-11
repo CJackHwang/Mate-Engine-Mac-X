@@ -33,7 +33,7 @@ namespace CustomDancePlayer
 
 
         [Header("Dependency Reference")]
-        public DancePlayerCore playerCore;
+        public DancePlayerUIManager dancePlayerUIManager;
 
         // ================================ Hook Delegate & Struct ================================
         // Hook callback delegate (must match Windows API signature)
@@ -53,9 +53,9 @@ namespace CustomDancePlayer
         // ================================ Lifecycle & Hook Management ================================
         private void Start()
         {
-            if (playerCore == null)
+            if (dancePlayerUIManager == null)
             {
-                playerCore = FindFirstObjectByType<DancePlayerCore>();
+                dancePlayerUIManager = FindFirstObjectByType<DancePlayerUIManager>();
             }
 
             _keyboardCallback = OnKeyboardEvent;
@@ -88,7 +88,7 @@ namespace CustomDancePlayer
         private void Update()
         {
 
-            if (_needTriggerPlay && playerCore != null)
+            if (_needTriggerPlay && dancePlayerUIManager != null)
             {
                 TriggerPlayerPlay();
                 _needTriggerPlay = false; // Reset flag
@@ -100,7 +100,7 @@ namespace CustomDancePlayer
         private void MountGlobalHook()
         {
             if (_hookId != IntPtr.Zero) return;
-            if (playerCore == null)
+            if (dancePlayerUIManager == null)
             {
                 Debug.LogError("GlobalHotkeyListener: DancePlayerCore reference not found, cannot mount hook!");
                 return;
@@ -173,15 +173,8 @@ namespace CustomDancePlayer
 
         private void TriggerPlayerPlay()
         {
-            if (playerCore == null) return;
-            if (!playerCore.IsPlaying)
-            {
-                playerCore.PlayNext();
-            }
-            else
-            {
-                playerCore.StopPlay();
-            }
+            if (dancePlayerUIManager == null) return;
+            dancePlayerUIManager.OnPlayPauseBtnClick();
         }
 
 
