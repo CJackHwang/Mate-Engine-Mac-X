@@ -94,6 +94,15 @@ namespace CustomDancePlayer
         {
             RefreshAnimatorIfChanged();
 
+            bool dancingOn = animator != null && HasBool(customDancingParam) && animator.GetBool(customDancingParam);
+            if (isPlaying && !dancingOn)
+            {
+                if (audioSource != null) audioSource.Stop();
+                isPlaying = false;
+                UpdatePlayingNowLabel(null);
+                UpdateTimeLabels(0f, 0f);
+            }
+
             float total = currentTotalSeconds;
             float elapsed = 0f;
 
@@ -116,6 +125,17 @@ namespace CustomDancePlayer
 
             UpdateTimeLabels(elapsed, total);
         }
+
+        bool HasBool(string name)
+        {
+            var ps = animator.parameters;
+            for (int i = 0; i < ps.Length; i++)
+                if (ps[i].type == AnimatorControllerParameterType.Bool && ps[i].name == name)
+                    return true;
+            return false;
+        }
+
+
 
         public void RescanMods()
         {
