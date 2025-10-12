@@ -345,6 +345,8 @@ namespace CustomDancePlayer
             if (index < 0 || index >= entries.Count) return false;
             if (!EnsureAnimatorReady()) return false;
 
+            StopImmediateForRestart();
+
             var e = entries[index];
 
             if (overrideController != null) Destroy(overrideController);
@@ -356,24 +358,21 @@ namespace CustomDancePlayer
             if (e.clip != null) overrideController[placeholderClipName] = e.clip;
             animator.runtimeAnimatorController = overrideController;
 
-            if (layerIndex >= 0) animator.CrossFadeInFixedTime(stateHash, 0.1f, layerIndex);
-
             bool hasParam = false;
-            foreach (var p in animator.parameters)
-            {
-                if (p.name == customDancingParam && p.type == AnimatorControllerParameterType.Bool)
-                {
-                    hasParam = true;
-                    break;
-                }
-            }
+            for (int i = 0; i < animator.parameters.Length; i++)
+                if (animator.parameters[i].name == customDancingParam && animator.parameters[i].type == AnimatorControllerParameterType.Bool)
+                { hasParam = true; break; }
             if (hasParam) animator.SetBool(customDancingParam, true);
+
+            animator.Play(stateHash, layerIndex, 0f);
+            animator.Update(0f);
 
             if (audioSource == null) EnsureAudioSource();
             if (audioSource != null)
             {
                 audioSource.Stop();
                 audioSource.clip = e.audio;
+                audioSource.time = 0f;
                 audioSource.loop = false;
                 if (audioSource.clip != null) audioSource.Play();
             }
@@ -386,6 +385,18 @@ namespace CustomDancePlayer
             UpdatePlayingNowLabel(e.id);
             UpdateTimeLabels(0f, currentTotalSeconds);
             return true;
+        }
+        void StopImmediateForRestart()
+        {
+            if (audioSource != null) audioSource.Stop();
+            if (animator != null)
+            {
+                for (int i = 0; i < animator.parameters.Length; i++)
+                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool && animator.parameters[i].name == customDancingParam)
+                        animator.SetBool(customDancingParam, false);
+                animator.Update(0f);
+            }
+            isPlaying = false;
         }
 
         public void StopPlay()
