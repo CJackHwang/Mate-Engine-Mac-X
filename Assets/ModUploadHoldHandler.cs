@@ -1,33 +1,46 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using Steamworks;
+using SFB;
 
 public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    [Header("UI")]
     public Slider progressSlider;
     public TMP_Text labelText;
     public TMP_Text errorText;
+    public RawImage previewImage;
+
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip completeSound;
     public AudioClip tickSound;
+
+    [Header("Labels")]
     public string fallbackUpload = "Upload";
     public string fallbackUpdate = "Update";
+
+    [Header("Hold")]
     public float holdSeconds = 3f;
 
-    Button button;
-    ModUploadButton modButton;
+    Button btn;
+    ModUploadButton modBtn;
     Coroutine holdRoutine;
     bool holding;
 
+    const long MaxBytes = 2 * 1024 * 1024;
+
     void Awake()
     {
-        button = GetComponent<Button>();
-        modButton = GetComponent<ModUploadButton>();
-        if (modButton != null && modButton.progressBar == null && progressSlider != null) modButton.progressBar = progressSlider;
+        btn = GetComponent<Button>();
+        modBtn = GetComponent<ModUploadButton>();
+        if (modBtn != null && modBtn.progressBar == null && progressSlider != null)
+            modBtn.progressBar = progressSlider;
     }
 
     void OnEnable()
@@ -37,6 +50,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         SetInteractable(true);
         UpdateLabel();
         ClearError();
+        TryLoadPreviewFromPath(modBtn != null ? modBtn.thumbnailPath : null);
     }
 
     void OnDisable()
@@ -49,11 +63,20 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerDown(PointerEventData e)
     {
-        if (!CanUpload())
+        if (!CanUpload()) { SetError("Not ready"); return; }
+
+        if (IsThumbnailMissingOrTooBig())
         {
-            SetError("Not ready");
+            if (PickThumbnail(out string savedPath))
+            {
+                modBtn.thumbnailPath = savedPath;
+                TryLoadPreviewFromPath(savedPath);
+                ClearError();
+                UpdateLabel();
+            }
             return;
         }
+
         if (holdRoutine == null)
         {
             holding = true;
@@ -61,16 +84,14 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         }
     }
 
-    public void OnPointerUp(PointerEventData e)
-    {
-        holding = false;
-    }
+    public void OnPointerUp(PointerEventData e) { holding = false; }
 
     IEnumerator HoldAndUpload()
     {
         float t = 0f;
         int lastShown = -1;
         SetInteractable(false);
+
         while (holding && t < holdSeconds)
         {
             t += Time.deltaTime;
@@ -99,70 +120,104 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
     void StartUpload()
     {
         ClearError();
-        if (SteamWorkshopHandler.Instance == null)
-        {
-            SetError("Steam not initialized");
-            return;
-        }
-        if (modButton == null || string.IsNullOrEmpty(modButton.filePath))
-        {
-            SetError("Missing file");
-            return;
-        }
+        if (SteamWorkshopHandler.Instance == null) { SetError("Steam not initialized"); return; }
+        if (modBtn == null || string.IsNullOrEmpty(modBtn.filePath)) { SetError("Missing file"); return; }
+        if (IsThumbnailMissingOrTooBig()) { SetError("Thumbnail required (≤2MB)"); return; }
+
         SteamWorkshopHandler.Instance.UploadMod(
-            modButton.filePath,
-            modButton.displayName,
-            modButton.author,
-            modButton.isNSFW,
-            modButton.thumbnailPath,
-            ResolveWorkshopIdForPath(modButton.filePath),
-            modButton.progressBar != null ? modButton.progressBar : progressSlider
+            modBtn.filePath,
+            modBtn.displayName,
+            modBtn.author,
+            modBtn.isNSFW,
+            modBtn.thumbnailPath,
+            ResolveWorkshopIdForPath(modBtn.filePath),
+            modBtn.progressBar != null ? modBtn.progressBar : progressSlider
         );
+
         SetLabel("Uploading");
     }
 
     void UpdateLabel()
     {
         if (labelText == null) return;
-        bool isUpdate = ResolveWorkshopIdForPath(modButton != null ? modButton.filePath : null) != 0UL;
+        bool isUpdate = ResolveWorkshopIdForPath(modBtn != null ? modBtn.filePath : null) != 0UL;
         labelText.text = isUpdate ? fallbackUpdate : fallbackUpload;
     }
 
-    void SetLabel(string s)
-    {
-        if (labelText != null) labelText.text = s;
-    }
-
-    void SetError(string s)
-    {
-        if (errorText != null) errorText.text = s;
-    }
-
-    void ClearError()
-    {
-        if (errorText != null) errorText.text = "";
-    }
+    void SetLabel(string s) { if (labelText != null) labelText.text = s; }
+    void SetError(string s) { if (errorText != null) errorText.text = s; }
+    void ClearError() { if (errorText != null) errorText.text = ""; }
 
     bool CanUpload()
     {
-        if (button == null || modButton == null) return false;
-        if (string.IsNullOrEmpty(modButton.filePath)) return false;
-        if (!File.Exists(modButton.filePath)) return false;
+        if (btn == null || modBtn == null) return false;
+        if (string.IsNullOrEmpty(modBtn.filePath)) return false;
+        if (!File.Exists(modBtn.filePath)) return false;
         return true;
     }
 
-    void SetInteractable(bool v)
+    bool IsThumbnailMissingOrTooBig()
     {
-        if (button != null) button.interactable = v;
+        var p = modBtn != null ? modBtn.thumbnailPath : null;
+        if (string.IsNullOrEmpty(p) || !File.Exists(p)) return true;
+        var fi = new FileInfo(p);
+        if (fi.Length > MaxBytes) return true;
+        string ext = Path.GetExtension(p).ToLowerInvariant();
+        return !(ext == ".png" || ext == ".jpg" || ext == ".jpeg");
     }
+
+    bool PickThumbnail(out string savedPath)
+    {
+        savedPath = null;
+
+        var paths = StandaloneFileBrowser.OpenFilePanel(
+            "Select Thumbnail (PNG/JPG, Max 2MB)",
+            "",
+            new[] { new ExtensionFilter("Image", "png", "jpg", "jpeg") },
+            false
+        );
+        if (paths == null || paths.Length == 0) return false;
+
+        string src = paths[0];
+        if (!File.Exists(src)) return false;
+
+        var fi = new FileInfo(src);
+        if (fi.Length > MaxBytes) { SetError("Image too big (>2MB)"); return false; }
+
+        string ext = Path.GetExtension(src).ToLowerInvariant();
+        if (ext != ".png" && ext != ".jpg" && ext != ".jpeg") { SetError("Unsupported format"); return false; }
+
+        string thumbs = Path.Combine(Application.persistentDataPath, "Thumbnails");
+        Directory.CreateDirectory(thumbs);
+
+        string baseName = Path.GetFileNameWithoutExtension(modBtn.filePath);
+        string dest = Path.Combine(thumbs, baseName + (ext == ".jpeg" ? ".jpg" : ext));
+        try { File.Copy(src, dest, true); } catch { SetError("Copy failed"); return false; }
+
+        savedPath = dest;
+        return true;
+    }
+
+    void TryLoadPreviewFromPath(string path)
+    {
+        if (previewImage == null) return;
+        if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+
+        try
+        {
+            byte[] bytes = File.ReadAllBytes(path);
+            var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            tex.LoadImage(bytes);
+            previewImage.texture = tex;
+        }
+        catch { }
+    }
+
+    void SetInteractable(bool v) { if (btn != null) btn.interactable = v; }
 
     void CancelHold()
     {
-        if (holdRoutine != null)
-        {
-            StopCoroutine(holdRoutine);
-            holdRoutine = null;
-        }
+        if (holdRoutine != null) { StopCoroutine(holdRoutine); holdRoutine = null; }
     }
 
     ulong ResolveWorkshopIdForPath(string localPath)
@@ -173,8 +228,10 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
             if (string.IsNullOrEmpty(localPath)) return 0UL;
             uint count = SteamUGC.GetNumSubscribedItems();
             if (count == 0) return 0UL;
+
             var ids = new PublishedFileId_t[count];
             SteamUGC.GetSubscribedItems(ids, count);
+
             string targetName = Path.GetFileName(localPath);
             for (int i = 0; i < ids.Length; i++)
             {

@@ -569,6 +569,7 @@ MonoBehaviour:
   progressSlider: {fileID: 619381633284986650}
   labelText: {fileID: 4195120011789607674}
   errorText: {fileID: 1964366390248088687}
+  previewImage: {fileID: 4849091865800073621}
   audioSource: {fileID: 7718908701645140085}
   completeSound: {fileID: 8300000, guid: bd8c385aa551a604093624314940e2b6, type: 3}
   tickSound: {fileID: 8300000, guid: ed75ee7d66b3feb419728cbd10cbd9a2, type: 3}
