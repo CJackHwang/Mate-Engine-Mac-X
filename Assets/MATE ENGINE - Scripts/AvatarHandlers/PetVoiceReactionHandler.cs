@@ -9,41 +9,53 @@ public class PetVoiceReactionHandler : MonoBehaviour
         public string name;
         public bool IsHusbando;
         public HumanBodyBones targetBone;
-        public Vector3 offset, worldOffset;
+        public Vector3 offset;
+        public Vector3 worldOffset;
         public float hoverRadius = 50f;
-        public Color gizmoColor = new(1f, 0.5f, 0f, 0.25f);
-        public List<AudioClip> voiceClips = new();
-        public AnimationClip hoverAnimation, faceAnimation;
-        public bool enableHoverObject, bindHoverObjectToBone, enableLayeredSound;
+        public Color gizmoColor = new Color(1f, 0.5f, 0f, 0.25f);
+        public List<AudioClip> voiceClips = new List<AudioClip>();
+        public string hoverAnimationState;
+        public string hoverAnimationLayer;
+        public string hoverAnimationParameter;
+        public string faceAnimationState;
+        public string faceAnimationLayer;
+        public string faceAnimationParameter;
+        public bool enableHoverObject;
+        public bool bindHoverObjectToBone;
+        public bool enableLayeredSound;
         public GameObject hoverObject;
         [Range(0.1f, 10f)] public float despawnAfterSeconds = 5f;
-        public List<AudioClip> layeredVoiceClips = new();
+        public List<AudioClip> layeredVoiceClips = new List<AudioClip>();
         [HideInInspector] public bool wasHovering;
         [HideInInspector] public Transform bone;
     }
-
 
     class HoverInstance { public GameObject obj; public float despawnTime; }
 
     public static bool GlobalHoverObjectsEnabled = true;
     public Animator avatarAnimator;
-    public List<VoiceRegion> regions = new();
-    [Header("Source Settings")]
-    public AudioSource voiceAudioSource, layeredAudioSource;
-    public string hoverTriggerParam = "HoverTrigger", hoverFaceTriggerParam = "HoverFaceTrigger";
+    public List<VoiceRegion> regions = new List<VoiceRegion>();
+    public AudioSource voiceAudioSource;
+    public AudioSource layeredAudioSource;
     public bool showDebugGizmos = true;
-    [SerializeField] public List<string> stateWhitelist = new();
+    [SerializeField] public List<string> stateWhitelist = new List<string>();
 
     Camera cachedCamera;
-    readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new();
-    AnimatorOverrideController overrideController;
-    RuntimeAnimatorController lastController;
+    readonly Dictionary<VoiceRegion, List<HoverInstance>> pool = new Dictionary<VoiceRegion, List<HoverInstance>>();
     bool hasSetup;
 
     static readonly int isMaleHash = Animator.StringToHash("isMale");
 
-    void Start() { if (!hasSetup) TrySetup(); }
-    public void SetAnimator(Animator a) { avatarAnimator = a; hasSetup = false; }
+    void Start()
+    {
+        if (!hasSetup) TrySetup();
+    }
+
+    public void SetAnimator(Animator a)
+    {
+        avatarAnimator = a;
+        hasSetup = false;
+    }
 
     void TrySetup()
     {
@@ -51,16 +63,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
         if (!voiceAudioSource) voiceAudioSource = gameObject.AddComponent<AudioSource>();
         if (!layeredAudioSource) layeredAudioSource = gameObject.AddComponent<AudioSource>();
         cachedCamera = Camera.main;
-
-        var baseCtrl = avatarAnimator.runtimeAnimatorController;
-        if (!baseCtrl) return;
-
-        if (overrideController == null || baseCtrl != lastController)
-        {
-            overrideController = baseCtrl is AnimatorOverrideController oc ? oc : new AnimatorOverrideController(baseCtrl);
-            avatarAnimator.runtimeAnimatorController = overrideController;
-            lastController = baseCtrl;
-        }
 
         foreach (var region in regions)
         {
@@ -188,16 +190,18 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     void TriggerAnim(VoiceRegion region, bool state)
     {
-        if (region.hoverAnimation && overrideController != null)
-        {
-            overrideController["HoverReaction"] = region.hoverAnimation;
-            avatarAnimator.SetBool(hoverTriggerParam, state);
-        }
-        if (region.faceAnimation && overrideController != null)
-        {
-            overrideController["HoverFace"] = region.faceAnimation;
-            avatarAnimator.SetBool(hoverFaceTriggerParam, state);
-        }
+        if (avatarAnimator == null) return;
+        if (HasBool("isCustomDancing") && avatarAnimator.GetBool("isCustomDancing")) return;
+
+        if (!string.IsNullOrEmpty(region.hoverAnimationParameter) && HasBool(region.hoverAnimationParameter))
+            avatarAnimator.SetBool(region.hoverAnimationParameter, state);
+        else if (!string.IsNullOrEmpty(region.hoverAnimationState))
+            avatarAnimator.CrossFadeInFixedTime(region.hoverAnimationState, 0.1f, GetLayerIndexByName(region.hoverAnimationLayer));
+
+        if (!string.IsNullOrEmpty(region.faceAnimationParameter) && HasBool(region.faceAnimationParameter))
+            avatarAnimator.SetBool(region.faceAnimationParameter, state);
+        else if (!string.IsNullOrEmpty(region.faceAnimationState))
+            avatarAnimator.CrossFadeInFixedTime(region.faceAnimationState, 0.1f, GetLayerIndexByName(region.faceAnimationLayer));
     }
 
     void PlayRandomVoice(VoiceRegion region)
@@ -213,12 +217,13 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     bool IsStateAllowed()
     {
-        if (avatarAnimator == null || stateWhitelist == null || stateWhitelist.Count == 0)
-            return false;
+        if (avatarAnimator == null || stateWhitelist == null || stateWhitelist.Count == 0) return false;
         var currentState = avatarAnimator.GetCurrentAnimatorStateInfo(0);
-        foreach (var allowed in stateWhitelist)
-            if (!string.IsNullOrEmpty(allowed) && currentState.IsName(allowed))
-                return true;
+        for (int i = 0; i < stateWhitelist.Count; i++)
+        {
+            var allowed = stateWhitelist[i];
+            if (!string.IsNullOrEmpty(allowed) && currentState.IsName(allowed)) return true;
+        }
         return false;
     }
 
@@ -230,6 +235,15 @@ public class PetVoiceReactionHandler : MonoBehaviour
         return region.IsHusbando ? isMale : !isMale;
     }
 
+    int GetLayerIndexByName(string layerName)
+    {
+        if (string.IsNullOrEmpty(layerName)) return 0;
+        int count = avatarAnimator.layerCount;
+        for (int i = 0; i < count; i++)
+            if (avatarAnimator.GetLayerName(i) == layerName) return i;
+        return 0;
+    }
+
     bool HasParam(int hash)
     {
         var ps = avatarAnimator.parameters;
@@ -238,12 +252,34 @@ public class PetVoiceReactionHandler : MonoBehaviour
         return false;
     }
 
+    bool HasBool(string name)
+    {
+        var ps = avatarAnimator.parameters;
+        for (int i = 0; i < ps.Length; i++)
+            if (ps[i].type == AnimatorControllerParameterType.Bool && ps[i].name == name) return true;
+        return false;
+    }
+
+    public void ResetAfterDance()
+    {
+        if (avatarAnimator == null) return;
+        for (int i = 0; i < regions.Count; i++)
+        {
+            regions[i].wasHovering = false;
+            if (!string.IsNullOrEmpty(regions[i].hoverAnimationParameter) && HasBool(regions[i].hoverAnimationParameter))
+                avatarAnimator.SetBool(regions[i].hoverAnimationParameter, false);
+            if (!string.IsNullOrEmpty(regions[i].faceAnimationParameter) && HasBool(regions[i].faceAnimationParameter))
+                avatarAnimator.SetBool(regions[i].faceAnimationParameter, false);
+        }
+    }
+
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
         if (!showDebugGizmos || !Application.isPlaying || !cachedCamera || !avatarAnimator) return;
-        foreach (var region in regions)
+        for (int i = 0; i < regions.Count; i++)
         {
+            var region = regions[i];
             if (!region.bone) continue;
             float scale = region.bone.lossyScale.magnitude;
             Vector3 center = region.bone.position + region.bone.TransformVector(region.offset) + region.worldOffset;
@@ -252,20 +288,4 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
     }
 #endif
-}
-
-public static class ListExt
-{
-    public static T MinByOrDefault<T, TKey>(this List<T> list, System.Func<T, TKey> selector) where TKey : System.IComparable<TKey>
-    {
-        if (list == null || list.Count == 0) return default;
-        int minIdx = 0;
-        TKey min = selector(list[0]);
-        for (int i = 1; i < list.Count; i++)
-        {
-            TKey val = selector(list[i]);
-            if (val.CompareTo(min) < 0) { min = val; minIdx = i; }
-        }
-        return list[minIdx];
-    }
 }

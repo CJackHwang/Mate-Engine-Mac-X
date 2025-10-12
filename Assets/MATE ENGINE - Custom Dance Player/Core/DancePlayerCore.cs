@@ -153,28 +153,25 @@ namespace CustomDancePlayer
                 _startAnimationCoroutine = null;
             }
 
-            avatarHelper.CurrentAudioSource.Stop();
-            avatarHelper.CurrentAnimator.SetBool("isDancing", false);
+            if (avatarHelper.CurrentAudioSource != null)
+                avatarHelper.CurrentAudioSource.Stop();
 
-            if (avatarHelper.DefaultAnimatorController != null)
+            var anim = avatarHelper.CurrentAnimator;
+            if (anim != null)
             {
-                avatarHelper.CurrentAnimator.runtimeAnimatorController = avatarHelper.DefaultAnimatorController;
+                if (anim.HasParameterOfType("isCustomDancing", AnimatorControllerParameterType.Bool))
+                    anim.SetBool("isCustomDancing", false);
+                if (anim.HasParameterOfType("isDancing", AnimatorControllerParameterType.Bool))
+                    anim.SetBool("isDancing", false);
             }
 
-            if (avatarHelper.TargetSMR != null)
-            {
-                var proxy = avatarHelper.CurrentAnimator.GetComponent<UniversalBlendshapes>();
-                if (proxy != null) proxy.enabled = true;
-            }
-            else
-            {
-                avatarHelper.RestoreOriginalBody();
-            }
+            avatarHelper.StopCustomDance();
 
             resourceManager.UnloadCurrentResource();
             _settingsHandler.data.isPlaying = false;
             DanceSettingsHandler.OnSettingChanged();
         }
+
 
         private IEnumerator WaitForAudioThenStartAnimation(Animator animator, AnimationClip clip, float extraDelay)
         {
