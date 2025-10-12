@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using Steamworks;
 
 public class MEModHandler : MonoBehaviour
 {
@@ -109,7 +110,7 @@ public class MEModHandler : MonoBehaviour
             catch { }
         }
 
-        var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null, enabled = enable };
+        var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null, enabled = enable, author = "Author: Unknown" };
         loadedMods.Add(entry);
         if (addToUI) AddToModListUI(entry, enable);
     }
@@ -176,7 +177,23 @@ public class MEModHandler : MonoBehaviour
             catch { }
         }
 
-        var entry = new ModEntry { name = id, instance = null, localPath = mePath, extractedPath = extractedDir, type = ModType.MEDance, enabled = enable };
+        string author = "Author: Unknown";
+        var metaPath = Path.Combine(extractedDir, "dance_meta.json");
+        if (File.Exists(metaPath))
+        {
+            try
+            {
+                var json = File.ReadAllText(metaPath);
+                var meta = JsonUtility.FromJson<DanceMeta>(json);
+                string cand = null;
+                if (!string.IsNullOrWhiteSpace(meta.songAuthor)) cand = meta.songAuthor;
+                else if (!string.IsNullOrWhiteSpace(meta.mmdAuthor)) cand = meta.mmdAuthor;
+                if (!string.IsNullOrWhiteSpace(cand)) author = "Author: " + cand;
+            }
+            catch { }
+        }
+
+        var entry = new ModEntry { name = id, instance = null, localPath = mePath, extractedPath = extractedDir, type = ModType.MEDance, enabled = enable, author = author };
         loadedMods.Add(entry);
         AddToModListUI(entry, enable);
     }
@@ -252,7 +269,7 @@ public class MEModHandler : MonoBehaviour
         bool initialState = GetSavedStateOrDefault(id, true);
         instance.SetActive(initialState);
 
-        var entry = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState };
+        var entry = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = "Author: Unknown" };
         loadedMods.Add(entry);
         AddToModListUI(entry, initialState);
     }
@@ -347,8 +364,16 @@ public class MEModHandler : MonoBehaviour
         var entry = Instantiate(modEntryPrefab, modListContainer);
         entry.name = "Mod_" + mod.name;
 
-        var nt = entry.transform.Find("ModNameText")?.GetComponent<TextMeshProUGUI>();
-        if (nt != null) nt.text = mod.name;
+        var title = FindChildByName<TMP_Text>(entry.transform, "Title");
+        if (title == null)
+        {
+            var legacy = FindChildByName<TextMeshProUGUI>(entry.transform, "ModNameText");
+            if (legacy != null) title = legacy;
+        }
+        if (title != null) title.text = mod.name;
+
+        var author = FindChildByName<TMP_Text>(entry.transform, "Author");
+        if (author != null) author.text = string.IsNullOrWhiteSpace(mod.author) ? "Author: Unknown" : mod.author;
 
         var tog = entry.GetComponentInChildren<Toggle>(true);
         if (tog != null)
@@ -374,12 +399,80 @@ public class MEModHandler : MonoBehaviour
             }
         }
 
-        var btn = entry.GetComponentInChildren<Button>(true);
-        if (btn != null) btn.onClick.AddListener(() => RemoveMod(mod, entry));
+        var uploadBtn = FindChildByName<Button>(entry.transform, "Upload");
+        if (uploadBtn != null)
+        {
+            var up = uploadBtn.GetComponent<ModUploadButton>();
+            var progress = FindChildByName<Slider>(entry.transform, "Progress");
+            if (up != null)
+            {
+                up.button = uploadBtn;
+                up.filePath = mod.localPath;
+                up.displayName = mod.name;
+                up.author = mod.author.StartsWith("Author: ") ? mod.author.Substring(8) : mod.author;
+                up.isNSFW = false;
+                up.thumbnailPath = null;
+                up.progressBar = progress;
+            }
+            else
+            {
+                uploadBtn.onClick.AddListener(() =>
+                {
+                    var handler = FindFirstObjectByType<SteamWorkshopHandler>();
+                    if (handler != null) handler.BeginUploadMod(mod.localPath, progress);
+                });
+            }
+        }
+
+        var removeBtn = FindChildByName<Button>(entry.transform, "Remove");
+        if (removeBtn != null)
+        {
+            var rm = removeBtn.GetComponent<ModRemoveButton>();
+            if (rm != null)
+            {
+                rm.button = removeBtn;
+                rm.filePath = mod.localPath;
+                rm.workshopId = ResolveWorkshopIdForPath(mod.localPath);
+            }
+            else
+            {
+                removeBtn.onClick.AddListener(() => RemoveMod(mod, entry));
+            }
+        }
 
         var hueShifter = FindFirstObjectByType<MenuHueShift>();
         if (hueShifter != null) hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
+
+    ulong ResolveWorkshopIdForPath(string localPath)
+    {
+        try
+        {
+            if (!SteamManager.Initialized) return 0UL;
+            uint count = SteamUGC.GetNumSubscribedItems();
+            if (count == 0) return 0UL;
+
+            var ids = new Steamworks.PublishedFileId_t[count];
+            SteamUGC.GetSubscribedItems(ids, count);
+
+            string targetName = Path.GetFileName(localPath);
+            for (int i = 0; i < ids.Length; i++)
+            {
+                if (!SteamUGC.GetItemInstallInfo(ids[i], out ulong _, out string installPath, 1024, out uint _)) continue;
+                if (string.IsNullOrEmpty(installPath) || !Directory.Exists(installPath)) continue;
+                var top = Directory.GetFiles(installPath, "*", SearchOption.TopDirectoryOnly);
+                for (int f = 0; f < top.Length; f++)
+                {
+                    if (string.Equals(Path.GetFileName(top[f]), targetName, StringComparison.OrdinalIgnoreCase))
+                        return ids[i].m_PublishedFileId;
+                }
+            }
+        }
+        catch { }
+        return 0UL;
+    }
+
+
 
     void HandleDanceToggle(ModEntry mod, bool enable)
     {
@@ -441,6 +534,15 @@ public class MEModHandler : MonoBehaviour
         Destroy(ui);
     }
 
+    T FindChildByName<T>(Transform root, string name) where T : Component
+    {
+        if (root == null || string.IsNullOrEmpty(name)) return null;
+        var trs = root.GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < trs.Length; i++)
+            if (trs[i].name == name) return trs[i].GetComponent<T>();
+        return null;
+    }
+
     Type ResolveType(string name)
     {
         var t = Type.GetType(name);
@@ -453,8 +555,18 @@ public class MEModHandler : MonoBehaviour
         return null;
     }
 
-    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; }
+    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; }
     enum ModType { MEObject, Unity3D, MEDance }
     [Serializable] class RefPathMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
     [Serializable] class SceneLinkMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
+
+    [Serializable]
+    class DanceMeta
+    {
+        public string songName;
+        public string songAuthor;
+        public string mmdAuthor;
+        public float songLength;
+        public string placeholderClipName;
+    }
 }

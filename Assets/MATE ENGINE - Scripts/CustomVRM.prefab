@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 1.0999413, y: 1.0999413, z: 1.0999413}
+  m_LocalScale: {x: 0.98008156, y: 0.98008156, z: 0.98008156}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -90,21 +90,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
-  SOUND_THRESHOLD: 0.2
+  SOUND_THRESHOLD: 0.01
   allowedApps:
   - spotify
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
   DANCE_CLIP_COUNT: 8
-  enableDancing: 0
-  enableDanceSwitch: 1
+  enableDancing: 1
+  enableDanceSwitch: 0
   DANCE_SWITCH_TIME: 15
   DANCE_TRANSITION_TIME: 2
   BlockDraggingOverride: 0
   isDragging: 0
   isDancing: 0
   isIdle: 0
+  enableHusbandoMode: 0
 --- !u!114 &1268294433761061288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +257,7 @@ MonoBehaviour:
   avatarAnimator: {fileID: 5500079421849817615}
   regions:
   - name: Head
+    IsHusbando: 0
     targetBone: 10
     offset: {x: 0, y: 0.1, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
@@ -265,8 +267,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 0503b96a1deba7d4999c690bfda8c62d, type: 3}
     - {fileID: 8300000, guid: 12d43b9bd2bce7e4bb21480737a75289, type: 3}
     - {fileID: 8300000, guid: a11b9567942a319429e077e92ce422a5, type: 3}
-    hoverAnimation: {fileID: 7400000, guid: a5e8cc322431f4b43aa7762aab58f93d, type: 2}
-    faceAnimation: {fileID: 0}
+    hoverAnimationState: 
+    hoverAnimationLayer: 
+    hoverAnimationParameter: 
+    faceAnimationState: 
+    faceAnimationLayer: 
+    faceAnimationParameter: 
     enableHoverObject: 1
     bindHoverObjectToBone: 1
     enableLayeredSound: 1
@@ -280,6 +286,7 @@ MonoBehaviour:
     wasHovering: 0
     bone: {fileID: 0}
   - name: Intimate Down
+    IsHusbando: 0
     targetBone: 7
     offset: {x: 0, y: -0.1, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
@@ -289,8 +296,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3111834b265af1444bbb8f866d1e5d2f, type: 3}
     - {fileID: 8300000, guid: df6a9bf6a2119624ba42e29adad8ea83, type: 3}
     - {fileID: 8300000, guid: 780403cc2ef954c459c41ecb4b277600, type: 3}
-    hoverAnimation: {fileID: 7400000, guid: b66f0269d52c2b140a5a7135e3a5df76, type: 2}
-    faceAnimation: {fileID: 0}
+    hoverAnimationState: 
+    hoverAnimationLayer: 
+    hoverAnimationParameter: 
+    faceAnimationState: 
+    faceAnimationLayer: 
+    faceAnimationParameter: 
     enableHoverObject: 0
     bindHoverObjectToBone: 0
     enableLayeredSound: 0
@@ -300,6 +311,7 @@ MonoBehaviour:
     wasHovering: 0
     bone: {fileID: 0}
   - name: Left Hand Smile
+    IsHusbando: 0
     targetBone: 17
     offset: {x: 0, y: 0, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
@@ -310,8 +322,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: ada3a74a5f4528c4e80fa6e4219a4511, type: 3}
     - {fileID: 8300000, guid: d53d85d4407004141bd13fece130ee46, type: 3}
     - {fileID: 8300000, guid: ee768ab1b58337548800696f718fe344, type: 3}
-    hoverAnimation: {fileID: 0}
-    faceAnimation: {fileID: 0}
+    hoverAnimationState: 
+    hoverAnimationLayer: 
+    hoverAnimationParameter: 
+    faceAnimationState: 
+    faceAnimationLayer: 
+    faceAnimationParameter: 
     enableHoverObject: 0
     bindHoverObjectToBone: 0
     enableLayeredSound: 0
@@ -321,6 +337,7 @@ MonoBehaviour:
     wasHovering: 0
     bone: {fileID: 0}
   - name: Right Hand Smile
+    IsHusbando: 0
     targetBone: 18
     offset: {x: 0, y: 0, z: 0}
     worldOffset: {x: 0, y: 0, z: 0}
@@ -331,8 +348,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: ada3a74a5f4528c4e80fa6e4219a4511, type: 3}
     - {fileID: 8300000, guid: d53d85d4407004141bd13fece130ee46, type: 3}
     - {fileID: 8300000, guid: ee768ab1b58337548800696f718fe344, type: 3}
-    hoverAnimation: {fileID: 0}
-    faceAnimation: {fileID: 0}
+    hoverAnimationState: 
+    hoverAnimationLayer: 
+    hoverAnimationParameter: 
+    faceAnimationState: 
+    faceAnimationLayer: 
+    faceAnimationParameter: 
     enableHoverObject: 0
     bindHoverObjectToBone: 0
     enableLayeredSound: 0
@@ -343,8 +364,6 @@ MonoBehaviour:
     bone: {fileID: 0}
   voiceAudioSource: {fileID: 0}
   layeredAudioSource: {fileID: 0}
-  hoverTriggerParam: HoverTrigger
-  hoverFaceTriggerParam: HoverFaceTrigger
   showDebugGizmos: 1
   stateWhitelist: []
 --- !u!114 &76249201430738456
