@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\avatardanceplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatardanceplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\apis\\steamworkshophandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\apis\\steamworkshophandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -35,10 +39,6 @@
       "RelativeMoniker": "D:0:0:{DFC08D86-C184-5CFD-5197-2E1F4216E7DB}|VrmLibTests.csproj|solutionrelative:assets\\mate engine - packages\\vrm10\\vrmlib\\tests\\modeltests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\avatardanceplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\avatardanceplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\assets\\editor\\modexporterwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D02BA264-C294-9FB2-F0E4-3F8192B19800}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\editor\\modexporterwindow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -50,35 +50,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ModUploadHoldHandler.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModUploadHoldHandler.cs",
-              "RelativeDocumentMoniker": "Assets\\ModUploadHoldHandler.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModUploadHoldHandler.cs",
-              "RelativeToolTip": "Assets\\ModUploadHoldHandler.cs",
-              "ViewState": "AgIAAPIAAAAAAAAAAAAAwCcBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T17:34:33.22Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ModRemoveButton.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModRemoveButton.cs",
-              "RelativeDocumentMoniker": "Assets\\ModRemoveButton.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModRemoveButton.cs",
-              "RelativeToolTip": "Assets\\ModRemoveButton.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwEQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T17:17:02.211Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "MEModHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\MEModHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\MEModHandler.cs",
@@ -90,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ModUploadButton.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModUploadButton.cs",
               "RelativeDocumentMoniker": "Assets\\ModUploadButton.cs",
@@ -102,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "SteamWorkshopHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopHandler.cs",
@@ -115,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "SteamWorkshopAutoLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopAutoLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopAutoLoader.cs",
@@ -127,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ModelTests.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Packages\\VRM10\\vrmlib\\Tests\\ModelTests.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Packages\\VRM10\\vrmlib\\Tests\\ModelTests.cs",
@@ -139,7 +115,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
+              "Title": "AvatarDancePlayer.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarDancePlayer.cs",
+              "RelativeDocumentMoniker": "Assets\\AvatarDancePlayer.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarDancePlayer.cs",
+              "RelativeToolTip": "Assets\\AvatarDancePlayer.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwCIAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T15:40:04.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ModRemoveButton.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModRemoveButton.cs",
+              "RelativeDocumentMoniker": "Assets\\ModRemoveButton.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModRemoveButton.cs",
+              "RelativeToolTip": "Assets\\ModRemoveButton.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T17:17:02.211Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ModUploadHoldHandler.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModUploadHoldHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\ModUploadHoldHandler.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\ModUploadHoldHandler.cs",
+              "RelativeToolTip": "Assets\\ModUploadHoldHandler.cs",
+              "ViewState": "AgIAAPIAAAAAAAAAAAAAwCcBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-12T17:34:33.22Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "UploadButtonHoldHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\UploadButtonHoldHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\UploadButtonHoldHandler.cs",
@@ -148,18 +161,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-12T17:13:05.768Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AvatarDancePlayer.cs",
-              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarDancePlayer.cs",
-              "RelativeDocumentMoniker": "Assets\\AvatarDancePlayer.cs",
-              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\AvatarDancePlayer.cs",
-              "RelativeToolTip": "Assets\\AvatarDancePlayer.cs",
-              "ViewState": "AgIAAO8BAAAAAAAAAAAuwBgAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T15:40:04.192Z"
             },
             {
               "$type": "Document",
