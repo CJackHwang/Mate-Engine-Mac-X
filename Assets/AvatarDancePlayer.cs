@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +30,9 @@ namespace CustomDancePlayer
         public string danceStateName = "Custom Dance";
         public string placeholderClipName = "CUSTOM_DANCE";
         public string customDancingParam = "isCustomDancing";
+        AnimationClip placeholderClipCached;
+        Coroutine playRoutine;
+        bool autoNextScheduled;
 
         [Header("Prefab Settings")]
         public Transform contentObject;
@@ -59,10 +62,17 @@ namespace CustomDancePlayer
         float playStartTime = 0f;
         bool isPlaying = false;
 
+        HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
+        "まばたき","ウィンク","ウィンク２","ウィンク右","笑い","なごみ","びっくり","ジト目","瞳小","キリッ","星目","はぁと","はちゅ目","はっ","ハイライト消し","怒るいい子！",
+        "あ","い","う","え","お","えーん","ん","▲","口","ω口","はんっ！","にっこり","にやり","にやり２","べろっ","てへぺろ","口角上げ","口角下げ","口横広げ","真面目","上下","困る","怒り","照れ","涙","すぼめ"
+},      StringComparer.Ordinal);
+
+
         class DanceEntry
         {
             public string id;
             public string path;
+            public string bundlePath;
             public AnimationClip clip;
             public AudioClip audio;
             public AssetBundle bundle;
@@ -83,6 +93,7 @@ namespace CustomDancePlayer
 
         readonly List<DanceEntry> entries = new();
         readonly Dictionary<string, DanceEntry> byId = new(StringComparer.OrdinalIgnoreCase);
+        DanceEntry loadedEntry = null;
 
         void Awake()
         {
@@ -113,11 +124,7 @@ namespace CustomDancePlayer
             bool dancingOn = animator != null && HasBool(customDancingParam) && animator.GetBool(customDancingParam);
             if (isPlaying && !dancingOn)
             {
-                if (audioSource != null) audioSource.Stop();
-                isPlaying = false;
-                UpdatePlayingNowLabel(null);
-                UpdateAuthorLabel(null);
-                UpdateTimeLabels(0f, 0f);
+                StopAndUnload();
             }
 
             float total = currentTotalSeconds;
@@ -141,7 +148,42 @@ namespace CustomDancePlayer
             else if (progressSlider != null) progressSlider.value = 0f;
 
             UpdateTimeLabels(elapsed, total);
+            if (isPlaying && total > 0f)
+            {
+                bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && !audioSource.isPlaying;
+                bool timeReached = elapsed >= total - 0.05f;
+                if (audioEnded || timeReached) TryAutoNext();
+            }
+
         }
+
+        bool IsMMDName(string n)
+        {
+            if (string.IsNullOrEmpty(n)) return false;
+            if (mmdBlendShapeNames.Contains(n)) return true;
+            if (n.StartsWith("mmd_", StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
+
+        void ResetMMDBlendShapes()
+        {
+            if (animator == null) return;
+            var root = animator.gameObject;
+            var renderers = root.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            for (int r = 0; r < renderers.Length; r++)
+            {
+                var smr = renderers[r];
+                var mesh = smr.sharedMesh;
+                if (mesh == null) continue;
+                int count = mesh.blendShapeCount;
+                for (int i = 0; i < count; i++)
+                {
+                    string bs = mesh.GetBlendShapeName(i);
+                    if (IsMMDName(bs)) smr.SetBlendShapeWeight(i, 0f);
+                }
+            }
+        }
+
 
         bool HasBool(string name)
         {
@@ -228,7 +270,10 @@ namespace CustomDancePlayer
 
         void LoadAllSources()
         {
-            foreach (var e in entries) { try { e.bundle?.Unload(true); } catch { } }
+            UnloadEntry(loadedEntry);
+            loadedEntry = null;
+
+            foreach (var e in entries) { try { e.bundle?.Unload(true); } catch { } e.bundle = null; e.clip = null; e.audio = null; }
             entries.Clear();
             byId.Clear();
 
@@ -261,25 +306,14 @@ namespace CustomDancePlayer
             string id = Path.GetFileNameWithoutExtension(path);
             if (byId.ContainsKey(id)) return;
 
-            var bundle = AssetBundle.LoadFromFile(path);
-            if (bundle == null) return;
-
-            var clip = bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
-            var audio = bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
-
-            if (clip == null && audio == null)
-            {
-                try { bundle.Unload(true); } catch { }
-                return;
-            }
-
             var e = new DanceEntry
             {
                 id = id,
                 path = path,
-                clip = clip,
-                audio = audio,
-                bundle = bundle,
+                bundlePath = path,
+                clip = null,
+                audio = null,
+                bundle = null,
                 fromME = false,
                 extractedDir = null,
                 author = unknownAuthorLabel
@@ -318,18 +352,6 @@ namespace CustomDancePlayer
             string bundlePath = Directory.GetFiles(dst, "*.bundle", SearchOption.AllDirectories).FirstOrDefault();
             if (string.IsNullOrEmpty(bundlePath) || !File.Exists(bundlePath)) return;
 
-            var bundle = AssetBundle.LoadFromFile(bundlePath);
-            if (bundle == null) return;
-
-            var clip = bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
-            var audio = bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
-
-            if (clip == null && audio == null)
-            {
-                try { bundle.Unload(true); } catch { }
-                return;
-            }
-
             string metaAuthor = unknownAuthorLabel;
             string metaPath = Path.Combine(dst, "dance_meta.json");
             if (File.Exists(metaPath))
@@ -350,9 +372,10 @@ namespace CustomDancePlayer
             {
                 id = id,
                 path = mePath,
-                clip = clip,
-                audio = audio,
-                bundle = bundle,
+                bundlePath = bundlePath,
+                clip = null,
+                audio = null,
+                bundle = null,
                 fromME = true,
                 extractedDir = dst,
                 author = metaAuthor
@@ -399,7 +422,6 @@ namespace CustomDancePlayer
             return null;
         }
 
-
         void PlayPrev()
         {
             if (entries.Count == 0) return;
@@ -417,11 +439,12 @@ namespace CustomDancePlayer
         bool EnsureAnimatorReady()
         {
             RefreshAnimatorIfChanged();
-            if (animator == null) return false;
             if (defaultController == null) defaultController = animator.runtimeAnimatorController;
             if (layerIndex < 0) layerIndex = animator.GetLayerIndex(danceLayerName);
             if (stateHash == 0) stateHash = Animator.StringToHash(danceStateName);
+            if (placeholderClipCached == null) placeholderClipCached = FindPlaceholderClip(defaultController, placeholderClipName);
             return true;
+
         }
 
         AnimationClip FindPlaceholderClip(RuntimeAnimatorController ctrl, string name)
@@ -438,17 +461,37 @@ namespace CustomDancePlayer
             if (index < 0 || index >= entries.Count) return false;
             if (!EnsureAnimatorReady()) return false;
 
+            if (playRoutine != null) StopCoroutine(playRoutine);
+            playRoutine = StartCoroutine(PlayFlow(index));
+            return true;
+        }
+
+        IEnumerator PlayFlow(int index)
+        {
+            var prev = loadedEntry;
+
             StopImmediateForRestart();
+            ResetMMDBlendShapes();
+            yield return null;
 
             var e = entries[index];
+
+            if (e.bundle == null)
+            {
+                string bp = string.IsNullOrEmpty(e.bundlePath) ? e.path : e.bundlePath;
+                e.bundle = AssetBundle.LoadFromFile(bp);
+                if (e.bundle == null) yield break;
+            }
+            if (e.clip == null) e.clip = e.bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
+            if (e.audio == null) e.audio = e.bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
 
             if (overrideController != null) Destroy(overrideController);
             overrideController = new AnimatorOverrideController(defaultController);
 
-            var placeholder = FindPlaceholderClip(defaultController, placeholderClipName);
-            if (placeholder == null) return false;
+            if (placeholderClipCached == null) placeholderClipCached = FindPlaceholderClip(defaultController, placeholderClipName);
+            if (placeholderClipCached == null) yield break;
 
-            if (e.clip != null) overrideController[placeholderClipName] = e.clip;
+            overrideController[placeholderClipName] = e.clip != null ? e.clip : placeholderClipCached;
             animator.runtimeAnimatorController = overrideController;
 
             bool hasParam = false;
@@ -458,7 +501,6 @@ namespace CustomDancePlayer
             if (hasParam) animator.SetBool(customDancingParam, true);
 
             animator.Play(stateHash, layerIndex, 0f);
-            animator.Update(0f);
 
             if (audioSource == null) EnsureAudioSource();
             if (audioSource != null)
@@ -475,27 +517,70 @@ namespace CustomDancePlayer
             isPlaying = true;
 
             currentIndex = index;
+            loadedEntry = e;
             UpdatePlayingNowLabel(e.id);
             UpdateAuthorLabel(e.author);
             UpdateTimeLabels(0f, currentTotalSeconds);
-            return true;
+
+            if (prev != null && prev != e) UnloadEntry(prev);
+            playRoutine = null;
         }
+
+        void StopAndUnload()
+        {
+            if (audioSource != null)
+            {
+                try { audioSource.Stop(); } catch { }
+                try { if (audioSource.clip != null) audioSource.clip.UnloadAudioData(); } catch { }
+                audioSource.clip = null;
+            }
+
+            if (animator != null)
+            {
+                if (overrideController != null && placeholderClipCached != null)
+                    overrideController[placeholderClipName] = placeholderClipCached;
+
+                for (int i = 0; i < animator.parameters.Length; i++)
+                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool &&
+                        animator.parameters[i].name == customDancingParam)
+                        animator.SetBool(customDancingParam, false);
+            }
+
+            isPlaying = false;
+            UpdatePlayingNowLabel(null);
+            UpdateAuthorLabel(null);
+            UpdateTimeLabels(0f, 0f);
+            StartCoroutine(UnloadUnusedAssetsRoutine());
+        }
+
 
         void StopImmediateForRestart()
         {
-            if (audioSource != null) audioSource.Stop();
+            ResetMMDBlendShapes();
+            if (audioSource != null)
+            {
+                try { audioSource.Stop(); } catch { }
+                try { if (audioSource.clip != null) audioSource.clip.UnloadAudioData(); } catch { }
+                audioSource.clip = null;
+            }
             if (animator != null)
             {
+                if (overrideController != null && placeholderClipCached != null)
+                    overrideController[placeholderClipName] = placeholderClipCached;
                 for (int i = 0; i < animator.parameters.Length; i++)
-                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool && animator.parameters[i].name == customDancingParam)
+                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool &&
+                        animator.parameters[i].name == customDancingParam)
                         animator.SetBool(customDancingParam, false);
-                animator.Update(0f);
             }
             isPlaying = false;
         }
 
+
+
+
         public void StopPlay()
         {
+            ResetMMDBlendShapes();
             if (!EnsureAnimatorReady())
             {
                 isPlaying = false;
@@ -504,16 +589,16 @@ namespace CustomDancePlayer
                 UpdateTimeLabels(0f, 0f);
                 return;
             }
+            StopAndUnload();
+        }
 
-            if (audioSource != null) audioSource.Stop();
-            foreach (var p in animator.parameters)
-                if (p.name == customDancingParam && p.type == AnimatorControllerParameterType.Bool)
-                    animator.SetBool(customDancingParam, false);
-
-            isPlaying = false;
-            UpdatePlayingNowLabel(null);
-            UpdateAuthorLabel(null);
-            UpdateTimeLabels(0f, 0f);
+        void UnloadEntry(DanceEntry e)
+        {
+            if (e == null) return;
+            try { if (e.bundle != null) e.bundle.Unload(true); } catch { }
+            e.bundle = null;
+            e.clip = null;
+            e.audio = null;
         }
 
         void UpdatePlayingNowLabel(string nameOrNull)
@@ -551,9 +636,28 @@ namespace CustomDancePlayer
 
         void OnDestroy()
         {
+            UnloadEntry(loadedEntry);
             foreach (var e in entries) { try { e.bundle?.Unload(true); } catch { } }
             entries.Clear();
             byId.Clear();
         }
+        IEnumerator UnloadUnusedAssetsRoutine()
+        {
+            yield return Resources.UnloadUnusedAssets();
+        }
+        void TryAutoNext()
+        {
+            if (autoNextScheduled) return;
+            autoNextScheduled = true;
+            StartCoroutine(AutoNextCo());
+        }
+        IEnumerator AutoNextCo()
+        {
+            yield return null;
+            PlayNext();
+            autoNextScheduled = false;
+        }
+
+
     }
 }
