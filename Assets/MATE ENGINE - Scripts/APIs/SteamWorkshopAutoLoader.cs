@@ -66,6 +66,8 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
         isRefreshing = true;
         hadChangesLastRun = false;
 
+
+
         try
         {
             uint count = SteamUGC.GetNumSubscribedItems();
@@ -113,12 +115,14 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
                     if (isDance)
                     {
                         CopyToMods(file, needsUpdate);
+                        CopyThumbFromME(file);   
                         NotifyMods();
                         continue;
                     }
                     HandleAvatarFile(fileId, file, needsUpdate, ref avatarChanged);
                     continue;
                 }
+
 
                 if (ext == ".vrm")
                 {
@@ -364,4 +368,26 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
     {
         RefreshWorkshopItems();
     }
+
+    void CopyThumbFromME(string mePath)
+    {
+        try
+        {
+            using var fs = File.OpenRead(mePath);
+            using var zip = new System.IO.Compression.ZipArchive(fs, System.IO.Compression.ZipArchiveMode.Read);
+            var entry = zip.GetEntry("thumb.png");
+            if (entry == null) return;
+
+            string name = Path.GetFileNameWithoutExtension(mePath);
+            string outDir = Path.Combine(Application.persistentDataPath, "Thumbnails");
+            Directory.CreateDirectory(outDir);
+            string outPath = Path.Combine(outDir, name + "_thumb.png");
+
+            using var zs = entry.Open();
+            using var fo = File.Create(outPath);
+            zs.CopyTo(fo);
+        }
+        catch { }
+    }
+
 }

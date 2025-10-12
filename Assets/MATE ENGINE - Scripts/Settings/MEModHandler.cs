@@ -375,6 +375,10 @@ public class MEModHandler : MonoBehaviour
         var author = FindChildByName<TMP_Text>(entry.transform, "Author");
         if (author != null) author.text = string.IsNullOrWhiteSpace(mod.author) ? "Author: Unknown" : mod.author;
 
+        // Preview laden
+        var preview = FindChildByName<UnityEngine.UI.RawImage>(entry.transform, "RawImage");
+        LoadThumbToRawImage(preview, mod.name);
+
         var tog = entry.GetComponentInChildren<Toggle>(true);
         if (tog != null)
         {
@@ -404,6 +408,11 @@ public class MEModHandler : MonoBehaviour
         {
             var up = uploadBtn.GetComponent<ModUploadButton>();
             var progress = FindChildByName<Slider>(entry.transform, "Progress");
+            // Hold-Handler optional verbinden, damit er die Preview kennt
+            var hold = uploadBtn.GetComponent<ModUploadHoldHandler>();
+            if (hold != null && hold.previewImage == null) hold.previewImage = preview;
+
+            string existingThumb = GetThumbPath(mod.name);
             if (up != null)
             {
                 up.button = uploadBtn;
@@ -411,7 +420,7 @@ public class MEModHandler : MonoBehaviour
                 up.displayName = mod.name;
                 up.author = mod.author.StartsWith("Author: ") ? mod.author.Substring(8) : mod.author;
                 up.isNSFW = false;
-                up.thumbnailPath = null;
+                up.thumbnailPath = File.Exists(existingThumb) ? existingThumb : null;
                 up.progressBar = progress;
             }
             else
@@ -443,6 +452,7 @@ public class MEModHandler : MonoBehaviour
         var hueShifter = FindFirstObjectByType<MenuHueShift>();
         if (hueShifter != null) hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
+
 
     ulong ResolveWorkshopIdForPath(string localPath)
     {
@@ -528,11 +538,20 @@ public class MEModHandler : MonoBehaviour
             if (mgr != null) mgr.UnregisterInjected(mod.name);
             FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
         }
-
         try { if (File.Exists(mod.localPath)) File.Delete(mod.localPath); } catch { }
+        try { if (!string.IsNullOrEmpty(mod.extractedPath) && Directory.Exists(mod.extractedPath)) Directory.Delete(mod.extractedPath, true); } catch { }
+        try
+        {
+            string thumb = GetThumbPath(mod.name);
+            if (File.Exists(thumb)) File.Delete(thumb);
+        }
+        catch { }
+
         loadedMods.Remove(mod);
         Destroy(ui);
+        LoadAllModsInFolder();
     }
+
 
     T FindChildByName<T>(Transform root, string name) where T : Component
     {
@@ -569,4 +588,21 @@ public class MEModHandler : MonoBehaviour
         public float songLength;
         public string placeholderClipName;
     }
+
+    string GetThumbPath(string modName)
+    {
+        return Path.Combine(Application.persistentDataPath, "Thumbnails", modName + "_thumb.png");
+    }
+
+    void LoadThumbToRawImage(UnityEngine.UI.RawImage img, string modName)
+    {
+        if (img == null) return;
+        string p = GetThumbPath(modName);
+        if (!File.Exists(p)) return;
+        var bytes = File.ReadAllBytes(p);
+        var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        tex.LoadImage(bytes);
+        img.texture = tex;
+    }
+
 }

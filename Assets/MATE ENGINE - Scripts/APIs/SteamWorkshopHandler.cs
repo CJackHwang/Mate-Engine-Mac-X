@@ -163,6 +163,30 @@ public class SteamWorkshopHandler : MonoBehaviour
             copiedThumbnailPath = copiedThumbnailPath.Replace("\\", "/");
         }
 
+
+        if (!string.IsNullOrEmpty(copiedThumbnailPath) && File.Exists(copiedThumbnailPath))
+        {
+            string fixedThumb = Path.Combine(contentDir, "thumb.png").Replace("\\", "/");
+            string src = copiedThumbnailPath.Replace("\\", "/");
+
+            if (!string.Equals(src, fixedThumb, System.StringComparison.OrdinalIgnoreCase))
+            {
+                try { if (File.Exists(fixedThumb)) File.Delete(fixedThumb); } catch { }
+                File.Copy(src, fixedThumb, true);
+            }
+
+            copiedThumbnailPath = fixedThumb;
+
+            try
+            {
+                var metaPath = Path.Combine(contentDir, "metadata.json");
+                var meta = File.ReadAllText(metaPath);
+                File.WriteAllText(metaPath, meta.TrimEnd('}', ' ', '\n', '\r') + ",\n  \"thumbnail\":\"thumb.png\"\n}");
+            }
+            catch { }
+        }
+
+
         bool isDance = false;
         string detectedAuthor = author;
         var ext = Path.GetExtension(filePath);

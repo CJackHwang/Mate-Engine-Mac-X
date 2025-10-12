@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
 using System.IO;
-using System.Linq;
 using Steamworks;
 using SFB;
 
@@ -39,8 +38,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
     {
         btn = GetComponent<Button>();
         modBtn = GetComponent<ModUploadButton>();
-        if (modBtn != null && modBtn.progressBar == null && progressSlider != null)
-            modBtn.progressBar = progressSlider;
+        if (modBtn != null && modBtn.progressBar == null && progressSlider != null) modBtn.progressBar = progressSlider;
     }
 
     void OnEnable()
@@ -48,6 +46,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         holding = false;
         CancelHold();
         SetInteractable(true);
+        EnsureLocalThumbLink();
         UpdateLabel();
         ClearError();
         TryLoadPreviewFromPath(modBtn != null ? modBtn.thumbnailPath : null);
@@ -63,7 +62,11 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
 
     public void OnPointerDown(PointerEventData e)
     {
-        if (!CanUpload()) { SetError("Not ready"); return; }
+        if (!CanUpload())
+        {
+            SetError("Not ready");
+            return;
+        }
 
         if (IsThumbnailMissingOrTooBig())
         {
@@ -84,7 +87,10 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         }
     }
 
-    public void OnPointerUp(PointerEventData e) { holding = false; }
+    public void OnPointerUp(PointerEventData e)
+    {
+        holding = false;
+    }
 
     IEnumerator HoldAndUpload()
     {
@@ -144,9 +150,20 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         labelText.text = isUpdate ? fallbackUpdate : fallbackUpload;
     }
 
-    void SetLabel(string s) { if (labelText != null) labelText.text = s; }
-    void SetError(string s) { if (errorText != null) errorText.text = s; }
-    void ClearError() { if (errorText != null) errorText.text = ""; }
+    void SetLabel(string s)
+    {
+        if (labelText != null) labelText.text = s;
+    }
+
+    void SetError(string s)
+    {
+        if (errorText != null) errorText.text = s;
+    }
+
+    void ClearError()
+    {
+        if (errorText != null) errorText.text = "";
+    }
 
     bool CanUpload()
     {
@@ -158,7 +175,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
 
     bool IsThumbnailMissingOrTooBig()
     {
-        var p = modBtn != null ? modBtn.thumbnailPath : null;
+        string p = modBtn != null ? modBtn.thumbnailPath : null;
         if (string.IsNullOrEmpty(p) || !File.Exists(p)) return true;
         var fi = new FileInfo(p);
         if (fi.Length > MaxBytes) return true;
@@ -191,8 +208,16 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         Directory.CreateDirectory(thumbs);
 
         string baseName = Path.GetFileNameWithoutExtension(modBtn.filePath);
-        string dest = Path.Combine(thumbs, baseName + (ext == ".jpeg" ? ".jpg" : ext));
-        try { File.Copy(src, dest, true); } catch { SetError("Copy failed"); return false; }
+        string dest = Path.Combine(thumbs, baseName + "_thumb.png");
+        try
+        {
+            File.Copy(src, dest, true);
+        }
+        catch
+        {
+            SetError("Copy failed");
+            return false;
+        }
 
         savedPath = dest;
         return true;
@@ -213,11 +238,32 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         catch { }
     }
 
-    void SetInteractable(bool v) { if (btn != null) btn.interactable = v; }
+    void EnsureLocalThumbLink()
+    {
+        if (modBtn == null || string.IsNullOrEmpty(modBtn.filePath)) return;
+        if (!string.IsNullOrEmpty(modBtn.thumbnailPath) && File.Exists(modBtn.thumbnailPath)) return;
+        string def = GetDefaultThumbPath();
+        if (File.Exists(def)) modBtn.thumbnailPath = def;
+    }
+
+    string GetDefaultThumbPath()
+    {
+        string name = string.IsNullOrEmpty(modBtn?.filePath) ? "" : Path.GetFileNameWithoutExtension(modBtn.filePath);
+        return Path.Combine(Application.persistentDataPath, "Thumbnails", name + "_thumb.png");
+    }
+
+    void SetInteractable(bool v)
+    {
+        if (btn != null) btn.interactable = v;
+    }
 
     void CancelHold()
     {
-        if (holdRoutine != null) { StopCoroutine(holdRoutine); holdRoutine = null; }
+        if (holdRoutine != null)
+        {
+            StopCoroutine(holdRoutine);
+            holdRoutine = null;
+        }
     }
 
     ulong ResolveWorkshopIdForPath(string localPath)
