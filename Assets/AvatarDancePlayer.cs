@@ -35,6 +35,7 @@ namespace CustomDancePlayer
         public Transform contentObject;
         public GameObject prefab;
         public Button songPlayButton;
+        public TMP_Text authorText;
 
         [Header("Folders")]
         public string streamingSubfolder = "CustomDances";
@@ -51,6 +52,8 @@ namespace CustomDancePlayer
         string defaultPlayingNowText = "";
         string defaultPlayTimeText = "";
         string defaultMaxPlayTimeText = "";
+        string defaultAuthorText = "";
+        const string unknownAuthorLabel = "Author: Unknown";
 
         float currentTotalSeconds = 0f;
         float playStartTime = 0f;
@@ -65,6 +68,17 @@ namespace CustomDancePlayer
             public AssetBundle bundle;
             public bool fromME;
             public string extractedDir;
+            public string author;
+        }
+
+        [Serializable]
+        class DanceMeta
+        {
+            public string songName;
+            public string songAuthor;
+            public string mmdAuthor;
+            public float songLength;
+            public string placeholderClipName;
         }
 
         readonly List<DanceEntry> entries = new();
@@ -75,6 +89,7 @@ namespace CustomDancePlayer
             if (playingNowText != null) defaultPlayingNowText = playingNowText.text;
             if (playTimeText != null) defaultPlayTimeText = playTimeText.text;
             if (maxPlayTimeText != null) defaultMaxPlayTimeText = maxPlayTimeText.text;
+            if (authorText != null) defaultAuthorText = string.IsNullOrWhiteSpace(authorText.text) ? unknownAuthorLabel : authorText.text;
             BindUI();
         }
 
@@ -87,6 +102,7 @@ namespace CustomDancePlayer
             BuildListUI();
             if (entries.Count > 0 && currentIndex < 0) currentIndex = 0;
             UpdatePlayingNowLabel(null);
+            UpdateAuthorLabel(null);
             UpdateTimeLabels(0f, 0f);
         }
 
@@ -100,6 +116,7 @@ namespace CustomDancePlayer
                 if (audioSource != null) audioSource.Stop();
                 isPlaying = false;
                 UpdatePlayingNowLabel(null);
+                UpdateAuthorLabel(null);
                 UpdateTimeLabels(0f, 0f);
             }
 
@@ -134,8 +151,6 @@ namespace CustomDancePlayer
                     return true;
             return false;
         }
-
-
 
         public void RescanMods()
         {
@@ -258,7 +273,17 @@ namespace CustomDancePlayer
                 return;
             }
 
-            var e = new DanceEntry { id = id, path = path, clip = clip, audio = audio, bundle = bundle, fromME = false, extractedDir = null };
+            var e = new DanceEntry
+            {
+                id = id,
+                path = path,
+                clip = clip,
+                audio = audio,
+                bundle = bundle,
+                fromME = false,
+                extractedDir = null,
+                author = unknownAuthorLabel
+            };
             entries.Add(e);
             byId[id] = e;
         }
@@ -305,7 +330,33 @@ namespace CustomDancePlayer
                 return;
             }
 
-            var e = new DanceEntry { id = id, path = mePath, clip = clip, audio = audio, bundle = bundle, fromME = true, extractedDir = dst };
+            string metaAuthor = unknownAuthorLabel;
+            string metaPath = Path.Combine(dst, "dance_meta.json");
+            if (File.Exists(metaPath))
+            {
+                try
+                {
+                    var json = File.ReadAllText(metaPath);
+                    var meta = JsonUtility.FromJson<DanceMeta>(json);
+                    string cand = null;
+                    if (!string.IsNullOrWhiteSpace(meta.songAuthor)) cand = meta.songAuthor;
+                    else if (!string.IsNullOrWhiteSpace(meta.mmdAuthor)) cand = meta.mmdAuthor;
+                    if (!string.IsNullOrWhiteSpace(cand)) metaAuthor = "Author: " + cand;
+                }
+                catch { }
+            }
+
+            var e = new DanceEntry
+            {
+                id = id,
+                path = mePath,
+                clip = clip,
+                audio = audio,
+                bundle = bundle,
+                fromME = true,
+                extractedDir = dst,
+                author = metaAuthor
+            };
             entries.Add(e);
             byId[id] = e;
         }
@@ -313,19 +364,41 @@ namespace CustomDancePlayer
         void BuildListUI()
         {
             if (contentObject == null || prefab == null) return;
-            for (int i = contentObject.childCount - 1; i >= 0; i--) Destroy(contentObject.GetChild(i).gameObject);
+
+            for (int i = contentObject.childCount - 1; i >= 0; i--)
+                Destroy(contentObject.GetChild(i).gameObject);
+
             for (int i = 0; i < entries.Count; i++)
             {
                 int idx = i;
+                var e = entries[i];
+
                 var go = Instantiate(prefab, contentObject);
-                var txt = go.GetComponentInChildren<TextMeshProUGUI>(true);
-                if (txt != null) txt.text = entries[i].id;
-                Button btn = null;
-                var allButtons = go.GetComponentsInChildren<Button>(true);
-                if (allButtons != null && allButtons.Length > 0) btn = allButtons[0];
+
+                var title = FindChildByName<TMP_Text>(go.transform, "Title");
+                if (title != null) title.text = e.id;
+
+                var author = FindChildByName<TMP_Text>(go.transform, "Author");
+                if (author != null) author.text = string.IsNullOrWhiteSpace(e.author) ? "Author: Unknown" : e.author;
+
+                Button btn = FindChildByName<Button>(go.transform, "Button");
+                if (btn == null)
+                {
+                    var allButtons = go.GetComponentsInChildren<Button>(true);
+                    if (allButtons != null && allButtons.Length > 0) btn = allButtons[0];
+                }
                 if (btn != null) btn.onClick.AddListener(() => { currentIndex = idx; PlayIndex(idx); });
             }
         }
+
+        T FindChildByName<T>(Transform root, string name) where T : Component
+        {
+            if (root == null || string.IsNullOrEmpty(name)) return null;
+            foreach (var t in root.GetComponentsInChildren<Transform>(true))
+                if (t.name == name) return t.GetComponent<T>();
+            return null;
+        }
+
 
         void PlayPrev()
         {
@@ -403,9 +476,11 @@ namespace CustomDancePlayer
 
             currentIndex = index;
             UpdatePlayingNowLabel(e.id);
+            UpdateAuthorLabel(e.author);
             UpdateTimeLabels(0f, currentTotalSeconds);
             return true;
         }
+
         void StopImmediateForRestart()
         {
             if (audioSource != null) audioSource.Stop();
@@ -425,6 +500,7 @@ namespace CustomDancePlayer
             {
                 isPlaying = false;
                 UpdatePlayingNowLabel(null);
+                UpdateAuthorLabel(null);
                 UpdateTimeLabels(0f, 0f);
                 return;
             }
@@ -436,6 +512,7 @@ namespace CustomDancePlayer
 
             isPlaying = false;
             UpdatePlayingNowLabel(null);
+            UpdateAuthorLabel(null);
             UpdateTimeLabels(0f, 0f);
         }
 
@@ -443,6 +520,19 @@ namespace CustomDancePlayer
         {
             if (playingNowText == null) return;
             playingNowText.text = string.IsNullOrEmpty(nameOrNull) ? defaultPlayingNowText : nameOrNull;
+        }
+
+        void UpdateAuthorLabel(string authorOrNull)
+        {
+            if (authorText == null) return;
+            if (string.IsNullOrWhiteSpace(authorOrNull))
+            {
+                authorText.text = string.IsNullOrWhiteSpace(defaultAuthorText) ? unknownAuthorLabel : defaultAuthorText;
+            }
+            else
+            {
+                authorText.text = authorOrNull;
+            }
         }
 
         void UpdateTimeLabels(float elapsed, float total)
