@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -62,9 +63,12 @@ namespace CustomDancePlayer
             public AnimationClip clip;
             public AudioClip audio;
             public AssetBundle bundle;
+            public bool fromME;
+            public string extractedDir;
         }
 
         readonly List<DanceEntry> entries = new();
+        readonly Dictionary<string, DanceEntry> byId = new(StringComparer.OrdinalIgnoreCase);
 
         void Awake()
         {
@@ -111,6 +115,12 @@ namespace CustomDancePlayer
             else if (progressSlider != null) progressSlider.value = 0f;
 
             UpdateTimeLabels(elapsed, total);
+        }
+
+        public void RescanMods()
+        {
+            LoadAllSources();
+            BuildListUI();
         }
 
         void BindUI()
@@ -183,21 +193,101 @@ namespace CustomDancePlayer
 
         void LoadAllSources()
         {
+            foreach (var e in entries) { try { e.bundle?.Unload(true); } catch { } }
             entries.Clear();
-            var list = new List<string>();
+            byId.Clear();
+
+            var files = new List<string>();
+
             string streamDir = Path.Combine(Application.streamingAssetsPath, streamingSubfolder);
-            if (Directory.Exists(streamDir)) list.AddRange(Directory.GetFiles(streamDir, "*.unity3d"));
+            if (Directory.Exists(streamDir)) files.AddRange(Directory.GetFiles(streamDir, "*", SearchOption.AllDirectories));
+
             string modsDir = Path.Combine(Application.persistentDataPath, modsFolderName);
-            if (Directory.Exists(modsDir)) list.AddRange(Directory.GetFiles(modsDir, "*.unity3d"));
-            foreach (var path in list.Distinct())
+            Directory.CreateDirectory(modsDir);
+            files.AddRange(Directory.GetFiles(modsDir, "*", SearchOption.AllDirectories));
+
+            for (int i = 0; i < files.Count; i++)
             {
-                var bundle = AssetBundle.LoadFromFile(path);
-                if (bundle == null) continue;
-                var clip = bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
-                var audio = bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
-                if (clip == null && audio == null) { try { bundle.Unload(true); } catch { } continue; }
-                entries.Add(new DanceEntry { id = Path.GetFileNameWithoutExtension(path), path = path, clip = clip, audio = audio, bundle = bundle });
+                string f = files[i];
+                string ext = Path.GetExtension(f);
+                if (string.IsNullOrEmpty(ext)) continue;
+
+                if (ext.Equals(".unity3d", StringComparison.OrdinalIgnoreCase))
+                    TryAddUnity3D(f);
+                else if (ext.Equals(".me", StringComparison.OrdinalIgnoreCase))
+                    TryAddME(f);
             }
+
+            entries.Sort((a, b) => string.Compare(a.id, b.id, StringComparison.OrdinalIgnoreCase));
+        }
+
+        void TryAddUnity3D(string path)
+        {
+            string id = Path.GetFileNameWithoutExtension(path);
+            if (byId.ContainsKey(id)) return;
+
+            var bundle = AssetBundle.LoadFromFile(path);
+            if (bundle == null) return;
+
+            var clip = bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
+            var audio = bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
+
+            if (clip == null && audio == null)
+            {
+                try { bundle.Unload(true); } catch { }
+                return;
+            }
+
+            var e = new DanceEntry { id = id, path = path, clip = clip, audio = audio, bundle = bundle, fromME = false, extractedDir = null };
+            entries.Add(e);
+            byId[id] = e;
+        }
+
+        void TryAddME(string mePath)
+        {
+            string id = Path.GetFileNameWithoutExtension(mePath);
+            if (byId.ContainsKey(id)) return;
+
+            string cacheRoot = Path.Combine(Application.temporaryCachePath, "ME_Cache");
+            Directory.CreateDirectory(cacheRoot);
+            string dst = Path.Combine(cacheRoot, id);
+
+            bool needExtract = true;
+            try
+            {
+                if (Directory.Exists(dst))
+                {
+                    DateTime srcTime = File.GetLastWriteTimeUtc(mePath);
+                    DateTime dstTime = Directory.GetLastWriteTimeUtc(dst);
+                    if (dstTime >= srcTime) needExtract = false;
+                    else Directory.Delete(dst, true);
+                }
+                if (needExtract)
+                {
+                    ZipFile.ExtractToDirectory(mePath, dst);
+                    Directory.SetLastWriteTimeUtc(dst, File.GetLastWriteTimeUtc(mePath));
+                }
+            }
+            catch { return; }
+
+            string bundlePath = Directory.GetFiles(dst, "*.bundle", SearchOption.AllDirectories).FirstOrDefault();
+            if (string.IsNullOrEmpty(bundlePath) || !File.Exists(bundlePath)) return;
+
+            var bundle = AssetBundle.LoadFromFile(bundlePath);
+            if (bundle == null) return;
+
+            var clip = bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
+            var audio = bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
+
+            if (clip == null && audio == null)
+            {
+                try { bundle.Unload(true); } catch { }
+                return;
+            }
+
+            var e = new DanceEntry { id = id, path = mePath, clip = clip, audio = audio, bundle = bundle, fromME = true, extractedDir = dst };
+            entries.Add(e);
+            byId[id] = e;
         }
 
         void BuildListUI()
@@ -342,6 +432,7 @@ namespace CustomDancePlayer
         {
             foreach (var e in entries) { try { e.bundle?.Unload(true); } catch { } }
             entries.Clear();
+            byId.Clear();
         }
     }
 }
