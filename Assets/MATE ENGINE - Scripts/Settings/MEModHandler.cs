@@ -427,9 +427,6 @@ public class MEModHandler : MonoBehaviour
                 });
             }
         }
-
-        var hueShifter = FindFirstObjectByType<MenuHueShift>();
-        if (hueShifter != null) hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
 
     ulong ResolveWorkshopIdForPath(string localPath)

@@ -71,16 +71,16 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.uiHueShift = v;
-            var shifter = FindFirstObjectByType<MenuHueShift>();
-            if (shifter != null) shifter.hueShift = v;
+            var theme = FindFirstObjectByType<ThemeManager>();
+            if (theme != null) theme.SetHue(v);
             SaveAll();
         });
 
         saturationSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.uiSaturation = v;
-            var shifter = FindFirstObjectByType<MenuHueShift>();
-            if (shifter != null) shifter.saturation = v;
+            var theme = FindFirstObjectByType<ThemeManager>();
+            if (theme != null) theme.SetSaturation(v);
             SaveAll();
         });
         windowSitYOffsetSlider?.onValueChanged.AddListener(v =>
@@ -140,12 +140,13 @@ public class SettingsHandlerSliders : MonoBehaviour
         if (scaleController != null)
             scaleController.SyncWithSlider();
 
-        var shifter = FindFirstObjectByType<MenuHueShift>();
-        if (shifter != null)
+        var theme = FindFirstObjectByType<ThemeManager>();
+        if (theme != null)
         {
-            shifter.hueShift = data.uiHueShift;
-            shifter.saturation = data.uiSaturation;
+            theme.SetHue(data.uiHueShift);
+            theme.SetSaturation(data.uiSaturation);
         }
+
         foreach (var handler in FindObjectsByType<AvatarWindowHandler>(FindObjectsSortMode.None))
         {
             handler.windowSitYOffset = SaveLoadHandler.Instance.data.windowSitYOffset;
@@ -164,7 +165,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         spineBlendSlider?.SetValueWithoutNotify(0.5f);
         eyeBlendSlider?.SetValueWithoutNotify(1.0f);
         hueShiftSlider?.SetValueWithoutNotify(0f);
-        saturationSlider?.SetValueWithoutNotify(0.5f);
+        saturationSlider?.SetValueWithoutNotify(1f);
         windowSitYOffsetSlider?.SetValueWithoutNotify(0f);
         danceSwitchTimeSlider?.SetValueWithoutNotify(15f);
         danceTransitionTimeSlider?.SetValueWithoutNotify(2f);
@@ -180,11 +181,11 @@ public class SettingsHandlerSliders : MonoBehaviour
         data.headBlend = 0.7f;
         data.spineBlend = 0.5f;
         data.eyeBlend = 1.0f;
-        data.uiHueShift = 0f;
-        data.uiSaturation = 0.5f;
         data.windowSitYOffset = 0f;
         data.danceSwitchTime = 15f;
         data.danceTransitionTime = 2f;
+        data.uiHueShift = 0f;
+        data.uiSaturation = 1f;
 
         SaveLoadHandler.Instance.SaveToDisk();
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();

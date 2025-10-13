@@ -187,22 +187,8 @@ public class AvatarLibraryMenu : MonoBehaviour
             GameObject item = Instantiate(avatarItemPrefab, contentParent);
             SetupAvatarItem(item, entry);
         }
-
-        StartCoroutine(HueShiftAllMenuItemsNextFrame());
     }
 
-
-    private IEnumerator HueShiftAllMenuItemsNextFrame()
-    {
-        yield return null;
-
-        var hueShifter = FindFirstObjectByType<MenuHueShift>();
-        if (hueShifter != null)
-        {
-            hueShifter.RefreshNewGraphicsAndSelectables(contentParent);
-            hueShifter.ApplyHueShift();
-        }
-    }
 
     private void SetupDefaultAvatarItem(GameObject item)
     {

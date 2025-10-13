@@ -45,6 +45,14 @@ public class SaveLoadHandler : MonoBehaviour
         LoadFromDisk();
         ApplyAllSettingsToAllAvatars();
 
+        var theme = FindFirstObjectByType<ThemeManager>();
+        if (theme != null)
+        {
+            theme.SetHue(data.uiHueShift);
+            theme.SetSaturation(data.uiSaturation);
+        }
+
+
         var limiters = FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None);
         foreach (var limiter in limiters)
         {
@@ -131,7 +139,7 @@ public class SaveLoadHandler : MonoBehaviour
         public bool ambientOcclusion = false;
 
         public float uiHueShift = 0f;
-        public float uiSaturation = 0.5f;
+        public float uiSaturation = 1.0f;
 
         public bool enableDiscordRPC = true;
 
