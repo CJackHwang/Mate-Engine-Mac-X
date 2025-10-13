@@ -702,7 +702,7 @@ Material:
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 2.2344189, g: 2.2075472, b: 3.9999998, a: 1}
+    - _Color: {r: 4.8671436, g: 4.8671436, b: 4.8671436, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
@@ -719,7 +719,7 @@ Material:
     - _Emission2ndMap_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionBlendMask_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionBlink: {r: 0, g: 0, b: 3.141593, a: 0}
-    - _EmissionColor: {r: 0.254717, g: 0.32478082, b: 2, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionMap_ScrollRotate: {r: 0, g: 0, b: 0, a: 0}
     - _GlitterAtras: {r: 1, g: 1, b: 0, a: 0}
     - _GlitterColor: {r: 1, g: 1, b: 1, a: 1}

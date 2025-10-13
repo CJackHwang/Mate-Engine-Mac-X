@@ -32,12 +32,14 @@ Shader "UI/GlowShader"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                fixed4 color : COLOR;
             };
 
             struct v2f
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                fixed4 color : COLOR;
             };
 
             v2f vert(appdata v)
@@ -45,15 +47,15 @@ Shader "UI/GlowShader"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.color = v.color;
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-                fixed4 baseCol = tex2D(_MainTex, i.uv) * _Color;
-
-                // Additive emission
-                return baseCol + _EmissionColor;
+                fixed4 baseCol = tex2D(_MainTex, i.uv) * _Color * i.color;
+                fixed3 rgb = baseCol.rgb + (_EmissionColor.rgb * i.color.rgb);
+                return fixed4(rgb, baseCol.a);
             }
             ENDCG
         }

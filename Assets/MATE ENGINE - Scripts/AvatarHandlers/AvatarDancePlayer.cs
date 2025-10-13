@@ -99,6 +99,18 @@ namespace CustomDancePlayer
         readonly Dictionary<string, DanceEntry> byId = new(StringComparer.OrdinalIgnoreCase);
         DanceEntry loadedEntry = null;
 
+        class PooledItem
+        {
+            public GameObject go;
+            public TMP_Text titleTMP;
+            public TMP_Text authorTMP;
+            public Text titleFB;
+            public Text authorFB;
+            public Button button;
+        }
+
+        readonly List<PooledItem> uiPool = new();
+
         void Awake()
         {
             if (!useFallbackFont)
@@ -392,44 +404,65 @@ namespace CustomDancePlayer
         {
             if (contentObject == null || prefab == null) return;
 
-            for (int i = contentObject.childCount - 1; i >= 0; i--)
-                Destroy(contentObject.GetChild(i).gameObject);
+            if (uiPool.Count == 0)
+            {
+                for (int i = contentObject.childCount - 1; i >= 0; i--)
+                    Destroy(contentObject.GetChild(i).gameObject);
+            }
+
+            while (uiPool.Count < entries.Count)
+            {
+                var go = Instantiate(prefab, contentObject);
+                var item = new PooledItem
+                {
+                    go = go,
+                    titleTMP = FindChildByName<TMP_Text>(go.transform, "Title"),
+                    authorTMP = FindChildByName<TMP_Text>(go.transform, "Author"),
+                    titleFB = FindChildByName<Text>(go.transform, "TitleFallback"),
+                    authorFB = FindChildByName<Text>(go.transform, "AuthorFallback"),
+                    button = FindChildByName<Button>(go.transform, "Button")
+                };
+                if (item.button == null)
+                {
+                    var allButtons = go.GetComponentsInChildren<Button>(true);
+                    if (allButtons != null && allButtons.Length > 0) item.button = allButtons[0];
+                }
+                go.SetActive(false);
+                uiPool.Add(item);
+            }
 
             for (int i = 0; i < entries.Count; i++)
             {
-                int idx = i;
                 var e = entries[i];
+                var item = uiPool[i];
 
-                var go = Instantiate(prefab, contentObject);
-
-                var titleTMP = FindChildByName<TMP_Text>(go.transform, "Title");
-                var authorTMP = FindChildByName<TMP_Text>(go.transform, "Author");
-                var titleFB = FindChildByName<Text>(go.transform, "TitleFallback");
-                var authorFB = FindChildByName<Text>(go.transform, "AuthorFallback");
-
-                if (useFallbackFont && (titleFB != null || authorFB != null))
+                if (useFallbackFont && (item.titleFB != null || item.authorFB != null))
                 {
-                    if (titleFB != null) { titleFB.text = e.id; titleFB.gameObject.SetActive(true); }
-                    if (authorFB != null) { authorFB.text = string.IsNullOrWhiteSpace(e.author) ? unknownAuthorLabel : e.author; authorFB.gameObject.SetActive(true); }
-                    if (titleTMP != null) titleTMP.gameObject.SetActive(false);
-                    if (authorTMP != null) authorTMP.gameObject.SetActive(false);
+                    if (item.titleFB != null) { item.titleFB.text = e.id; item.titleFB.gameObject.SetActive(true); }
+                    if (item.authorFB != null) { item.authorFB.text = string.IsNullOrWhiteSpace(e.author) ? unknownAuthorLabel : e.author; item.authorFB.gameObject.SetActive(true); }
+                    if (item.titleTMP != null) item.titleTMP.gameObject.SetActive(false);
+                    if (item.authorTMP != null) item.authorTMP.gameObject.SetActive(false);
                 }
                 else
                 {
-                    if (titleTMP != null) { titleTMP.text = e.id; titleTMP.gameObject.SetActive(true); }
-                    if (authorTMP != null) { authorTMP.text = string.IsNullOrWhiteSpace(e.author) ? unknownAuthorLabel : e.author; authorTMP.gameObject.SetActive(true); }
-                    if (titleFB != null) titleFB.gameObject.SetActive(false);
-                    if (authorFB != null) authorFB.gameObject.SetActive(false);
+                    if (item.titleTMP != null) { item.titleTMP.text = e.id; item.titleTMP.gameObject.SetActive(true); }
+                    if (item.authorTMP != null) { item.authorTMP.text = string.IsNullOrWhiteSpace(e.author) ? unknownAuthorLabel : e.author; item.authorTMP.gameObject.SetActive(true); }
+                    if (item.titleFB != null) item.titleFB.gameObject.SetActive(false);
+                    if (item.authorFB != null) item.authorFB.gameObject.SetActive(false);
                 }
 
-                Button btn = FindChildByName<Button>(go.transform, "Button");
-                if (btn == null)
+                if (item.button != null)
                 {
-                    var allButtons = go.GetComponentsInChildren<Button>(true);
-                    if (allButtons != null && allButtons.Length > 0) btn = allButtons[0];
+                    item.button.onClick.RemoveAllListeners();
+                    int idx = i;
+                    item.button.onClick.AddListener(() => { currentIndex = idx; PlayIndex(idx); });
                 }
-                if (btn != null) btn.onClick.AddListener(() => { currentIndex = idx; PlayIndex(idx); });
+
+                item.go.SetActive(true);
             }
+
+            for (int i = entries.Count; i < uiPool.Count; i++)
+                uiPool[i].go.SetActive(false);
         }
 
         T FindChildByName<T>(Transform root, string name) where T : Component

@@ -265,12 +265,12 @@ public class MenuHueShift : MonoBehaviour
 
     private void ApplyHueToMaterials()
     {
-        // 1) Alle Graphics im Pool: falls sie ein Material mit den Properties verwenden, setzen
+
         for (int i = 0; i < graphics.Count; i++)
         {
             var g = graphics[i];
             if (g == null) continue;
-            var mat = g.material; // instanziert ggf. UI-Mats pro Element (ok für UI)
+            var mat = g.material; 
             if (mat != null && mat.HasProperty(PID_OverlayHueShift))
             {
                 mat.SetFloat(PID_OverlayHueShift, hueShift);
@@ -278,8 +278,6 @@ public class MenuHueShift : MonoBehaviour
                     mat.SetFloat(PID_OverlaySatMul, Mathf.Clamp(saturation * 2f, 0f, 2f));
             }
         }
-
-        // 2) Optional: explizit hinterlegte Materialien (z.B. Player-/AI-Text-Mats)
         for (int i = 0; i < extraHueMaterials.Count; i++)
         {
             var m = extraHueMaterials[i];

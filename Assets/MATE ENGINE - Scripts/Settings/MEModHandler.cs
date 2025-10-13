@@ -60,8 +60,8 @@ public class MEModHandler : MonoBehaviour
                 LoadUnity3D(path, true, true);
         }
 
-        var mgr = FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>();
-        if (mgr != null) mgr.RefreshDropdown();
+        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        if (dance != null) dance.RescanMods();
     }
 
     void OpenFileDialogAndLoadMod()
@@ -81,8 +81,10 @@ public class MEModHandler : MonoBehaviour
         else if (dest.EndsWith(".unity3d", StringComparison.OrdinalIgnoreCase))
         {
             LoadUnity3D(dest, true, false);
-            FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
         }
+
+        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        if (dance != null) dance.RescanMods();
     }
 
     void LoadUnity3D(string path, bool addToUI, bool respectSavedState)
@@ -96,18 +98,6 @@ public class MEModHandler : MonoBehaviour
         if (respectSavedState && SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data != null)
         {
             if (SaveLoadHandler.Instance.data.modStates.TryGetValue(name, out var s)) enable = s;
-        }
-
-        var resMgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
-        if (enable && resMgr != null)
-        {
-            try { resMgr.UnregisterInjected(name); } catch { }
-            try
-            {
-                var bundle = AssetBundle.LoadFromFile(path);
-                if (bundle != null) resMgr.RegisterDanceBundle(bundle, name);
-            }
-            catch { }
         }
 
         var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null, enabled = enable, author = "Author: Unknown" };
@@ -164,18 +154,6 @@ public class MEModHandler : MonoBehaviour
             bundlePath = alt;
         }
         if (string.IsNullOrEmpty(bundlePath)) return;
-
-        var resMgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
-        if (enable && resMgr != null)
-        {
-            try { resMgr.UnregisterInjected(id); } catch { }
-            try
-            {
-                var bundle = AssetBundle.LoadFromFile(bundlePath);
-                if (bundle != null) resMgr.RegisterDanceBundle(bundle, id);
-            }
-            catch { }
-        }
 
         string author = "Author: Unknown";
         var metaPath = Path.Combine(extractedDir, "dance_meta.json");
@@ -375,7 +353,6 @@ public class MEModHandler : MonoBehaviour
         var author = FindChildByName<TMP_Text>(entry.transform, "Author");
         if (author != null) author.text = string.IsNullOrWhiteSpace(mod.author) ? "Author: Unknown" : mod.author;
 
-        // Preview laden
         var preview = FindChildByName<UnityEngine.UI.RawImage>(entry.transform, "RawImage");
         LoadThumbToRawImage(preview, mod.name);
 
@@ -396,9 +373,9 @@ public class MEModHandler : MonoBehaviour
             {
                 tog.onValueChanged.AddListener(a =>
                 {
-                    HandleDanceToggle(mod, a);
                     PersistState(mod.name, a);
-                    FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
+                    var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+                    if (dance != null) dance.RescanMods();
                 });
             }
         }
@@ -408,7 +385,6 @@ public class MEModHandler : MonoBehaviour
         {
             var up = uploadBtn.GetComponent<ModUploadButton>();
             var progress = FindChildByName<Slider>(entry.transform, "Progress");
-            // Hold-Handler optional verbinden, damit er die Preview kennt
             var hold = uploadBtn.GetComponent<ModUploadHoldHandler>();
             if (hold != null && hold.previewImage == null) hold.previewImage = preview;
 
@@ -445,14 +421,16 @@ public class MEModHandler : MonoBehaviour
             }
             else
             {
-                removeBtn.onClick.AddListener(() => RemoveMod(mod, entry));
+                removeBtn.onClick.AddListener(() =>
+                {
+                    RemoveMod(mod, entry);
+                });
             }
         }
 
         var hueShifter = FindFirstObjectByType<MenuHueShift>();
         if (hueShifter != null) hueShifter.RefreshNewGraphicsAndSelectables(entry.transform);
     }
-
 
     ulong ResolveWorkshopIdForPath(string localPath)
     {
@@ -482,41 +460,6 @@ public class MEModHandler : MonoBehaviour
         return 0UL;
     }
 
-
-
-    void HandleDanceToggle(ModEntry mod, bool enable)
-    {
-        var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
-        if (mgr == null) return;
-
-        if (enable)
-        {
-            try { mgr.UnregisterInjected(mod.name); } catch { }
-            try
-            {
-                if (mod.type == ModType.Unity3D)
-                {
-                    var bundle = AssetBundle.LoadFromFile(mod.localPath);
-                    if (bundle != null) mgr.RegisterDanceBundle(bundle, mod.name);
-                }
-                else if (mod.type == ModType.MEDance)
-                {
-                    string bundlePath = Directory.GetFiles(mod.extractedPath, "*.bundle", SearchOption.AllDirectories).FirstOrDefault();
-                    if (!string.IsNullOrEmpty(bundlePath))
-                    {
-                        var bundle = AssetBundle.LoadFromFile(bundlePath);
-                        if (bundle != null) mgr.RegisterDanceBundle(bundle, mod.name);
-                    }
-                }
-            }
-            catch { }
-        }
-        else
-        {
-            mgr.UnregisterInjected(mod.name);
-        }
-    }
-
     void PersistState(string name, bool a)
     {
         if (SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data != null)
@@ -532,12 +475,7 @@ public class MEModHandler : MonoBehaviour
         {
             if (mod.instance != null) Destroy(mod.instance);
         }
-        else
-        {
-            var mgr = FindFirstObjectByType<CustomDancePlayer.DanceResourceManager>();
-            if (mgr != null) mgr.UnregisterInjected(mod.name);
-            FindFirstObjectByType<CustomDancePlayer.DancePlayerUIManager>()?.RefreshDropdown();
-        }
+
         try { if (File.Exists(mod.localPath)) File.Delete(mod.localPath); } catch { }
         try { if (!string.IsNullOrEmpty(mod.extractedPath) && Directory.Exists(mod.extractedPath)) Directory.Delete(mod.extractedPath, true); } catch { }
         try
@@ -549,9 +487,12 @@ public class MEModHandler : MonoBehaviour
 
         loadedMods.Remove(mod);
         Destroy(ui);
+
+        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        if (dance != null) dance.RescanMods();
+
         LoadAllModsInFolder();
     }
-
 
     T FindChildByName<T>(Transform root, string name) where T : Component
     {
@@ -604,5 +545,4 @@ public class MEModHandler : MonoBehaviour
         tex.LoadImage(bytes);
         img.texture = tex;
     }
-
 }
