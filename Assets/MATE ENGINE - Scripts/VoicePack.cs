@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -290,3 +290,4 @@ public class VoicePack : MonoBehaviour
         p.stateWhitelist = new List<string>(names);
     }
 }
+*/

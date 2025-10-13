@@ -57,7 +57,7 @@ public class ModExporterWindow : EditorWindow
 
     void DrawStandardModGUI()
     {
-        GUILayout.Label("Export Mod (.me with Scene Linking)", EditorStyles.boldLabel);
+        GUILayout.Label("Export Mod", EditorStyles.boldLabel);
         GUILayout.Space(8);
         EditorGUILayout.HelpBox("Modding Limitations\nThe MateEngine SDK is limited and only supports a few modding aspects. Creating your own C# assemblies is not allowed, as we aim to prevent any potential malware distribution.", MessageType.Info);
         GUILayout.Space(12);
@@ -80,7 +80,7 @@ public class ModExporterWindow : EditorWindow
 
     void DrawDanceModGUI()
     {
-        GUILayout.Label("Export Dance Mod (.me with bundle + metadata)", EditorStyles.boldLabel);
+        GUILayout.Label("Export Dance Mod", EditorStyles.boldLabel);
         GUILayout.Space(8);
         danceCreator = (MEDanceModCreator)EditorGUILayout.ObjectField("Dance Creator", danceCreator, typeof(MEDanceModCreator), true);
         danceModName = EditorGUILayout.TextField("Dance Name", danceModName);

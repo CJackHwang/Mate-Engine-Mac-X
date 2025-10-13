@@ -1,10 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using System;
 using System.Reflection;
 
 public class MESDK : EditorWindow
 {
-    private enum Tab { ModExporter, ModelExporter, BoneMerger, VRMValidator }
+    private enum Tab { ModExporter, DanceExporter, ModelExporter, BoneMerger, VRMValidator }
     private Tab currentTab;
 
     private ScriptableObject modExporterInstance;
@@ -13,12 +14,12 @@ public class MESDK : EditorWindow
     private ScriptableObject vrmValidatorInstance;
 
     private Texture2D bannerTexture;
-    private Vector2 scrollPosition; // ✅ scroll state
+    private Vector2 scrollPosition;
 
     [MenuItem("MateEngine/ME SDK")]
     public static void ShowWindow()
     {
-        var window = GetWindow<MESDK>("MateEngine SDK 0.5");
+        var window = GetWindow<MESDK>("MateEngine SDK 1.2");
         window.minSize = new Vector2(500, 400);
     }
 
@@ -26,9 +27,8 @@ public class MESDK : EditorWindow
     {
         modExporterInstance = CreateInstance("ModExporterWindow");
         modelExporterInstance = CreateInstance("MEModelExporter");
-        boneMergerInstance = CreateInstance("MateEngine.MEBoneMerger"); // namespaced
+        boneMergerInstance = CreateInstance("MateEngine.MEBoneMerger");
         vrmValidatorInstance = CreateInstance("VrmValidatorWindow");
-
         bannerTexture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/sdk.png");
     }
 
@@ -43,17 +43,17 @@ public class MESDK : EditorWindow
         };
 
         GUILayout.BeginHorizontal(EditorStyles.toolbar, GUILayout.Height(30));
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
-            string label = ((Tab)i).ToString().Replace("ModExporter", "Mod Exporter")
-                                              .Replace("ModelExporter", "Model Exporter")
-                                              .Replace("BoneMerger", "Bone Merger")
-                                              .Replace("VRMValidator", "VRM Validator");
+            string label = ((Tab)i).ToString()
+                .Replace("ModExporter", "Mod Exporter")
+                .Replace("DanceExporter", "Dance Exporter")
+                .Replace("ModelExporter", "Model Exporter")
+                .Replace("BoneMerger", "Bone Merger")
+                .Replace("VRMValidator", "VRM Validator");
 
             if (GUILayout.Toggle(currentTab == (Tab)i, label, toolbarStyle))
-            {
                 currentTab = (Tab)i;
-            }
         }
         GUILayout.EndHorizontal();
 
@@ -64,6 +64,11 @@ public class MESDK : EditorWindow
         switch (currentTab)
         {
             case Tab.ModExporter:
+                SetModExporterMode(modExporterInstance, "StandardMod");
+                CallOnGUI(modExporterInstance);
+                break;
+            case Tab.DanceExporter:
+                SetModExporterMode(modExporterInstance, "DanceMod");
                 CallOnGUI(modExporterInstance);
                 break;
             case Tab.ModelExporter:
@@ -85,6 +90,7 @@ public class MESDK : EditorWindow
         string title = currentTab switch
         {
             Tab.ModExporter => "Export your mod",
+            Tab.DanceExporter => "Export your dance mod",
             Tab.ModelExporter => "Export your .me Model",
             Tab.BoneMerger => "Let us help merge armatures",
             Tab.VRMValidator => "Check for Failures",
@@ -109,7 +115,6 @@ public class MESDK : EditorWindow
     private void DrawBanner()
     {
         if (bannerTexture == null) return;
-
         float bannerWidth = position.width;
         float bannerHeight = bannerTexture.height * (bannerWidth / bannerTexture.width);
         Rect bannerRect = GUILayoutUtility.GetRect(bannerWidth, bannerHeight, GUILayout.ExpandWidth(true));
@@ -126,13 +131,18 @@ public class MESDK : EditorWindow
         }
 
         var method = instance.GetType().GetMethod("OnGUI", BindingFlags.Instance | BindingFlags.NonPublic);
-        if (method != null)
-        {
-            method.Invoke(instance, null);
-        }
-        else
-        {
-            EditorGUILayout.HelpBox("Unable to render tool (OnGUI not found).", MessageType.Error);
-        }
+        if (method != null) method.Invoke(instance, null);
+        else EditorGUILayout.HelpBox("Unable to render tool (OnGUI not found).", MessageType.Error);
+    }
+
+    private void SetModExporterMode(ScriptableObject exporter, string modeName)
+    {
+        if (exporter == null) return;
+        var t = exporter.GetType();
+        var enumType = t.GetNestedType("ExportMode", BindingFlags.NonPublic);
+        var field = t.GetField("mode", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (enumType == null || field == null) return;
+        var value = Enum.Parse(enumType, modeName);
+        field.SetValue(exporter, value);
     }
 }
