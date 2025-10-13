@@ -3,9 +3,14 @@ using System;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
 
 public class AvatarBigScreenTimer : MonoBehaviour
 {
+    [Header("Bubble Material")]
+    public Material bubbleMaterial;
+
     [Header("Enable BigScreen Alarm Feature")]
     public bool enableBigScreenAlarm = false;
 
@@ -263,6 +268,9 @@ public class AvatarBigScreenTimer : MonoBehaviour
         };
 
         alarmBubble = new LLMUnitySamples.Bubble(chatContainer, ui, "AlarmBubble", "");
+        var img = alarmBubble.GetRectTransform().GetComponentInChildren<Image>(true);
+        if (img != null && bubbleMaterial != null) img.material = bubbleMaterial;
+
 
         if (streamAudioSource != null)
         {

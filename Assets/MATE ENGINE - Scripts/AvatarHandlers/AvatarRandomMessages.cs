@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Localization.Tables;
+using UnityEngine.UI;
+
 
 [Serializable]
 public class AvatarMessage
@@ -18,6 +20,9 @@ public class AvatarMessage
 
 public class AvatarRandomMessages : MonoBehaviour
 {
+    [Header("Bubble Material")]
+    public Material bubbleMaterial;
+
     [Header("Localization")]
     public string localizationTable = "Languages (UI)";
 
@@ -174,6 +179,9 @@ public class AvatarRandomMessages : MonoBehaviour
         string finalText = ResolveText(msg);
 
         activeBubble = new LLMUnitySamples.Bubble(chatContainer, ui, "RandomBubble", "");
+        var img = activeBubble.GetRectTransform().GetComponentInChildren<Image>(true);
+        if (img != null && bubbleMaterial != null) img.material = bubbleMaterial;
+
         isBubbleActive = true;
 
         if (streamAudioSource != null) { streamAudioSource.Stop(); streamAudioSource.Play(); }
