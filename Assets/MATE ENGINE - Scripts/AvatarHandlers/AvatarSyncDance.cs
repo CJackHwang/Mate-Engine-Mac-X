@@ -34,6 +34,8 @@ namespace CustomDancePlayer
         float cachedAnimatorSpeed = 1f;
         bool animatorFrozen;
 
+        double plannedStartUtc;
+
         [Serializable]
         class SyncData
         {
@@ -90,7 +92,7 @@ namespace CustomDancePlayer
             bool changed = key != lastKey || playing != lastPlaying;
             if (changed) currentVersion++;
 
-            bool justStarted = playing && !lastPlaying;
+            bool justStarted = playing && (!lastPlaying || key != lastKey);
 
             double startUtc = 0;
             int ev = currentVersion;
@@ -183,6 +185,7 @@ namespace CustomDancePlayer
             if (resumeAnimatorCo != null) StopCoroutine(resumeAnimatorCo);
             resumeAnimatorCo = StartCoroutine(ResumeAnimatorAt(startUtc));
 
+            plannedStartUtc = startUtc;
             scheduledEvent = currentVersion;
         }
 
@@ -280,14 +283,13 @@ namespace CustomDancePlayer
 
         string GetCurrentKey()
         {
-            var clip = handler.GetCurrentClip();
-            if (clip != null && !string.IsNullOrEmpty(clip.name)) return clip.name;
-
             var playingNow = FindByExactName<TMP_Text>(handler?.transform, "PlayingNow");
             if (playingNow != null && !string.IsNullOrEmpty(playingNow.text)) return playingNow.text;
-
             var playingNowFB = FindByExactName<Text>(handler?.transform, "Playing Now Fallback");
             if (playingNowFB != null && !string.IsNullOrEmpty(playingNowFB.text)) return playingNowFB.text;
+
+            var clip = handler != null ? handler.GetCurrentClip() : null;
+            if (clip != null && !string.IsNullOrEmpty(clip.name)) return clip.name;
 
             if (contentRoot == null) contentRoot = GetContentRoot(handler);
             if (contentRoot != null)
@@ -388,7 +390,7 @@ namespace CustomDancePlayer
             return (DateTime.UtcNow - epoch).TotalSeconds;
         }
 
-        double GetPlannedStartUtcFromState(double fallback) { return fallback; }
+        double GetPlannedStartUtcFromState(double fallback) { return plannedStartUtc != 0 ? plannedStartUtc : fallback; }
 
         void DetectInstanceIndex()
         {
@@ -403,7 +405,7 @@ namespace CustomDancePlayer
 
         string GetSyncPath()
         {
-            var root = Path.GetFullPath(Path.Combine(Application.dataPath, "./Sync"));
+            var root = Path.Combine(Application.persistentDataPath, "Sync");
             return Path.Combine(root, syncFileName);
         }
 
@@ -411,21 +413,40 @@ namespace CustomDancePlayer
         {
             try
             {
-                var json = JsonUtility.ToJson(data);
-                File.WriteAllText(syncPath, json);
+                string dir = Path.GetDirectoryName(syncPath);
+                if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+                string tmp = syncPath + ".tmp";
+                File.WriteAllText(tmp, JsonUtility.ToJson(data));
+                if (File.Exists(syncPath))
+                {
+                    string bak = syncPath + ".bak";
+                    try { File.Copy(syncPath, bak, true); } catch { }
+                    try { File.Replace(tmp, syncPath, bak); }
+                    catch { try { File.Copy(tmp, syncPath, true); File.Delete(tmp); } catch { } }
+                }
+                else
+                {
+                    try { File.Move(tmp, syncPath); } catch { try { File.Copy(tmp, syncPath, true); File.Delete(tmp); } catch { } }
+                }
             }
             catch { }
         }
 
         SyncData ReadData()
         {
-            try
+            for (int attempt = 0; attempt < 3; attempt++)
             {
-                if (!File.Exists(syncPath)) return null;
-                var json = File.ReadAllText(syncPath);
-                return JsonUtility.FromJson<SyncData>(json);
+                try
+                {
+                    if (!File.Exists(syncPath)) return null;
+                    string json = File.ReadAllText(syncPath);
+                    if (string.IsNullOrWhiteSpace(json)) { System.Threading.Thread.Sleep(5); continue; }
+                    var obj = JsonUtility.FromJson<SyncData>(json);
+                    if (obj != null) return obj;
+                }
+                catch { System.Threading.Thread.Sleep(5); }
             }
-            catch { return null; }
+            return null;
         }
 
         void ResolveRefs()
