@@ -168,7 +168,9 @@ namespace CustomDancePlayer
             UpdateTimeLabels(elapsed, total);
             if (isPlaying && total > 0f)
             {
-                bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && !audioSource.isPlaying;
+                // bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && !audioSource.isPlaying;
+                bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && audioSource.time >= audioSource.clip.length - 0.05f;
+
                 bool timeReached = elapsed >= total - 0.05f;
                 if (audioEnded || timeReached) TryAutoNext();
             }
@@ -719,5 +721,16 @@ namespace CustomDancePlayer
             PlayNext();
             autoNextScheduled = false;
         }
+
+        public bool IsPlaying => isPlaying;
+        public AnimationClip GetCurrentClip() => loadedEntry != null ? loadedEntry.clip : null;
+        public float GetPlaybackTime()
+        {
+            if (audioSource != null && audioSource.clip != null) return audioSource.time;
+            if (isPlaying) return Mathf.Clamp(Time.time - playStartTime, 0f, currentTotalSeconds);
+            return 0f;
+        }
+        public float GetPlaybackLength() => currentTotalSeconds;
+
     }
 }
