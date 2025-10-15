@@ -74,6 +74,11 @@ namespace CustomDancePlayer
         float storedAudioVolume = -1f;
         bool followerMuted;
 
+        FieldInfo currentIndexFi;
+        FieldInfo entryIdFi;
+        MethodInfo findIndexByTitleMi;
+        bool autoNextArmed;
+
         void Awake()
         {
             if (handler == null) handler = GetComponent<AvatarDanceHandler>();
@@ -86,9 +91,48 @@ namespace CustomDancePlayer
 
         void OnEnable()
         {
+            StartCoroutine(LeaderAutoNextWatcher());
             StartCoroutine(Poll());
             StartCoroutine(WireLoop());
         }
+
+        IEnumerator LeaderAutoNextWatcher()
+        {
+            var wait = new WaitForSecondsRealtime(0.05f);
+            while (true)
+            {
+                if (isLeader)
+                {
+                    ResolveRefs();
+                    if (audioSource != null && audioSource.clip != null && audioSource.time > 0f)
+                    {
+                        float remain = audioSource.clip.length - audioSource.time;
+                        if (remain <= 0.18f && !autoNextArmed)
+                        {
+                            autoNextArmed = true;
+                            double at = UtcNow() + leadSeconds;
+                            guardActive = true;
+                            guardUntilUtc = at;
+                            EnforceHold();
+                            int target = NextFromFiltered(true);
+                            GetEntryData(target, out var nsid, out var ntit);
+                            ScheduleLocal(() => TryPlayByStableIdOrFallback(nsid, target, ntit), at);
+                            Broadcast("PlayByStableId", nsid, target, ntit, at);
+                        }
+                        else if (remain > 0.5f)
+                        {
+                            autoNextArmed = false;
+                        }
+                    }
+                    else
+                    {
+                        autoNextArmed = false;
+                    }
+                }
+                yield return wait;
+            }
+        }
+
 
         void OnDisable()
         {
@@ -145,6 +189,16 @@ namespace CustomDancePlayer
         void ResolveRefs()
         {
             if (handler == null) return;
+
+            if (currentIndexFi == null)
+                currentIndexFi = handler.GetType().GetField("currentIndex", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (findIndexByTitleMi == null)
+                findIndexByTitleMi = handler.GetType().GetMethod("FindIndexByTitle", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(string) }, null);
+
+            if (entryIdFi == null && entriesList != null && entriesList.Count > 0)
+                entryIdFi = entriesList[0].GetType().GetField("id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
 
             if (mainPlayBtn == null)
             {
@@ -271,8 +325,16 @@ namespace CustomDancePlayer
 
             if (intent == "play")
             {
-                ScheduleLocal(() => TryPlayCurrentOrFirst(), at);
-                Broadcast("PlayCurrentOrFirst", null, -1, null, at);
+                ResolveRefs();
+                int cur = GetCurrentIndex();
+                var visible = VisibleFilteredIndices();
+                int target = visible.Count > 0
+                    ? (visible.Contains(cur) ? cur : visible[0])
+                    : (cur < 0 ? 0 : cur);
+
+                GetEntryData(target, out var nsid, out var ntit);
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(nsid, target, ntit), at);
+                Broadcast("PlayByStableId", nsid, target, ntit, at);
             }
             else if (intent == "playByItem")
             {
@@ -281,13 +343,19 @@ namespace CustomDancePlayer
             }
             else if (intent == "next")
             {
-                ScheduleLocal(() => TryPlayNext(), at);
-                Broadcast("PlayNext", null, -1, null, at);
+                ResolveRefs();
+                int target = NextFromFiltered(true);
+                GetEntryData(target, out var nsid, out var ntit);
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(nsid, target, ntit), at);
+                Broadcast("PlayByStableId", nsid, target, ntit, at);
             }
             else if (intent == "prev")
             {
-                ScheduleLocal(() => TryPlayPrev(), at);
-                Broadcast("PlayPrev", null, -1, null, at);
+                ResolveRefs();
+                int target = NextFromFiltered(false);
+                GetEntryData(target, out var nsid, out var ntit);
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(nsid, target, ntit), at);
+                Broadcast("PlayByStableId", nsid, target, ntit, at);
             }
             else if (intent == "stop")
             {
@@ -295,6 +363,63 @@ namespace CustomDancePlayer
                 Broadcast("StopPlay", null, -1, null, at);
             }
         }
+
+        int GetCurrentIndex()
+        {
+            if (handler == null || currentIndexFi == null) return -1;
+            try { return (int)currentIndexFi.GetValue(handler); } catch { return -1; }
+        }
+
+        List<int> VisibleFilteredIndices()
+        {
+            var list = new List<int>();
+            if (contentRoot == null) return list;
+            if (findIndexByTitleMi == null) return list;
+            for (int i = 0; i < contentRoot.childCount; i++)
+            {
+                var tr = contentRoot.GetChild(i);
+                if (!tr.gameObject.activeSelf) continue;
+                var t = ExtractTitle(tr);
+                if (string.IsNullOrEmpty(t)) continue;
+                int idx = (int)findIndexByTitleMi.Invoke(handler, new object[] { t });
+                if (idx >= 0 && !list.Contains(idx)) list.Add(idx);
+            }
+            return list;
+        }
+
+        void GetEntryData(int idx, out string sid, out string title)
+        {
+            sid = null;
+            title = null;
+            if (entriesList == null || idx < 0 || idx >= entriesList.Count) return;
+            var e = entriesList[idx];
+            if (entryStableIdFi == null)
+                entryStableIdFi = e.GetType().GetField("stableId", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (entryIdFi == null)
+                entryIdFi = e.GetType().GetField("id", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (entryStableIdFi != null) sid = entryStableIdFi.GetValue(e) as string;
+            if (entryIdFi != null) title = entryIdFi.GetValue(e) as string;
+        }
+
+        int NextFromFiltered(bool forward)
+        {
+            int cur = GetCurrentIndex();
+            if (entriesList == null || entriesList.Count == 0) return -1;
+
+            var vis = VisibleFilteredIndices();
+            if (vis.Count == 0)
+            {
+                if (cur < 0) return 0;
+                if (forward) return (cur + 1) % entriesList.Count;
+                return cur <= 0 ? entriesList.Count - 1 : cur - 1;
+            }
+            int pos = vis.IndexOf(cur);
+            if (pos < 0) return vis[0];
+            if (forward) return vis[(pos + 1) % vis.Count];
+            return pos == 0 ? vis[vis.Count - 1] : vis[pos - 1];
+        }
+
+
 
         void EnforceHold()
         {
@@ -462,12 +587,34 @@ namespace CustomDancePlayer
 
         string ExtractTitle(Transform item)
         {
-            var tt = item.GetComponentInChildren<TMP_Text>(true);
-            if (tt != null && !string.IsNullOrEmpty(tt.text)) return tt.text.Trim();
-            var tx = item.GetComponentInChildren<Text>(true);
-            if (tx != null && !string.IsNullOrEmpty(tx.text)) return tx.text.Trim();
+            var tf = FindByExactName<Text>(item, "TitleFallback");
+            if (tf && !string.IsNullOrEmpty(tf.text)) return tf.text.Trim();
+            var tt = FindByExactName<TMP_Text>(item, "Title");
+            if (tt && !string.IsNullOrEmpty(tt.text)) return tt.text.Trim();
+            var tf2 = FindByNameContains<Text>(item, "titlefallback");
+            if (tf2 && !string.IsNullOrEmpty(tf2.text)) return tf2.text.Trim();
+            var tt2 = FindByNameContains<TMP_Text>(item, "title");
+            if (tt2 && !string.IsNullOrEmpty(tt2.text)) return tt2.text.Trim();
             return null;
         }
+
+        T FindByExactName<T>(Transform root, string name) where T : Component
+        {
+            var arr = root.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i].name == name) return arr[i].GetComponent<T>();
+            return null;
+        }
+
+        T FindByNameContains<T>(Transform root, string partLower) where T : Component
+        {
+            var arr = root.GetComponentsInChildren<Transform>(true);
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i].name.ToLowerInvariant().Contains(partLower)) return arr[i].GetComponent<T>();
+            return null;
+        }
+
+
 
         void Broadcast(string cmd, string sid, int index, string title, double atUtc)
         {

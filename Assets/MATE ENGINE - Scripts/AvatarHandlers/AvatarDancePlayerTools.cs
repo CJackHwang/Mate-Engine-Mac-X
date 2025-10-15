@@ -137,7 +137,28 @@ namespace CustomDancePlayer
                 bool matchFav = !showFavOnly || favorites.Contains(raw);
                 t.gameObject.SetActive(matchTitle && matchFav);
             }
+
+            if (!handler) return;
+
+            if (showFavOnly)
+            {
+                var indices = new List<int>();
+                for (int i = 0; i < contentRoot.childCount; i++)
+                {
+                    var t = contentRoot.GetChild(i);
+                    if (!t.gameObject.activeSelf) continue;
+                    if (!titleRaw.TryGetValue(t, out var raw)) raw = ExtractTitle(t);
+                    int idx = handler.FindIndexByTitle(raw);
+                    if (idx >= 0) indices.Add(idx);
+                }
+                handler.SetQueueByIndices(indices);
+            }
+            else
+            {
+                handler.SetQueueByIndices(null);
+            }
         }
+
 
         string Normalize(string s)
         {

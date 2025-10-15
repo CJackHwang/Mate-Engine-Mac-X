@@ -68,6 +68,7 @@ namespace CustomDancePlayer
         float currentTotalSeconds = 0f;
         float playStartTime = 0f;
         bool isPlaying = false;
+        List<int> filteredQueue = null;
 
         HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
         "まばたき","ウィンク","ウィンク２","ウィンク右","笑い","なごみ","びっくり","ジト目","瞳小","キリッ","星目","はぁと","はちゅ目","はっ","ハイライト消し","怒るいい子！",
@@ -248,9 +249,16 @@ namespace CustomDancePlayer
 
         void TryPlayCurrentOrFirst()
         {
-            int idx = currentIndex < 0 ? 0 : currentIndex;
-            PlayIndex(idx);
+            if (filteredQueue != null && filteredQueue.Count > 0)
+            {
+                int idx = (currentIndex >= 0 && filteredQueue.Contains(currentIndex)) ? currentIndex : filteredQueue[0];
+                PlayIndex(idx);
+                return;
+            }
+            int fallback = currentIndex < 0 ? 0 : currentIndex;
+            PlayIndex(fallback);
         }
+
 
         void EnsureAudioSource()
         {
@@ -515,16 +523,35 @@ namespace CustomDancePlayer
         void PlayPrev()
         {
             if (entries.Count == 0) return;
-            currentIndex = currentIndex <= 0 ? entries.Count - 1 : currentIndex - 1;
+            if (filteredQueue == null || filteredQueue.Count == 0)
+            {
+                currentIndex = currentIndex <= 0 ? entries.Count - 1 : currentIndex - 1;
+            }
+            else
+            {
+                int pos = filteredQueue.IndexOf(currentIndex);
+                currentIndex = pos < 0 ? filteredQueue[filteredQueue.Count - 1]
+                                       : (pos == 0 ? filteredQueue[filteredQueue.Count - 1] : filteredQueue[pos - 1]);
+            }
             PlayIndex(currentIndex);
         }
+
 
         void PlayNext()
         {
             if (entries.Count == 0) return;
-            currentIndex = (currentIndex + 1) % entries.Count;
+            if (filteredQueue == null || filteredQueue.Count == 0)
+            {
+                currentIndex = (currentIndex + 1) % entries.Count;
+            }
+            else
+            {
+                int pos = filteredQueue.IndexOf(currentIndex);
+                currentIndex = pos < 0 ? filteredQueue[0] : filteredQueue[(pos + 1) % filteredQueue.Count];
+            }
             PlayIndex(currentIndex);
         }
+
 
         bool EnsureAnimatorReady()
         {
@@ -768,6 +795,30 @@ namespace CustomDancePlayer
             return 0f;
         }
         public float GetPlaybackLength() => currentTotalSeconds;
+
+        public void SetQueueByIndices(List<int> indices)
+        {
+            if (indices == null || indices.Count == 0) { filteredQueue = null; return; }
+            var seen = new HashSet<int>();
+            var list = new List<int>(indices.Count);
+            for (int i = 0; i < indices.Count; i++)
+            {
+                int idx = indices[i];
+                if (idx < 0 || idx >= entries.Count) continue;
+                if (seen.Add(idx)) list.Add(idx);
+            }
+            filteredQueue = list.Count > 0 ? list : null;
+        }
+
+        public int FindIndexByTitle(string title)
+        {
+            if (string.IsNullOrEmpty(title)) return -1;
+            for (int i = 0; i < entries.Count; i++)
+                if (string.Equals(entries[i].id, title, StringComparison.OrdinalIgnoreCase))
+                    return i;
+            return -1;
+        }
+
 
     }
 }

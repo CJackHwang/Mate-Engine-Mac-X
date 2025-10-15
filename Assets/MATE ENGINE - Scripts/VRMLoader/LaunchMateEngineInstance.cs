@@ -9,8 +9,8 @@ using System;
 [Serializable]
 public class InstanceEntry
 {
-    public Button button;    // Button reference
-    public TMP_Text text;    // TMP label reference
+    public Button button;
+    public TMP_Text text;
 }
 
 public class LaunchMateEngineInstances : MonoBehaviour
@@ -29,7 +29,8 @@ public class LaunchMateEngineInstances : MonoBehaviour
     public float statusPollInterval = 1.5f;
 
     [Header("Optional")]
-    public GameObject hideIfSecondary; // UI element hidden in secondary instances
+    public GameObject hideIfSecondary;
+    public List<GameObject> hideIfSecondaryItems = new List<GameObject>();
 
     private readonly Dictionary<int, Process> activeInstances = new Dictionary<int, Process>();
     private string persistentPath;
@@ -41,11 +42,9 @@ public class LaunchMateEngineInstances : MonoBehaviour
         persistentPath = Application.persistentDataPath;
         DetectCurrentInstance();
 
-        // Hide "Add Avatar Instance" button if this is a secondary instance
-        if (currentInstanceIndex > 0 && hideIfSecondary != null)
-            hideIfSecondary.SetActive(false);
+        if (currentInstanceIndex > 0)
+            ApplySecondaryHide();
 
-        // Setup buttons
         for (int i = 0; i < instances.Count; i++)
         {
             int index = i + 1;
@@ -60,15 +59,12 @@ public class LaunchMateEngineInstances : MonoBehaviour
         if (statusPollInterval > 0f)
             InvokeRepeating(nameof(RefreshStatusPoll), statusPollInterval, statusPollInterval);
 
-        // Write PID file for this instance (secondary only)
         if (currentInstanceIndex > 0)
             WritePidFile();
     }
 
     void OnApplicationQuit() => CleanupPidFile();
     void OnDestroy() => CleanupPidFile();
-
-    // ------------------------------------------------------------------------
 
     void DetectCurrentInstance()
     {
@@ -82,6 +78,28 @@ public class LaunchMateEngineInstances : MonoBehaviour
             }
         }
         currentInstanceIndex = Mathf.Max(0, currentInstanceIndex);
+    }
+
+    void ApplySecondaryHide()
+    {
+        var targets = GetHideTargets();
+        foreach (var go in targets)
+            if (go != null) go.SetActive(false);
+    }
+
+    List<GameObject> GetHideTargets()
+    {
+        var list = new List<GameObject>();
+        if (hideIfSecondary != null) list.Add(hideIfSecondary);
+        if (hideIfSecondaryItems != null)
+        {
+            for (int i = 0; i < hideIfSecondaryItems.Count; i++)
+            {
+                var go = hideIfSecondaryItems[i];
+                if (go != null && !list.Contains(go)) list.Add(go);
+            }
+        }
+        return list;
     }
 
     void WritePidFile()
@@ -105,8 +123,6 @@ public class LaunchMateEngineInstances : MonoBehaviour
             try { if (File.Exists(pidPath)) File.Delete(pidPath); } catch { }
         }
     }
-
-    // ------------------------------------------------------------------------
 
     public void LaunchInstance(int index)
     {
@@ -207,7 +223,6 @@ public class LaunchMateEngineInstances : MonoBehaviour
     }
 }
 
-// old-scene compatibility
 public class LaunchMateEngineInstance : LaunchMateEngineInstances { }
 
 public class UnityMainThreadDispatcher : MonoBehaviour
