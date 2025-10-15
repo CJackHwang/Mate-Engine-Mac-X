@@ -7,6 +7,8 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Security.Cryptography;
+
 
 namespace CustomDancePlayer
 {
@@ -83,7 +85,9 @@ namespace CustomDancePlayer
             public bool fromME;
             public string extractedDir;
             public string author;
+            public string stableId;
         }
+
 
         [Serializable]
         class DanceMeta
@@ -140,6 +144,21 @@ namespace CustomDancePlayer
             UpdateAuthorLabel(null);
             UpdateTimeLabels(0f, 0f);
         }
+
+        string ComputeFileSha1(string path)
+        {
+            try
+            {
+                using (var s = File.OpenRead(path))
+                using (var sha1 = SHA1.Create())
+                {
+                    var h = sha1.ComputeHash(s);
+                    return BitConverter.ToString(h).Replace("-", "").ToLowerInvariant();
+                }
+            }
+            catch { return null; }
+        }
+
 
         void Update()
         {
@@ -367,11 +386,16 @@ namespace CustomDancePlayer
             }
             catch { return; }
 
+            string metaA = Path.Combine(dst, "dance_meta.json");
+            string metaB = Path.Combine(dst, "dance.json");
+            bool isDance = File.Exists(metaA) || File.Exists(metaB);
+            if (!isDance) return;
+
             string bundlePath = Directory.GetFiles(dst, "*.bundle", SearchOption.AllDirectories).FirstOrDefault();
             if (string.IsNullOrEmpty(bundlePath) || !File.Exists(bundlePath)) return;
 
-            string metaAuthor = unknownAuthorLabel;
-            string metaPath = Path.Combine(dst, "dance_meta.json");
+            string author = unknownAuthorLabel;
+            string metaPath = File.Exists(metaA) ? metaA : metaB;
             if (File.Exists(metaPath))
             {
                 try
@@ -381,7 +405,7 @@ namespace CustomDancePlayer
                     string cand = null;
                     if (!string.IsNullOrWhiteSpace(meta.songAuthor)) cand = meta.songAuthor;
                     else if (!string.IsNullOrWhiteSpace(meta.mmdAuthor)) cand = meta.mmdAuthor;
-                    if (!string.IsNullOrWhiteSpace(cand)) metaAuthor = "Author: " + cand;
+                    if (!string.IsNullOrWhiteSpace(cand)) author = "Author: " + cand;
                 }
                 catch { }
             }
@@ -396,11 +420,24 @@ namespace CustomDancePlayer
                 bundle = null,
                 fromME = true,
                 extractedDir = dst,
-                author = metaAuthor
+                author = author,
+                stableId = "sha1:" + ComputeFileSha1(bundlePath)
             };
             entries.Add(e);
             byId[id] = e;
         }
+
+        public string GetCurrentStableId() => loadedEntry != null ? loadedEntry.stableId : null;
+
+        public bool PlayByStableId(string stableId)
+        {
+            if (string.IsNullOrEmpty(stableId)) return false;
+            int idx = entries.FindIndex(e => string.Equals(e.stableId, stableId, StringComparison.OrdinalIgnoreCase));
+            if (idx < 0) return false;
+            return PlayIndex(idx);
+        }
+
+
 
         void BuildListUI()
         {

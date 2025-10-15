@@ -119,9 +119,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FillColor: {r: 0.11999995, g: 0.11999995, b: 0.19999996, a: 1}
     - _GlassTint: {r: 1, g: 1, b: 1, a: 0.35}
-    - _MainColor: {r: 0.099487655, g: 0.11677166, b: 0.1686247, a: 1}
+    - _MainColor: {r: 0.099487506, g: 0.1167715, b: 0.16862455, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OverlayColor: {r: 0.28943142, g: 0.3397142, b: 0.49056596, a: 1}
+    - _OverlayColor: {r: 0.28943124, g: 0.33971405, b: 0.49056596, a: 1}
     - _OverlayOffset: {r: 0, g: 0, b: 0, a: 0}
     - _OverlayScale: {r: 1, g: 1, b: 0, a: 0}
     - _OverlaySpeed: {r: 0.25, g: 0.25, b: 0, a: 0}
