@@ -18,6 +18,7 @@ public class MEModHandler : MonoBehaviour
 
     string modFolderPath;
     readonly List<ModEntry> loadedMods = new List<ModEntry>();
+    static readonly Dictionary<string, GameObject> GlobalInstances = new Dictionary<string, GameObject>(StringComparer.OrdinalIgnoreCase);
 
     void Start()
     {
@@ -178,6 +179,16 @@ public class MEModHandler : MonoBehaviour
 
     void LoadMEObject(string mePath, string extractedDir, string id)
     {
+        if (GlobalInstances.TryGetValue(id, out var existing) && existing != null)
+        {
+            bool state = GetSavedStateOrDefault(id, existing.activeSelf);
+            existing.SetActive(state);
+            var entry = new ModEntry { name = id, instance = existing, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = state, author = "Author: Unknown" };
+            loadedMods.Add(entry);
+            AddToModListUI(entry, state);
+            return;
+        }
+
         string bundlePath = null;
         try
         {
@@ -246,11 +257,15 @@ public class MEModHandler : MonoBehaviour
 
         bool initialState = GetSavedStateOrDefault(id, true);
         instance.SetActive(initialState);
+        instance.name = "ME_" + id;
 
-        var entry = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = "Author: Unknown" };
-        loadedMods.Add(entry);
-        AddToModListUI(entry, initialState);
+        GlobalInstances[id] = instance;
+
+        var entry2 = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = "Author: Unknown" };
+        loadedMods.Add(entry2);
+        AddToModListUI(entry2, initialState);
     }
+
 
     void ApplyReferencePaths(GameObject root, Dictionary<string, string> refPaths, Dictionary<string, string> sceneLinks)
     {
@@ -471,7 +486,9 @@ public class MEModHandler : MonoBehaviour
         if (mod.type == ModType.MEObject)
         {
             if (mod.instance != null) Destroy(mod.instance);
+            if (GlobalInstances.TryGetValue(mod.name, out var go) && go == mod.instance) GlobalInstances.Remove(mod.name);
         }
+
 
         try { if (File.Exists(mod.localPath)) File.Delete(mod.localPath); } catch { }
         try { if (!string.IsNullOrEmpty(mod.extractedPath) && Directory.Exists(mod.extractedPath)) Directory.Delete(mod.extractedPath, true); } catch { }

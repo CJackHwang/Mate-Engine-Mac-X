@@ -349,7 +349,9 @@ namespace CustomDancePlayer
         void TryAddUnity3D(string path)
         {
             string id = Path.GetFileNameWithoutExtension(path);
+            if (!IsModEnabled(id)) return;
             if (byId.ContainsKey(id)) return;
+
 
             var e = new DanceEntry
             {
@@ -370,7 +372,9 @@ namespace CustomDancePlayer
         void TryAddME(string mePath)
         {
             string id = Path.GetFileNameWithoutExtension(mePath);
+            if (!IsModEnabled(id)) return;
             if (byId.ContainsKey(id)) return;
+
 
             string cacheRoot = Path.Combine(Application.temporaryCachePath, "ME_Cache");
             Directory.CreateDirectory(cacheRoot);
@@ -818,7 +822,11 @@ namespace CustomDancePlayer
                     return i;
             return -1;
         }
-
-
+        bool IsModEnabled(string id)
+        {
+            if (SaveLoadHandler.Instance == null || SaveLoadHandler.Instance.data == null) return true;
+            if (SaveLoadHandler.Instance.data.modStates.TryGetValue(id, out var on)) return on;
+            return true;
+        }
     }
 }

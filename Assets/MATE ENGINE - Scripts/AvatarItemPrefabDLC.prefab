@@ -696,7 +696,6 @@ GameObject:
   - component: {fileID: 8944270016160885385}
   - component: {fileID: 388164833802607049}
   - component: {fileID: 7364763302517402969}
-  - component: {fileID: 4979264818293154575}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -818,18 +817,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4979264818293154575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1195506240988448248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac7d1daadd2b0054ba70801e21d2aa5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1221397142359255110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,12 +1235,16 @@ MonoBehaviour:
     isSteamWorkshop: 0
     steamFileId: 0
     isNSFW: 0
+    isOwner: 0
   progressSlider: {fileID: 0}
   labelText: {fileID: 5450579052238694507}
   errorText: {fileID: 4386786522296400394}
   audioSource: {fileID: 7336286680331209056}
   tickSound: {fileID: 8300000, guid: ed75ee7d66b3feb419728cbd10cbd9a2, type: 3}
   completeSound: {fileID: 8300000, guid: bd8c385aa551a604093624314940e2b6, type: 3}
+  fallbackUpload: Upload
+  fallbackUpdate: Update
+  fallbackPngMissing: PNG Missing
 --- !u!1 &3938044001119464676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,7 +1565,6 @@ GameObject:
   - component: {fileID: 7582159340999662159}
   - component: {fileID: 8813494201784916943}
   - component: {fileID: 8588030643188080470}
-  - component: {fileID: 6821978844692779098}
   m_Layer: 5
   m_Name: Glow
   m_TagString: Untagged
@@ -1636,18 +1626,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &6821978844692779098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5859673911180875503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac7d1daadd2b0054ba70801e21d2aa5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6434325229915505533
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,10 @@ public class AvatarWindowHandler : MonoBehaviour
     float snapFraction;
     public float baseOffset = 40f;
     public float baseScale = 1f;
+    int _snapCursorY;
+    bool wasDragging;
+    bool dragStartedInsideBand;
+
 
     IntPtr snappedHWND = IntPtr.Zero, unityHWND = IntPtr.Zero;
     Vector2 snapOffset;
@@ -59,6 +63,15 @@ public class AvatarWindowHandler : MonoBehaviour
         var unityPos = GetUnityWindowPosition();
         UpdateCachedWindows();
         UpdatePinkZone(unityPos);
+
+        if (controller.isDragging && !wasDragging && snappedHWND != IntPtr.Zero && animator.GetBool("isWindowSit"))
+        {
+            Kirurobo.WinApi.POINT cp;
+            if (Kirurobo.WinApi.GetCursorPos(out cp)) _snapCursorY = cp.y;
+        }
+
+
+
 
         if (controller.isDragging && !controller.animator.GetBool("isSitting"))
         {
@@ -106,6 +119,7 @@ public class AvatarWindowHandler : MonoBehaviour
             SetTopMost(true);
             return;
         }
+        wasDragging = controller.isDragging;
     }
     void UpdateCachedWindows()
     {
@@ -154,6 +168,8 @@ public class AvatarWindowHandler : MonoBehaviour
             snapOffset.y = GetUnityWindowHeight() + snapZoneOffset.y + snapZoneSize.y * 0.5f;
             animator.SetBool("isWindowSit", true);
             SetTopMost(false);
+            Kirurobo.WinApi.POINT cp;
+            if (Kirurobo.WinApi.GetCursorPos(out cp)) _snapCursorY = cp.y;
             return;
         }
     }
@@ -162,20 +178,25 @@ public class AvatarWindowHandler : MonoBehaviour
         foreach (var win in cachedWindows)
         {
             if (win.hwnd != snappedHWND) continue;
+
             var unityPos = GetUnityWindowPosition();
-            float winWidth = win.rect.Right - win.rect.Left, unityWidth = GetUnityWindowWidth();
+            float unityWidth = GetUnityWindowWidth();
+            float winWidth = win.rect.Right - win.rect.Left;
             float petCenterX = unityPos.x + unityWidth * 0.5f;
-            snapFraction = (petCenterX - win.rect.Left) / winWidth;
-            float newCenterX = win.rect.Left + snapFraction * winWidth;
-            int targetX = Mathf.RoundToInt(newCenterX - unityWidth * 0.5f);
+            snapFraction = Mathf.Clamp01((petCenterX - win.rect.Left) / winWidth);
+
             float yOffset = GetUnityWindowHeight() + snapZoneOffset.y + snapZoneSize.y * 0.5f;
             float scale = transform.localScale.y, scaleOffset = (baseScale - scale) * baseOffset;
             float windowSitOffset = windowSitYOffset * GetUnityWindowHeight();
             int targetY = win.rect.Top - (int)(yOffset + scaleOffset) + verticalOffset + Mathf.RoundToInt(windowSitOffset);
-            SetUnityWindowPosition(targetX, targetY);
+
+            SetUnityWindowPosition(Mathf.RoundToInt(unityPos.x), targetY);
             return;
         }
     }
+
+
+
 
     void FollowSnappedWindow()
     {
@@ -201,10 +222,24 @@ public class AvatarWindowHandler : MonoBehaviour
     bool IsStillNearSnappedWindow()
     {
         foreach (var win in cachedWindows)
-            if (win.hwnd == snappedHWND)
-                return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+        {
+            if (win.hwnd != snappedHWND) continue;
+
+            if (controller.isDragging && animator.GetBool("isWindowSit"))
+            {
+                Kirurobo.WinApi.POINT cp;
+                if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
+                int dy = Mathf.Abs(cp.y - _snapCursorY);
+                return dy <= Mathf.RoundToInt(snapZoneSize.y);
+            }
+
+            return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+        }
         return false;
     }
+
+
+
 
     [DllImport("user32.dll")]
     static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
@@ -259,7 +294,7 @@ public class AvatarWindowHandler : MonoBehaviour
         int height = win.rect.Bottom - win.rect.Top;
         int screenWidth = Display.main.systemWidth;
         int screenHeight = Display.main.systemHeight;
-        int tolerance = 2; 
+        int tolerance = 2;
         return Mathf.Abs(width - screenWidth) <= tolerance && Mathf.Abs(height - screenHeight) <= tolerance;
     }
     void MoveMateToDesktopPosition()
@@ -304,4 +339,19 @@ public class AvatarWindowHandler : MonoBehaviour
         }
         SetTopMost(true);
     }
+    bool CursorWithinSnapBandOfSnappedWindow()
+    {
+        foreach (var win in cachedWindows)
+        {
+            if (win.hwnd != snappedHWND) continue;
+            Kirurobo.WinApi.POINT cp;
+            if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
+            int band = Mathf.RoundToInt(snapZoneSize.y);
+            int top = win.rect.Top;
+            if (cp.y < top - band || cp.y > top + 5 + band) return false;
+            return true;
+        }
+        return true;
+    }
+
 }

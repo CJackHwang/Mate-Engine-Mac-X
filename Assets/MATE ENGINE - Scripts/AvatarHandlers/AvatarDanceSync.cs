@@ -59,6 +59,8 @@ namespace CustomDancePlayer
         FieldInfo entriesFi;
         FieldInfo entryStableIdFi;
 
+        private bool animatorFrozen = false;
+
         readonly HashSet<Button> wiredButtons = new HashSet<Button>();
         readonly List<Button> tempDisabled = new List<Button>();
 
@@ -439,16 +441,18 @@ namespace CustomDancePlayer
         void FreezeAnimator()
         {
             if (animator == null) return;
-            animatorPrevSpeed = animator.speed;
+            if (animatorFrozen) return;
+            animatorPrevSpeed = animator.speed > 0f ? animator.speed : 1f;
             animator.speed = 0f;
+            animatorFrozen = true;
         }
 
         void UnfreezeAnimator()
         {
             if (animator == null) return;
-            animator.speed = animatorPrevSpeed;
+            animator.speed = animatorPrevSpeed > 0f ? animatorPrevSpeed : 1f;
+            animatorFrozen = false;
         }
-
         void ReenableAll()
         {
             for (int i = 0; i < tempDisabled.Count; i++)
