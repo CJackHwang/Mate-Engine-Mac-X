@@ -1,7 +1,8 @@
 # Support MateEngine on Steam!
 Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
 Or use it for free here! Any Purchase on Steam will help Developement and future updates!
-You also get additional content:
+
+Steam Users get additional Content:
 
 **Accessories**
 
