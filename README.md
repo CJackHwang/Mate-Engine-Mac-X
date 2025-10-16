@@ -2,6 +2,24 @@
 Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
 Or use it for free here! Any Purchase on Steam will help Developement and future updates!
 
+Steam users get exclusive additional content:
+
+**Accessories**
+
+* Flower Halo
+* Sakura Halo
+* Retro Halo
+
+**Extra Features**
+
+* **Event-Based Messages**
+  Generates cute messages when you drag the avatar, make it dance, or let it sit on windows or the taskbar.
+* **Steam Workshop Support**
+  Access modifications, custom models, and dances. You can also create or download them from third-party websites.
+* **Automatic Updates**
+  Always stay up to date with the latest version.
+
+
 
 # Note-Worthy Community Mods:
 
