@@ -26,10 +26,11 @@ public class VRMLoader : MonoBehaviour
     private GameObject currentModel;
     private bool isLoading = false;
     private const string LegacyModelPathKey = "SavedPathModel";
+    private RuntimeGltfInstance currentGltf;
+    private AssetBundle currentBundle;
 
     void Start()
     {
-
         string savedPath = SaveLoadHandler.Instance != null
             ? SaveLoadHandler.Instance.data.selectedModelPath
             : null;
@@ -46,11 +47,9 @@ public class VRMLoader : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-
         if (!string.IsNullOrEmpty(savedPath))
             LoadVRM(savedPath);
     }
-
 
     public void OpenFileDialogAndLoadVRM()
     {
@@ -75,9 +74,9 @@ public class VRMLoader : MonoBehaviour
                 SaveLoadHandler.Instance.data.selectedModelPath = path;
                 SaveLoadHandler.Instance.SaveToDisk();
             }
-
             return;
         }
+
         if (IsDLCReference(path))
         {
             GameObject prefab = FindDLCByName(path);
@@ -90,41 +89,38 @@ public class VRMLoader : MonoBehaviour
                     SaveLoadHandler.Instance.data.selectedModelPath = path;
                     SaveLoadHandler.Instance.SaveToDisk();
                 }
-
             }
             else
             {
-                Debug.LogError("[VRMLoader] DLC Prefab nicht gefunden: " + path);
+                Debug.LogError("[VRMLoader] DLC Prefab not found: " + path);
             }
             return;
         }
-
 
         if (!File.Exists(path)) return;
 
         try
         {
-            if (path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
-            {
-                LoadAssetBundleModel(path);
-                return;
-            }
-
             byte[] fileData = await Task.Run(() => File.ReadAllBytes(path));
             if (fileData == null || fileData.Length == 0) return;
 
             GameObject loadedModel = null;
+
             try
             {
                 var glbData = new GlbFileParser(path).Parse();
                 var vrm10Data = Vrm10Data.Parse(glbData);
-
                 if (vrm10Data != null)
                 {
                     using var importer10 = new Vrm10Importer(vrm10Data);
                     var instance10 = await importer10.LoadAsync(new ImmediateCaller());
                     if (instance10.Root != null)
+                    {
                         loadedModel = instance10.Root;
+                        currentGltf = instance10;
+                        loadedModel.AddComponent<GltfInstanceDisposer>().Bind(instance10);
+                    }
+
                 }
             }
             catch { }
@@ -134,10 +130,23 @@ public class VRMLoader : MonoBehaviour
                 try
                 {
                     using var gltfData = new GlbBinaryParser(fileData, path).Parse();
-                    var importer = new VRMImporterContext(new VRMData(gltfData));
-                    var instance = await importer.LoadAsync(new ImmediateCaller());
-                    if (instance.Root != null)
-                        loadedModel = instance.Root;
+                    VRMImporterContext importer = null;
+                    try
+                    {
+                        importer = new VRMImporterContext(new VRMData(gltfData));
+                        var instance = await importer.LoadAsync(new ImmediateCaller());
+                        if (instance.Root != null)
+                        {
+                            loadedModel = instance.Root;
+                            currentGltf = instance;
+                            loadedModel.AddComponent<GltfInstanceDisposer>().Bind(instance);
+                        }
+
+                    }
+                    finally
+                    {
+                        importer?.Dispose();
+                    }
                 }
                 catch { return; }
             }
@@ -150,7 +159,6 @@ public class VRMLoader : MonoBehaviour
                 SaveLoadHandler.Instance.data.selectedModelPath = path;
                 SaveLoadHandler.Instance.SaveToDisk();
             }
-
         }
         catch (Exception ex)
         {
@@ -171,19 +179,20 @@ public class VRMLoader : MonoBehaviour
         if (prefab == null)
         {
             Debug.LogError("[VRMLoader] No prefab found in AssetBundle.");
-            bundle.Unload(false);
+            bundle.Unload(true);
             return;
         }
 
         var instance = Instantiate(prefab);
-        bundle.Unload(false);
-        FinalizeLoadedModel(instance, path);
+        FinalizeLoadedModel(instance, path, bundle);
     }
 
-    private void FinalizeLoadedModel(GameObject loadedModel, string path)
+    private void FinalizeLoadedModel(GameObject loadedModel, string path, AssetBundle bundle = null)
     {
         DisableMainModel();
         ClearPreviousCustomModel();
+
+        currentBundle = bundle;
 
         loadedModel.transform.SetParent(customModelOutput.transform, false);
         loadedModel.transform.localPosition = Vector3.zero;
@@ -197,10 +206,7 @@ public class VRMLoader : MonoBehaviour
 
         var changer = FindFirstObjectByType<MEValueChanger>();
         if (changer != null)
-        {
             changer.SendMessage("TryAttachCustomVRM", SendMessageOptions.DontRequireReceiver);
-        }
-
 
         string displayName = Path.GetFileNameWithoutExtension(path);
         string author = "Unknown";
@@ -230,35 +236,28 @@ public class VRMLoader : MonoBehaviour
                 fileType = isME ? ".ME (VRM0.X)" : "VRM0.X";
                 thumbnail = meta.Thumbnail;
             }
-
         }
 
         Texture2D safeThumbnail = MakeReadableCopy(thumbnail);
         int polyCount = GetTotalPolygons(loadedModel);
 
-        // VRMs/ME-Files zur Liste hinzufügen, aber NIE DLC/Prefabs!
         if (!IsDLCReference(path))
-        {
             AvatarLibraryMenu.AddAvatarToLibrary(displayName, author, version, fileType, path, safeThumbnail, polyCount);
-        }
 
         if (safeThumbnail != null) Destroy(safeThumbnail);
 
         var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
         if (libraryMenu != null)
-        {
             libraryMenu.ReloadAvatars();
-        }
 
         StartCoroutine(DelayedRefreshStats());
 
         if (MEModLoader.Instance != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(loadedModel);
 
-        ReleaseRamAndUnloadAssets();
-        SettingsHandlerUtility.ReloadAllSettingsHandlers(); // Should load the settings from all modules and load it to new vrm files
+        StartCoroutine(ReleaseRamAndUnloadAssetsCo());
+        SettingsHandlerUtility.ReloadAllSettingsHandlers();
     }
-
 
     public Texture2D MakeReadableCopy(Texture texture)
     {
@@ -293,9 +292,8 @@ public class VRMLoader : MonoBehaviour
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
 
-        ReleaseRamAndUnloadAssets();
+        StartCoroutine(ReleaseRamAndUnloadAssetsCo());
     }
-
 
     private void DisableMainModel()
     {
@@ -308,19 +306,26 @@ public class VRMLoader : MonoBehaviour
         if (mainModel != null)
             mainModel.SetActive(true);
     }
+
     private void ClearPreviousCustomModel(bool skipRawImageCleanup = false)
     {
         if (customModelOutput != null)
         {
             foreach (Transform child in customModelOutput.transform)
             {
-                if (child.gameObject == mainModel)
-                    continue;
-                CleanupMaterialsAndTextures(child.gameObject);
+                if (child.gameObject == mainModel) continue;
                 CleanupRawImages(child.gameObject);
                 Destroy(child.gameObject);
             }
         }
+
+        if (currentBundle != null)
+        {
+            currentBundle.Unload(true);
+            currentBundle = null;
+        }
+
+        currentGltf = null;
 
         if (!skipRawImageCleanup)
             CleanupAllRawImagesInScene();
@@ -349,20 +354,17 @@ public class VRMLoader : MonoBehaviour
         foreach (var templateComp in templateObj.GetComponents<MonoBehaviour>())
         {
             var type = templateComp.GetType();
-            if (targetModel.GetComponent(type) != null)
-                continue;
+            if (targetModel.GetComponent(type) != null) continue;
             var newComp = targetModel.AddComponent(type);
             CopyComponentValues(templateComp, newComp);
 
             if (animator != null)
             {
                 var setAnimMethod = type.GetMethod("SetAnimator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (setAnimMethod != null)
-                    setAnimMethod.Invoke(newComp, new object[] { animator });
+                if (setAnimMethod != null) setAnimMethod.Invoke(newComp, new object[] { animator });
 
                 var animatorField = type.GetField("animator", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (animatorField != null && animatorField.FieldType == typeof(Animator))
-                    animatorField.SetValue(newComp, animator);
+                if (animatorField != null && animatorField.FieldType == typeof(Animator)) animatorField.SetValue(newComp, animator);
             }
         }
         Destroy(templateObj);
@@ -426,32 +428,17 @@ public class VRMLoader : MonoBehaviour
         if (MEModLoader.Instance != null && mainModel != null)
             MEModLoader.Instance.AssignHandlersForCurrentAvatar(mainModel);
 
-        ReleaseRamAndUnloadAssets();
+        StartCoroutine(ReleaseRamAndUnloadAssetsCo());
         SettingsHandlerUtility.ReloadAllSettingsHandlers();
     }
 
-
-    private void ReleaseRamAndUnloadAssets()
+    private System.Collections.IEnumerator ReleaseRamAndUnloadAssetsCo()
     {
-        Resources.UnloadUnusedAssets();
+        yield return Resources.UnloadUnusedAssets();
+        yield return null;
         System.GC.Collect();
-    }
-
-    private void CleanupMaterialsAndTextures(GameObject obj)
-    {
-        if (obj == null) return;
-        foreach (var renderer in obj.GetComponentsInChildren<Renderer>(true))
-        {
-            if (renderer.materials != null)
-            {
-                foreach (var mat in renderer.materials)
-                {
-                    if (mat == null) continue;
-                    if (mat.mainTexture != null)
-                        mat.mainTexture = null;
-                }
-            }
-        }
+        System.GC.WaitForPendingFinalizers();
+        System.GC.Collect();
     }
 
     private void CleanupRawImages(GameObject obj)
@@ -459,18 +446,14 @@ public class VRMLoader : MonoBehaviour
         if (obj == null) return;
         var rawImages = obj.GetComponentsInChildren<RawImage>(true);
         foreach (var rawImage in rawImages)
-        {
             rawImage.texture = null;
-        }
     }
 
     private void CleanupAllRawImagesInScene()
     {
         var rawImages = GameObject.FindObjectsByType<RawImage>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var rawImage in rawImages)
-        {
             rawImage.texture = null;
-        }
     }
 
     private bool IsDLCReference(string path)
@@ -498,9 +481,23 @@ public class VRMLoader : MonoBehaviour
         }
         return null;
     }
+
     public GameObject GetCurrentModel()
     {
         return currentModel;
     }
+}
+public sealed class GltfInstanceDisposer : MonoBehaviour
+{
+    private UniGLTF.RuntimeGltfInstance inst;
 
+    public void Bind(UniGLTF.RuntimeGltfInstance i)
+    {
+        inst = i;
+    }
+
+    private void OnDestroy()
+    {
+        try { inst?.Dispose(); } catch { }
+    }
 }

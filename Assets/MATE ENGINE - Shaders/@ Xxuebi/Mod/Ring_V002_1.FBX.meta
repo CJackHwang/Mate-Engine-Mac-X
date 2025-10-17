@@ -1,29 +1,65 @@
 fileFormatVersion: 2
 guid: 1466ff6d61ef22e4aad9de21922c6b8b
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Q001
-    100002: R001
-    100004: R002
-    100006: //RootNode
-    400000: Q001
-    400002: R001
-    400004: R002
-    400006: //RootNode
-    2100000: No Name
-    2300000: Q001
-    2300002: R001
-    2300004: R002
-    3300000: Q001
-    3300002: R001
-    3300004: R002
-    4300000: R002
-    4300002: R001
-    4300004: Q001
+  serializedVersion: 24200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Q001
+  - first:
+      1: 100002
+    second: R001
+  - first:
+      1: 100004
+    second: R002
+  - first:
+      1: 100006
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Q001
+  - first:
+      4: 400002
+    second: R001
+  - first:
+      4: 400004
+    second: R002
+  - first:
+      4: 400006
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: No Name
+  - first:
+      23: 2300000
+    second: Q001
+  - first:
+      23: 2300002
+    second: R001
+  - first:
+      23: 2300004
+    second: R002
+  - first:
+      33: 3300000
+    second: Q001
+  - first:
+      33: 3300002
+    second: R001
+  - first:
+      33: 3300004
+    second: R002
+  - first:
+      43: 4300000
+    second: R002
+  - first:
+      43: 4300002
+    second: R001
+  - first:
+      43: 4300004
+    second: Q001
   externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -32,9 +68,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -49,32 +84,46 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -83,10 +132,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -96,13 +145,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
