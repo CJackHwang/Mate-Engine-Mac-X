@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,17 +18,9 @@ namespace CustomDancePlayer
         {
             isMain = GetInstanceIndex() == 0;
             string fileName = "avatar_dance_play_bus.json";
-
-            var ads = FindFirstObjectByType<AvatarDanceSync>();
-            if (ads != null)
-            {
-                var fi = typeof(AvatarDanceSync).GetField("fileName", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                if (fi != null)
-                {
-                    var val = fi.GetValue(ads) as string;
-                    if (!string.IsNullOrEmpty(val)) fileName = val;
-                }
-            }
+            var handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (handler != null && !string.IsNullOrEmpty(handler.syncFileName))
+                fileName = handler.syncFileName;
 
             var dir = Path.Combine(Application.persistentDataPath, "Sync");
             try { Directory.CreateDirectory(dir); } catch { }
@@ -62,9 +53,9 @@ namespace CustomDancePlayer
         void ApplyState()
         {
             if (!isMain) return;
-            bool allow = syncToggle == null ? true : syncToggle.isOn;
-            if (allow) ReleaseLock();
-            else AcquireLock();
+            bool allowBroadcast = syncToggle == null ? true : syncToggle.isOn;
+            if (allowBroadcast) ReleaseLock();   
+            else AcquireLock();                
         }
 
         void AcquireLock()

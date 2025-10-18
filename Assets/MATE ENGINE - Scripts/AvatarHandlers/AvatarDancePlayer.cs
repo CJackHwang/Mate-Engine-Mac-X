@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Security.Cryptography;
-
 
 namespace CustomDancePlayer
 {
@@ -32,24 +32,44 @@ namespace CustomDancePlayer
 
         [Header("Sound")]
         public AudioSource audioSource;
+        public Slider volumeSlider;
 
-        [Header("Misc Settings")]
+        [Header("Animator")]
         public string danceLayerName = "Dance Layer";
         public string danceStateName = "Custom Dance";
         public string placeholderClipName = "CUSTOM_DANCE";
         public string customDancingParam = "isCustomDancing";
-        AnimationClip placeholderClipCached;
-        Coroutine playRoutine;
-        bool autoNextScheduled;
+        public string waitingParam = "isWaitingForDancing";
 
-        [Header("Prefab Settings")]
+        [Header("List UI")]
         public Transform contentObject;
         public GameObject prefab;
         public Button songPlayButton;
 
-        [Header("Folders")]
+        [Header("Sources")]
         public string streamingSubfolder = "CustomDances";
         public string modsFolderName = "Mods";
+
+        [Header("Sync")]
+        public bool enableSync = true;
+        public string syncFileName = "avatar_dance_play_bus.json";
+        public float pollInterval = 0.05f;
+        public double leadSeconds = 1.5;
+
+        class BusCmd
+        {
+            public int v;
+            public string cmd;
+            public string sid;
+            public string title;
+            public int index;
+            public double atUtc;
+            public double writeUtc;
+        }
+
+        AnimationClip placeholderClipCached;
+        Coroutine playRoutine;
+        bool autoNextScheduled;
 
         Animator animator;
         Animator lastAnimator;
@@ -69,10 +89,13 @@ namespace CustomDancePlayer
         float playStartTime = 0f;
         bool isPlaying = false;
         List<int> filteredQueue = null;
+        bool holdDuringTransition;   
+        bool pendingStop;          
 
-        HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
-        "まばたき","ウィンク","ウィンク２","ウィンク右","笑い","なごみ","びっくり","ジト目","瞳小","キリッ","星目","はぁと","はちゅ目","はっ","ハイライト消し","怒るいい子！",
-        "あ","い","う","え","お","えーん","ん","▲","口","ω口","はんっ！","にっこり","にやり","にやり２","べろっ","てへぺろ","口角上げ","口角下げ","口横広げ","真面目","上下","困る","怒り","照れ","涙","すぼめ"
+
+        readonly HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
+            "まばたき","ウィンク","ウィンク２","ウィンク右","笑い","なごみ","びっくり","ジト目","瞳小","キリッ","星目","はぁと","はちゅ目","はっ","ハイライト消し","怒るいい子！",
+            "あ","い","う","え","お","えーん","ん","▲","口","ω口","はんっ！","にっこり","にやり","にやり２","べろっ","てへぺろ","口角上げ","口角下げ","口横広げ","真面目","上下","困る","怒り","照れ","涙","すぼめ"
         }, StringComparer.Ordinal);
 
         class DanceEntry
@@ -88,7 +111,6 @@ namespace CustomDancePlayer
             public string author;
             public string stableId;
         }
-
 
         [Serializable]
         class DanceMeta
@@ -116,6 +138,20 @@ namespace CustomDancePlayer
 
         readonly List<PooledItem> uiPool = new();
 
+        string busPath;
+        int lastSeenV = -1;
+        Mutex leaderMutex;
+        bool isLeader;
+        Coroutine scheduledCo;
+        bool guardActive;
+        double guardUntilUtc;
+        bool animatorFrozen;
+        float animatorPrevSpeed = 1f;
+        readonly List<Button> tempDisabled = new();
+        float storedSliderValue = -1f;
+        float storedAudioVolume = -1f;
+        bool followerMuted;
+
         void Awake()
         {
             if (!useFallbackFont)
@@ -126,11 +162,16 @@ namespace CustomDancePlayer
             else
             {
                 if (playingNowFallbackText != null) defaultPlayingNowText = playingNowFallbackText.text;
-                if (authorFallbackText != null) defaultAuthorText = string.IsNullOrWhiteSpace(authorFallbackText.text) ? unknownAuthorLabel : authorFallbackText.text;
+                if (authorFallbackText != null) defaultAuthorText = string.IsNullOrWhiteSpace(authorFallbackText.text) ? unknownAuthorLabel : authorText.text;
             }
             if (playTimeText != null) defaultPlayTimeText = playTimeText.text;
             if (maxPlayTimeText != null) defaultMaxPlayTimeText = maxPlayTimeText.text;
             BindUI();
+
+            var dir = Path.Combine(Application.persistentDataPath, "Sync");
+            try { Directory.CreateDirectory(dir); } catch { }
+            busPath = Path.Combine(dir, syncFileName);
+            TryAcquireLeader();
         }
 
         IEnumerator Start()
@@ -146,27 +187,51 @@ namespace CustomDancePlayer
             UpdateTimeLabels(0f, 0f);
         }
 
-        string ComputeFileSha1(string path)
+        void OnEnable()
         {
-            try
+            if (enableSync)
             {
-                using (var s = File.OpenRead(path))
-                using (var sha1 = SHA1.Create())
-                {
-                    var h = sha1.ComputeHash(s);
-                    return BitConverter.ToString(h).Replace("-", "").ToLowerInvariant();
-                }
+                StartCoroutine(Poll());
+                StartCoroutine(LeaderAutoNextWatcher());
             }
-            catch { return null; }
         }
 
+        bool IsOnDanceState()
+        {
+            if (animator == null) return false;
+            if (layerIndex < 0) layerIndex = animator.GetLayerIndex(danceLayerName);
+            var st = animator.GetCurrentAnimatorStateInfo(layerIndex);
+            return st.shortNameHash == stateHash;
+        }
+
+        bool IsFullyInWaiting()
+        {
+            if (animator == null) return false;
+            if (layerIndex < 0) layerIndex = animator.GetLayerIndex(danceLayerName);
+            return !IsOnDanceState() && !animator.IsInTransition(layerIndex) &&
+                   HasBool(waitingParam) && animator.GetBool(waitingParam);
+        }
+
+        void PauseAudio() { if (audioSource != null) try { audioSource.Pause(); } catch { } }
+        void ResumeAudio() { if (audioSource != null && audioSource.clip != null) try { audioSource.Play(); } catch { } }
+
+        void OnDisable()
+        {
+            if (scheduledCo != null) { StopCoroutine(scheduledCo); scheduledCo = null; }
+            StopAllCoroutines();
+            ReleaseLeader();
+            UnfreezeAnimator();
+            guardActive = false;
+            ReenableAll();
+        }
 
         void Update()
         {
             RefreshAnimatorIfChanged();
 
             bool dancingOn = animator != null && HasBool(customDancingParam) && animator.GetBool(customDancingParam);
-            if (isPlaying && !dancingOn) StopAndUnload();
+            if (isPlaying && !dancingOn && !holdDuringTransition) StopAndUnload();
+
 
             float total = currentTotalSeconds;
             float elapsed = 0f;
@@ -186,79 +251,132 @@ namespace CustomDancePlayer
             else if (progressSlider != null) progressSlider.value = 0f;
 
             UpdateTimeLabels(elapsed, total);
-            if (isPlaying && total > 0f)
+
+            if (!(enableSync && isLeader))
             {
-                // bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && !audioSource.isPlaying;
-                bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && audioSource.time >= audioSource.clip.length - 0.05f;
-
-                bool timeReached = elapsed >= total - 0.05f;
-                if (audioEnded || timeReached) TryAutoNext();
-            }
-        }
-
-        bool IsMMDName(string n)
-        {
-            if (string.IsNullOrEmpty(n)) return false;
-            if (mmdBlendShapeNames.Contains(n)) return true;
-            if (n.StartsWith("mmd_", StringComparison.OrdinalIgnoreCase)) return true;
-            return false;
-        }
-
-        void ResetMMDBlendShapes()
-        {
-            if (animator == null) return;
-            var root = animator.gameObject;
-            var renderers = root.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-            for (int r = 0; r < renderers.Length; r++)
-            {
-                var smr = renderers[r];
-                var mesh = smr.sharedMesh;
-                if (mesh == null) continue;
-                int count = mesh.blendShapeCount;
-                for (int i = 0; i < count; i++)
+                if (isPlaying && total > 0f)
                 {
-                    string bs = mesh.GetBlendShapeName(i);
-                    if (IsMMDName(bs)) smr.SetBlendShapeWeight(i, 0f);
+                    bool audioEnded = audioSource != null && audioSource.clip != null && !audioSource.loop && audioSource.time >= audioSource.clip.length - 0.05f;
+                    bool timeReached = elapsed >= total - 0.05f;
+                    if (audioEnded || timeReached) TryAutoNext();
                 }
             }
-        }
 
-        bool HasBool(string name)
-        {
-            var ps = animator.parameters;
-            for (int i = 0; i < ps.Length; i++)
-                if (ps[i].type == AnimatorControllerParameterType.Bool && ps[i].name == name)
-                    return true;
-            return false;
-        }
-
-        public void RescanMods()
-        {
-            LoadAllSources();
-            BuildListUI();
+            if (guardActive)
+            {
+                if (UtcNow() < guardUntilUtc) EnforceHold();
+                else guardActive = false;
+            }
         }
 
         void BindUI()
         {
-            if (playButton != null) playButton.onClick.AddListener(() => TryPlayCurrentOrFirst());
-            if (stopButton != null) stopButton.onClick.AddListener(StopPlay);
-            if (prevButton != null) prevButton.onClick.AddListener(PlayPrev);
-            if (nextButton != null) nextButton.onClick.AddListener(PlayNext);
-            if (songPlayButton != null) songPlayButton.onClick.AddListener(() => TryPlayCurrentOrFirst());
+            if (playButton != null) playButton.onClick.AddListener(OnPlayClicked);
+            if (stopButton != null) stopButton.onClick.AddListener(OnStopClicked);
+            if (prevButton != null) prevButton.onClick.AddListener(OnPrevClicked);
+            if (nextButton != null) nextButton.onClick.AddListener(OnNextClicked);
+            if (songPlayButton != null) songPlayButton.onClick.AddListener(OnPlayClicked);
         }
 
-        void TryPlayCurrentOrFirst()
+        void OnPlayClicked()
+        {
+            SetWaiting(true);
+            SetDancing(false);
+            if (enableSync && isLeader)
+            {
+                int idx = ResolvePlayableIndex();
+                var e = idx >= 0 && idx < entries.Count ? entries[idx] : null;
+                double at = UtcNow() + leadSeconds;
+                guardActive = true;
+                guardUntilUtc = at;
+                EnforceHold();
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, idx, e != null ? e.id : null), at);
+                Broadcast("PlayByStableId", e != null ? e.stableId : null, idx, e != null ? e.id : null, at);
+                return;
+            }
+            TryPlayCurrentOrFirst();
+        }
+
+        void OnListItemClicked(int idx)
+        {
+            SetWaiting(true);
+            SetDancing(false);
+            if (enableSync && isLeader)
+            {
+                var e = idx >= 0 && idx < entries.Count ? entries[idx] : null;
+                double at = UtcNow() + leadSeconds;
+                guardActive = true;
+                guardUntilUtc = at;
+                EnforceHold();
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, idx, e != null ? e.id : null), at);
+                Broadcast("PlayByStableId", e != null ? e.stableId : null, idx, e != null ? e.id : null, at);
+                return;
+            }
+            currentIndex = idx;
+            PlayIndex(idx);
+        }
+
+        void OnNextClicked()
+        {
+            SetWaiting(true);
+            SetDancing(false);
+            if (enableSync && isLeader)
+            {
+                int target = NextFromFiltered(true);
+                var e = target >= 0 && target < entries.Count ? entries[target] : null;
+                double at = UtcNow() + leadSeconds;
+                guardActive = true;
+                guardUntilUtc = at;
+                EnforceHold();
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, target, e != null ? e.id : null), at);
+                Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
+                return;
+            }
+            PlayNext();
+        }
+
+        void OnPrevClicked()
+        {
+            SetWaiting(true);
+            SetDancing(false);
+            if (enableSync && isLeader)
+            {
+                int target = NextFromFiltered(false);
+                var e = target >= 0 && target < entries.Count ? entries[target] : null;
+                double at = UtcNow() + leadSeconds;
+                guardActive = true;
+                guardUntilUtc = at;
+                EnforceHold();
+                ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, target, e != null ? e.id : null), at);
+                Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
+                return;
+            }
+            PlayPrev();
+        }
+
+        void OnStopClicked()
+        {
+            SetDancing(false);
+            SetWaiting(false);
+            if (enableSync && isLeader)
+            {
+                double at = UtcNow();
+                ScheduleLocal(() => { TryStopPlay(); }, at);
+                Broadcast("StopPlay", null, -1, null, at);
+                return;
+            }
+            StopPlay();
+        }
+
+        int ResolvePlayableIndex()
         {
             if (filteredQueue != null && filteredQueue.Count > 0)
             {
-                int idx = (currentIndex >= 0 && filteredQueue.Contains(currentIndex)) ? currentIndex : filteredQueue[0];
-                PlayIndex(idx);
-                return;
+                if (currentIndex >= 0 && filteredQueue.Contains(currentIndex)) return currentIndex;
+                return filteredQueue[0];
             }
-            int fallback = currentIndex < 0 ? 0 : currentIndex;
-            PlayIndex(fallback);
+            return currentIndex < 0 ? 0 : currentIndex;
         }
-
 
         void EnsureAudioSource()
         {
@@ -352,7 +470,6 @@ namespace CustomDancePlayer
             if (!IsModEnabled(id)) return;
             if (byId.ContainsKey(id)) return;
 
-
             var e = new DanceEntry
             {
                 id = id,
@@ -374,7 +491,6 @@ namespace CustomDancePlayer
             string id = Path.GetFileNameWithoutExtension(mePath);
             if (!IsModEnabled(id)) return;
             if (byId.ContainsKey(id)) return;
-
 
             string cacheRoot = Path.Combine(Application.temporaryCachePath, "ME_Cache");
             Directory.CreateDirectory(cacheRoot);
@@ -439,6 +555,20 @@ namespace CustomDancePlayer
             byId[id] = e;
         }
 
+        string ComputeFileSha1(string path)
+        {
+            try
+            {
+                using (var s = File.OpenRead(path))
+                using (var sha1 = SHA1.Create())
+                {
+                    var h = sha1.ComputeHash(s);
+                    return BitConverter.ToString(h).Replace("-", "").ToLowerInvariant();
+                }
+            }
+            catch { return null; }
+        }
+
         public string GetCurrentStableId() => loadedEntry != null ? loadedEntry.stableId : null;
 
         public bool PlayByStableId(string stableId)
@@ -448,8 +578,6 @@ namespace CustomDancePlayer
             if (idx < 0) return false;
             return PlayIndex(idx);
         }
-
-
 
         void BuildListUI()
         {
@@ -506,7 +634,7 @@ namespace CustomDancePlayer
                 {
                     item.button.onClick.RemoveAllListeners();
                     int idx = i;
-                    item.button.onClick.AddListener(() => { currentIndex = idx; PlayIndex(idx); });
+                    item.button.onClick.AddListener(() => OnListItemClicked(idx));
                 }
 
                 item.go.SetActive(true);
@@ -540,7 +668,6 @@ namespace CustomDancePlayer
             PlayIndex(currentIndex);
         }
 
-
         void PlayNext()
         {
             if (entries.Count == 0) return;
@@ -556,14 +683,28 @@ namespace CustomDancePlayer
             PlayIndex(currentIndex);
         }
 
-
         bool EnsureAnimatorReady()
         {
             RefreshAnimatorIfChanged();
+            if (animator == null) return false;
+
             if (defaultController == null) defaultController = animator.runtimeAnimatorController;
             if (layerIndex < 0) layerIndex = animator.GetLayerIndex(danceLayerName);
             if (stateHash == 0) stateHash = Animator.StringToHash(danceStateName);
-            if (placeholderClipCached == null) placeholderClipCached = FindPlaceholderClip(defaultController, placeholderClipName);
+
+            if (overrideController == null && defaultController != null)
+            {
+                overrideController = new AnimatorOverrideController(defaultController);
+                animator.runtimeAnimatorController = overrideController;
+            }
+
+            if (placeholderClipCached == null && defaultController != null)
+            {
+                placeholderClipCached = FindPlaceholderClip(defaultController, placeholderClipName);
+                if (placeholderClipCached != null && overrideController != null)
+                    overrideController[placeholderClipName] = placeholderClipCached;
+            }
+
             return true;
         }
 
@@ -577,50 +718,51 @@ namespace CustomDancePlayer
 
         public bool PlayIndex(int index)
         {
-            if (entries.Count == 0) return false;
-            if (index < 0 || index >= entries.Count) return false;
+            if (entries.Count == 0 || index < 0 || index >= entries.Count) return false;
             if (!EnsureAnimatorReady()) return false;
-
             if (playRoutine != null) StopCoroutine(playRoutine);
-            playRoutine = StartCoroutine(PlayFlow(index));
+            pendingStop = false;
+            playRoutine = StartCoroutine(SmoothPlayFlow(index));
             return true;
         }
 
-        IEnumerator PlayFlow(int index)
+        IEnumerator SmoothPlayFlow(int index)
         {
+            holdDuringTransition = true;
+            FreezeAnimator();
+            PauseAudio();
+            SetDancing(false);
+            SetWaiting(true);
+
+            float timeout = 2f;
+            float t0 = Time.unscaledTime;
+            while (!IsFullyInWaiting() && Time.unscaledTime - t0 < timeout)
+                yield return null;
+
             var prev = loadedEntry;
 
-            StopImmediateForRestart();
-            ResetMMDBlendShapes();
-            yield return null;
-
             var e = entries[index];
-
             if (e.bundle == null)
             {
                 string bp = string.IsNullOrEmpty(e.bundlePath) ? e.path : e.bundlePath;
                 e.bundle = AssetBundle.LoadFromFile(bp);
-                if (e.bundle == null) yield break;
+                if (e.bundle == null) { UnfreezeAnimator(); holdDuringTransition = false; yield break; }
             }
             if (e.clip == null) e.clip = e.bundle.LoadAllAssets<AnimationClip>().FirstOrDefault();
             if (e.audio == null) e.audio = e.bundle.LoadAllAssets<AudioClip>().FirstOrDefault();
 
-            if (overrideController != null) Destroy(overrideController);
-            overrideController = new AnimatorOverrideController(defaultController);
+            if (!EnsureAnimatorReady()) { UnfreezeAnimator(); holdDuringTransition = false; yield break; }
 
             if (placeholderClipCached == null) placeholderClipCached = FindPlaceholderClip(defaultController, placeholderClipName);
-            if (placeholderClipCached == null) yield break;
+            if (overrideController == null || placeholderClipCached == null) { UnfreezeAnimator(); holdDuringTransition = false; yield break; }
 
             overrideController[placeholderClipName] = e.clip != null ? e.clip : placeholderClipCached;
-            animator.runtimeAnimatorController = overrideController;
 
-            bool hasParam = false;
-            for (int i = 0; i < animator.parameters.Length; i++)
-                if (animator.parameters[i].name == customDancingParam && animator.parameters[i].type == AnimatorControllerParameterType.Bool)
-                { hasParam = true; break; }
-            if (hasParam) animator.SetBool(customDancingParam, true);
-
-            animator.Play(stateHash, layerIndex, 0f);
+            if (prev != null && prev != e)
+            {
+                UnloadEntry(prev);
+                StartCoroutine(UnloadUnusedAssetsRoutine());
+            }
 
             if (audioSource == null) EnsureAudioSource();
             if (audioSource != null)
@@ -629,7 +771,6 @@ namespace CustomDancePlayer
                 audioSource.clip = e.audio;
                 audioSource.time = 0f;
                 audioSource.loop = false;
-                if (audioSource.clip != null) audioSource.Play();
             }
 
             currentTotalSeconds = e.audio != null ? e.audio.length : (e.clip != null ? e.clip.length : 0f);
@@ -642,9 +783,16 @@ namespace CustomDancePlayer
             UpdateAuthorLabel(e.author);
             UpdateTimeLabels(0f, currentTotalSeconds);
 
-            if (prev != null && prev != e) UnloadEntry(prev);
+            SetWaiting(false);
+            SetDancing(true);
+            UnfreezeAnimator();
+            ResumeAudio();
+
+            holdDuringTransition = false;
             playRoutine = null;
         }
+
+
 
         void StopAndUnload()
         {
@@ -660,10 +808,8 @@ namespace CustomDancePlayer
                 if (overrideController != null && placeholderClipCached != null)
                     overrideController[placeholderClipName] = placeholderClipCached;
 
-                for (int i = 0; i < animator.parameters.Length; i++)
-                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool &&
-                        animator.parameters[i].name == customDancingParam)
-                        animator.SetBool(customDancingParam, false);
+                SetDancing(false);
+                SetWaiting(false);
             }
 
             isPlaying = false;
@@ -673,30 +819,8 @@ namespace CustomDancePlayer
             StartCoroutine(UnloadUnusedAssetsRoutine());
         }
 
-        void StopImmediateForRestart()
-        {
-            ResetMMDBlendShapes();
-            if (audioSource != null)
-            {
-                try { audioSource.Stop(); } catch { }
-                try { if (audioSource.clip != null) audioSource.clip.UnloadAudioData(); } catch { }
-                audioSource.clip = null;
-            }
-            if (animator != null)
-            {
-                if (overrideController != null && placeholderClipCached != null)
-                    overrideController[placeholderClipName] = placeholderClipCached;
-                for (int i = 0; i < animator.parameters.Length; i++)
-                    if (animator.parameters[i].type == AnimatorControllerParameterType.Bool &&
-                        animator.parameters[i].name == customDancingParam)
-                        animator.SetBool(customDancingParam, false);
-            }
-            isPlaying = false;
-        }
-
         public void StopPlay()
         {
-            ResetMMDBlendShapes();
             if (!EnsureAnimatorReady())
             {
                 isPlaying = false;
@@ -705,7 +829,48 @@ namespace CustomDancePlayer
                 UpdateTimeLabels(0f, 0f);
                 return;
             }
-            StopAndUnload();
+            if (playRoutine != null) StopCoroutine(playRoutine);
+            pendingStop = true;
+            playRoutine = StartCoroutine(SmoothStopFlow());
+        }
+        IEnumerator SmoothStopFlow()
+        {
+            holdDuringTransition = true;
+            FreezeAnimator();
+            PauseAudio();
+
+            SetDancing(false);
+
+            float timeout = 2f;
+            float t0 = Time.unscaledTime;
+            while (IsOnDanceState() && Time.unscaledTime - t0 < timeout)
+                yield return null;
+
+            if (overrideController != null && placeholderClipCached != null)
+                overrideController[placeholderClipName] = placeholderClipCached;
+
+            if (audioSource != null)
+            {
+                try { audioSource.Stop(); } catch { }
+                try { if (audioSource.clip != null) audioSource.clip.UnloadAudioData(); } catch { }
+                audioSource.clip = null;
+            }
+            var prev = loadedEntry;
+            loadedEntry = null;
+            if (prev != null)
+            {
+                UnloadEntry(prev);
+                StartCoroutine(UnloadUnusedAssetsRoutine());
+            }
+
+            isPlaying = false;
+            UpdatePlayingNowLabel(null);
+            UpdateAuthorLabel(null);
+            UpdateTimeLabels(0f, 0f);
+
+            UnfreezeAnimator();
+            holdDuringTransition = false;
+            playRoutine = null;
         }
 
         void UnloadEntry(DanceEntry e)
@@ -822,11 +987,375 @@ namespace CustomDancePlayer
                     return i;
             return -1;
         }
+
         bool IsModEnabled(string id)
         {
             if (SaveLoadHandler.Instance == null || SaveLoadHandler.Instance.data == null) return true;
             if (SaveLoadHandler.Instance.data.modStates.TryGetValue(id, out var on)) return on;
             return true;
+        }
+
+        IEnumerator Poll()
+        {
+            var wait = new WaitForSecondsRealtime(pollInterval);
+            while (true)
+            {
+                if (!isLeader && enableSync)
+                {
+                    var d = Read();
+                    if (d != null && d.v > lastSeenV)
+                    {
+                        lastSeenV = d.v;
+                        if (scheduledCo != null) { StopCoroutine(scheduledCo); scheduledCo = null; }
+
+                        if (d.cmd == "PlayCurrentOrFirst")
+                        {
+                            guardActive = true;
+                            guardUntilUtc = d.atUtc;
+                            EnforceHold();
+                            MuteFollower();
+                            ScheduleRemote(() => TryPlayCurrentOrFirst(), d.atUtc);
+                        }
+                        else if (d.cmd == "PlayByStableId")
+                        {
+                            guardActive = true;
+                            guardUntilUtc = d.atUtc;
+                            EnforceHold();
+                            MuteFollower();
+                            ScheduleRemote(() => TryPlayByStableIdOrFallback(d.sid, d.index, d.title), d.atUtc);
+                        }
+                        else if (d.cmd == "PlayNext")
+                        {
+                            guardActive = true;
+                            guardUntilUtc = d.atUtc;
+                            EnforceHold();
+                            MuteFollower();
+                            ScheduleRemote(() => PlayNext(), d.atUtc);
+                        }
+                        else if (d.cmd == "PlayPrev")
+                        {
+                            guardActive = true;
+                            guardUntilUtc = d.atUtc;
+                            EnforceHold();
+                            MuteFollower();
+                            ScheduleRemote(() => PlayPrev(), d.atUtc);
+                        }
+                        else if (d.cmd == "StopPlay")
+                        {
+                            ScheduleRemote(() => { TryStopPlay(); UnmuteFollower(); }, d.atUtc);
+                        }
+                    }
+
+                }
+                yield return wait;
+            }
+        }
+
+        IEnumerator LeaderAutoNextWatcher()
+        {
+            var wait = new WaitForSecondsRealtime(0.05f);
+            while (true)
+            {
+                if (enableSync && isLeader)
+                {
+                    if (audioSource != null && audioSource.clip != null && audioSource.time > 0f)
+                    {
+                        float remain = audioSource.clip.length - audioSource.time;
+                        if (remain <= 0.18f && !autoNextScheduled)
+                        {
+                            autoNextScheduled = true;
+                            double at = UtcNow() + leadSeconds;
+                            guardActive = true;
+                            guardUntilUtc = at;
+                            EnforceHold();
+                            int target = NextFromFiltered(true);
+                            var e = target >= 0 && target < entries.Count ? entries[target] : null;
+                            ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, target, e != null ? e.id : null), at);
+                            Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
+                        }
+                        else if (remain > 0.5f)
+                        {
+                            autoNextScheduled = false;
+                        }
+                    }
+                    else
+                    {
+                        autoNextScheduled = false;
+                    }
+                }
+                yield return wait;
+            }
+        }
+
+        int NextFromFiltered(bool forward)
+        {
+            int cur = currentIndex;
+            if (entries.Count == 0) return -1;
+
+            if (filteredQueue == null || filteredQueue.Count == 0)
+            {
+                if (cur < 0) return 0;
+                if (forward) return (cur + 1) % entries.Count;
+                return cur <= 0 ? entries.Count - 1 : cur - 1;
+            }
+            int pos = filteredQueue.IndexOf(cur);
+            if (pos < 0) return filteredQueue[0];
+            if (forward) return filteredQueue[(pos + 1) % filteredQueue.Count];
+            return pos == 0 ? filteredQueue[filteredQueue.Count - 1] : filteredQueue[pos - 1];
+        }
+
+        void ScheduleLocal(Action act, double atUtc)
+        {
+            double wait = Math.Max(0.0, atUtc - UtcNow());
+            if (scheduledCo != null) StopCoroutine(scheduledCo);
+            scheduledCo = StartCoroutine(Co(wait, act));
+        }
+
+        void ScheduleRemote(Action act, double atUtc)
+        {
+            double wait = Math.Max(0.0, atUtc - UtcNow());
+            if (scheduledCo != null) StopCoroutine(scheduledCo);
+            scheduledCo = StartCoroutine(Co(wait, act));
+        }
+
+        IEnumerator Co(double wait, Action act)
+        {
+            if (wait > 0) yield return new WaitForSecondsRealtime((float)wait);
+            act();
+            UnfreezeAnimator();
+            guardActive = false;
+            ReenableAll();
+            scheduledCo = null;
+        }
+
+        void TryPlayCurrentOrFirst()
+        {
+            if (filteredQueue != null && filteredQueue.Count > 0)
+            {
+                int idx = (currentIndex >= 0 && filteredQueue.Contains(currentIndex)) ? currentIndex : filteredQueue[0];
+                PlayIndex(idx);
+                return;
+            }
+            int fallback = currentIndex < 0 ? 0 : currentIndex;
+            PlayIndex(fallback);
+        }
+
+        void TryStopPlay()
+        {
+            StopPlay();
+        }
+
+        void TryPlayByStableIdOrFallback(string sid, int idx, string title)
+        {
+            if (!string.IsNullOrEmpty(sid))
+            {
+                if (PlayByStableId(sid)) return;
+            }
+            if (idx >= 0)
+            {
+                PlayIndex(idx);
+                return;
+            }
+            if (!string.IsNullOrEmpty(title))
+            {
+                int k = FindIndexByTitle(title);
+                if (k >= 0) { PlayIndex(k); return; }
+            }
+            TryPlayCurrentOrFirst();
+        }
+
+        void Broadcast(string cmd, string sid, int index, string title, double atUtc)
+        {
+            var d0 = Read();
+            int v = d0 != null ? d0.v + 1 : 0;
+            var d = new BusCmd { v = v, cmd = cmd, sid = sid, index = index, title = title, atUtc = atUtc, writeUtc = UtcNow() };
+            SafeWrite(d);
+        }
+
+        BusCmd Read()
+        {
+            try
+            {
+                if (!File.Exists(busPath)) return null;
+                var s = File.ReadAllText(busPath);
+                if (string.IsNullOrWhiteSpace(s)) return null;
+                return JsonUtility.FromJson<BusCmd>(s);
+            }
+            catch { return null; }
+        }
+
+        void SafeWrite(BusCmd d)
+        {
+            try
+            {
+                string tmp = busPath + ".tmp";
+                File.WriteAllText(tmp, JsonUtility.ToJson(d));
+                if (File.Exists(busPath)) File.Delete(busPath);
+                File.Move(tmp, busPath);
+            }
+            catch { }
+        }
+
+        void TryAcquireLeader()
+        {
+            ReleaseLeader();
+            try
+            {
+                bool createdNew;
+                leaderMutex = new Mutex(false, "MateEngine.AvatarDanceSync.Leader", out createdNew);
+                isLeader = leaderMutex.WaitOne(0);
+            }
+            catch { isLeader = GetInstanceIndex() == 0; }
+        }
+
+        int GetInstanceIndex()
+        {
+            var args = Environment.GetCommandLineArgs();
+            for (int i = 0; i < args.Length - 1; i++)
+                if (string.Equals(args[i], "--instance", StringComparison.OrdinalIgnoreCase) && int.TryParse(args[i + 1], out int v))
+                    return Math.Max(0, v);
+            return 0;
+        }
+
+        void ReleaseLeader()
+        {
+            if (leaderMutex != null)
+            {
+                try { if (isLeader) leaderMutex.ReleaseMutex(); } catch { }
+                leaderMutex.Dispose();
+                leaderMutex = null;
+            }
+            isLeader = false;
+        }
+
+        static double UtcNow()
+        {
+            var e = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (DateTime.UtcNow - e).TotalSeconds;
+        }
+
+        void EnforceHold()
+        {
+            holdDuringTransition = true;
+            FreezeAnimator();   
+            PauseAudio();       
+            SetDancing(false); 
+            SetWaiting(true);
+        }
+
+        void FreezeAnimator()
+        {
+            if (animator == null) return;
+            if (animatorFrozen) return;
+            animatorPrevSpeed = animator.speed > 0f ? animator.speed : 1f;
+            animator.speed = 0f;
+            animatorFrozen = true;
+        }
+
+        void UnfreezeAnimator()
+        {
+            if (animator == null) return;
+            animator.speed = animatorPrevSpeed > 0f ? animatorPrevSpeed : 1f;
+            animatorFrozen = false;
+        }
+
+        void ReenableAll()
+        {
+            for (int i = 0; i < tempDisabled.Count; i++)
+                if (tempDisabled[i] != null) tempDisabled[i].interactable = true;
+            tempDisabled.Clear();
+        }
+
+        void MuteFollower()
+        {
+            if (isLeader) return;
+            if (!followerMuted)
+            {
+                if (volumeSlider != null)
+                {
+                    storedSliderValue = volumeSlider.value;
+                    volumeSlider.value = 0f;
+                }
+                if (audioSource != null)
+                {
+                    storedAudioVolume = audioSource.volume;
+                    audioSource.volume = 0f;
+                }
+                followerMuted = true;
+            }
+        }
+
+        public void RescanMods()
+        {
+            bool wasPlaying = isPlaying;
+            string sid = GetCurrentStableId();
+            float t = GetPlaybackTime();
+
+            LoadAllSources();
+            BuildListUI();
+
+            if (wasPlaying && !string.IsNullOrEmpty(sid))
+            {
+                int i = entries.FindIndex(e => string.Equals(e.stableId, sid, StringComparison.OrdinalIgnoreCase));
+                if (i >= 0)
+                {
+                    PlayIndex(i);
+                    if (audioSource != null && audioSource.clip != null)
+                        audioSource.time = Mathf.Clamp(t, 0f, audioSource.clip.length);
+                }
+            }
+        }
+
+        bool HasBool(string param)
+        {
+            if (animator == null) return false;
+            var ps = animator.parameters;
+            for (int i = 0; i < ps.Length; i++)
+                if (ps[i].type == AnimatorControllerParameterType.Bool && ps[i].name == param)
+                    return true;
+            return false;
+        }
+
+        void SetWaiting(bool v)
+        {
+            if (HasBool(waitingParam)) animator.SetBool(waitingParam, v);
+        }
+
+        void SetDancing(bool v)
+        {
+            if (HasBool(customDancingParam)) animator.SetBool(customDancingParam, v);
+        }
+
+        void ResetMMDBlendShapes()
+        {
+            if (animator == null) return;
+
+            var smrs = animator.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            for (int s = 0; s < smrs.Length; s++)
+            {
+                var smr = smrs[s];
+                var mesh = smr != null ? smr.sharedMesh : null;
+                if (mesh == null) continue;
+
+                int count = mesh.blendShapeCount;
+                for (int i = 0; i < count; i++)
+                {
+                    string n = mesh.GetBlendShapeName(i);
+                    if (string.IsNullOrEmpty(n)) continue;
+                    if (mmdBlendShapeNames.Contains(n)) smr.SetBlendShapeWeight(i, 0f);
+                }
+            }
+        }
+
+        void UnmuteFollower()
+        {
+            if (isLeader) return;
+            if (followerMuted)
+            {
+                if (volumeSlider != null && storedSliderValue >= 0f) volumeSlider.value = storedSliderValue;
+                if (audioSource != null && storedAudioVolume >= 0f) audioSource.volume = storedAudioVolume;
+                followerMuted = false;
+            }
         }
     }
 }
