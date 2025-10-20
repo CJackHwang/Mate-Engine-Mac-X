@@ -219,27 +219,24 @@ public class AvatarWindowHandler : MonoBehaviour
         SetTopMost(true);
     }
 
-    bool IsStillNearSnappedWindow()
-    {
-        foreach (var win in cachedWindows)
+        bool IsStillNearSnappedWindow()
         {
-            if (win.hwnd != snappedHWND) continue;
-
-            if (controller.isDragging && animator.GetBool("isWindowSit"))
+            foreach (var win in cachedWindows)
             {
-                Kirurobo.WinApi.POINT cp;
-                if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
-                int dy = Mathf.Abs(cp.y - _snapCursorY);
-                return dy <= Mathf.RoundToInt(snapZoneSize.y);
+                if (win.hwnd != snappedHWND) continue;
+
+                if (controller.isDragging && animator.GetBool("isWindowSit"))
+                {
+                    Kirurobo.WinApi.POINT cp;
+                    if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
+                    int dy = Mathf.Abs(cp.y - _snapCursorY);
+                    return dy <= Mathf.RoundToInt(snapZoneSize.y);
+                }
+
+                return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
             }
-
-            return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+            return false;
         }
-        return false;
-    }
-
-
-
 
     [DllImport("user32.dll")]
     static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
