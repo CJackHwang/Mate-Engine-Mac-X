@@ -173,6 +173,7 @@ public class SaveLoadHandler : MonoBehaviour
         public string selectedModelPath = "";
         public int contextLength = 4096;
         public bool enableHusbandoMode = false;
+        public bool enableAutoMemoryTrim = false;
     }
 
     public static void SyncAllowedAppsToAllAvatars()

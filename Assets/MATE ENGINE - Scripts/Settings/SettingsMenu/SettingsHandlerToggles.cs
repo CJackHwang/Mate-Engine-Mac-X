@@ -19,6 +19,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle enableDanceSwitchToggle;
     public Toggle enableRandomMessagesToggle;
     public Toggle enableHusbandoModeToggle;
+    public Toggle enableAutoMemoryTrimToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -49,6 +50,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableDanceSwitchToggle?.onValueChanged.AddListener(OnEnableDanceSwitchChanged);
         enableRandomMessagesToggle?.onValueChanged.AddListener(OnEnableRandomMessagesChanged);
         enableHusbandoModeToggle?.onValueChanged.AddListener(OnEnableHusbandoModeChanged);
+        enableAutoMemoryTrimToggle?.onValueChanged.AddListener(OnEnableAutoMemoryTrimChanged);
         LoadSettings();
         ApplySettings();
     }
@@ -67,6 +69,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     private void OnAmbientOcclusionChanged(bool v) { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); Save(); }
     private void OnEnableIKChanged(bool v) { SaveLoadHandler.Instance.data.enableIK = v; ApplySettings(); Save(); }
     private void OnEnableDanceSwitchChanged(bool v) { SaveLoadHandler.Instance.data.enableDanceSwitch = v; Save(); }
+    private void OnEnableAutoMemoryTrimChanged(bool v) { SaveLoadHandler.Instance.data.enableAutoMemoryTrim = v; ApplySettings(); Save(); }
     private void OnEnableRandomMessagesChanged(bool v)
     {
         SaveLoadHandler.Instance.data.enableRandomMessages = v;
@@ -101,6 +104,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(data.enableDanceSwitch);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(data.enableRandomMessages);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(data.enableHusbandoMode);
+        enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(data.enableAutoMemoryTrim);
         ApplySettings();
     }
 
@@ -122,6 +126,9 @@ public class SettingsHandlerToggles : MonoBehaviour
                 arm.StopAllCoroutines();
             }
         }
+
+        foreach (var mt in Resources.FindObjectsOfTypeAll<MemoryTrim>())
+            mt.SetAutoTrimEnabled(data.enableAutoMemoryTrim);
 
 
         // Visuals
@@ -165,6 +172,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(false);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(false);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(false);
+        enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(false);
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
@@ -181,6 +189,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.enableDanceSwitch = false;
         data.enableRandomMessages = false;
         data.enableHusbandoMode = false;
+        data.enableAutoMemoryTrim = false;
         SaveLoadHandler.Instance.SaveToDisk();
         ApplySettings();
     }
