@@ -554,7 +554,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973443252723712
-    m_Localized: Steam DLC
+    m_Localized: Steam DLC'leri
     m_Metadata:
       m_Items: []
   - m_Id: 70973429180833792
@@ -594,66 +594,337 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973441449172992
-    m_Localized: "Hata ay\u0131klama"
+    m_Localized: "Hata Ay\u0131klama (Debugging)"
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "Discord\u2019da, MateEngine\u2019i Oyun G\xF6r\xFCn\xFCm\xFC modunda
+      kulland\u0131\u011F\u0131n\u0131z\u0131 g\xF6sterir. Evcil arkada\u015F\u0131n\u0131z\u0131n
+      m\xFCzik \xE7almak, dinlenmek, oturmak ve daha fazlas\u0131 gibi yapt\u0131\u011F\u0131
+      hareketleri Discord durumunuzda g\xF6r\xFCnt\xFCler."
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "Bir sonraki bekleme animasyonunun ba\u015Flamas\u0131ndan \xF6nceki
+      gecikme s\xFCresi. Ak\u0131c\u0131 ve do\u011Fal ge\xE7i\u015Fler i\xE7in bu
+      de\u011Feri yakla\u015F\u0131k %50 civar\u0131nda tutman\u0131z \xF6nerilir."
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "Animasyon A ile B aras\u0131ndaki ge\xE7i\u015F s\xFCresini belirler.
+      Bekleme animasyonlar\u0131 aras\u0131nda daha ak\u0131c\u0131 bir g\xF6r\xFCn\xFCm
+      i\xE7in bu de\u011Feri d\xFC\u015F\xFCk tutman\u0131z \xF6nerilir."
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "V\xFCcut takibi, avatar\u0131n fare hareketlerini kafa, omurga
+      ve g\xF6zlerini kullanarak takip etmesini sa\u011Flar. A\u015Fa\u011F\u0131daki
+      kayd\u0131r\u0131c\u0131larla her b\xF6l\xFCm\xFCn ne kadar hareket edece\u011Fini
+      ayarlayabilirsiniz. Kayd\u0131r\u0131c\u0131 en soldayken hareket etmez; en
+      sa\u011Fdayken maksimum d\xFCzeyde hareket eder. Orta seviyede tutmak, daha
+      ak\u0131c\u0131 bir deneyim sa\u011Flar."
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: "El takibi \xF6zelli\u011Fi, avatar\u0131n ellerini farenin hareketleriyle
+      kontrol etmeni sa\u011Flar. Avatar\u0131n eli, farenin konumunu izleyerek sanki
+      onu yakalamaya ya da tutmaya \xE7al\u0131\u015F\u0131yormu\u015F gibi g\xF6r\xFCn\xFCr."
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "Husbando Modu, avatar\u0131n\u0131n erkek bir karaktere benzer
+      \u015Fekilde daha erkeksi davranmas\u0131n\u0131 sa\u011Flar. Bo\u015Fta durma
+      ve dans animasyonlar\u0131n\u0131 bu stile uygun olacak \u015Fekilde de\u011Fi\u015Ftirir.
+      Bu \xF6zellik deneyseldir ve oturma animasyonlar\u0131n\u0131 etkilemez. Ayr\u0131ca
+      kafa ok\u015Fama hareketini devre d\u0131\u015F\u0131 b\u0131rak\u0131r."
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "Bunu etkinle\u015Ftirdi\u011Finizde avatar\u0131n\u0131z m\xFCzi\u011Finize
+      g\xF6re dans edebilir. \xD6zelli\u011Fin \xE7al\u0131\u015Fmas\u0131 i\xE7in
+      bu se\xE7ene\u011Fin yan\u0131ndaki ayarlar simgesine t\u0131klay\u0131n ve
+      avatar\u0131n dans\u0131n\u0131 kontrol etmesini istedi\u011Finiz uygulamalar\u0131
+      listeye ekleyin. Baz\u0131 uygulamalar alg\u0131lanmadan \xF6nce m\xFCzi\u011Fin
+      \xE7al\u0131yor olmas\u0131n\u0131 gerektirir; m\xFCzik \xE7alarken yenile
+      simgesine t\u0131klayarak MateEngine\u2019in uygulamay\u0131 alg\u0131lamas\u0131n\u0131
+      sa\u011Flayabilirsiniz."
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "Dans ge\xE7i\u015Flerini etkinle\u015Ftirmek, avatar\u0131n zaman
+      i\xE7inde farkl\u0131 dans stilleri aras\u0131nda ge\xE7i\u015F yapmas\u0131n\u0131
+      sa\u011Flar. A\u015Fa\u011F\u0131daki kayd\u0131r\u0131c\u0131y\u0131 kullanarak
+      ge\xE7i\u015F h\u0131z\u0131n\u0131 kontrol edebilirsiniz. D\xFC\u015F\xFCk
+      de\u011Ferler ge\xE7i\u015Fi h\u0131zland\u0131r\u0131rken, y\xFCksek de\u011Ferler
+      dans stilinin daha yava\u015F de\u011Fi\u015Fmesine neden olur."
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "Dans e\u015Fi\u011Fi, ses seviyesine g\xF6re avatar\u0131n ne zaman
+      dans etmeye ba\u015Flayaca\u011F\u0131n\u0131 belirler. \xC7ok d\xFC\u015F\xFCk
+      bir de\u011Fere ayarlan\u0131rsa avatar, m\xFCzik ba\u015Flar ba\u015Flamaz
+      dans eder. En y\xFCksek de\u011Fere ayarlan\u0131rsa yaln\u0131zca m\xFCzik
+      \xE7ok y\xFCksek seste oldu\u011Funda dans etmeye ba\u015Flar. Bu ayar\u0131n
+      varsay\u0131lan ya da d\xFC\u015F\xFCk bir de\u011Ferde tutulmas\u0131 \xF6nerilir."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: "Mod Y\xFCkle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: Deneysel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: " Pencere ve G\xF6rev \xC7ubu\u011Funa Oturma"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "Bu \xD6zellik, Hile Kar\u015F\u0131t\u0131 Yaz\u0131l\u0131m Kullanan
+      Oyunlarda Yasaklanman\u0131za Neden Olabilir."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: Discord Rich Presence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)\u2019e
+      Ho\u015F Geldiniz"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "Bu, geli\u015Ftirilme a\u015Famas\u0131nda olan bir uygulamad\u0131r
+      ve zamanla yeni \xF6zellikler eklenebilir. Anime toplulu\u011Fu taraf\u0131ndan,
+      anime toplulu\u011Fu i\xE7in yap\u0131lm\u0131\u015Ft\u0131r. Ufak tefek sorunlar
+      olabilir \u2014 herhangi bir sorunla kar\u015F\u0131la\u015F\u0131rsan\u0131z,
+      Avatara sa\u011F t\u0131klay\u0131p Se\xE7enekler men\xFCs\xFCnden hata simgesine
+      t\u0131klayarak bildirebilirsiniz"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: "MateEngine Nas\u0131l Kullan\u0131l\u0131r (Speedrun)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "MateEngine\u2019i kullanmak ger\xE7ekten \xE7ok kolay! Se\xE7enekler
+      men\xFCs\xFCn\xFC a\xE7mak i\xE7in avatar\u0131n\u0131za sa\u011F t\u0131klaman\u0131z
+      yeterli. Buradan avatar boyutunu de\u011Fi\u015Ftirebilir, efektleri a\xE7\u0131p
+      kapatabilir, avatar\u0131n\u0131z\u0131n dans edebilece\u011Fi uygulamalar\u0131
+      beyaz listeye ekleyebilir veya modlar ve \xF6zel VRM/ME model dosyalar\u0131n\u0131
+      y\xFCkleyebilirsiniz. Bir sonraki ad\u0131mda, \xF6zel avatarlar\u0131n nas\u0131l
+      y\xFCklenece\u011Fini g\xF6sterece\u011Fim.\u201D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: "\xD6zel Modellerin Kullan\u0131m\u0131 1/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "Kendi \xF6zel modelinizi kullanmak i\xE7in bir .VRM dosyas\u0131na
+      ihtiyac\u0131n\u0131z var. Booth.jp ve VRoidHub gibi sitelerden \xF6zel .VRM
+      modelleri indirebilirsiniz. Bir .VRM dosyan\u0131z oldu\u011Funda, Se\xE7enekler
+      men\xFCs\xFCn\xFC a\xE7\u0131p \u2018VRM\u2019 butonuna t\u0131klay\u0131n.
+      Bu, dosya gezginini a\xE7acak ve VRM dosyan\u0131z\u0131 se\xE7menizi sa\u011Flayacakt\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: "\xD6zel Modellerin Kullan\u0131m\u0131 2/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "Bazen bir .VRM dosyas\u0131 y\xFCklenmeyebilir. Bu genellikle MateEngine
+      kaynakl\u0131 bir sorun de\u011Fildir; \xE7o\u011Funlukla yanl\u0131\u015F
+      shader veya armature (iskelet) ayarlar\u0131ndan kaynaklan\u0131r. B\xF6yle
+      bir durumda, resmi UniVRM dok\xFCmantasyonunu kontrol edin. Baz\u0131 uygulamalar
+      bozuk modelleri d\xFCzeltmek i\xE7in yedek y\xF6ntemler kullan\u0131r, ancak
+      MateEngine bunu yapmaz ve yapmayacakt\u0131r. VRM dosyan\u0131z\u0131n do\u011Fru
+      \u015Fekilde d\u0131\u015Fa aktar\u0131lm\u0131\u015F olmas\u0131ndan siz sorumlusunuz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: Atla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: Bitir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: Geri
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: Devam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: "Kafa Birle\u015Ftirme"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: "Omurga Birle\u015Ftirme"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: El Takibi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: "Men\xFC Rengi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: "Men\xFC Doygunlu\u011Fu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: Modeller
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: "Y\xFCkle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: "PNG dosyas\u0131 700 KB\u2019tan k\xFC\xE7\xFCk olmal\u0131d\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: "G\xF6rseli D\xFCzelt"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: "Y\xDCKLE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: "G\xF6z Birle\u015Ftirme"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: Tersine Kinematik Ayaklar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "\xC7o\u011Fu model, IK Ayaklar a\xE7\u0131kken daha iyi g\xF6r\xFCn\xFCr.
+      E\u011Fer g\xF6r\xFCn\xFCm istedi\u011Finiz gibi de\u011Filse, daha feminen
+      bir hareket tarz\u0131 i\xE7in kapatabilirsiniz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: "Ortam G\xF6lgeleri"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: Ekran Koruyucu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "Bir s\xFCre sonra, masa\xFCst\xFC maskotu ekranda b\xFCy\xFCk bir
+      \u015Fekilde belirir ve siz geri d\xF6n\xFCp t\u0131klayana kadar bekleme animasyonunu
+      oynar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: "Ekran Koruyucu S\xFCresi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: "Hata Ay\u0131klama (Debugging)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: GC Temizle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "Zorunlu bir \xE7\xF6p toplama (Garbage Collection) g\xF6revi \xE7al\u0131\u015Ft\u0131r\u0131r.
+      Bu bir hata ay\u0131klama fonksiyonudur \u2014 ne yapt\u0131\u011F\u0131n\u0131z\u0131
+      bilmiyorsan\u0131z kullanmay\u0131n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: "Alarm\u0131 A\xE7"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "DENEYSEL \xD6ZELL\u0130K: Alarm yaln\u0131zca bir kez tetiklendi\u011Finde
+      kapanacakt\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: "Ortam I\u015F\u0131klar\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: "ORTAM 1 YO\u011EUNLU\u011EU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: "ORTAM 1 DOYGUNLU\u011EU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: "ORTAM 1 RENG\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: "ORTAM 2 YO\u011EUNLU\u011EU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: "ORTAM 2 DOYGUNLU\u011EU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: "ORTAM 2 RENG\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: "ORTAM 3 YO\u011EUNLU\u011EU\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: "ORTAM 3 DOYGUNLU\u011EU\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: "ORTAM 3 RENG\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: "Ortam I\u015F\u0131klar\u0131n\u0131 A\xE7"
     m_Metadata:
       m_Items: []
   references:

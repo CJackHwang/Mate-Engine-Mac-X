@@ -576,62 +576,275 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "Discord \u4E0A\u3067 MateEngine \u3092\u4F7F\u7528\u4E2D\u3067\u3042\u308B\u3053\u3068\u3092\u8868\u793A\u3057\u307E\u3059\u3002\u30DA\u30C3\u30C8\u304C\u4F55\u3092\u3057\u3066\u3044\u308B\u304B\uFF08\u97F3\u697D\u518D\u751F\u3001\u5F85\u6A5F\u3001\u5EA7\u308B\u306A\u3069\uFF09\u3092\u8868\u793A\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "\u6B21\u306E\u5F85\u6A5F\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u304C\u59CB\u307E\u308B\u307E\u3067\u306E\u9045\u5EF6\u6642\u9593\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\u81EA\u7136\u3067\u30B9\u30E0\u30FC\u30BA\u306A\u5207\u308A\u66FF\u3048\u306E\u305F\u3081\u300150\uFF05\u524D\u5F8C\u306B\u4FDD\u3064\u3053\u3068\u3092\u63A8\u5968\u3057\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 A \u304B\u3089 B \u3078\u306E\u5207\u308A\u66FF\u3048\u306B\u304B\u304B\u308B\u6642\u9593\u3092\u8A2D\u5B9A\u3057\u307E\u3059\u3002\u5024\u3092\u4F4E\u304F\u3059\u308B\u3068\u3001\u5F85\u6A5F\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u9593\u306E\u9077\u79FB\u304C\u3088\u308A\u6ED1\u3089\u304B\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "\u30DC\u30C7\u30A3\u30C8\u30E9\u30C3\u30AD\u30F3\u30B0\u306F\u3001\u30A2\u30D0\u30BF\u30FC\u304C\u982D\u3001\u80CC\u9AA8\u3001\u76EE\u3067\u30DE\u30A6\u30B9\u306E\u52D5\u304D\u3092\u8FFD\u5F93\u3059\u308B\u6A5F\u80FD\u3067\u3059\u3002\u4E0B\u306E\u30B9\u30E9\u30A4\u30C0\u30FC\u3067\u5404\u90E8\u4F4D\u306E\u52D5\u304D\u3092\u8ABF\u6574\u3067\u304D\u307E\u3059\u3002\u30B9\u30E9\u30A4\u30C0\u30FC\u304C\u5DE6\u7AEF\u306E\u5834\u5408\u306F\u52D5\u304B\u305A\u3001\u53F3\u7AEF\u3067\u306F\u6700\u5927\u306B\u52D5\u304D\u307E\u3059\u3002\u4E2D\u592E\u4ED8\u8FD1\u306B\u3059\u308B\u3068\u81EA\u7136\u306A\u52D5\u304D\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: "\u30CF\u30F3\u30C9\u30C8\u30E9\u30C3\u30AD\u30F3\u30B0\u3092\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30A2\u30D0\u30BF\u30FC\u306E\u624B\u304C\u30DE\u30A6\u30B9\u306E\u4F4D\u7F6E\u306B\u8FFD\u5F93\u3057\u307E\u3059\u3002\u307E\u308B\u3067\u30DE\u30A6\u30B9\u3092\u63B4\u3082\u3046\u3068\u3057\u305F\u308A\u89E6\u308C\u3088\u3046\u3068\u3057\u3066\u3044\u308B\u3088\u3046\u306B\u898B\u3048\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "\u30CF\u30BA\u30D0\u30F3\u30C9\u30E2\u30FC\u30C9\u306F\u3001\u30A2\u30D0\u30BF\u30FC\u3092\u3088\u308A\u7537\u6027\u7684\u306A\u632F\u308B\u821E\u3044\u306B\u3057\u307E\u3059\u3002\u5F85\u6A5F\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u3084\u30C0\u30F3\u30B9\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u304C\u7537\u6027\u7684\u306A\u30B9\u30BF\u30A4\u30EB\u306B\u5909\u308F\u308A\u307E\u3059\u3002\u3053\u306E\u6A5F\u80FD\u306F\u5B9F\u9A13\u7684\u3067\u3001\u5EA7\u308A\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3\u306B\u306F\u5F71\u97FF\u305B\u305A\u3001\u982D\u306A\u3067\u6A5F\u80FD\u3082\u7121\u52B9\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "\u3053\u306E\u6A5F\u80FD\u3092\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30A2\u30D0\u30BF\u30FC\u304C\u97F3\u697D\u306B\u5408\u308F\u305B\u3066\u8E0A\u308C\u308B\u3088\u3046\u306B\u306A\u308A\u307E\u3059\u3002\u4F7F\u7528\u3059\u308B\u306B\u306F\u3001\u3053\u306E\u30AA\u30D7\u30B7\u30E7\u30F3\u306E\u96A3\u306B\u3042\u308B\u8A2D\u5B9A\u30A2\u30A4\u30B3\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3001\u30A2\u30D0\u30BF\u30FC\u306E\u30C0\u30F3\u30B9\u3092\u5236\u5FA1\u3067\u304D\u308B\u30A2\u30D7\u30EA\u3092\u8FFD\u52A0\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u4E00\u90E8\u306E\u30A2\u30D7\u30EA\u306F\u3001\u97F3\u697D\u304C\u518D\u751F\u3055\u308C\u3066\u3044\u308B\u72B6\u614B\u3067\u300C\u66F4\u65B0\u300D\u30A2\u30A4\u30B3\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3059\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "\u30C0\u30F3\u30B9\u5207\u308A\u66FF\u3048\u3092\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u30A2\u30D0\u30BF\u30FC\u304C\u6642\u9593\u306E\u7D4C\u904E\u3068\u3068\u3082\u306B\u7570\u306A\u308B\u30C0\u30F3\u30B9\u30B9\u30BF\u30A4\u30EB\u306B\u5207\u308A\u66FF\u3048\u307E\u3059\u3002\u4E0B\u306E\u30B9\u30E9\u30A4\u30C0\u30FC\u3067\u5207\u308A\u66FF\u3048\u901F\u5EA6\u3092\u8ABF\u6574\u3057\u307E\u3059\u3002\u5024\u304C\u4F4E\u3044\u307B\u3069\u901F\u304F\u5207\u308A\u66FF\u308F\u308A\u3001\u9AD8\u3044\u307B\u3069\u3086\u3063\u304F\u308A\u306B\u306A\u308A\u307E\u3059\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "\u30C0\u30F3\u30B9\u3057\u304D\u3044\u5024\u306F\u3001\u97F3\u91CF\u306B\u57FA\u3065\u3044\u3066\u30A2\u30D0\u30BF\u30FC\u304C\u8E0A\u308A\u59CB\u3081\u308B\u30BF\u30A4\u30DF\u30F3\u30B0\u3092\u6C7A\u5B9A\u3057\u307E\u3059\u3002\u5024\u304C\u4F4E\u3059\u304E\u308B\u3068\u97F3\u697D\u304C\u59CB\u307E\u308B\u3068\u3059\u3050\u8E0A\u308A\u3001\u6700\u5927\u306B\u3059\u308B\u3068\u97F3\u91CF\u304C\u975E\u5E38\u306B\u5927\u304D\u3044\u6642\u306E\u307F\u8E0A\u308A\u307E\u3059\u3002\u30C7\u30D5\u30A9\u30EB\u30C8\u307E\u305F\u306F\u4F4E\u3081\u306E\u5024\u306B\u8A2D\u5B9A\u3059\u308B\u306E\u304C\u304A\u3059\u3059\u3081\u3067\u3059\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: "MOD\u3092\u8AAD\u307F\u8FBC\u3080"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: "\u5B9F\u9A13\u7684\u8A2D\u5B9A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: "\u30A6\u30A3\u30F3\u30C9\u30A6\u3084\u30BF\u30B9\u30AF\u30D0\u30FC\u306E\u4E0A\u306B\u5EA7\u308B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "\u3053\u306E\u6A5F\u80FD\u306F\u30A2\u30F3\u30C1\u30C1\u30FC\u30C8\u304C\u3042\u308B\u30B2\u30FC\u30E0\u3067BAN\u3055\u308C\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: "Discord\u30A2\u30AF\u30C6\u30A3\u30D3\u30C6\u30A3\u3092\u6709\u52B9\u306B\u3059\u308B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine) \u3078\u3088\u3046\u3053\u305D\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "\u3053\u306E\u30A2\u30D7\u30EA\u306F\u73FE\u5728\u958B\u767A\u4E2D\u3067\u3001\u4ECA\u5F8C\u3082\u65B0\u3057\u3044\u6A5F\u80FD\u304C\u8FFD\u52A0\u3055\u308C\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059\u3002\u30AA\u30BF\u30AF\u305F\u3061\u306B\u3088\u3063\u3066\u4F5C\u3089\u308C\u305F\u30AA\u30BF\u30AF\u30B3\u30DF\u30E5\u30CB\u30C6\u30A3\u306E\u305F\u3081\u306E\u30A2\u30D7\u30EA\u3067\u3059\u3002\u5C0F\u3055\u306A\u4E0D\u5177\u5408\u304C\u3042\u308B\u304B\u3082\u3057\u308C\u307E\u305B\u3093\u304C\u3001\u3082\u3057\u898B\u3064\u3051\u305F\u5834\u5408\u306F\u30A2\u30D0\u30BF\u30FC\u3092\u53F3\u30AF\u30EA\u30C3\u30AF\u3057\u3001\u866B(\u30D0\u30B0)\u30A2\u30A4\u30B3\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u300C\u30AA\u30D7\u30B7\u30E7\u30F3\u300D\u30E1\u30CB\u30E5\u30FC\u304B\u3089\u3054\u5831\u544A\u304F\u3060\u3055\u3044\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: "\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3\u306E\u4F7F\u3044\u65B9\u8AAC\u660ERTA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3\u306F\u3068\u3063\u3066\u3082\u7C21\u5358\uFF01\u53F3\u30AF\u30EA\u30C3\u30AF\u3067\u30AA\u30D7\u30B7\u30E7\u30F3\u30E1\u30CB\u30E5\u30FC\u3092\u958B\u3051\u3070\u3001\u305D\u3053\u3067\u30A2\u30D0\u30BF\u30FC\u306E\u30B5\u30A4\u30BA\u3092\u5909\u66F4\u3057\u305F\u308A\u30A8\u30D5\u30A7\u30AF\u30C8\u306E\u30AA\u30F3/\u30AA\u30D5\u3092\u5207\u308A\u66FF\u3048\u305F\u308A\u3001\u30A2\u30D0\u30BF\u30FC\u304C\u30C0\u30F3\u30B9\u306E\u305F\u3081\u306B\u97F3\u3092\u691C\u77E5\u3059\u308B\u30A2\u30D7\u30EA\u3092\u9078\u3093\u3060\u308A\u3001MOD\u3084VRM\u3001ME\u30E2\u30C7\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u306A\u3069\u304C\u3067\u304D\u307E\u3059\u3002\u6B21\u306F\u3001\u30A2\u30D0\u30BF\u30FC\u306E\u8AAD\u307F\u8FBC\u307F\u65B9\u6CD5\u3092\u898B\u3066\u307F\u307E\u3057\u3087\u3046\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: "\u30AB\u30B9\u30BF\u30E0\u30E2\u30C7\u30EB\u306E\u4F7F\u3044\u65B9
+      1/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "\u81EA\u5206\u3060\u3051\u306E\u30AB\u30B9\u30BF\u30E0\u30E2\u30C7\u30EB\u3092\u4F7F\u3044\u305F\u3044\u6642\u306F\u3001VRM
+      \u30D5\u30A1\u30A4\u30EB\u304C\u5FC5\u8981\u3067\u3059\u3002Booth\u3084VRoidHub
+      \u306A\u3069\u306E\u30B5\u30A4\u30C8\u304B\u3089VRM \u30E2\u30C7\u30EB\u3092\u5165\u624B\u3057\u3066\u304F\u3060\u3055\u3044\u3002VRM
+      \u30D5\u30A1\u30A4\u30EB\u304C\u7528\u610F\u3067\u304D\u305F\u3089\u3001\u30AA\u30D7\u30B7\u30E7\u30F3\u30E1\u30CB\u30E5\u30FC\u3092\u958B\u3044\u3066\u300CVRM\u300D\u30DC\u30BF\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\uFF01\u30D5\u30A1\u30A4\u30EB\u9078\u629E\u753B\u9762\u304C\u51FA\u3066\u304F\u308B\u306E\u3067\u3001VRM
+      \u30D5\u30A1\u30A4\u30EB\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: "\u30AB\u30B9\u30BF\u30E0\u30E2\u30C7\u30EB\u306E\u4F7F\u3044\u65B9
+      2/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "\u307E\u308C\u306BVRM\u30D5\u30A1\u30A4\u30EB\u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557\u3059\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u308C\u306F\u591A\u304F\u306E\u5834\u5408\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3\u5074\u306E\u4E0D\u5177\u5408\u3067\u306F\u306A\u304F\u3001\u30A8\u30AF\u30B9\u30DD\u30FC\u30C8\u6642\u306E\u30B7\u30A7\u30FC\u30C0\u30FC\u3084\u30DC\u30FC\u30F3\u69CB\u9020\u306E\u8A2D\u5B9A\u30DF\u30B9\u304C\u539F\u56E0\u3067\u3059\u3002\u3053\u306E\u3088\u3046\u306A\u5834\u5408\u306F\u3001\u516C\u5F0F\u306EUniVRM\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3092\u78BA\u8A8D\u3057\u3066\u307F\u3066\u304F\u3060\u3055\u3044\u3002\u4E00\u90E8\u306E\u30A2\u30D7\u30EA\u3067\u306F\u58CA\u308C\u305F\u30E2\u30C7\u30EB\u3092\u81EA\u52D5\u3067\u88DC\u6B63\u3059\u308B\u4ED5\u7D44\u307F\u304C\u3042\u308A\u307E\u3059\u304C\u3001\u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3\u3067\u306F\u5BFE\u5FDC\u3057\u3066\u304A\u3089\u305A\u3001\u4ECA\u5F8C\u3082\u305D\u306E\u3088\u3046\u306A\u6A5F\u80FD\u306E\u5B9F\u88C5\u306F\u884C\u3044\u307E\u305B\u3093\u3002\u305D\u306E\u305F\u3081\u3001\u6B63\u5E38\u306AVRM\u3092\u3054\u81EA\u8EAB\u3067\u3054\u7528\u610F\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: "\u30B9\u30AD\u30C3\u30D7"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: "\u5B8C\u4E86"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: "\u623B\u308B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: "\u6B21\u3078"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: "\u982D\u306E\u30DE\u30A6\u30B9\u8FFD\u5F93\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: "\u4E0A\u534A\u8EAB\u306E\u30DE\u30A6\u30B9\u8FFD\u5F93\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: "\u30CF\u30F3\u30C9\u30C8\u30E9\u30C3\u30AD\u30F3\u30B0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: "\u30E1\u30CB\u30E5\u30FC\u306E\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: "\u30E1\u30CB\u30E5\u30FC\u306E\u5F69\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: "\u30E2\u30C7\u30EB"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: "\u8AAD\u307F\u8FBC\u307F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: "PNG\u30D5\u30A1\u30A4\u30EB\u306F700KB\u672A\u6E80\u306B\u3057\u3066\u304F\u3060\u3055\u3044"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: "\u753B\u50CF\u3092\u4FEE\u6B63"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: "\u76EE\u306E\u30DE\u30A6\u30B9\u8FFD\u5F93\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: "\u8DB3IK\u3092\u6709\u52B9\u306B\u3059\u308B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "\u591A\u304F\u306E\u30E2\u30C7\u30EB\u306F\u8DB3IK\u3092\u6709\u52B9\u306B\u3057\u305F\u65B9\u304C\u81EA\u7136\u306B\u306A\u308A\u307E\u3059\u3002\u5408\u308F\u306A\u3044\u5834\u5408\u306F\u30AA\u30D5\u306B\u3059\u308B\u3053\u3068\u3067\u304B\u308F\u3044\u3044\u52D5\u304D\u306B\u306A\u308A\u307E\u3059\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: "\u30A2\u30F3\u30D3\u30A8\u30F3\u30C8\u30AA\u30AF\u30EB\u30FC\u30B8\u30E7\u30F3
+      (AO)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: "\u30B9\u30AF\u30EA\u30FC\u30F3\u30BB\u30FC\u30D0\u30FC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "\u4E00\u5B9A\u6642\u9593\u304C\u7D4C\u904E\u3059\u308B\u3068\u30A2\u30D0\u30BF\u30FC\u304C\u753B\u9762\u5168\u4F53\u306B\u5927\u304D\u304F\u8868\u793A\u3055\u308C\u3001\u30E6\u30FC\u30B6\u30FC\u304C\u623B\u3063\u3066\u304D\u3066\u30AF\u30EA\u30C3\u30AF\u3092\u3059\u308B\u307E\u3067\u5F85\u6A5F\u30E2\u30FC\u30B7\u30E7\u30F3\u3092\u518D\u751F\u3057\u307E\u3059"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: "\u30B9\u30AF\u30EA\u30FC\u30F3\u30BB\u30A4\u30D0\u30FC\u8D77\u52D5\u30BF\u30A4\u30DE\u30FC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: "\u30C7\u30D0\u30C3\u30B0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: "GC\u5F37\u5236\u5B9F\u884C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "\u5F37\u5236\u7684\u306B\u30AC\u30D9\u30FC\u30B8\u30B3\u30EC\u30AF\u30B7\u30E7\u30F3\u3092\u5B9F\u884C\u3057\u307E\u3059\u3002\u3053\u308C\u306F\u30C7\u30D0\u30C3\u30B0\u7528\u306E\u6A5F\u80FD\u3067\u3059\u3002\u5185\u5BB9\u3092\u7406\u89E3\u3057\u3066\u3044\u308B\u5834\u5408\u3092\u9664\u304D\u3001\u4F7F\u7528\u3057\u306A\u3044\u3067\u304F\u3060\u3055\u3044\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: "\u30A2\u30E9\u30FC\u30E0\u6709\u52B9\u5316"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "\u5B9F\u9A13\u7684: \u30A2\u30E9\u30FC\u30E0\u306F\u4E00\u5EA6\u4F5C\u52D5\u3059\u308B\u3068\u505C\u6B62\u3057\u307E\u3059"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: "\u74B0\u5883\u5149"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: "AMBI 1 \u5F37\u3055"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: "AMBI 1 \u5F69\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: "AMBI 1 \u8272\u76F8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: "AMBI 2 \u5F37\u3055"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: "AMBI 2 \u5F69\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: "AMBI 2 \u8272\u76F8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: "AMBI 3 \u5F37\u3055"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: "AMBI 3 \u5F69\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: "AMBI 3 \u8272\u76F8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: "\u74B0\u5883\u5149\u3092\u6709\u52B9\u5316"
     m_Metadata:
       m_Items: []
   references:

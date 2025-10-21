@@ -643,6 +643,256 @@ MonoBehaviour:
       recommended to keep this at the default or a low value."
     m_Metadata:
       m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: Cargar mod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: "Configuraci\xF3n experimental"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: Sentado en la ventana o la barra de tareas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "Esta funci\xF3n puede causar baneos en juegos con anti-trampas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: Discord Presencia Enriquecida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "Bienvenido a \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "Esta aplicaci\xF3n est\xE1 en desarrollo y se le podr\xEDan a\xF1adir
+      nuevas funciones con el tiempo. Fue creada por la comunidad de anime, para
+      la comunidad de anime. Puede haber algunos peque\xF1os errores \u2014 si encuentras
+      alguno, puedes reportarlo desde el men\xFA de Opciones haciendo clic derecho
+      sobre la mascota y luego en el \xEDcono del error."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: "C\xF3mo usar MateEngine (Gu\xEDa r\xE1pida)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "\xA1Usar MateEngine es muy f\xE1cil! Solo haz clic derecho para
+      abrir el men\xFA de Opciones. All\xED puedes cambiar el tama\xF1o del avatar,
+      activar o desactivar efectos, poner en lista blanca las apps que pueden hacer
+      bailar a tu avatar, o cargar mods y modelos VRM/ME personalizados. En el siguiente
+      paso, te mostrar\xE9 c\xF3mo cargar avatares personalizados."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: Uso de modelos personalizados 1/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "Para usar tu propio modelo personalizado, necesitas un archivo
+      .VRM. Puedes descargar modelos VRM personalizados desde sitios como Booth.jp
+      y VRoidHub. Una vez que tengas el archivo .VRM, abre el men\xFA de Opciones
+      y haz clic en el bot\xF3n \"VRM\". Esto abrir\xE1 el explorador de archivos,
+      donde podr\xE1s seleccionar tu archivo VRM."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: Uso de modelos personalizados 2/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "A veces, un archivo .VRM puede no cargarse correctamente. Esto
+      generalmente no es un problema de MateEngine, sino un error de configuraci\xF3n
+      en los shaders o en el esqueleto al exportar. Si ocurre esto, consulta la documentaci\xF3n
+      oficial de UniVRM. Algunas aplicaciones usan soluciones alternativas para modelos
+      da\xF1ados, pero MateEngine no lo hace (ni lo har\xE1). Es tu responsabilidad
+      asegurarte de que tu VRM est\xE9 correctamente exportado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: Omitir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: Finalizar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: "Atr\xE1s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: Siguiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: Mezcla de cabeza
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: Mezcla de columna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: Seguimiento de manos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: "Color del men\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: "Saturaci\xF3n del men\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: Modelos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: Cargar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: El archivo PNG debe pesar menos de 700 KB.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: Arreglar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: Subir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: Mezcla de ojos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: "Pies con Cinem\xE1tica Inversa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "La mayor\xEDa de los modelos se ver\xE1n mejor con los IK Feet
+      activados. Si no, desact\xEDvalos para un estilo de movimiento m\xE1s femenino."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: "Oclusi\xF3n Ambiental"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: Protector de pantalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "Despu\xE9s de un tiempo, la mascota del escritorio aparece en grande
+      en la pantalla y reproduce una animaci\xF3n de espera hasta que regreses y
+      hagas clic."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: emporizador de protector de pantalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: "Depuraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: Forzar GC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "Ejecuta una recolecci\xF3n de basura forzada. Esta funci\xF3n es
+      solo para depuraci\xF3n; no la uses a menos que sepas lo que est\xE1s haciendo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: Activar alarma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "Experimental: \xA1La funci\xF3n de alarma es nueva!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: Luz AMBI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: AMBI 1 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: "AMBI 1 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: AMBI 1 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: AMBI 2 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: "AMBI 2 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: AMBI 2 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: AMBI 3 Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: "AMBI 3 Saturaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: AMBI 3 Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: Activar luz AMBI
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

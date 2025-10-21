@@ -631,14 +631,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "MateEngine wird gerade als Aktivit\xE4t in Discord angezeigt. Es
+      wird angezeigt was dein Haustier gerade macht, wie Musik abspielen, unt\xE4tig
+      sein, sitzen und weiteres."
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "Die Verz\xF6gerung bevor die n\xE4chte Unt\xE4tigskeit-Animation
+      beginnt. Es ist empfehlenswert, diesen Wert bei 50% zu lassen, um fl\xFCssige
+      und nat\xFCrliche \xDCberg\xE4nge gew\xE4hrzuleisten."
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
@@ -687,6 +688,265 @@ MonoBehaviour:
       on volume. If set too low, the avatar will dance as soon as the music starts.
       If set to maximum, it will only dance when the music is very loud. It\u2019s
       recommended to keep this at the default or a low value."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: 'Mod laden
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: 'Experimentell
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: Auf Fenster und Taskleiste sitzen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "Diese Funktion k\xF6nnte in Spielen mit Anti-Cheat zu einem Bann
+      f\xFChren."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: 'Discord Rich Presence
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "Willkommen bei \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "Diese App befindet sich noch in der Entwicklung, und mit der Zeit
+      werden neue Funktionen hinzukommen. Die App wurde von der Anime-Community f\xFCr
+      die Anime-Community entwickelt. Es kann einige kleinere Probleme geben \u2013
+      wenn du welche findest, kannst du sie \xFCber das Optionen-Men\xFC melden,
+      indem du mit der rechten Maustaste auf deinen Mate klickst und das Fehler-Symbol
+      ausw\xE4hlst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: So benutzt du MateEngine (Speedrun)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "MateEngine ist super einfach zu bedienen! Klicke einfach mit der
+      rechten Maustaste, um das Optionsmen\xFC zu \xF6ffnen. Dort kannst du die Avatargr\xF6\xDFe
+      \xE4ndern, Effekte aktivieren oder deaktivieren, Apps auf die Whitelist setzen,
+      die deinen Avatar tanzen lassen d\xFCrfen, oder Mods und eigene VRM-/ME-Modelldateien
+      laden. Im n\xE4chsten Schritt zeige ich dir, wie du eigene Avatare l\xE4dst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: Eigene Modelle verwenden 1/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "Um ein eigenes Modell zu verwenden, brauchst du eine .VRM-Datei.
+      Du kannst benutzerdefinierte VRM-Modelle auf Webseiten wie Booth.jp und VRoidHub
+      herunterladen. Sobald du eine .VRM-Datei hast, \xF6ffne das Optionsmen\xFC
+      und klicke unten auf den \u201EVRM\u201C-Button. Dadurch \xF6ffnet sich der
+      Datei-Explorer, in dem du deine Datei ausw\xE4hlen kannst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: Eigene Modelle verwenden 2/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "Manchmal kann es passieren, dass eine .VRM-Datei nicht geladen
+      wird. Das liegt meist nicht an MateEngine, sondern an falschen Shadern oder
+      einer fehlerhaften Armatur beim Export. In solchen F\xE4llen solltest du die
+      offizielle UniVRM-Dokumentation pr\xFCfen. Manche Programme versuchen, defekte
+      Modelle zu reparieren \u2013 MateEngine tut das nicht (und wird es auch nicht).
+      Du bist selbst daf\xFCr verantwortlich, dass deine VRM korrekt exportiert ist."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: "\xDCberspringen"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: Fertig
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: "Zur\xFCck"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: Weiter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: "Kopf Bewegungsintensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: "Wirbels\xE4ulen Bewegungsintensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: Handverfolgung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: "Men\xFCfarbe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: "Men\xFCs\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: Modelle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: Laden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: PNG-Datei muss unter 700 KB sein.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: Bild korrigieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: UPLOAD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: "Augen Bewegungsintensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: "Inversive Kinematik F\xFC\xDFe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "Die meisten Modelle sehen mit aktivierten IK-F\xFC\xDFen besser
+      aus. Wenn nicht, deaktiviere sie f\xFCr einen femininen Bewegungsstil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: Umgebungsverdeckung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: Bildschirmschoner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "Nach einiger Zeit erscheint das Desktop-Maskottchen gro\xDF auf
+      dem Bildschirm und spielt eine Idle-Animation ab, bis du zur\xFCckkehrst und
+      klickst."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: Bildschirmschoner-Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: Debugging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: GC erzwingen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "F\xFChrt eine erzwungene Speicherbereinigung (Garbage Collection)
+      durch. Dies ist eine Debug-Funktion \u2013 benutze sie nur, wenn du genau wei\xDFt,
+      was du tust."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: Alarm aktivieren
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: 'Experimentell: Die Alarmfunktion ist ein neues Test-Feature!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: Ambientlicht
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: "AMBI 1 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: "AMBI 1 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: AMBI 1 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: "AMBI 2 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: "AMBI 2 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: AMBI 2 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: "AMBI 3 Intensit\xE4t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: "AMBI 3 S\xE4ttigung"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: AMBI 3 Farbe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: Ambient aktivieren
     m_Metadata:
       m_Items: []
   references:

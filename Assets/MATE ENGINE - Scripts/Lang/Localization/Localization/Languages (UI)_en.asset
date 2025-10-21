@@ -582,8 +582,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 70999952109641728
     m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+      Activity on your Profile. It shows what your pet is doing, such as playing
+      music, idling, sitting, and more.
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
@@ -637,6 +637,252 @@ MonoBehaviour:
       on volume. If set too low, the avatar will dance as soon as the music starts.
       If set to maximum, it will only dance when the music is very loud. It\u2019s
       recommended to keep this at the default or a low value."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: Load Mod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: Experimental
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: Window and Taskbar Sitting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: This feature may cause bans in games with anti-cheat software.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: Discord Rich Presence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "Welcome to \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "This is a work-in-progress app, and new features may be added over
+      time. It was made by the anime community, for the anime community. There might
+      be some small issues here and there \u2014 if you find any, you can report
+      them from the Options menu by right-clicking the pet and clicking the bug icon."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: How to Use MateEngine (Speedrun)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "Using MateEngine is really easy! Just right-click to open the Options
+      menu. There, you can change the avatar size, enable or disable effects, whitelist
+      apps that can make your avatar dance, or load mods and custom VRM/ME model
+      files. In the next step, I\u2019ll explain how to load custom avatars."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: Using Custom Models 1/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: To use your own custom model, you need a .VRM file. You can download
+      custom .VRM models from websites like Booth.jp and VRoidHub. Once you have
+      a .VRM file, open the Options menu and click the 'VRM' button. This will open
+      the file explorer, where you can select your VRM file.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: Using Custom Models 2/2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "Sometimes a .VRM file might fail to load. This usually isn\u2019t
+      a MateEngine issue, it\u2019s often due to incorrect shaders or armature setup
+      during export. If this happens, check the official UniVRM documentation. Some
+      apps use fallback methods to fix broken models, but MateEngine doesn't (and
+      won\u2019t). You're responsible for making sure your VRM is properly exported."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: Skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: Finish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: Head Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: Spine Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: Hand Tracking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: Menu Color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: Menu Saturation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: Models
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: PNG file must be under 700 KB.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: FIX IMG
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: UPLOAD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: Eye Blend
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: Inverse Kinematics Feet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: Most models will look better with IK Feet enabled. If not, disable
+      it for a more feminine movement style.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: Ambient Occlusion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: Screen Saver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: After some time, the desktop mascot appears large on the screen
+      and plays an idle animation until you return and click.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: Screen Saver Timer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: Debugging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: GC KILL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "Runs a forced garbage collection task. This is a debug function\u2014do
+      not use it unless you know what you're doing."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: Enable Alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "EXPERIMENTAL FEATURE: \nTHE ALARM WILL TURN OFF ONCE IT WAS TRIGGERED
+      ONE TIME."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: Ambient Lights
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: AMBI 1 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: AMBI 1 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: AMBI 1 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: AMBI 2 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: AMBI 2 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: AMBI 2 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: AMBI 3 INTENSITY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: AMBI 3 SATURATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: AMBI 3 COLOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: Enable Ambient Light
     m_Metadata:
       m_Items: []
   references:

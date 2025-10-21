@@ -535,43 +535,43 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973429180833792
-    m_Localized: General
+    m_Localized: "\u4E00\u822C"
     m_Metadata:
       m_Items: []
   - m_Id: 70973430707560448
-    m_Localized: Audio
+    m_Localized: "\u97F3\u8A0A"
     m_Metadata:
       m_Items: []
   - m_Id: 70973432238481408
-    m_Localized: Movement
+    m_Localized: "\u79FB\u52D5"
     m_Metadata:
       m_Items: []
   - m_Id: 70973433303834624
-    m_Localized: Appearance
+    m_Localized: "\u5916\u89C0"
     m_Metadata:
       m_Items: []
   - m_Id: 70973434356604928
-    m_Localized: Dancing
+    m_Localized: "\u821E\u8E48"
     m_Metadata:
       m_Items: []
   - m_Id: 70973435300323328
-    m_Localized: Window Feature
+    m_Localized: "\u8996\u7A97\u529F\u80FD"
     m_Metadata:
       m_Items: []
   - m_Id: 70973436151767040
-    m_Localized: Design
+    m_Localized: "\u8A2D\u8A08"
     m_Metadata:
       m_Items: []
   - m_Id: 70973438601240576
-    m_Localized: Alarm
+    m_Localized: "\u9B27\u9418"
     m_Metadata:
       m_Items: []
   - m_Id: 70973439893086208
-    m_Localized: AI
+    m_Localized: "\u4EBA\u5DE5\u667A\u6167"
     m_Metadata:
       m_Items: []
   - m_Id: 70973441449172992
-    m_Localized: Debug
+    m_Localized: "\u9664\u932F"
     m_Metadata:
       m_Items: []
   - m_Id: 70973443252723712
@@ -579,62 +579,281 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "\u5728 Discord \u4E2D\u986F\u793A\u4F60\u6B63\u5728\u4F7F\u7528
+      MateEngine\u3002\u6703\u986F\u793A\u4F60\u7684\u5BF5\u7269\u6B63\u5728\u505A\u4EC0\u9EBC\uFF0C\u4F8B\u5982\u64AD\u653E\u97F3\u6A02\u3001\u9592\u7F6E\u6216\u5750\u8457\u7B49\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "\u63A7\u5236\u4E0B\u4E00\u500B\u5F85\u6A5F\u52D5\u756B\u958B\u59CB\u524D\u7684\u5EF6\u9072\u3002\u5EFA\u8B70\u4FDD\u6301\u5728\u7D04
+      50% \u4EE5\u78BA\u4FDD\u81EA\u7136\u904E\u6E21\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "\u63A7\u5236\u52D5\u756B A \u8207\u52D5\u756B B \u4E4B\u9593\u7684\u5207\u63DB\u6642\u9593\u3002\u5EFA\u8B70\u4FDD\u6301\u6578\u503C\u8F03\u4F4E\u4EE5\u7372\u5F97\u5E73\u6ED1\u904E\u6E21\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "\u8EAB\u9AD4\u8FFD\u8E64\u8B93\u89D2\u8272\u4EE5\u982D\u90E8\u3001\u810A\u690E\u8207\u773C\u775B\u8DDF\u96A8\u6ED1\u9F20\u3002\u4F7F\u7528\u4E0B\u65B9\u6ED1\u687F\u8ABF\u6574\u5404\u90E8\u4F4D\u79FB\u52D5\u7A0B\u5EA6\u3002\u5DE6\u5074\u70BA\u4E0D\u52D5\uFF0C\u53F3\u5074\u70BA\u6700\u5927\u79FB\u52D5\uFF0C\u4E2D\u9593\u5247\u8F03\u81EA\u7136\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: "\u624B\u90E8\u8FFD\u8E64\u5141\u8A31\u89D2\u8272\u7684\u624B\u8DDF\u96A8\u6ED1\u9F20\u4F4D\u7F6E\uFF0C\u770B\u8D77\u4F86\u50CF\u662F\u5728\u6293\u6216\u63A5\u6ED1\u9F20\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "Husbando \u6A21\u5F0F\u8B93\u89D2\u8272\u884C\u70BA\u66F4\u5177\u7537\u6027\u5316\u98A8\u683C\u3002\u5B83\u6703\u6539\u8B8A\u5F85\u6A5F\u8207\u821E\u8E48\u52D5\u756B\u3002\u6B64\u529F\u80FD\u70BA\u5BE6\u9A57\u6027\uFF0C\u7121\u5F71\u97FF\u5750\u59FF\u52D5\u756B\uFF0C\u4E26\u505C\u7528\u6478\u982D\u529F\u80FD\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "\u555F\u7528\u6B64\u529F\u80FD\u53EF\u8B93\u89D2\u8272\u96A8\u97F3\u6A02\u8DF3\u821E\u3002\u9EDE\u64CA\u6B64\u9078\u9805\u65C1\u7684\u8A2D\u5B9A\u5716\u793A\u65B0\u589E\u53EF\u63A7\u5236\u821E\u8E48\u7684\u61C9\u7528\u7A0B\u5F0F\u3002\u6709\u4E9B\u61C9\u7528\u9700\u5148\u64AD\u653E\u97F3\u6A02\uFF0C\u64AD\u653E\u6642\u9EDE\u64CA\u5237\u65B0\u5716\u793A\u8B93
+      MateEngine \u5075\u6E2C\u61C9\u7528\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "\u555F\u7528\u821E\u8E48\u8F49\u63DB\u53EF\u8B93\u89D2\u8272\u96A8\u6642\u9593\u8B8A\u63DB\u821E\u8E48\u98A8\u683C\u3002\u4F7F\u7528\u4E0B\u65B9\u6ED1\u687F\u63A7\u5236\u901F\u5EA6\u3002\u6578\u503C\u8D8A\u4F4E\u5207\u63DB\u8D8A\u5FEB\uFF0C\u8D8A\u9AD8\u5247\u8D8A\u6162\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "\u821E\u8E48\u95BE\u503C\u6C7A\u5B9A\u89D2\u8272\u6839\u64DA\u97F3\u91CF\u4F55\u6642\u958B\u59CB\u8DF3\u821E\u3002\u904E\u4F4E\u6642\u97F3\u6A02\u4E00\u958B\u59CB\u5C31\u6703\u8DF3\u821E\uFF0C\u8A2D\u70BA\u6700\u5927\u5247\u9700\u97F3\u91CF\u5F88\u5927\u6642\u624D\u8DF3\u821E\u3002\u5EFA\u8B70\u4FDD\u6301\u9810\u8A2D\u6216\u4F4E\u503C\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: "\u8F09\u5165\u6A21\u7D44\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: "\u5BE6\u9A57\u6027\u529F\u80FD"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: "\u5750\u5728\u8996\u7A97\u53CA\u5DE5\u4F5C\u5217\u4E0A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "\u6B64\u529F\u80FD\u53EF\u80FD\u5C0E\u81F4\u5728\u5E36\u6709\u53CD\u4F5C\u5F0A\u7684\u904A\u6232\u4E2D\u88AB\u5C01\u865F\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: "Discord \u72C0\u614B\u986F\u793A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "\u6B61\u8FCE\u4F7F\u7528 \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3
+      (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "\u9019\u662F\u4E00\u500B\u4ECD\u5728\u958B\u767C\u4E2D\u7684\u61C9\u7528\u7A0B\u5F0F\uFF0C\u672A\u4F86\u53EF\u80FD\u6703\u65B0\u589E\u66F4\u591A\u529F\u80FD\u3002\u5B83\u662F\u7531\u52D5\u6F2B\u793E\u7FA4\u70BA\u4E86\u52D5\u6F2B\u793E\u7FA4\u6240\u88FD\u4F5C\u3002\u53EF\u80FD\u6703\u6709\u4E00\u4E9B\u5C0F\u554F\u984C
+      \u2014\u2014 \u5982\u679C\u4F60\u767C\u73FE\u4E86\u554F\u984C\uFF0C\u53EF\u4EE5\u5728\u53F3\u9375\u9EDE\u64CA\u5BF5\u7269\u5F8C\u9EDE\u9078\u932F\u8AA4\u5716\u793A\uFF0C\u900F\u904E\u9078\u55AE\u9078\u9805\u56DE\u5831\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: "\u5982\u4F55\u4F7F\u7528 MateEngine\uFF08\u5FEB\u901F\u4E0A\u624B\uFF09"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "\u4F7F\u7528 MateEngine \u975E\u5E38\u7C21\u55AE\uFF01\u53EA\u8981\u53F3\u9375\u9EDE\u64CA\u6253\u958B\u9078\u9805\u9078\u55AE\u3002\u4F60\u53EF\u4EE5\u66F4\u6539\u89D2\u8272\u5927\u5C0F\u3001\u958B\u555F\u6216\u95DC\u9589\u7279\u6548\u3001\u5C07\u53EF\u8B93\u89D2\u8272\u8DF3\u821E\u7684\u61C9\u7528\u7A0B\u5F0F\u52A0\u5165\u767D\u540D\u55AE\uFF0C\u6216\u662F\u8F09\u5165\u6A21\u7D44\u8207\u81EA\u8A02
+      VRM/ME \u6A21\u578B\u6A94\u6848\u3002\u4E0B\u4E00\u6B65\uFF0C\u6211\u5C07\u8AAA\u660E\u5982\u4F55\u8F09\u5165\u81EA\u8A02\u89D2\u8272\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: "\u5982\u4F55\u4F7F\u7528\u81EA\u8A02\u6A21\u578B 1/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "\u82E5\u8981\u4F7F\u7528\u81EA\u8A02\u6A21\u578B\uFF0C\u4F60\u9700\u8981\u4E00\u500B
+      .VRM \u6A94\u6848\u3002\u4F60\u53EF\u4EE5\u5F9E Booth.jp \u548C VRoidHub \u7B49\u7DB2\u7AD9\u4E0B\u8F09\u6216\u81EA\u8A02
+      VRM \u6A21\u578B\u3002\u53D6\u5F97 .VRM \u6A94\u6848\u5F8C\uFF0C\u6253\u958B\u9078\u9805\u9078\u55AE\u4E26\u9EDE\u9078\u300CVRM\u300D\u6309\u9215\u3002\u9019\u6703\u958B\u555F\u6A94\u6848\u7E3D\u7BA1\uFF0C\u8B93\u4F60\u9078\u64C7
+      VRM \u6A94\u6848\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: "\u5982\u4F55\u4F7F\u7528\u81EA\u8A02\u6A21\u578B 2/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "\u6709\u6642\u5019 .VRM \u6A94\u6848\u53EF\u80FD\u6703\u8F09\u5165\u5931\u6557\u3002\u9019\u901A\u5E38\u4E0D\u662F
+      MateEngine \u7684\u554F\u984C\uFF0C\u800C\u662F\u56E0\u70BA\u5728\u532F\u51FA\u6642\u4F7F\u7528\u4E86\u932F\u8AA4\u7684\u8457\u8272\u5668\u6216\u9AA8\u67B6\u8A2D\u7F6E\u3002\u5982\u679C\u9047\u5230\u9019\u7A2E\u60C5\u6CC1\uFF0C\u8ACB\u67E5\u770B\u5B98\u65B9\u7684
+      UniVRM \u8AAA\u660E\u6587\u4EF6\u3002\u6709\u4E9B\u61C9\u7528\u7A0B\u5F0F\u6703\u8A66\u5716\u81EA\u52D5\u4FEE\u5FA9\u640D\u58DE\u7684\u6A21\u578B\uFF0C\u4F46
+      MateEngine \u4E0D\u6703\uFF08\u672A\u4F86\u4E5F\u4E0D\u6703\uFF09\u3002\u8ACB\u78BA\u4FDD\u4F60\u7684
+      VRM \u662F\u6B63\u78BA\u532F\u51FA\u7684\uFF0C\u9019\u662F\u4F7F\u7528\u8005\u7684\u8CAC\u4EFB\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: "\u8DF3\u904E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: "\u5B8C\u6210"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: "\u8FD4\u56DE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: "\u4E0B\u4E00\u6B65"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: "\u982D\u90E8\u8DDF\u8E64\u9F20\u6A19\u7684\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: "\u810A\u690E\u8DDF\u8E64\u9F20\u6A19\u7684\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: "\u624B\u90E8\u8FFD\u8E64\u9F20\u6A19\u7684\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: "\u9078\u55AE\u984F\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: "\u9078\u55AE\u98FD\u548C\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: "\u6A21\u578B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: "\u8F09\u5165"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: "PNG \u6A94\u6848\u9700\u5C0F\u65BC 700KB\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: "\u7F3A\u5931\u7E2E\u5716"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: "\u4E0A\u50B3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: "\u773C\u90E8\u8DDF\u8E64\u9F20\u6A19\u7684\u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: "\u53CD\u5411\u904B\u52D5\u5B78\u8173\u90E8"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "\u591A\u6578\u6A21\u578B\u5728\u958B\u555F IK \u8173\u6642\u770B\u8D77\u4F86\u6703\u66F4\u597D\u3002\u5982\u679C\u4E0D\u9069\u5408\uFF0C\u53EF\u4EE5\u95DC\u9589\u4EE5\u7372\u53D6\u66F4\u5973\u6027\u5316\u7684\u52D5\u4F5C\u98A8\u683C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: "\u74B0\u5883\u5149\u906E\u853D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: "\u87A2\u5E55\u4FDD\u8B77"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "\u7D93\u904E\u4E00\u6BB5\u6642\u9593\u5F8C\uFF0C\u4F60\u7684\u684C\u9762\u5BF5\u7269\u6703\u653E\u5927\u4E26\u9592\u7F6E\u5728\u756B\u9762\u4E0A\u76F4\u5230\u4F60\u9EDE\u4E0B\u6ED1\u9F20\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: "\u87A2\u5E55\u4FDD\u8B77\u555F\u52D5\u6642\u9593"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: "\u9664\u932F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: "\u5F37\u88FD\u5783\u573E\u6E05\u7406"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "\u9032\u884C\u5F37\u88FD\u6027\u7684\u5783\u573E\u6E05\u7406\u3002\u9019\u662F\u4E00\u500B\u9664\u932F\u7528\u529F\u80FD\u2014\u2014\u4E0D\u8981\u4F7F\u7528\uFF0C\u9664\u975E\u4F60\u77E5\u9053\u4F60\u5728\u505A\u4EC0\u9EBC\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: "\u555F\u7528\u9B27\u9418"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "\u5BE6\u9A57\u6027\uFF1A\u9B27\u9418\u529F\u80FD\u662F\u5168\u65B0\u6E2C\u8A66\u529F\u80FD\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: "\u74B0\u5883\u5149"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: "AMBI 1 \u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: "AMBI 1 \u98FD\u548C\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: "AMBI 1 \u984F\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: "AMBI 2 \u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: "AMBI 2 \u98FD\u548C\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: "AMBI 2 \u984F\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: "AMBI 3 \u5F37\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: "AMBI 3 \u98FD\u548C\u5EA6"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: "AMBI 3 \u984F\u8272"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: "\u555F\u7528\u74B0\u5883\u5149"
     m_Metadata:
       m_Items: []
   references:

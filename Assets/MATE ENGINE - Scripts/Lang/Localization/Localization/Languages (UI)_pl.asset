@@ -598,19 +598,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "Wy\u015Bwietla na Discordzie, \u017Ce w danym momencie korzystasz
+      z MateEngine. Pokazuje, co robi twoje stworzonko, tak jak odtwarzanie muzyki,
+      siedzenie, itp.!"
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "Op\xF3\u017Anienie przed rozpocz\u0119ciem nowej animacji. Polecana
+      warto\u015B\u0107 to 50%, dla p\u0142ynnych i naturalnych zmian."
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
     m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+      B taes. Keep this value low for smooth transitions between idle animations.
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
@@ -654,6 +654,263 @@ MonoBehaviour:
       on volume. If set too low, the avatar will dance as soon as the music starts.
       If set to maximum, it will only dance when the music is very loud. It\u2019s
       recommended to keep this at the default or a low value."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682236403712
+    m_Localized: "Za\u0142aduj Mod"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375232
+    m_Localized: Eksperymentalne
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682257375233
+    m_Localized: "Siadanie na oknach i pasku zada\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569536
+    m_Localized: "Ta opcja mo\u017Ce powodowa\u0107 bany w grach z systemami Anti-Cheat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569537
+    m_Localized: "Wzbogacona obecno\u015B\u0107 na Discordzie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569538
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569539
+    m_Localized: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569540
+    m_Localized: "\u65E5\u672C\u8A9E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569541
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569542
+    m_Localized: "\u4E2D\u6587"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569543
+    m_Localized: "\uD55C\uAD6D\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569544
+    m_Localized: "Witamy w \u30E1\u30A4\u30C8\u30A8\u30F3\u30B8\u30F3 (MateEngine)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569545
+    m_Localized: "Prace nad t\u0105 aplikacj\u0105 dalej trwaj\u0105 i nowe funkcje
+      mog\u0105 zosta\u0107 dodane w przysz\u0142o\u015Bci. Zosta\u0142a stworzona
+      przez spo\u0142eczno\u015B\u0107 anime, dla spo\u0142eczno\u015Bci anime. Do
+      czasu do czasu mog\u0105 wyst\u0119powa\u0107 b\u0142\u0119dy - je\u015Bli
+      jakie\u015B znajdziesz, mo\u017Cesz je zg\u0142osi\u0107 wchodz\u0105c w menu
+      Opcji, klikaj\u0105c prawym przyciskiem myszy na stworzonko, i klikaj\u0105c
+      ikon\u0119 buga."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569546
+    m_Localized: "Jak korzysta\u0107 z MateEngine (Speedrun)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569547
+    m_Localized: "Korzystanie z MateEngine jest proste! Kliknij prawym przyciskiem
+      myszy aby otworzy\u0107 menu. Tam mo\u017Cesz zmieni\u0107 rozmiar awatara,
+      prze\u0142\u0105czy\u0107 efekty, ustali\u0107 kt\xF3re aplikacje powoduj\u0105
+      taniec, lub \u0142adowa\u0107 mody i modele VRM/ME. W nast\u0119pnym kroku
+      obja\u015Bni\u0119 jak za\u0142adowa\u0107 nowego awatara."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569548
+    m_Localized: "U\u017Cywanie innych modeli 1/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569549
+    m_Localized: "Aby u\u017Cy\u0107 w\u0142asnego modelu, potrzebujesz pliku .VRM/
+      Mo\u017Cesz takie pliki pobra\u0107 ze stron jak Booth.jp i VroidHub. Kiedy
+      ju\u017C znajdziesz plik .VRM, otw\xF3rz menu i kliknij przycisk \u201EVRM\u201D.
+      To otworzy eksplorator plik\xF3w, gdzie mo\u017Cesz wybra\u0107 sw\xF3j plik
+      .VRM."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569550
+    m_Localized: "U\u017Cywanie innych modeli 2/2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569551
+    m_Localized: "W niekt\xF3rych przypadkach, plik .VRM mo\u017Ce si\u0119 nie \u0142adowa\u0107.
+      Nie jest to zwykle problem z MateEngine, a z niepoprawnym ustawieniem shader\xF3w
+      b\u0105d\u017A szkieletu podczas eksportu. W takim przypadku, sprawd\u017A
+      oficjaln\u0105 dokumentacj\u0119 UniVRM. Niekt\xF3re aplikacje maj\u0105 w\u0142asne
+      sposoby naprawiania modeli, ale MateEngine ich nie posiada (i nie b\u0119dzie
+      posiada\u0142). Jeste\u015B odpowiedzialny za poprawny eksport swoich VRM\xF3w."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569552
+    m_Localized: "Language - \u8A00\u8A9E (Gengo) - \u042F\u0437\u044B\u043A (Yazyk)
+      - Idioma - \u8A9E\u8A00 (Y\u01D4y\xE1n) - Sprache - Langue - \uC5B8\uC5B4 (Eoneo)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569553
+    m_Localized: "Pomi\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569554
+    m_Localized: "Zako\u0144cz"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569555
+    m_Localized: Poprzedni
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569556
+    m_Localized: "Nast\u0119pny"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569557
+    m_Localized: "Ruchliwo\u015B\u0107 G\u0142owy"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569558
+    m_Localized: "Ruchliwo\u015B\u0107 Torsu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569559
+    m_Localized: "Ruchliwo\u015B\u0107 Oczu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569560
+    m_Localized: Kolor menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569561
+    m_Localized: Nasycenie koloru menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569562
+    m_Localized: Modele
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569563
+    m_Localized: Wczytaj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569564
+    m_Localized: "Plik PNG nie mo\u017Ce przekracza\u0107 wi\u0119cej ni\u017C 700
+      KB."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569565
+    m_Localized: Napr. obraz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569566
+    m_Localized: "Prze\u015Blij"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569567
+    m_Localized: Mieszanie oczu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569568
+    m_Localized: "Odwrotna kinematyka st\xF3p"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569569
+    m_Localized: "Wi\u0119kszo\u015B\u0107 modeli b\u0119dzie wygl\u0105da\u0107
+      lepiej po w\u0142\u0105czeniu funkcji OK st\xF3p. Je\u015Bli efekt ko\u0144cowy
+      b\u0119dzie niezadowalaj\u0105cy, wy\u0142\u0105cz j\u0105, aby uzyska\u0107
+      bardziej kobiecy styl ruchu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569570
+    m_Localized: Okluzja otoczenia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569571
+    m_Localized: Wygaszacz ekranu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569572
+    m_Localized: "Po pewnym czasie posta\u0107 pojawia si\u0119 na ekranie i odtwarza
+      animacj\u0119 bezczynno\u015Bci, do momentu, gdy b\u0119dziesz zn\xF3w aktywny,
+      klikaj\u0105c na ni\u0105."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569573
+    m_Localized: Miernik czasowy wygaszacza ekranu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569574
+    m_Localized: Debugowanie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569575
+    m_Localized: "Wyko\u0144cz GC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569576
+    m_Localized: "Uruchamia wymuszone zbieranie \u015Bmieci (garbage collection).
+      Jest to funkcja debugowania \u2014 u\u017Cywaj jej, tylko wtedy je\u015Bli
+      jest to konieczne oraz je\u015Bli wiesz, co robisz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569577
+    m_Localized: Uruchom budzik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682261569578
+    m_Localized: "FUNKCJA EKSPERYMENTALNA:\nBUDZIK WY\u0141\u0104CZY SI\u0118 PO
+      TYM JAK ZOSTANIE JEDNORAZOWO URUCHOMIONY."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763840
+    m_Localized: "\u015Awiat\u0142o ambientowe/nastrojowe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763841
+    m_Localized: "Intensywno\u015B\u0107 AMBI 1"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763842
+    m_Localized: Nasycenie AMBI 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763843
+    m_Localized: Kolor AMBI 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763844
+    m_Localized: "Intensywno\u015B\u0107 AMBI 2"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763845
+    m_Localized: Nasycenie AMBI2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763846
+    m_Localized: Kolor AMBI 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763847
+    m_Localized: "Intensywno\u015B\u0107 AMBI 3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763848
+    m_Localized: Nasycenie AMBI 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763849
+    m_Localized: Kolor AMBI 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71028682265763850
+    m_Localized: "W\u0142\u0105cz \u015Bwiat\u0142o ambientowe/nastrojowe"
     m_Metadata:
       m_Items: []
   references:
