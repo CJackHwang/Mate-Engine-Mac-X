@@ -515,6 +515,86 @@ MonoBehaviour:
     m_Key: BUTTON_DELETE_CHAT_HISTORY
     m_Metadata:
       m_Items: []
+  - m_Id: 70973429180833792
+    m_Key: CAT_GENERAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973430707560448
+    m_Key: CAT_AUDIO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973432238481408
+    m_Key: CAT_MOVEMENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973433303834624
+    m_Key: CAT_APPEARANCE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973434356604928
+    m_Key: CAT_DANCING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973435300323328
+    m_Key: CAT_WINDOW
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973436151767040
+    m_Key: CAT_DESIGN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973438601240576
+    m_Key: CAT_ALARM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973439893086208
+    m_Key: CAT_AI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973441449172992
+    m_Key: CAT_DEBUG
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973443252723712
+    m_Key: CAT_STEAMDLCS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70999952109641728
+    m_Key: TIP_DISCORD_RPC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71002484403904512
+    m_Key: TIP_IDLESWITCHTIME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71003365492957184
+    m_Key: TIP_IDLESWITCHANIM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71004038695526400
+    m_Key: TIP_BODY_TRACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71004940831596544
+    m_Key: TIP_HAND_TRACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71005229898833920
+    m_Key: TIP_HUSBANDO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71009590645399552
+    m_Key: TIP_DANCE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71010482257960960
+    m_Key: TIP_DANCE_TRS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71011000183201792
+    m_Key: TIP_DANCE_THRS
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

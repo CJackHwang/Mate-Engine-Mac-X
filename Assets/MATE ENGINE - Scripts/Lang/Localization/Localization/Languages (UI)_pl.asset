@@ -553,6 +553,109 @@ MonoBehaviour:
     m_Localized: "Usu\u0144 histori\u0119 czatu"
     m_Metadata:
       m_Items: []
+  - m_Id: 70973443252723712
+    m_Localized: DLC Steam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973429180833792
+    m_Localized: "Og\xF3lne"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973430707560448
+    m_Localized: "D\u017Awi\u0119k"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973432238481408
+    m_Localized: Ruch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973433303834624
+    m_Localized: "Wygl\u0105d"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973434356604928
+    m_Localized: Taniec
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973435300323328
+    m_Localized: Funkcja okna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973436151767040
+    m_Localized: Styl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973438601240576
+    m_Localized: Alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973439893086208
+    m_Localized: SI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70973441449172992
+    m_Localized: Debugowanie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70999952109641728
+    m_Localized: Displays in Discord that you are currently using MateEngine in Game
+      View. It shows what your pet is doing, such as playing music, idling, sitting,
+      and more.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71002484403904512
+    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
+      to keep it around 50% for smooth and natural transitions."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71003365492957184
+    m_Localized: Determines how long the transition between animation A and animation
+      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71004038695526400
+    m_Localized: "Body tracking allows the avatar to follow mouse movement using
+      its head, spine, and eyes. You can adjust how much each part moves with the
+      sliders below. When the slider is all the way left, it doesn\u2019t move; when
+      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
+      provides a smooth experience."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71004940831596544
+    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
+      The avatar\u2019s hand will follow your mouse position, making it look as if
+      it\u2019s trying to catch or hold your mouse."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71005229898833920
+    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
+      a male character. It changes idle and dance animations to match the style.
+      This feature is experimental and does not affect sitting animations. It also
+      disables headpats.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71009590645399552
+    m_Localized: "Enabling this allows the avatar to dance to your music. To make
+      it work, click the settings icon next to this option and add the apps that
+      can control the avatar\u2019s dancing. Some apps require music to be playing
+      first; while it plays, click the refresh icon so MateEngine can detect the
+      app."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71010482257960960
+    m_Localized: Enabling dance transitions allows the avatar to switch between dance
+      styles over time. Use the slider below to control how quickly it changes. Lower
+      values make it switch faster, while higher values make it take longer to change
+      dance styles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71011000183201792
+    m_Localized: "The dance threshold determines when the avatar starts dancing based
+      on volume. If set too low, the avatar will dance as soon as the music starts.
+      If set to maximum, it will only dance when the music is very loud. It\u2019s
+      recommended to keep this at the default or a low value."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

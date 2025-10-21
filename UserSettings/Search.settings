@@ -83,6 +83,14 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"st: steam"
+	"st: cat_ai"
+	"st: alarm"
+	"st: window"
+	"st: appear"
+	"st: movement"
+	"st: audio"
+	"st: general"
 	"st: sakur"
 	"st: retro"
 	"st: INPUT_AI_SYSTEM_PROMP"
@@ -93,16 +101,8 @@ recentSearches = [
 	"st: ambi_3"
 	"st: ambi_2"
 	"st: ambi_^1"
-	"st: alarm"
 	"st: scree"
 	"st: debug"
-	"st: ambie"
-	"st: screen"
-	"st: spine"
-	"st: language"
-	"st: finish"
-	"st: LANGUAGE"
-	"st: d"
 ]
 searchItemFavorites = [
 ]
