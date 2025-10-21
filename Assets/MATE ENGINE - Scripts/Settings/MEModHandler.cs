@@ -225,7 +225,7 @@ public class MEModHandler : MonoBehaviour
             try { instance = Instantiate(prefab); } catch { }
         }
 
-        try { bundle.Unload(false); } catch { }
+        // try { bundle.Unload(false); } catch { }
 
         if (instance == null) return;
 
@@ -260,16 +260,50 @@ public class MEModHandler : MonoBehaviour
         ApplyReferencePaths(instance, refPaths, sceneLinks);
 
         bool initialState = GetSavedStateOrDefault(id, true);
+        instance.SetActive(false);
+        PreloadAudioClipsFromMEVoicePack(instance);
         instance.SetActive(initialState);
         instance.name = "ME_" + id;
 
         GlobalInstances[id] = instance;
         string a2 = ReadAuthorFromModInfo(extractedDir);
         string t2 = ReadTypeFromModType(extractedDir, "Mod");
-        var entry2 = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = a2, typeText = t2 };
+        var entry2 = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = a2, typeText = t2, retainedBundle = bundle };
         loadedMods.Add(entry2);
         AddToModListUI(entry2, initialState);
     }
+
+    void PreloadAudioClipsFromMEVoicePack(GameObject root)
+    {
+        var packs = root.GetComponentsInChildren<MEVoicePack>(true);
+        for (int i = 0; i < packs.Length; i++)
+        {
+            var p = packs[i];
+            var fields = typeof(MEVoicePack).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            for (int f = 0; f < fields.Length; f++)
+            {
+                var ft = fields[f].FieldType;
+                var val = fields[f].GetValue(p);
+                if (val == null) continue;
+
+                if (ft == typeof(AudioClip))
+                {
+                    var c = (AudioClip)val;
+                    if (c != null && c.loadState != AudioDataLoadState.Loaded) c.LoadAudioData();
+                }
+                else if (typeof(System.Collections.IEnumerable).IsAssignableFrom(ft) && ft != typeof(string))
+                {
+                    var en = (System.Collections.IEnumerable)val;
+                    foreach (var o in en)
+                    {
+                        var c2 = o as AudioClip;
+                        if (c2 != null && c2.loadState != AudioDataLoadState.Loaded) c2.LoadAudioData();
+                    }
+                }
+            }
+        }
+    }
+
 
 
     void ApplyReferencePaths(GameObject root, Dictionary<string, string> refPaths, Dictionary<string, string> sceneLinks)
@@ -493,8 +527,14 @@ public class MEModHandler : MonoBehaviour
 
     void RemoveMod(ModEntry mod, GameObject ui)
     {
+        if (mod.retainedBundle != null)
+        {
+            try { mod.retainedBundle.Unload(true); } catch { }
+            mod.retainedBundle = null;
+        }
         if (mod.type == ModType.MEObject)
         {
+
             if (mod.instance != null) Destroy(mod.instance);
             if (GlobalInstances.TryGetValue(mod.name, out var go) && go == mod.instance) GlobalInstances.Remove(mod.name);
         }
@@ -539,7 +579,7 @@ public class MEModHandler : MonoBehaviour
         return null;
     }
 
-    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; public string typeText; }
+    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; public string typeText; public AssetBundle retainedBundle; }
     [Serializable] class ModInfo { public string name; public string author; public string description; public string weblink; public string buildTarget; public string timestamp; }
     [Serializable] class ModTypeInfo { public string type; }
 
