@@ -101,7 +101,8 @@ public class MEModHandler : MonoBehaviour
             if (SaveLoadHandler.Instance.data.modStates.TryGetValue(name, out var s)) enable = s;
         }
 
-        var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null, enabled = enable, author = "Author: Unknown" };
+        var entry = new ModEntry { name = name, localPath = path, type = ModType.Unity3D, instance = null, enabled = enable, author = "Author: Unknown", typeText = "Type: Unity3D" };
+
         loadedMods.Add(entry);
         if (addToUI) AddToModListUI(entry, enable);
     }
@@ -172,7 +173,8 @@ public class MEModHandler : MonoBehaviour
             catch { }
         }
 
-        var entry = new ModEntry { name = id, instance = null, localPath = mePath, extractedPath = extractedDir, type = ModType.MEDance, enabled = enable, author = author };
+        var entry = new ModEntry { name = id, instance = null, localPath = mePath, extractedPath = extractedDir, type = ModType.MEDance, enabled = enable, author = author, typeText = "Type: Dance" };
+
         loadedMods.Add(entry);
         AddToModListUI(entry, enable);
     }
@@ -183,7 +185,9 @@ public class MEModHandler : MonoBehaviour
         {
             bool state = GetSavedStateOrDefault(id, existing.activeSelf);
             existing.SetActive(state);
-            var entry = new ModEntry { name = id, instance = existing, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = state, author = "Author: Unknown" };
+            string a = ReadAuthorFromModInfo(extractedDir);
+            string t = ReadTypeFromModType(extractedDir, "Mod");
+            var entry = new ModEntry { name = id, instance = existing, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = state, author = a, typeText = t };
             loadedMods.Add(entry);
             AddToModListUI(entry, state);
             return;
@@ -260,8 +264,9 @@ public class MEModHandler : MonoBehaviour
         instance.name = "ME_" + id;
 
         GlobalInstances[id] = instance;
-
-        var entry2 = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = "Author: Unknown" };
+        string a2 = ReadAuthorFromModInfo(extractedDir);
+        string t2 = ReadTypeFromModType(extractedDir, "Mod");
+        var entry2 = new ModEntry { name = id, instance = instance, localPath = mePath, extractedPath = extractedDir, type = ModType.MEObject, enabled = initialState, author = a2, typeText = t2 };
         loadedMods.Add(entry2);
         AddToModListUI(entry2, initialState);
     }
@@ -368,6 +373,10 @@ public class MEModHandler : MonoBehaviour
         var author = FindChildByName<TMP_Text>(entry.transform, "Author");
         if (author != null) author.text = string.IsNullOrWhiteSpace(mod.author) ? "Author: Unknown" : mod.author;
 
+        var typeLbl = FindChildByName<TMP_Text>(entry.transform, "Type");
+        if (typeLbl != null) typeLbl.text = string.IsNullOrWhiteSpace(mod.typeText) ? "Type: Unknown" : mod.typeText;
+
+
         var preview = FindChildByName<UnityEngine.UI.RawImage>(entry.transform, "RawImage");
         LoadThumbToRawImage(preview, mod.name);
 
@@ -409,7 +418,8 @@ public class MEModHandler : MonoBehaviour
                 up.button = uploadBtn;
                 up.filePath = mod.localPath;
                 up.displayName = mod.name;
-                up.author = mod.author.StartsWith("Author: ") ? mod.author.Substring(8) : mod.author;
+                var a = mod.author.StartsWith("Author: ") ? mod.author.Substring(8) : mod.author;
+                up.author = string.Equals(a, "Unknown", StringComparison.OrdinalIgnoreCase) ? null : a;
                 up.isNSFW = false;
                 up.thumbnailPath = File.Exists(existingThumb) ? existingThumb : null;
                 up.progressBar = progress;
@@ -529,7 +539,10 @@ public class MEModHandler : MonoBehaviour
         return null;
     }
 
-    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; }
+    [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; public string typeText; }
+    [Serializable] class ModInfo { public string name; public string author; public string description; public string weblink; public string buildTarget; public string timestamp; }
+    [Serializable] class ModTypeInfo { public string type; }
+
     enum ModType { MEObject, Unity3D, MEDance }
     [Serializable] class RefPathMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
     [Serializable] class SceneLinkMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
@@ -543,6 +556,39 @@ public class MEModHandler : MonoBehaviour
         public float songLength;
         public string placeholderClipName;
     }
+
+    string ReadAuthorFromModInfo(string dir)
+    {
+        try
+        {
+            var p = Path.Combine(dir, "modinfo.json");
+            if (File.Exists(p))
+            {
+                var json = File.ReadAllText(p);
+                var info = JsonUtility.FromJson<ModInfo>(json);
+                if (info != null && !string.IsNullOrWhiteSpace(info.author)) return "Author: " + info.author.Trim();
+            }
+        }
+        catch { }
+        return "Author: Unknown";
+    }
+
+    string ReadTypeFromModType(string dir, string fallback)
+    {
+        try
+        {
+            var p = Path.Combine(dir, "mod_type.json");
+            if (File.Exists(p))
+            {
+                var json = File.ReadAllText(p);
+                var ti = JsonUtility.FromJson<ModTypeInfo>(json);
+                if (ti != null && !string.IsNullOrWhiteSpace(ti.type)) return "Type: " + ti.type.Trim();
+            }
+        }
+        catch { }
+        return "Type: " + fallback;
+    }
+
 
     string GetThumbPath(string modName)
     {

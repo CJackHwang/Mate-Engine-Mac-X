@@ -189,7 +189,17 @@ public class SteamWorkshopHandler : MonoBehaviour
 
         bool isDance = false;
         string detectedAuthor = author;
+        if (!string.IsNullOrEmpty(detectedAuthor))
+        {
+            var a = detectedAuthor.Trim();
+            if (string.Equals(a, "Unknown", StringComparison.OrdinalIgnoreCase) || string.Equals(a, "Author: Unknown", StringComparison.OrdinalIgnoreCase))
+                detectedAuthor = null;
+        }
+        string modTypeTag = null;
+        string descFromInfo = null;
         var ext = Path.GetExtension(filePath);
+
+
         if (ext.Equals(".me", StringComparison.OrdinalIgnoreCase))
         {
             try
@@ -197,18 +207,57 @@ public class SteamWorkshopHandler : MonoBehaviour
                 using (var fs = File.OpenRead(filePath))
                 using (var zip = new ZipArchive(fs, ZipArchiveMode.Read))
                 {
-                    isDance = zip.Entries.Any(e => string.Equals(e.FullName, "dance_meta.json", StringComparison.OrdinalIgnoreCase)) ||
-                              zip.Entries.Any(e => e.FullName.EndsWith(".bundle", StringComparison.OrdinalIgnoreCase));
+                    isDance = zip.Entries.Any(e => string.Equals(e.FullName, "dance_meta.json", StringComparison.OrdinalIgnoreCase));
+
+                    var typeEntry = zip.Entries.FirstOrDefault(e => string.Equals(e.FullName, "mod_type.json", StringComparison.OrdinalIgnoreCase));
+                    if (typeEntry != null)
+                    {
+                        using var zs = typeEntry.Open();
+                        using var sr = new StreamReader(zs);
+                        var json = sr.ReadToEnd();
+                        try
+                        {
+                            var obj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                            if (obj != null && obj.TryGetValue("type", out var t))
+                            {
+                                var v = (t ?? "").Trim().ToLowerInvariant();
+                                if (v == "mod" || v == "sound" || v == "particle" || v == "animation" || v == "misc")
+                                    modTypeTag = char.ToUpperInvariant(v[0]) + v.Substring(1);
+                            }
+                        }
+                        catch { }
+                    }
+
+                    var infoEntry = zip.Entries.FirstOrDefault(e => string.Equals(e.FullName, "modinfo.json", StringComparison.OrdinalIgnoreCase));
+                    if (infoEntry != null)
+                    {
+                        using var zsI = infoEntry.Open();
+                        using var srI = new StreamReader(zsI);
+                        var infoJson = srI.ReadToEnd();
+                        try
+                        {
+                            var info = JsonConvert.DeserializeObject<ModInfo>(infoJson);
+                            if (info != null)
+                            {
+                                if (string.IsNullOrWhiteSpace(detectedAuthor) && !string.IsNullOrWhiteSpace(info.author))
+                                    detectedAuthor = info.author;
+                                if (!string.IsNullOrWhiteSpace(info.description))
+                                    descFromInfo = info.description;
+                            }
+                        }
+                        catch { }
+                    }
+
                     var metaEntry = zip.Entries.FirstOrDefault(e => string.Equals(e.FullName, "dance_meta.json", StringComparison.OrdinalIgnoreCase));
                     if (metaEntry != null)
                     {
                         using var ms = new MemoryStream();
-                        using var zs = metaEntry.Open();
-                        zs.CopyTo(ms);
-                        var json = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+                        using var zs2 = metaEntry.Open();
+                        zs2.CopyTo(ms);
+                        var j = System.Text.Encoding.UTF8.GetString(ms.ToArray());
                         try
                         {
-                            var meta = JsonConvert.DeserializeObject<DanceMeta>(json);
+                            var meta = JsonConvert.DeserializeObject<DanceMeta>(j);
                             if (string.IsNullOrWhiteSpace(detectedAuthor))
                                 detectedAuthor = !string.IsNullOrWhiteSpace(meta.songAuthor) ? meta.songAuthor : meta.mmdAuthor;
                         }
@@ -218,17 +267,21 @@ public class SteamWorkshopHandler : MonoBehaviour
             }
             catch { }
         }
+
+
         else if (ext.Equals(".unity3d", StringComparison.OrdinalIgnoreCase))
         {
             isDance = true;
         }
 
         string title = string.IsNullOrWhiteSpace(displayName) ? Path.GetFileNameWithoutExtension(filePath) : displayName;
-        string desc = "Uploaded via MateEngine Mod Manager";
-        if (!string.IsNullOrWhiteSpace(detectedAuthor)) desc += "\nAuthor: " + detectedAuthor;
+        string desc = !string.IsNullOrWhiteSpace(descFromInfo) ? descFromInfo : "Uploaded via MateEngine Mod Manager";
+        if (!string.IsNullOrWhiteSpace(detectedAuthor) && !string.Equals(detectedAuthor.Trim(), "Unknown", StringComparison.OrdinalIgnoreCase))
+        desc += "\nAuthor: " + detectedAuthor.Trim();
 
         var tags = new List<string> { "Mods" };
-        if (isDance) tags.Add("Dances");
+        if (isDance) tags.Add("Dance");
+        else tags.Add(string.IsNullOrEmpty(modTypeTag) ? "Mod" : modTypeTag);
         if (isNSFW) tags.Add("NSFW");
 
         try
@@ -237,10 +290,12 @@ public class SteamWorkshopHandler : MonoBehaviour
             {
                 title,
                 author = detectedAuthor,
+                description = descFromInfo,
                 isDance,
                 isNSFW,
                 originalFile = Path.GetFileName(filePath)
             };
+
             File.WriteAllText(Path.Combine(contentDir, "metadata.json"), JsonConvert.SerializeObject(metaObj, Formatting.Indented));
         }
         catch { }
@@ -399,4 +454,11 @@ public class SteamWorkshopHandler : MonoBehaviour
         public float songLength;
         public string placeholderClipName;
     }
+
+    class ModInfo
+    {
+        public string author;
+        public string description;
+    }
+
 }

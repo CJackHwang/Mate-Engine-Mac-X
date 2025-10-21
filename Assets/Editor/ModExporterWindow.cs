@@ -8,7 +8,8 @@ using System.Collections.Generic;
 public class ModExporterWindow : EditorWindow
 {
     enum ExportMode { StandardMod, DanceMod }
-
+    enum StandardModType { Mod, Sound, Particle, Animation, Misc }
+    StandardModType standardModType = StandardModType.Mod;
     GameObject exportObject;
     string modName = "MyMod";
     string author = "";
@@ -73,6 +74,7 @@ public class ModExporterWindow : EditorWindow
         description = EditorGUILayout.TextArea(description, GUILayout.Height(60));
         weblink = EditorGUILayout.TextField("Weblink", weblink);
         buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("Build Target", buildTarget);
+        standardModType = (StandardModType)EditorGUILayout.EnumPopup("Mode Type", standardModType);
         GUI.enabled = exportObject != null && !string.IsNullOrEmpty(modName);
         if (GUILayout.Button("Export Mod", GUILayout.Height(40))) ExportMod();
         GUI.enabled = true;
@@ -131,7 +133,9 @@ public class ModExporterWindow : EditorWindow
         Directory.CreateDirectory(finalDir);
         string mePath = Path.Combine(finalDir, modName + ".me");
         if (File.Exists(mePath)) File.Delete(mePath);
+        File.WriteAllText(Path.Combine(buildDir, "mod_type.json"), "{\"type\":\"" + standardModType.ToString() + "\"}");
         ZipFile.CreateFromDirectory(buildDir, mePath);
+
 
         AssetDatabase.RemoveAssetBundleName(modName.ToLower() + ".bundle", true);
         AssetDatabase.DeleteAsset(prefabPath);
