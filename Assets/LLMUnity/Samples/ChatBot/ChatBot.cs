@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 using LLMUnity;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 
 namespace LLMUnitySamples
 {
     public class ChatBot : MonoBehaviour
     {
         [Header("Containers")]
-        public Transform chatContainer;          // ScrollRect Content: hier kommen die Chat-Bubbles rein
-        public Transform inputContainer;         // Fixer Bereich außerhalb des ScrollRects: hier liegt die Input-Bubble
+        public Transform chatContainer;         
+        public Transform inputContainer;        
 
         [Header("Colors & Font")]
         public Color playerColor = new Color32(81, 164, 81, 255);
@@ -24,7 +25,7 @@ namespace LLMUnitySamples
         public int bubbleWidth = 600;
         public float textPadding = 10f;
         public float bubbleSpacing = 10f;
-        public float bottomPadding = 10f;        // zusätzlicher Puffer ganz unten im Verlauf
+        public float bottomPadding = 10f;       
         public Sprite sprite;
         public Sprite roundedSprite16;
         public Sprite roundedSprite32;
@@ -40,22 +41,20 @@ namespace LLMUnitySamples
         public AudioSource streamAudioSource;
 
         [Header("Bubble Materials")]
-        public Material playerMaterial;          // Hintergrund / Image
-        public Material aiMaterial;              // Hintergrund / Image
-
+        public Material playerMaterial;         
+        public Material aiMaterial;             
         [Header("Text Materials")]
-        public Material playerTextMaterial;      // Legacy UI Text Material (z.B. Shader "UI/LegacyTextShaderFade2Way")
-        public Material aiTextMaterial;          // Legacy UI Text Material
-
+        public Material playerTextMaterial;      
+        public Material aiTextMaterial;        
         [Header("Scroll")]
-        public ScrollRect scrollRect;            // im Inspector zuweisen
-        public bool autoScrollOnNewMessage = true;       // auto-zu-Unten springen bei neuen Nachrichten …
-        public bool respectUserScroll = true;             // … aber nur, wenn User schon “am Ende” ist
+        public ScrollRect scrollRect;           
+        public bool autoScrollOnNewMessage = true;     
+        public bool respectUserScroll = true;            
 
         [Header("History")]
-        [Min(0)] public int maxMessages = 100;           // konfigurierbares Limit (Standard 100)
-        public bool trimOnlyWhenAtBottom = true;         // nur trimmen, wenn der User unten ist
-        public bool enableOffscreenTrim = false;         // alte Logik optional aktivierbar (Kompatibilität)
+        [Min(0)] public int maxMessages = 100;           
+        public bool trimOnlyWhenAtBottom = true;       
+        public bool enableOffscreenTrim = false;        
 
         [Header("Font Colors (per side)")]
         public Color playerFontColor = Color.white;
@@ -63,7 +62,7 @@ namespace LLMUnitySamples
 
         [Header("Rounded Sprite Radius")]
         [Range(0, 64)]
-        public int cornerRadius = 16; // wählt 9-slice Sprite
+        public int cornerRadius = 16; 
         private bool layoutDirty;
 
         private InputBubble inputBubble;
@@ -71,15 +70,18 @@ namespace LLMUnitySamples
         private bool blockInput = true;
         private BubbleUI playerUI, aiUI;
         private bool warmUpDone = false;
-
-        // Kompatibilitätsfeld: wird nur genutzt, wenn enableOffscreenTrim == true
         private int lastBubbleOutsideFOV = -1;
+
+        private Animator avatarAnimator;
+        private Animator lastAvatarAnimator;
+        private static readonly int isTalkingHash = Animator.StringToHash("isTalking");
+
 
         void Start()
         {
-            if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            avatarAnimator = GetComponent<Animator>();
 
-            // Rounded Sprite anhand Radius wählen (wie bisher)
+            if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             if (cornerRadius <= 16) sprite = roundedSprite16;
             else if (cornerRadius <= 32) sprite = roundedSprite32;
             else sprite = roundedSprite64;
@@ -114,10 +116,8 @@ namespace LLMUnitySamples
                 bubbleHeight = -1
             };
 
-            // Fallback: falls inputContainer im Inspector noch nicht gesetzt ist, nutze chatContainer (altes Verhalten)
             Transform inputParent = inputContainer != null ? inputContainer : chatContainer;
 
-            // WICHTIG: Input-Bubble jetzt im separaten Container anlegen
             inputBubble = new InputBubble(inputParent, playerUI, "InputBubble", "Loading...", 4);
             inputBubble.AddSubmitListener(onInputFieldSubmit);
             inputBubble.AddValueChangedListener(onValueChanged);
@@ -125,7 +125,43 @@ namespace LLMUnitySamples
 
             ShowLoadedMessages();
             _ = llmCharacter.Warmup(WarmUpCallback);
+            FindAvatarSmart();
         }
+
+        void FindAvatarSmart()
+        {
+            Animator found = null;
+            var loader = FindFirstObjectByType<VRMLoader>();
+            if (loader != null)
+            {
+                var current = loader.GetCurrentModel();
+                if (current != null) found = current.GetComponentsInChildren<Animator>(true).FirstOrDefault(a => a && a.gameObject.activeInHierarchy);
+            }
+            if (found == null)
+            {
+                var modelParent = GameObject.Find("Model");
+                if (modelParent != null) found = modelParent.GetComponentsInChildren<Animator>(true).FirstOrDefault(a => a && a.gameObject.activeInHierarchy);
+            }
+            if (found == null)
+            {
+                var all = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                found = all.FirstOrDefault(a => a && a.isActiveAndEnabled);
+            }
+            if (found != avatarAnimator)
+            {
+                avatarAnimator = found;
+                lastAvatarAnimator = avatarAnimator;
+            }
+        }
+
+        void RefreshAvatarIfChanged()
+        {
+            if (avatarAnimator == null || lastAvatarAnimator == null || avatarAnimator != lastAvatarAnimator)
+            {
+                FindAvatarSmart();
+            }
+        }
+
 
         private void MarkLayoutDirty()
         {
@@ -137,8 +173,9 @@ namespace LLMUnitySamples
             if (streamAudioSource != null && streamAudioSource.isPlaying)
             {
                 streamAudioSource.Stop();
-                streamAudioSource.volume = 1f; // reset
+                streamAudioSource.volume = 1f; 
             }
+            if (avatarAnimator != null) avatarAnimator.SetBool(isTalkingHash, false);
         }
 
         Bubble AddBubble(string message, bool isPlayerMessage)
@@ -147,17 +184,11 @@ namespace LLMUnitySamples
             chatBubbles.Add(bubble);
             bubble.OnResize(MarkLayoutDirty);
 
-
-            // --- Material für Bubble-Hintergrund (Image) setzen ---
             var image = bubble.GetRectTransform().GetComponentInChildren<Image>(true);
             if (image != null)
             {
                 image.material = isPlayerMessage ? playerMaterial : aiMaterial;
             }
-
-            // --- Material für Legacy UI Text setzen ---
-            // Hinweis: Das Text-Material überschreibt das vom Font vorgegebene Material.
-            // Erwartet einen UI-Text-kompatiblen Shader (z.B. die von uns gebauten Legacy-Text-Shader).
             var text = bubble.GetRectTransform().GetComponentInChildren<Text>(true);
             if (text != null)
             {
@@ -166,16 +197,13 @@ namespace LLMUnitySamples
                 {
                     text.material = m;
                 }
-                // Optional: Font/Farbe bleiben weiterhin aus playerUI/aiUI erhalten.
             }
 
-            // Nur auto-scrollen, wenn erlaubt und (falls gewünscht) der Nutzer aktuell am Ende ist
             if (autoScrollOnNewMessage && (!respectUserScroll || IsAtBottom()))
             {
                 StartCoroutine(ScrollToBottomNextFrame());
             }
 
-            // Neues, konfigurierbares Limit anwenden
             TrimHistoryIfNeeded();
 
             return bubble;
@@ -187,7 +215,6 @@ namespace LLMUnitySamples
 
             if (chatBubbles.Count > maxMessages)
             {
-                // Nur am Ende trimmen, wenn gewünscht
                 if (!trimOnlyWhenAtBottom || IsAtBottom())
                 {
                     int removeCount = chatBubbles.Count - maxMessages;
@@ -196,8 +223,6 @@ namespace LLMUnitySamples
                         chatBubbles[i].Destroy();
                     }
                     chatBubbles.RemoveRange(0, removeCount);
-
-                    // Nach dem Trimmen neu layouten
                     UpdateBubblePositions();
                 }
             }
@@ -205,14 +230,12 @@ namespace LLMUnitySamples
 
         bool IsAtBottom(float tolerance = 0.01f)
         {
-            if (scrollRect == null) return true; // kein ScrollRect: verhalte dich wie "am Ende"
-            // 0 = unten, 1 = oben
+            if (scrollRect == null) return true; 
             return scrollRect.verticalNormalizedPosition <= tolerance;
         }
 
         void ShowLoadedMessages()
         {
-            // Lade nur die letzten maxMessages (falls viele vorhanden sind)
             int start = 1;
             int total = llmCharacter.chat.Count;
             if (maxMessages > 0)
@@ -222,8 +245,6 @@ namespace LLMUnitySamples
             {
                 AddBubble(llmCharacter.chat[i].content, i % 2 == 1);
             }
-
-            // Nach dem Laden nach unten scrollen
             StartCoroutine(ScrollToBottomNextFrame());
         }
 
@@ -242,15 +263,17 @@ namespace LLMUnitySamples
             AddBubble(message, true);
             Bubble aiBubble = AddBubble("...", false);
 
-            // Stream-Audio starten (optional)
             if (streamAudioSource != null)
                 streamAudioSource.Play();
+            if (avatarAnimator != null) avatarAnimator.SetBool(isTalkingHash, true);
 
             Task chatTask = llmCharacter.Chat(
                 message,
                 (partial) => { aiBubble.SetText(partial); layoutDirty = true; },
                 () =>
                 {
+                    if (avatarAnimator != null) avatarAnimator.SetBool(isTalkingHash, false);
+
                     aiBubble.SetText(aiBubble.GetText());
                     layoutDirty = true;
 
@@ -260,9 +283,6 @@ namespace LLMUnitySamples
                     AllowInput();
                 }
             );
-
-
-
             inputBubble.SetText("");
         }
 
@@ -277,7 +297,7 @@ namespace LLMUnitySamples
             }
 
             streamAudioSource.Stop();
-            streamAudioSource.volume = startVolume; // reset
+            streamAudioSource.volume = startVolume; 
         }
 
         public void WarmUpCallback()
@@ -309,7 +329,6 @@ namespace LLMUnitySamples
 
         void onValueChanged(string newText)
         {
-            // Enter bereinigen, wenn leer
             if (Input.GetKey(KeyCode.Return))
             {
                 if (inputBubble.GetText().Trim() == "")
@@ -319,18 +338,13 @@ namespace LLMUnitySamples
 
         public void UpdateBubblePositions()
         {
-            // Neues Layout: Bubbles stehen im scrollbaren chatContainer,
-            // Input-Bubble ist separat – daher kein Offset mehr von der Input-Größe nötig.
             float y = bottomPadding;
-
-            // Von unten nach oben aufbauen (wie gehabt, nur ohne Input-Offset)
             for (int i = chatBubbles.Count - 1; i >= 0; i--)
             {
                 Bubble bubble = chatBubbles[i];
                 RectTransform childRect = bubble.GetRectTransform();
                 childRect.anchoredPosition = new Vector2(childRect.anchoredPosition.x, y);
 
-                // Offscreen-Trim-Unterstützung nur, wenn explizit aktiviert (Kompatibilität)
                 if (enableOffscreenTrim)
                 {
                     float containerHeight = chatContainer.GetComponent<RectTransform>().rect.height;
@@ -342,23 +356,20 @@ namespace LLMUnitySamples
 
                 y += bubble.GetSize().y + bubbleSpacing;
             }
-
-            // Content-Größe aktualisieren (wichtig für ScrollRect)
             var contentRect = chatContainer.GetComponent<RectTransform>();
-            // Wir erhöhen nur die Höhe nach Bedarf; Breite bleibt Layout-bedingt
             contentRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, y + bottomPadding);
         }
 
         void Update()
         {
-            // Fokus-Handling wie gehabt
+            RefreshAvatarIfChanged();
+
             if (!inputBubble.inputFocused() && warmUpDone)
             {
                 inputBubble.ActivateInputField();
                 StartCoroutine(BlockInteraction());
             }
 
-            // Optional: alte Offscreen-Trim-Logik
             if (enableOffscreenTrim && lastBubbleOutsideFOV != -1)
             {
                 for (int i = 0; i <= lastBubbleOutsideFOV; i++)
@@ -367,8 +378,6 @@ namespace LLMUnitySamples
                 }
                 chatBubbles.RemoveRange(0, lastBubbleOutsideFOV + 1);
                 lastBubbleOutsideFOV = -1;
-
-                // Nach Trim neu layouten
                 UpdateBubblePositions();
             }
         }
@@ -384,13 +393,12 @@ namespace LLMUnitySamples
             yield return null;
             Canvas.ForceUpdateCanvases();
             if (scrollRect != null)
-                scrollRect.verticalNormalizedPosition = 0f; // 0 = unten
+                scrollRect.verticalNormalizedPosition = 0f; 
         }
 
         bool onValidateWarning = true;
         void OnValidate()
         {
-            // Sprite für Bubbles konsistent halten, falls CornerRadius geändert wurde
             if (cornerRadius <= 16) sprite = roundedSprite16;
             else if (cornerRadius <= 32) sprite = roundedSprite32;
             else sprite = roundedSprite64;
@@ -407,8 +415,7 @@ namespace LLMUnitySamples
             if (!layoutDirty) return;
             layoutDirty = false;
 
-            UpdateBubblePositions(); // jetzt 1× pro Frame
-                                     // Bei Bedarf unten bleiben, wenn User bereits am Ende war:
+            UpdateBubblePositions();
             if (autoScrollOnNewMessage && (!respectUserScroll || IsAtBottom()))
             {
                 if (scrollRect != null) scrollRect.verticalNormalizedPosition = 0f;
@@ -416,6 +423,4 @@ namespace LLMUnitySamples
         }
 
     }
-
-
 }

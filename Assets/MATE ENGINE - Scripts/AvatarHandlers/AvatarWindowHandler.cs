@@ -219,24 +219,63 @@ public class AvatarWindowHandler : MonoBehaviour
         SetTopMost(true);
     }
 
-        bool IsStillNearSnappedWindow()
+    // Hybrid version of 2.6.0 and 2.0.0 to fix edge cases
+    bool IsStillNearSnappedWindow()
+    {
+        foreach (var win in cachedWindows)
         {
-            foreach (var win in cachedWindows)
+            if (win.hwnd != snappedHWND) continue;
+
+            var topBar = new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5);
+
+            if (controller.isDragging && animator.GetBool("isWindowSit"))
             {
-                if (win.hwnd != snappedHWND) continue;
+                Kirurobo.WinApi.POINT cp;
+                if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
 
-                if (controller.isDragging && animator.GetBool("isWindowSit"))
-                {
-                    Kirurobo.WinApi.POINT cp;
-                    if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
-                    int dy = Mathf.Abs(cp.y - _snapCursorY);
-                    return dy <= Mathf.RoundToInt(snapZoneSize.y);
-                }
+                int vBand = Mathf.Max(4, Mathf.RoundToInt(snapZoneSize.y));
+                if (Mathf.Abs(cp.y - _snapCursorY) > vBand) return false;
 
-                return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+                return pinkZoneDesktopRect.Overlaps(topBar);
             }
-            return false;
+
+            return pinkZoneDesktopRect.Overlaps(topBar);
         }
+        return false;
+    }
+
+
+    /*
+    // Before 2.6.0
+    bool IsStillNearSnappedWindow()
+    {
+        foreach (var win in cachedWindows)
+            if (win.hwnd == snappedHWND)
+                return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+        return false;
+    }
+
+
+    // Original version before refinement (2.6.0)
+    bool IsStillNearSnappedWindow()
+    {
+        foreach (var win in cachedWindows)
+        {
+            if (win.hwnd != snappedHWND) continue;
+
+            if (controller.isDragging && animator.GetBool("isWindowSit"))
+            {
+                Kirurobo.WinApi.POINT cp;
+                if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
+                int dy = Mathf.Abs(cp.y - _snapCursorY);
+                return dy <= Mathf.RoundToInt(snapZoneSize.y);
+            }
+
+            return pinkZoneDesktopRect.Overlaps(new Rect(win.rect.Left, win.rect.Top, win.rect.Right - win.rect.Left, 5));
+        }
+        return false;
+    }
+    */
 
     [DllImport("user32.dll")]
     static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);

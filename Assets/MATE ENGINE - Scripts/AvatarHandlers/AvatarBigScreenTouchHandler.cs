@@ -14,14 +14,17 @@ public class AvatarBigScreenTouchHandler : MonoBehaviour
     private VRM.VRMSpringBoneColliderGroup mouseSpringColliderGroupVRM0;
     private UniVRM10.VRM10SpringBoneColliderGroup mouseSpringColliderGroupVRM1;
     private UniVRM10.VRM10SpringBoneCollider mouseSpringColliderVRM1;
+    private static readonly int HairStrokeHash = Animator.StringToHash("HairStroke");
+    private bool hasHairStrokeParam;
+
 
     void Awake()
     {
         bigScreenHandler = GetComponent<AvatarBigScreenHandler>();
         avatarAnimator = GetComponent<Animator>();
         mainCamera = Camera.main;
+        hasHairStrokeParam = avatarAnimator != null && AnimatorHasBool(avatarAnimator, "HairStroke");
     }
-
     void Update()
     {
         if (bigScreenHandler == null || avatarAnimator == null || mainCamera == null)
@@ -32,17 +35,35 @@ public class AvatarBigScreenTouchHandler : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 HandleSpringBoneTouch();
+                if (hasHairStrokeParam) avatarAnimator.SetBool(HairStrokeHash, true);
             }
             else
             {
                 CleanupMouseCollider();
+                if (hasHairStrokeParam) avatarAnimator.SetBool(HairStrokeHash, false);
             }
         }
         else
         {
             CleanupMouseCollider();
+            if (hasHairStrokeParam) avatarAnimator.SetBool(HairStrokeHash, false);
         }
     }
+
+    bool AnimatorHasBool(Animator anim, string name)
+    {
+        foreach (var p in anim.parameters)
+            if (p.type == AnimatorControllerParameterType.Bool && p.name == name)
+                return true;
+        return false;
+    }
+
+    void OnDisable()
+    {
+        if (avatarAnimator != null && hasHairStrokeParam) avatarAnimator.SetBool(HairStrokeHash, false);
+        CleanupMouseCollider();
+    }
+
 
     bool IsBigScreenActive()
     {

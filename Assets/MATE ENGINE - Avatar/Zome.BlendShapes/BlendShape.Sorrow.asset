@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37562b39ff933b245ac2f35d87edbcd6, type: 3}
   m_Name: BlendShape.Sorrow
   m_EditorClassIdentifier: 
-  m_prefab: {fileID: 0}
+  m_prefab: {fileID: 2411184303471137227, guid: 6149bfe50e66c274092c482d55168d75, type: 3}
   BlendShapeName: Sorrow
   Preset: 10
   Values:
   - RelativePath: Face
-    Index: 28
+    Index: 29
     Weight: 100
   MaterialValues: []
   IsBinary: 0
