@@ -171,6 +171,9 @@ public class SaveLoadHandler : MonoBehaviour
 
         public int settingsVersion = 0;
         public bool alarmsEnabled = true;
+
+        public string selectedParticleTheme = "Standard";
+
         //ALARM
         [Serializable]
         public class AlarmEntry
@@ -190,6 +193,7 @@ public class SaveLoadHandler : MonoBehaviour
     //ALARM
     void MigrateAfterLoad()
     {
+        if (string.IsNullOrEmpty(data.selectedParticleTheme)) data.selectedParticleTheme = "Standard";
         if (data == null) data = new SettingsData();
         if (data.alarms == null) data.alarms = new List<SettingsData.AlarmEntry>();
         if (data.settingsVersion < 1)
@@ -241,6 +245,8 @@ public class SaveLoadHandler : MonoBehaviour
             {
                 handler.featureEnabled = data.enableParticles;
                 handler.enabled = data.enableParticles;
+                handler.selectedTheme = data.selectedParticleTheme;
+                try { handler.SetTheme(data.selectedParticleTheme); } catch { }
             }
 
             foreach (var holder in avatar.GetComponentsInChildren<HandHolder>(true))

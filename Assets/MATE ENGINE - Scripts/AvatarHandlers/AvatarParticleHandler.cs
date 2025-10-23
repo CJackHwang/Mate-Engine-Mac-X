@@ -6,6 +6,7 @@ public class AvatarParticleHandler : MonoBehaviour
     [System.Serializable]
     public class ParticleRule
     {
+        public string themeTag = "Dance Trail Blue";
         public List<string> stateOrParameterNames = new();
         public bool useParameter = false;
         public HumanBodyBones targetBone;
@@ -16,8 +17,12 @@ public class AvatarParticleHandler : MonoBehaviour
     public List<ParticleRule> rules = new();
     public bool featureEnabled = true;
 
+    [Header("Theme")]
+    public string selectedTheme = "Dance Trail Blue";
+
     private struct RuleCache
     {
+        public string themeTag;
         public Transform bone;
         public GameObject[] objects;
         public int[] paramIndices;
@@ -31,6 +36,8 @@ public class AvatarParticleHandler : MonoBehaviour
     void Start()
     {
         animator ??= GetComponent<Animator>();
+        if (!animator) return;
+
         animParams = animator.parameters;
         var tmp = new List<RuleCache>(rules.Count);
 
@@ -61,6 +68,7 @@ public class AvatarParticleHandler : MonoBehaviour
 
             tmp.Add(new RuleCache
             {
+                themeTag = rule.themeTag,
                 bone = bone,
                 objects = objs.ToArray(),
                 paramIndices = indices.ToArray(),
@@ -75,32 +83,38 @@ public class AvatarParticleHandler : MonoBehaviour
     void Update()
     {
         if (!featureEnabled || !animator) return;
+
         var state = animator.GetCurrentAnimatorStateInfo(0);
 
         for (int i = 0; i < cache.Length; i++)
         {
             var r = cache[i];
+
+            bool themeMatch = r.themeTag == selectedTheme;
             bool active = false;
 
-            if (r.useParameter && r.paramIndices != null && r.paramIndices.Length > 0)
+            if (themeMatch)
             {
-                foreach (int idx in r.paramIndices)
+                if (r.useParameter && r.paramIndices != null && r.paramIndices.Length > 0)
                 {
-                    if (idx >= 0 && animator.GetBool(animParams[idx].name))
+                    foreach (int idx in r.paramIndices)
                     {
-                        active = true;
-                        break;
+                        if (idx >= 0 && animator.GetBool(animParams[idx].name))
+                        {
+                            active = true;
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                foreach (var s in r.stateNameList)
+                else
                 {
-                    if (state.IsName(s))
+                    foreach (var s in r.stateNameList)
                     {
-                        active = true;
-                        break;
+                        if (state.IsName(s))
+                        {
+                            active = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -116,5 +130,10 @@ public class AvatarParticleHandler : MonoBehaviour
                     o.transform.SetPositionAndRotation(bone.position, bone.rotation);
             }
         }
+    }
+
+    public void SetTheme(string tag)
+    {
+        selectedTheme = tag;
     }
 }
