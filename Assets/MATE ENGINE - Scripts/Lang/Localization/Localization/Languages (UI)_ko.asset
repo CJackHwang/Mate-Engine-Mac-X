@@ -1033,6 +1033,54 @@ MonoBehaviour:
       days, select the desired days.
     m_Metadata:
       m_Items: []
+  - m_Id: 71751708213026816
+    m_Localized: Add New Alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751796721229824
+    m_Localized: Alarm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751947594539008
+    m_Localized: MON.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751949909794816
+    m_Localized: TUE.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751951579127808
+    m_Localized: WED.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751953068105728
+    m_Localized: THU.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751954464808960
+    m_Localized: FRI.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751955819569152
+    m_Localized: SAT.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751956985585664
+    m_Localized: SUN.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752554812317696
+    m_Localized: Windows Sitting Y Offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752669165821952
+    m_Localized: ERROR!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752800506257408
+    m_Localized: MEM. Optimizations
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

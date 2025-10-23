@@ -857,46 +857,84 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71470101493227520
-    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
-      Friday. You can select additional days or keep it set to only Friday."
+    m_Localized: "\u661F\u671F\u4E94\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u4E94\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470100155244544
-    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
-      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Localized: "\u661F\u671F\u56DB\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u56DB\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470098959867904
-    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
-      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Localized: "\u661F\u671F\u4E09\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u4E09\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470097592524800
-    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
-      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Localized: "\u661F\u671F\u4E8C\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u4E8C\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470095960940544
-    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
-      Monday. You can select additional days or keep it set to only Monday."
+    m_Localized: "\u661F\u671F\u4E00\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u4E00\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470109877641216
-    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
-      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Localized: "\u661F\u671F\u65E5\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u65E5\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470107461722112
-    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
-      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Localized: "\u661F\u671F\u516D\u3002\u9078\u64C7\u5F8C\uFF0C\u9B27\u9418\u6703\u5728\u6BCF\u500B\u661F\u671F\u516D\u97FF\u9234\u3002\u4F60\u4E5F\u53EF\u4EE5\u540C\u6642\u9078\u64C7\u5176\u5B83\u65E5\u671F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71470682064592896
-    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
-      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
-      can also select the days when the alarm should ring. If no days are selected,
-      the alarm will ring every day at the set time. To have it ring only on specific
-      days, select the desired days.
+    m_Localized: "\u9B27\u9418\u529F\u80FD\u3002 \u5DE6\u5074\u8A2D\u5B9A\u5C0F\u6642\uFF08\u540C\u6642\u986F\u793A12\u5C0F\u6642\u5236\u548C24\u5C0F\u6642\u5236\uFF09\uFF0C\u53F3\u5074\u8A2D\u5B9A\u5206\u9418\u3002
+      \u4F60\u53EF\u4EE5\u9078\u64C7\u9700\u8981\u9B27\u9418\u97FF\u9234\u7684\u65E5\u671F\uFF0C\u5982\u679C\u6C92\u6709\u9078\u64C7\u4EFB\u4F55\u65E5\u671F\uFF0C\u9B27\u9418\u6BCF\u5929\u90FD\u6703\u5728\u8A2D\u5B9A\u6642\u9593\u97FF\u9234\u3002"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751708213026816
+    m_Localized: "\u6DFB\u52A0\u65B0\u95F9\u9418"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751796721229824
+    m_Localized: "\u95F9\u9418"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751947594539008
+    m_Localized: "\u4E00"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751949909794816
+    m_Localized: "\u4E8C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751951579127808
+    m_Localized: "\u4E09"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751953068105728
+    m_Localized: "\u56DB"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751954464808960
+    m_Localized: "\u4E94"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751955819569152
+    m_Localized: "\u516D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751956985585664
+    m_Localized: "\u65E5"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752554812317696
+    m_Localized: "\u5750\u4E0B\u6642\u7684\u9AD8\u5EA6\u504F\u79FB"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752669165821952
+    m_Localized: "\u51FA\u932F\u4E86\uFF01"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752800506257408
+    m_Localized: "\u8A18\u61B6\u9AD4\u512A\u5316"
     m_Metadata:
       m_Items: []
   references:

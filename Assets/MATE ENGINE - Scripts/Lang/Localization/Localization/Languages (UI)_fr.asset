@@ -960,46 +960,96 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71470101493227520
-    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
-      Friday. You can select additional days or keep it set to only Friday."
+    m_Localized: "vendredi \u2013 appuyi sur le bouton pour activer l'alarme tout
+      les vendredi. tu peut choisire d'autre jours en plus ou laisser que le vendredi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470100155244544
-    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
-      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Localized: "jeudi\u2013 appuyi sur le bouton pour activer l'alarme tout les
+      jeudi. tu peut choisire d'autre jours en plus ou laisser que le jeudi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470098959867904
-    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
-      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Localized: "mercredi\u2013 appuyi sur le bouton pour activer l'alarme tout
+      les mercredi. tu peut choisire d'autre jours en plus ou laisser que le mercredi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470097592524800
-    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
-      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Localized: "mardi \u2013 appuyi sur le bouton pour activer l'alarme tout les
+      Mardi. tu peut choisire d'autre jours en plus ou laisser que le mardi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470095960940544
-    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
-      Monday. You can select additional days or keep it set to only Monday."
+    m_Localized: "lundi \u2013 appuyi sur le bouton pour activer l'alarme tout les
+      lundi. tu peut choisire d'autre jours en plus ou laisser que le lundi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470109877641216
-    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
-      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Localized: "dimanche\u2013 appuyi sur le bouton pour activer l'alarme tout
+      les dimanche. tu peut choisire d'autre jours en plus ou laisser que le dimanche."
     m_Metadata:
       m_Items: []
   - m_Id: 71470107461722112
-    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
-      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Localized: "samedi\u2013 appuyi sur le bouton pour activer l'alarme tout les
+      samedi. tu peut choisire d'autre jours en plus ou laisser que le samedi."
     m_Metadata:
       m_Items: []
   - m_Id: 71470682064592896
-    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
-      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
-      can also select the days when the alarm should ring. If no days are selected,
-      the alarm will ring every day at the set time. To have it ring only on specific
-      days, select the desired days.
+    m_Localized: "Voici la fonction d\u2019alarme. \xC0 gauche, vous pouvez r\xE9gler
+      l\u2019heure (affich\xE9e \xE0 la fois au format AM/PM et au format 24 heures).
+      \xC0 droite, vous pouvez r\xE9gler les minutes. Vous pouvez \xE9galement s\xE9lectionner
+      les jours o\xF9 l\u2019alarme doit sonner. Si aucun jour n\u2019est s\xE9lectionn\xE9,
+      l\u2019alarme sonnera tous les jours \xE0 l\u2019heure d\xE9finie. Pour qu\u2019elle
+      ne sonne que certains jours, s\xE9lectionnez les jours souhait\xE9s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751708213026816
+    m_Localized: ajoutez une nouvelle Alarme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751796721229824
+    m_Localized: Alarme
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751947594539008
+    m_Localized: lundi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751949909794816
+    m_Localized: mardi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751951579127808
+    m_Localized: Mercredi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751953068105728
+    m_Localized: jeudi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751954464808960
+    m_Localized: vendredi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751955819569152
+    m_Localized: samedi.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71751956985585664
+    m_Localized: dimanche.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752554812317696
+    m_Localized: "D\xE9calage Y de la fen\xEAtre ou Param\xE8tre de d\xE9calage vertical
+      de la fen\xEAtre."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752669165821952
+    m_Localized: ERREUR!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71752800506257408
+    m_Localized: "optimisation de la m\xE9moire"
     m_Metadata:
       m_Items: []
   references:

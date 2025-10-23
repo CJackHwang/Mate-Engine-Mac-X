@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds||{58961B49-13E0-48C0-9258-13CBC4D40279}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\blendshapemanager\\blendshapemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\blendshapemanager\\blendshapemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|c:\\users\\johns\\documents\\github\\mate-engine\\assets\\mate engine - scripts\\settings\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C73E9B1A-BF42-9E6B-C958-6D6CBB9AE909}|Assembly-CSharp.csproj|solutionrelative:assets\\mate engine - scripts\\settings\\saveloadhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -27,6 +35,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "7308e7b5.dds",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Test Station\\Textures\\7308e7b5.dds",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2025-10-23T20:50:02.998Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BlendshapeManager.cs",
+              "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\BlendshapeManager\\BlendshapeManager.cs",
+              "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\BlendshapeManager\\BlendshapeManager.cs",
+              "ToolTip": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\BlendshapeManager\\BlendshapeManager.cs",
+              "RelativeToolTip": "Assets\\MATE ENGINE - Scripts\\BlendshapeManager\\BlendshapeManager.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAnwEAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T18:52:16.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "SaveLoadHandler.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SaveLoadHandler.cs",
@@ -39,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "SettingsHandlerToggles.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\Settings\\SettingsMenu\\SettingsHandlerToggles.cs",
@@ -51,7 +84,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "SteamWorkshopAutoLoader.cs",
               "DocumentMoniker": "C:\\Users\\Johns\\Documents\\GitHub\\Mate-Engine\\Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopAutoLoader.cs",
               "RelativeDocumentMoniker": "Assets\\MATE ENGINE - Scripts\\APIs\\SteamWorkshopAutoLoader.cs",
