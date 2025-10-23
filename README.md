@@ -9,6 +9,7 @@ Steam users get exclusive additional content:
 * Flower Halo
 * Sakura Halo
 * Retro Halo
+* ERROR! NSO Like Face Overlay!
 
 **Extra Features**
 
@@ -98,18 +99,18 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Head Tracking            | ✅           | ✅        | ✅         |
 | Spine Tracking           | ❌           | ❌        | ✅         |
 | Eye Tracking             | ❌           | ❌        | ✅         |
-| Hand Movement            | ❌           | ❌        | ✅         |
+| Hand Movement            | ✅           | ❌        | ✅         |
 | Alarm / Timer            | ✅           | ✅        | ✅         |
 | ScreenSaver              | ❌           | ❌        | ✅         |
 | Touch Regions            | ❌           | ❌        | ✅         |
 | Avatar SFX               | ❌           | ❌        | ✅         |
-| Particle Effects         | ❌           | ❌        | ✅         |
+| Particle Effects         | ✅           | ❌        | ✅         |
 | FPS Control              | ❌           | ✅        | ✅         |
 | Always On Top Toggle     | ❌           | ✅        | ✅         |
 | Chibi Mode               | ❌           | ❌        | ✅         |
 | Post Processing Bloom    | ❌           | ❌        | ✅         |
 | Post Processing AO       | ❌           | ❌        | ✅         |
-| MSAA x8 Support          | ❌           | ❌        | ✅         |
+| MSAA x8 Support          | ✅           | ❌        | ✅         |
 | Big Screen Mode          | ❌           | ❌        | ✅         |
 | System Icon              | ✅           | ❌        | ✅         |
 | System Icon Settings     | ❌           | ❌        | ✅         |
@@ -117,20 +118,31 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Steam Workshop           | ❌           | ✅        | ✅         |
 | Built-In SDK             | ❌           | ❌        | ✅         |
 | AI Chat                  | ❌           | ✅        | ✅         |
-| Advanced AI Functions    | ❌           | ✅        | ❌         |
-| AI API Functions         | ❌           | ✅        | ❌         |
+| Advanced AI Functions    | ❌           | ✅        | ✅         |
+| Markdown Support on AI    | ❌           | ❌        | ✅         |
+| AI API Functions         | ❌           | ✅        | ✅         |
 | Free To Use              | ✅           | ✅        | ✅         |
 | Multi Language Support   | ❌           | ✅        | ✅         |
 | AI Voices                | ❌           | ✅        | ❌         |
 | Animation Modding        | ❌           | ❌        | ✅         |
 | CPU Usage                | Moderate     | Very Good | Very Good  |
 | GPU Usage                | Moderate     | Good      | Good       |
-| RAM Usage                | Very Good    | Very Bad  | Good       |
+| RAM Usage                | Good    | Very Bad  | Very Good       |
 | Anti Cheat Safe          | ❌           | ❌        | ✅         |
 | Sleep                    | ❌           | ❌        | ✅         |
 | Compatible with Games    | ❌           | ❌        | ✅         |
 | Start with PC    | ❌           | ❌        | ✅         |
 | Blendshape Edit Support    | ❌           | ❌        | ✅         |
+| Cosmetic Items    | ❌           | ❌        | ✅         |
+| MMD Music Animation Player    | ❌           | ❌        | ✅         |
+| Expression based on Movement    | ✅           | ❌        | ✅         |
+| Discord Rich Presence    | ❌           | ❌        | ✅         |
+| Inverse Kinematics    | ❌           | ❌        | ✅         |
+| Masculine Animations    | ❌           | ❌        | ✅         |
+| Menu Customizations    | ❌           | ❌        | ✅         |
+| Debugging Menu    | ❌           | ❌        | ✅         |
+| Up to 9 Avatars at the Same Time    | ❌           | ❌        | ✅         |
+| Sync Dances between multiple Avatars   | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
@@ -163,8 +175,8 @@ Mate Engine offers smoother animation transitions than Desktop Mate, avoiding th
 ---
 
 ## Performance
+<img width="1025" height="945" alt="image" src="https://github.com/user-attachments/assets/e09368b2-21e2-49e5-a965-774f8007c895" />
 
-![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
 
 **Mate Engine** is lightweight and efficient. RAM usage depends on the avatar’s texture size. For example, the high-quality "Alice" model uses ~190MB of texture memory, leading to ~200MB total RAM usage. Using lighter models will reduce this further.
 
