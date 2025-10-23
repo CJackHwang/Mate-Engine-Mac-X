@@ -118,7 +118,8 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Steam Workshop           | ❌           | ✅        | ✅         |
 | Built-In SDK             | ❌           | ❌        | ✅         |
 | AI Chat                  | ❌           | ✅        | ✅         |
-| Advanced AI Functions    | ❌           | ✅        | ❌         |
+| Advanced AI Functions    | ❌           | ✅        | ✅         |
+| Markdown Support on AI    | ❌           | ❌        | ✅         |
 | AI API Functions         | ❌           | ✅        | ❌         |
 | Free To Use              | ✅           | ✅        | ✅         |
 | Multi Language Support   | ❌           | ✅        | ✅         |
@@ -132,6 +133,16 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Compatible with Games    | ❌           | ❌        | ✅         |
 | Start with PC    | ❌           | ❌        | ✅         |
 | Blendshape Edit Support    | ❌           | ❌        | ✅         |
+| Cosmetic Items    | ❌           | ❌        | ✅         |
+| MMD Music Animation Player    | ❌           | ❌        | ✅         |
+| Expression based on Movement    | ✅           | ❌        | ✅         |
+| Discord Rich Presence    | ❌           | ❌        | ✅         |
+| Inverse Kinematics    | ❌           | ❌        | ✅         |
+| Masculine Animations    | ❌           | ❌        | ✅         |
+| Menu Customizations    | ❌           | ❌        | ✅         |
+| Debugging Menu    | ❌           | ❌        | ✅         |
+| Up to 9 Avatars at the Same Time    | ❌           | ❌        | ✅         |
+| Sync Dances between multiple Avatars   | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
