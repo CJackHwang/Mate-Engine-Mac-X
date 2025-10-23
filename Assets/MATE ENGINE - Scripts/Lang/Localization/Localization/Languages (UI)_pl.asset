@@ -609,51 +609,59 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B taes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "Okre\u015Bla, jak d\u0142ugo trwa przej\u015Bcie mi\u0119dzy animacj\u0105
+      A a animacj\u0105 B. Utrzymuj t\u0119 warto\u015B\u0107 nisk\u0105, aby uzyska\u0107
+      p\u0142ynne przej\u015Bcia mi\u0119dzy animacjami bezczynno\u015Bci."
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "\u015Aledzenie cia\u0142a pozwala awatarowi pod\u0105\u017Ca\u0107
+      za ruchem myszy, u\u017Cywaj\u0105c g\u0142owy, kr\u0119gos\u0142upa i oczu.
+      Mo\u017Cesz dostosowa\u0107, jak bardzo ka\u017Cda cz\u0119\u015B\u0107 si\u0119
+      porusza, za pomoc\u0105 suwak\xF3w poni\u017Cej. Gdy suwak jest ca\u0142kowicie
+      po lewej stronie, cz\u0119\u015B\u0107 si\u0119 nie porusza; gdy jest po prawej
+      \u2014 porusza si\u0119 maksymalnie. Ustawienie go w okolicy \u015Brodka zapewnia
+      p\u0142ynne dzia\u0142anie."
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: "\u015Aledzenie r\u0105k pozwala porusza\u0107 r\u0119kami awatara
+      za pomoc\u0105 myszy. R\u0119ka awatara b\u0119dzie pod\u0105\u017Ca\u0107
+      za pozycj\u0105 kursora, sprawiaj\u0105c wra\u017Cenie, jakby pr\xF3bowa\u0142a
+      go z\u0142apa\u0107 lub przytrzyma\u0107."
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "Tryb Husbando sprawia, \u017Ce tw\xF3j awatar zachowuje si\u0119
+      bardziej m\u0119sko, podobnie jak posta\u0107 m\u0119ska. Zmienia animacje
+      bezczynno\u015Bci i ta\u0144ca, aby dopasowa\u0107 je do stylu. Ta funkcja
+      jest eksperymentalna i nie wp\u0142ywa na animacje siedzenia. Wy\u0142\u0105cza
+      r\xF3wnie\u017C g\u0142askanie po g\u0142owie."
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "W\u0142\u0105czenie tej opcji pozwala awatarowi ta\u0144czy\u0107
+      do twojej muzyki. Aby to dzia\u0142a\u0142o, kliknij ikon\u0119 ustawie\u0144
+      obok tej opcji i dodaj aplikacje, kt\xF3re mog\u0105 kontrolowa\u0107 taniec
+      awatara. Niekt\xF3re aplikacje wymagaj\u0105, aby muzyka by\u0142a ju\u017C
+      odtwarzana; gdy gra, kliknij ikon\u0119 od\u015Bwie\u017Cania, aby MateEngine
+      m\xF3g\u0142 wykry\u0107 aplikacj\u0119."
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "W\u0142\u0105czenie przej\u015B\u0107 tanecznych pozwala awatarowi
+      zmienia\u0107 style ta\u0144ca z czasem. U\u017Cyj suwaka poni\u017Cej, aby
+      kontrolowa\u0107, jak szybko to si\u0119 dzieje. Ni\u017Csze warto\u015Bci
+      powoduj\u0105 szybsze zmiany, a wy\u017Csze \u2014 wolniejsze."
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "Pr\xF3g ta\u0144ca okre\u015Bla, kiedy awatar zaczyna ta\u0144czy\u0107
+      w zale\u017Cno\u015Bci od g\u0142o\u015Bno\u015Bci. Je\u015Bli ustawisz go
+      zbyt nisko, awatar zacznie ta\u0144czy\u0107 zaraz po rozpocz\u0119ciu muzyki.
+      Je\u015Bli ustawisz maksymalnie, b\u0119dzie ta\u0144czy\u0107 tylko przy bardzo
+      g\u0142o\u015Bnej muzyce. Zaleca si\u0119 pozostawi\u0107 warto\u015B\u0107
+      domy\u015Bln\u0105 lub nisk\u0105."
     m_Metadata:
       m_Items: []
   - m_Id: 71028682236403712
@@ -911,6 +919,49 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71028682265763850
     m_Localized: "W\u0142\u0105cz \u015Bwiat\u0142o ambientowe/nastrojowe"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470101493227520
+    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
+      Friday. You can select additional days or keep it set to only Friday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470100155244544
+    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
+      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470098959867904
+    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
+      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470097592524800
+    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
+      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470095960940544
+    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
+      Monday. You can select additional days or keep it set to only Monday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470109877641216
+    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
+      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470107461722112
+    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
+      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470682064592896
+    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
+      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
+      can also select the days when the alarm should ring. If no days are selected,
+      the alarm will ring every day at the set time. To have it ring only on specific
+      days, select the desired days.
     m_Metadata:
       m_Items: []
   references:

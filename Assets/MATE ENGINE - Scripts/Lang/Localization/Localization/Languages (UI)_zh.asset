@@ -37,15 +37,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 11241108004864
-    m_Localized: "\u89D2\u8272\u663E\u793A\u5728\u6700\u4E0A\u5C42\n"
+    m_Localized: "\u89D2\u8272\u663E\u793A\u5728\u6700\u4E0A\u5C42"
     m_Metadata:
       m_Items: []
   - m_Id: 11243918188544
-    m_Localized: "\u89D2\u8272\u4F1A\u8DF3\u821E"
+    m_Localized: "\u542F\u7528\u89D2\u8272\u8DF3\u821E"
     m_Metadata:
       m_Items: []
   - m_Id: 11244643803136
-    m_Localized: "\u5934\u90E8\u4F1A\u8FFD\u8E2A\u9F20\u6807\n"
+    m_Localized: "\u5934\u90E8\u8FFD\u8E2A\u9F20\u6807"
     m_Metadata:
       m_Items: []
   - m_Id: 11245205839872
@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 23684911718400
-    m_Localized: "\u5BA0\u7269\u97F3\u91CF\n"
+    m_Localized: "\u89D2\u8272\u97F3\u91CF\n"
     m_Metadata:
       m_Items: []
   - m_Id: 24123241652224
@@ -85,7 +85,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 24123816271872
-    m_Localized: "\u9009\u5355\u97F3\u91CF\n"
+    m_Localized: "\u83DC\u5355\u97F3\u91CF\n"
     m_Metadata:
       m_Items: []
   - m_Id: 24124437028864
@@ -542,15 +542,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973430707560448
-    m_Localized: "\u97F3\u8A0A"
+    m_Localized: "\u97F3\u9891"
     m_Metadata:
       m_Items: []
   - m_Id: 70973432238481408
-    m_Localized: "\u79FB\u52D5"
+    m_Localized: "\u52A8\u4F5C"
     m_Metadata:
       m_Items: []
   - m_Id: 70973433303834624
-    m_Localized: "\u5916\u89C0"
+    m_Localized: "\u5916\u89C2"
     m_Metadata:
       m_Items: []
   - m_Id: 70973434356604928
@@ -558,82 +558,60 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973435300323328
-    m_Localized: "\u8996\u7A97\u529F\u80FD"
+    m_Localized: "\u7A97\u53E3\u884C\u4E3A"
     m_Metadata:
       m_Items: []
   - m_Id: 70973436151767040
-    m_Localized: "\u8A2D\u8A08"
+    m_Localized: "UI\u8BBE\u8BA1"
     m_Metadata:
       m_Items: []
   - m_Id: 70973438601240576
-    m_Localized: "\u9B27\u9418"
+    m_Localized: "\u95F9\u949F"
     m_Metadata:
       m_Items: []
   - m_Id: 70973439893086208
-    m_Localized: "\u4EBA\u5DE5\u667A\u6167"
+    m_Localized: AI
     m_Metadata:
       m_Items: []
   - m_Id: 70973441449172992
-    m_Localized: "\u5075\u932F"
+    m_Localized: "\u8C03\u8BD5"
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "\u5728 Discord \u4E0A\u663E\u793A\u4F60\u7684 MateEngine \u6E38\u620F\u72B6\u6001\u3002\u5B83\u4F1A\u5C55\u793A\u4F60\u7684\u89D2\u8272\u6B63\u5728\u505A\u4EC0\u4E48\uFF0C\u6BD4\u5982\u64AD\u653E\u97F3\u4E50\u3001\u95F2\u7F6E\u3001\u5750\u7740\u7B49\u7B49\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "\u4E0B\u4E00\u6BB5\u95F2\u7F6E\u52A8\u753B\u5F00\u59CB\u524D\u7684\u5EF6\u8FDF\u65F6\u95F4\u3002\u5EFA\u8BAE\u4FDD\u6301\u572850%\u5DE6\u53F3\uFF0C\u4EE5\u83B7\u5F97\u5E73\u6ED1\u81EA\u7136\u7684\u8FC7\u6E21\u6548\u679C\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "\u95F2\u7F6E\u52A8\u753B\u8FC7\u6E21\u6240\u9700\u7684\u65F6\u95F4\u3002\u4E3A\u4E86\u8BA9\u52A8\u753B\u4E4B\u95F4\u7684\u8854\u63A5\u66F4\u6D41\u7545\uFF0C\u5EFA\u8BAE\u8BA9\u8BE5\u6570\u503C\u4FDD\u6301\u8F83\u4F4E\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "\u5934\u90E8\u8FFD\u8E2A\u529F\u80FD\u5141\u8BB8\u89D2\u8272\u7684\u4E0A\u534A\u8EAB\u8DDF\u968F\u9F20\u6807\u79FB\u52A8\u3002\u4F60\u53EF\u4EE5\u901A\u8FC7\u4E0B\u65B9\u7684\u6ED1\u5757\u8C03\u8282\u5404\u4E2A\u8EAB\u4F53\u90E8\u4F4D\u7684\u79FB\u52A8\u5E45\u5EA6\uFF0C\u4ECE\u5DE6\u81F3\u53F3\u79FB\u52A8\u5E45\u5EA6\u9010\u6E10\u589E\u52A0\u3002\u4FDD\u6301\u5728\u4E2D\u95F4\u4F4D\u7F6E\u901A\u5E38\u80FD\u83B7\u5F97\u6700\u81EA\u7136\u3001\u5E73\u6ED1\u7684\u6548\u679C\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: "\u624B\u90E8\u8FFD\u8E2A\u529F\u80FD\u5141\u8BB8\u89D2\u8272\u7684\u624B\u8DDF\u968F\u4F60\u7684\u9F20\u6807\u4F4D\u7F6E\u79FB\u52A8\uFF0C\u770B\u8D77\u6765\u50CF\u662F\u5728\u5C1D\u8BD5\u6293\u4F4F\u6216\u6258\u4F4F\u9F20\u6807\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "Husbando \u6A21\u5F0F\u4F1A\u8C03\u6574\u89D2\u8272\u7684\u5F85\u673A\u548C\u821E\u8E48\u52A8\u4F5C\uFF0C\u4F7F\u89D2\u8272\u66F4\u5177\u7537\u6027\u6C14\u8D28\u3002\u6B64\u529F\u80FD\u76EE\u524D\u4ECD\u5728\u5B9E\u9A8C\u9636\u6BB5\uFF0C\u4E0D\u4F1A\u8C03\u6574\u5750\u59FF\u52A8\u753B\uFF0C\u540C\u65F6\u4F1A\u7981\u7528\u6478\u5934\u4E92\u52A8\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "\u542F\u7528\u6B64\u529F\u80FD\u540E\uFF0C\u89D2\u8272\u5C31\u80FD\u968F\u7740\u4F60\u7684\u97F3\u4E50\u8D77\u821E\u3002\u70B9\u51FB\u6B64\u9009\u9879\u65C1\u8FB9\u7684\u8BBE\u7F6E\u56FE\u6807\u53EF\u4EE5\u6DFB\u52A0\u5141\u8BB8\u89D2\u8272\u8DF3\u821E\u7684\u5E94\u7528\u7A0B\u5E8F\u3002\u67D0\u4E9B\u5E94\u7528\u9700\u8981\u5728\u64AD\u653E\u97F3\u4E50\u65F6\u70B9\u51FB\u5237\u65B0\u6309\u94AE\u624D\u80FD\u4F7F
+      MateEngine \u68C0\u6D4B\u5230\u8BE5\u5E94\u7528\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "\u542F\u7528\u821E\u8E48\u8F6C\u573A\u540E\uFF0C\u89D2\u8272\u4F1A\u968F\u65F6\u95F4\u5207\u6362\u821E\u8E48\u98CE\u683C\u3002\u4F7F\u7528\u4E0B\u65B9\u7684\u6ED1\u5757\u53EF\u4EE5\u63A7\u5236\u5207\u6362\u901F\u5EA6\uFF0C\u4ECE\u5DE6\u81F3\u53F3\u5207\u6362\u4E0D\u540C\u821E\u8E48\u6240\u9700\u7684\u65F6\u95F4\u9010\u6E10\u53D8\u957F\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "\u5F00\u59CB\u821E\u8E48\u97F3\u91CF\u51B3\u5B9A\u89D2\u8272\u8DF3\u821E\u6240\u9700\u7684\u97F3\u91CF\u5927\u5C0F\u3002\u6570\u503C\u8F83\u4F4E\u65F6\uFF0C\u97F3\u4E50\u4E00\u5F00\u59CB\u89D2\u8272\u5C31\u4F1A\u8DF3\u821E\uFF1B\u6570\u503C\u8F83\u9AD8\u65F6\uFF0C\u53EA\u6709\u5728\u97F3\u4E50\u975E\u5E38\u54CD\u65F6\u624D\u4F1A\u8DF3\u821E\u3002\u5EFA\u8BAE\u4FDD\u6301\u9ED8\u8BA4\u503C\u6216\u8F83\u4F4E\u6570\u503C\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 71028682236403712
@@ -686,7 +664,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569545
-    m_Localized: "\u8FD9\u662F\u4E00\u4E2A\u4ECD\u5728\u5F00\u53D1\u4E2D\u7684\u5E94\u7528\uFF0C\u672A\u6765\u53EF\u80FD\u4F1A\u65B0\u589E\u66F4\u591A\u529F\u80FD\u3002\u5B83\u7531\u52A8\u6F2B\u793E\u533A\u5236\u4F5C\uFF0C\u670D\u52A1\u4E8E\u52A8\u6F2B\u793E\u533A\u3002\u8F6F\u4EF6\u53EF\u80FD\u4F1A\u6709\u4E00\u4E9B\u5C0F\u95EE\u9898\u2014\u2014\u5982\u679C\u4F60\u53D1\u73B0\u4E86\uFF0C\u53EF\u4EE5\u53F3\u952E\u70B9\u51FB\u5BA0\u7269\uFF0C\u7136\u540E\u70B9\u51FB\u9009\u9879\u83DC\u5355\u4E2D\u7684\u866B\u5B50\u56FE\u6807\u6765\u53CD\u9988\u95EE\u9898\u3002\n"
+    m_Localized: "\u8FD9\u662F\u4E00\u4E2A\u4ECD\u5728\u5F00\u53D1\u4E2D\u7684\u5E94\u7528\uFF0C\u672A\u6765\u53EF\u80FD\u4F1A\u65B0\u589E\u66F4\u591A\u529F\u80FD\u3002\u5B83\u7531\u52A8\u6F2B\u793E\u533A\u5236\u4F5C\uFF0C\u670D\u52A1\u4E8E\u52A8\u6F2B\u793E\u533A\u3002\u8F6F\u4EF6\u53EF\u80FD\u4F1A\u6709\u4E00\u4E9B\u5C0F\u95EE\u9898\u2014\u2014\u5982\u679C\u4F60\u53D1\u73B0\u4E86\uFF0C\u53EF\u4EE5\u53F3\u952E\u70B9\u51FB\u89D2\u8272\uFF0C\u7136\u540E\u70B9\u51FB\u9009\u9879\u83DC\u5355\u4E2D\u7684\u866B\u5B50\u56FE\u6807\u6765\u53CD\u9988\u95EE\u9898\u3002\n"
     m_Metadata:
       m_Items: []
   - m_Id: 71028682261569546
@@ -872,6 +850,49 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71028682265763850
     m_Localized: "\u542F\u7528\u6C1B\u56F4\u5149"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470101493227520
+    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
+      Friday. You can select additional days or keep it set to only Friday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470100155244544
+    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
+      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470098959867904
+    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
+      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470097592524800
+    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
+      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470095960940544
+    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
+      Monday. You can select additional days or keep it set to only Monday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470109877641216
+    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
+      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470107461722112
+    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
+      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470682064592896
+    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
+      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
+      can also select the days when the alarm should ring. If no days are selected,
+      the alarm will ring every day at the set time. To have it ring only on specific
+      days, select the desired days.
     m_Metadata:
       m_Items: []
   references:

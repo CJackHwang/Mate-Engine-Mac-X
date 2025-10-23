@@ -847,6 +847,49 @@ MonoBehaviour:
     m_Localized: "\u74B0\u5883\u5149\u3092\u6709\u52B9\u5316"
     m_Metadata:
       m_Items: []
+  - m_Id: 71470101493227520
+    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
+      Friday. You can select additional days or keep it set to only Friday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470100155244544
+    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
+      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470098959867904
+    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
+      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470097592524800
+    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
+      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470095960940544
+    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
+      Monday. You can select additional days or keep it set to only Monday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470109877641216
+    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
+      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470107461722112
+    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
+      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470682064592896
+    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
+      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
+      can also select the days when the alarm should ring. If no days are selected,
+      the alarm will ring every day at the set time. To have it ring only on specific
+      days, select the desired days.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

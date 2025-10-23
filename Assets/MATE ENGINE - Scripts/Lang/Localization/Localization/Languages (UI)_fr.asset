@@ -613,7 +613,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70973435300323328
-    m_Localized: "Fonctions de fen\xEAtres"
+    m_Localized: "Fonctions des fen\xEAtres"
     m_Metadata:
       m_Items: []
   - m_Id: 70973436151767040
@@ -633,62 +633,69 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 70999952109641728
-    m_Localized: Displays in Discord that you are currently using MateEngine in Game
-      View. It shows what your pet is doing, such as playing music, idling, sitting,
-      and more.
+    m_Localized: "Affiche dans Discord que vous utilisez MateEngine. Indique \xE9galement
+      ce que votre compagnon est en train de faire: jouer de la musique, au repos,
+      assis, et bien plus."
     m_Metadata:
       m_Items: []
   - m_Id: 71002484403904512
-    m_Localized: "The delay before the next idle animation starts. It\u2019s recommended
-      to keep it around 50% for smooth and natural transitions."
+    m_Localized: "D\xE9lai avant que la prochaine animation d'inactivit\xE9 ne commence.
+      Il est recommand\xE9 de conserver la valeur aux environs de 50% pour des transitions
+      douces et naturelles."
     m_Metadata:
       m_Items: []
   - m_Id: 71003365492957184
-    m_Localized: Determines how long the transition between animation A and animation
-      B takes. Keep this value low for smooth transitions between idle animations.
+    m_Localized: "D\xE9termine la dur\xE9e de la transition entre l'animation A et
+      l'animation B. Gardez cette valeur faible pour des transitions douces entre
+      les animations d'inactivit\xE9."
     m_Metadata:
       m_Items: []
   - m_Id: 71004038695526400
-    m_Localized: "Body tracking allows the avatar to follow mouse movement using
-      its head, spine, and eyes. You can adjust how much each part moves with the
-      sliders below. When the slider is all the way left, it doesn\u2019t move; when
-      it\u2019s all the way right, it moves at maximum. Keeping it near the middle
-      provides a smooth experience."
+    m_Localized: "Le suivi du corps permet \xE0 l'avatar de suivre les mouvements
+      de la souris en utilisant sa t\xEAte, sa colonne vert\xE9brale et ses yeux.
+      Vous pouvez ajuster dans quelle mesure chaque partie r\xE9agit en utilisant
+      les curseurs ci-dessous. Quand le curseur est tout \xE0 gauche, pas de suivi;
+      quand il est tout \xE0 droite, la r\xE9action est maximum. Garder les curseurs
+      vers le milieu offre l'exp\xE9rience la plus fluide."
     m_Metadata:
       m_Items: []
   - m_Id: 71004940831596544
-    m_Localized: "Hand tracking lets you move the avatar\u2019s hands with your mouse.
-      The avatar\u2019s hand will follow your mouse position, making it look as if
-      it\u2019s trying to catch or hold your mouse."
+    m_Localized: Le suivi des mains vous permet de faire bouger les mains de l'avatar
+      avec votre souris. La main de l'avatar va suivre la position de votre curseur,
+      donnant l'impression qu'il est en train de l'attraper ou de le tenir.
     m_Metadata:
       m_Items: []
   - m_Id: 71005229898833920
-    m_Localized: Husbando Mode makes your avatar behave more masculine, similar to
-      a male character. It changes idle and dance animations to match the style.
-      This feature is experimental and does not affect sitting animations. It also
-      disables headpats.
+    m_Localized: "Le Mode Husbando rend votre avatar plus masculin et modifie ses
+      animations au repos et de danse pour coller avec un style plus masculin. Cette
+      fonction est exp\xE9rimentale et ne modifie pas le comportement des animations
+      assises. Elle d\xE9sactive \xE9galement les headpats."
     m_Metadata:
       m_Items: []
   - m_Id: 71009590645399552
-    m_Localized: "Enabling this allows the avatar to dance to your music. To make
-      it work, click the settings icon next to this option and add the apps that
-      can control the avatar\u2019s dancing. Some apps require music to be playing
-      first; while it plays, click the refresh icon so MateEngine can detect the
-      app."
+    m_Localized: "Activer cette option permet \xE0 l'avatar de danser sur votre musique.
+      Il est \xE9galement n\xE9cessaire de s\xE9lectionner les applications qui peuvent
+      contr\xF4ler la danse de l'avatar en cliquant sur le bouton de param\xE9trage
+      \xE0 c\xF4t\xE9 de l'option. Certaines applications ont besoin d'\xEAtre en
+      train de jouer de la musique pour pouvoir \xEAtre d\xE9tect\xE9es par MateEngine;
+      utilisez le bouton rafraichir pour actualiser la liste."
     m_Metadata:
       m_Items: []
   - m_Id: 71010482257960960
-    m_Localized: Enabling dance transitions allows the avatar to switch between dance
-      styles over time. Use the slider below to control how quickly it changes. Lower
-      values make it switch faster, while higher values make it take longer to change
-      dance styles.
+    m_Localized: "Activer les transitions entre les danses permet \xE0 l'avatar de
+      changer de style de danse au fil du temps. Utilisez le curseur ci-dessous pour
+      contr\xF4ler la vitesse de transition. Les valeurs faibles entra\xEEnent des
+      changements rapides, tandis que les valeurs \xE9lev\xE9es prolongent la dur\xE9e
+      de chaque style de danse."
     m_Metadata:
       m_Items: []
   - m_Id: 71011000183201792
-    m_Localized: "The dance threshold determines when the avatar starts dancing based
-      on volume. If set too low, the avatar will dance as soon as the music starts.
-      If set to maximum, it will only dance when the music is very loud. It\u2019s
-      recommended to keep this at the default or a low value."
+    m_Localized: "Le seuil de d\xE9tection de la danse d\xE9termine le volume sonore
+      \xE0 partir duquel l'avatar se met \xE0 danser. S'il est r\xE9gl\xE9 trop bas,
+      l'avatar va se mettre \xE0 danser au moindre bruit. S'il est r\xE9gl\xE9 au
+      maximum, l'avatar ne dansera que si le volume de la musique est tr\xE8s fort.
+      Il est recommand\xE9 de conserver la valeur par d\xE9faut, ou d'utiliser une
+      valeur faible."
     m_Metadata:
       m_Items: []
   - m_Id: 71028682236403712
@@ -950,6 +957,49 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71028682265763850
     m_Localized: "Activer la lumi\xE8re ambiante"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470101493227520
+    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
+      Friday. You can select additional days or keep it set to only Friday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470100155244544
+    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
+      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470098959867904
+    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
+      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470097592524800
+    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
+      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470095960940544
+    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
+      Monday. You can select additional days or keep it set to only Monday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470109877641216
+    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
+      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470107461722112
+    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
+      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470682064592896
+    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
+      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
+      can also select the days when the alarm should ring. If no days are selected,
+      the alarm will ring every day at the set time. To have it ring only on specific
+      days, select the desired days.
     m_Metadata:
       m_Items: []
   references:

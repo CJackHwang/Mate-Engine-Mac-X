@@ -89,11 +89,9 @@ public class SaveLoadHandler : MonoBehaviour
             {
                 string json = File.ReadAllText(FilePath);
                 data = JsonConvert.DeserializeObject<SettingsData>(json);
-                Debug.Log("[SaveLoadHandler] Loaded settings from: " + FilePath);
             }
-            catch (Exception e)
+            catch
             {
-                Debug.LogError("[SaveLoadHandler] Failed to load: " + e);
                 data = new SettingsData();
             }
         }
@@ -101,7 +99,9 @@ public class SaveLoadHandler : MonoBehaviour
         {
             data = new SettingsData();
         }
+        MigrateAfterLoad();
     }
+
 
     [Serializable]
     public class SettingsData
@@ -150,12 +150,6 @@ public class SaveLoadHandler : MonoBehaviour
 
         public int bigScreenScreenSaverTimeoutIndex = 0;
         public bool bigScreenScreenSaverEnabled = false;
-
-        public bool bigScreenAlarmEnabled = false;
-        public int bigScreenAlarmHour = 0;
-        public int bigScreenAlarmMinute = 0;
-        public string bigScreenAlarmText = "Wake up! This is your alarm!";
-
         public float windowSitYOffset = 0f;
 
         public Dictionary<string, float> lightIntensities = new();
@@ -174,6 +168,35 @@ public class SaveLoadHandler : MonoBehaviour
         public int contextLength = 4096;
         public bool enableHusbandoMode = false;
         public bool enableAutoMemoryTrim = false;
+
+        public int settingsVersion = 0;
+        public bool alarmsEnabled = true;
+        //ALARM
+        [Serializable]
+        public class AlarmEntry
+        {
+            public string id;
+            public bool enabled;
+            public int hour;
+            public int minute;
+            public byte daysMask;
+            public string text;
+            public long lastTriggeredUnixMinute;
+        }
+
+        public List<AlarmEntry> alarms = new List<AlarmEntry>();
+
+    }
+    //ALARM
+    void MigrateAfterLoad()
+    {
+        if (data == null) data = new SettingsData();
+        if (data.alarms == null) data.alarms = new List<SettingsData.AlarmEntry>();
+        if (data.settingsVersion < 1)
+        {
+            data.settingsVersion = 1;
+            SaveToDisk();
+        }
     }
 
     public static void SyncAllowedAppsToAllAvatars()

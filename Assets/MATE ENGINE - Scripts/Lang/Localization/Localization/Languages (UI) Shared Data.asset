@@ -595,6 +595,38 @@ MonoBehaviour:
     m_Key: TIP_DANCE_THRS
     m_Metadata:
       m_Items: []
+  - m_Id: 71470095960940544
+    m_Key: DAY_MON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470097592524800
+    m_Key: DAY_TUE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470098959867904
+    m_Key: DAY_WED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470100155244544
+    m_Key: DAY_THU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470101493227520
+    m_Key: DAY_FRI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470107461722112
+    m_Key: DAY_SAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470109877641216
+    m_Key: DAY_SUN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71470682064592896
+    m_Key: TOL_ALARM
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

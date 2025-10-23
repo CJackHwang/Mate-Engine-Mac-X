@@ -14,11 +14,6 @@ public class AvatarBigScreenTimer : MonoBehaviour
     [Header("Enable BigScreen Alarm Feature")]
     public bool enableBigScreenAlarm = false;
 
-    [Header("Alarm Time (24h, PC local time)")]
-    [Range(0, 23)] public int targetHour = 17;
-    [Range(0, 59)] public int targetMinute = 0;
-    [Range(0, 59)] public int targetSecond = 0;
-
     [Header("Allowed Animator States")]
     public bool useAllowedStatesWhitelist = false;
     public string[] allowedStates = { "Idle" };
@@ -85,71 +80,33 @@ public class AvatarBigScreenTimer : MonoBehaviour
         RemoveAlarmBubble();
     }
 
-    void Update()
+    void CheckMultiAlarms()
     {
+        var d = SaveLoadHandler.Instance?.data;
+        if (d == null) return;
+        if (!d.alarmsEnabled) return;
+        if (d.alarms == null || d.alarms.Count == 0) return;
 
-        enableBigScreenAlarm = SaveLoadHandler.Instance.data.bigScreenAlarmEnabled;
-        targetHour = SaveLoadHandler.Instance.data.bigScreenAlarmHour;
-        targetMinute = SaveLoadHandler.Instance.data.bigScreenAlarmMinute;
-        alarmText = SaveLoadHandler.Instance.data.bigScreenAlarmText;
+        var now = DateTime.Now;
+        int h = now.Hour;
+        int m = now.Minute;
+        int dow = now.DayOfWeek == DayOfWeek.Sunday ? 6 : ((int)now.DayOfWeek - 1);
+        long unixMin = new DateTimeOffset(now.Year, now.Month, now.Day, h, m, 0, TimeSpan.Zero).ToUnixTimeSeconds() / 60;
 
-        if (!enableBigScreenAlarm)
+        for (int i = 0; i < d.alarms.Count; i++)
         {
-            inspectorEvent = "Alarm disabled";
-            StopAlarm();
-            return;
-        }
+            var a = d.alarms[i];
+            if (a == null) continue;
+            if (!a.enabled) continue;
+            if (a.hour != h || a.minute != m) continue;
+            if (a.daysMask != 0 && (a.daysMask & (1 << dow)) == 0) continue;
+            if (a.lastTriggeredUnixMinute == unixMin) continue;
 
-        inspectorTargetTime = $"{targetHour:D2}:{targetMinute:D2}:{targetSecond:D2}";
-        DateTime now = DateTime.Now;
-        inspectorCurrentTime = now.ToString("HH:mm:ss");
+            a.lastTriggeredUnixMinute = unixMin;
+            SaveLoadHandler.Instance.SaveToDisk();
 
-        bool isBigScreen = avatarAnimator != null && avatarAnimator.GetBool("isBigScreen");
-        bool isBigScreenAlarm = avatarAnimator != null && avatarAnimator.GetBool("isBigScreenAlarm");
+            alarmText = string.IsNullOrEmpty(a.text) ? "Alarm" : a.text;
 
-        if (!isBigScreenAlarm)
-        {
-            RemoveAlarmBubble();
-        }
-
-        if (isBigScreen && isBigScreenAlarm && alarmActive)
-        {
-            if (Time.time < alarmInputBlockUntil)
-            {
-                inspectorEvent = $"Alarm active! Cooldown ({(alarmInputBlockUntil - Time.time):F1}s)";
-                return;
-            }
-            inspectorEvent = "Alarm active! Waiting for user input";
-            if (IsGlobalUserInput())
-            {
-                inspectorEvent = "Alarm stopped by input";
-                avatarAnimator.SetBool("isBigScreenAlarm", false);
-                alarmActive = false;
-                if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
-
-                if (clickDisablesBoth)
-                {
-                    avatarAnimator.SetBool("isBigScreen", false);
-                    if (bigScreenHandler != null)
-                        bigScreenHandler.SendMessage("DeactivateBigScreen");
-                }
-                RemoveAlarmBubble();
-            }
-            return;
-        }
-
-
-        if (useAllowedStatesWhitelist && !IsInAllowedState())
-        {
-            inspectorEvent = "Alarm blocked by state";
-            StopAlarm();
-            RemoveAlarmBubble();
-            return;
-        }
-
-        if (!alarmActive && now.Hour == targetHour && now.Minute == targetMinute && now.Second == targetSecond)
-        {
-            inspectorEvent = "Alarm time reached! Activating alarm";
             if (avatarAnimator != null)
             {
                 avatarAnimator.SetBool("isBigScreenSaver", false);
@@ -159,21 +116,71 @@ public class AvatarBigScreenTimer : MonoBehaviour
                 avatarAnimator.SetBool("isSitting", false);
             }
 
-            if (bigScreenHandler != null)
-                bigScreenHandler.SendMessage("ActivateBigScreen");
+            if (bigScreenHandler != null) bigScreenHandler.SendMessage("ActivateBigScreen");
             PlayRandomAlarm();
             alarmActive = true;
-            alarmInputBlockUntil = Time.time + alarmInputBlockDuration; 
+            alarmInputBlockUntil = Time.time + alarmInputBlockDuration;
+            inspectorEvent = "Alarm triggered";
             StartCoroutine(ShowAlarmBubbleStreamedDelayed());
         }
+    }
 
-
-        if (alarmActive && (now.Second != targetSecond || now.Minute != targetMinute || now.Hour != targetHour))
+    void Update()
+    {
+        enableBigScreenAlarm = SaveLoadHandler.Instance.data.alarmsEnabled;
+        if (!enableBigScreenAlarm)
         {
-            alarmActive = false;
+            inspectorEvent = "Alarms disabled";
+            StopAlarm();
+            return;
+        }
+
+        inspectorCurrentTime = DateTime.Now.ToString("HH:mm:ss");
+
+        DateTime nextTime;
+        var next = GetNextAlarm(out nextTime);
+        inspectorTargetTime = next != null ? nextTime.ToString("yyyy-MM-dd HH:mm") : "-";
+        if (!alarmActive && next != null) alarmText = string.IsNullOrEmpty(next.text) ? "Alarm" : next.text;
+
+        if (useAllowedStatesWhitelist && !IsInAllowedState())
+        {
+            inspectorEvent = "Alarm blocked by state";
+            StopAlarm();
             RemoveAlarmBubble();
+            return;
+        }
+
+        CheckMultiAlarms();
+
+        bool isBigScreen = avatarAnimator != null && avatarAnimator.GetBool("isBigScreen");
+        bool isBigScreenAlarm = avatarAnimator != null && avatarAnimator.GetBool("isBigScreenAlarm");
+
+        if (!isBigScreenAlarm) RemoveAlarmBubble();
+
+        if (isBigScreen && isBigScreenAlarm && alarmActive)
+        {
+            if (Time.time < alarmInputBlockUntil)
+            {
+                inspectorEvent = "Cooldown";
+                return;
+            }
+            inspectorEvent = "Waiting for input";
+            if (IsGlobalUserInput())
+            {
+                inspectorEvent = "Alarm stopped by input";
+                avatarAnimator.SetBool("isBigScreenAlarm", false);
+                alarmActive = false;
+                if (audioSource != null && audioSource.isPlaying) audioSource.Stop();
+                if (clickDisablesBoth)
+                {
+                    avatarAnimator.SetBool("isBigScreen", false);
+                    if (bigScreenHandler != null) bigScreenHandler.SendMessage("DeactivateBigScreen");
+                }
+                RemoveAlarmBubble();
+            }
         }
     }
+
 
     void PlayRandomAlarm()
     {
@@ -324,6 +331,54 @@ public class AvatarBigScreenTimer : MonoBehaviour
         yield return new WaitForSeconds(3f); 
         ShowAlarmBubbleStreamed();
     }
+
+    SaveLoadHandler.SettingsData.AlarmEntry GetNextAlarm(out DateTime nextTime)
+    {
+        nextTime = DateTime.MinValue;
+        var d = SaveLoadHandler.Instance?.data;
+        if (d == null || !d.alarmsEnabled || d.alarms == null || d.alarms.Count == 0) return null;
+
+        var now = DateTime.Now;
+        SaveLoadHandler.SettingsData.AlarmEntry best = null;
+        DateTime bestTime = DateTime.MaxValue;
+
+        for (int i = 0; i < d.alarms.Count; i++)
+        {
+            var a = d.alarms[i];
+            if (a == null || !a.enabled) continue;
+            var cand = ComputeNextTime(a, now);
+            if (cand < bestTime) { bestTime = cand; best = a; }
+        }
+
+        if (best != null) nextTime = bestTime;
+        return best;
+    }
+
+    DateTime ComputeNextTime(SaveLoadHandler.SettingsData.AlarmEntry a, DateTime now)
+    {
+        if (a == null) return DateTime.MaxValue;
+
+        if (a.daysMask == 0)
+        {
+            var cand = new DateTime(now.Year, now.Month, now.Day, Mathf.Clamp(a.hour, 0, 23), Mathf.Clamp(a.minute, 0, 59), 0);
+            if (cand <= now) cand = cand.AddDays(1);
+            return cand;
+        }
+
+        int today = now.DayOfWeek == DayOfWeek.Sunday ? 6 : ((int)now.DayOfWeek - 1);
+        for (int add = 0; add < 7; add++)
+        {
+            int idx = (today + add) % 7;
+            bool dayOn = (a.daysMask & (1 << idx)) != 0;
+            if (!dayOn) continue;
+
+            var cand = new DateTime(now.Year, now.Month, now.Day, Mathf.Clamp(a.hour, 0, 23), Mathf.Clamp(a.minute, 0, 59), 0).AddDays(add);
+            if (add == 0 && cand <= now) continue;
+            return cand;
+        }
+        return now.AddDays(7);
+    }
+
 }
 
 #if UNITY_EDITOR
