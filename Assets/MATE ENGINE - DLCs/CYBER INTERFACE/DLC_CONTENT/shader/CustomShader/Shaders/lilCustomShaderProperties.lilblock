@@ -1,0 +1,9 @@
+
+        //----------------------------------------------------------------------------------------------------------------------
+        // Custom Properties
+        //_CustomVariable ("Custom Variable", Float) = 0
+	_FrameRate 		("FrameRate", Range(1,60)) = 15
+	_Frequency 		("Frequency", Range(0,1)) = 0.01
+	_AberrationR 		("Frequency", Range(-10,10)) = 1
+	_AberrationG 		("Frequency", Range(-10,10)) = 0
+	_AberrationB 		("Frequency", Range(-10,10)) = -1
