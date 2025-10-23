@@ -127,7 +127,7 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Animation Modding        | ❌           | ❌        | ✅         |
 | CPU Usage                | Moderate     | Very Good | Very Good  |
 | GPU Usage                | Moderate     | Good      | Good       |
-| RAM Usage                | Very Good    | Very Bad  | Good       |
+| RAM Usage                | Good    | Very Bad  | Very Good       |
 | Anti Cheat Safe          | ❌           | ❌        | ✅         |
 | Sleep                    | ❌           | ❌        | ✅         |
 | Compatible with Games    | ❌           | ❌        | ✅         |
