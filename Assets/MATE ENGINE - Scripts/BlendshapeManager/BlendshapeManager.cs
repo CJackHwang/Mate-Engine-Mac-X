@@ -11,29 +11,26 @@ using Newtonsoft.Json;
 public class BlendshapeManager : MonoBehaviour
 {
     [Header("UI Targets")]
-    public Transform contentParent;                 // Hier werden die AvatarBlendShapes-Blöcke instanziert
-    public GameObject blendshapeBlockPrefab;        // Dein "AvatarBlendShapes"-Prefab (mit 9 Slots + BlendshapeUIBlock)
+    public Transform contentParent;                
+    public GameObject blendshapeBlockPrefab;        
 
     [Header("Behaviour")]
-    public float rescanInterval = 0.75f;            // Wie oft wir die Szene auf Änderungen prüfen
-    public bool onlyUnderActiveAvatar = true;       // Bevorzugt nur unter dem gerade aktiven Avatar scannen
+    public float rescanInterval = 0.75f;           
+    public bool onlyUnderActiveAvatar = true;       
 
-    // ----- intern -----
     private readonly List<GameObject> activeBlocks = new List<GameObject>();
     private List<BlendRef> currentRefs = new List<BlendRef>();
     private string currentSignature = "";
     private string currentAvatarName = "";
+    public Button resetAllButton;
 
-    // Mapping: eindeutiger Key -> aktuell gesetzter Wert
     private Dictionary<string, float> blendValues = new Dictionary<string, float>();
-
-    // Repräsentiert eine konkrete Blendshape-Referenz
     private class BlendRef
     {
         public SkinnedMeshRenderer smr;
         public int index;
         public string shapeName;
-        public string uniqueKey;    // "<RendererPath>:<ShapeName>"
+        public string uniqueKey;   
     }
 
     private void OnEnable()
@@ -57,14 +54,33 @@ public class BlendshapeManager : MonoBehaviour
         }
     }
 
-    // Prüft, ob sich die Menge der aktiven Blendshapes geändert hat. Wenn ja → UI neu bauen + Werte laden.
+    void Start()
+    {
+        if (resetAllButton != null)
+        {
+            resetAllButton.onClick.RemoveAllListeners();
+            resetAllButton.onClick.AddListener(ResetAllBlendshapes);
+        }
+    }
+
+    public void ResetAllBlendshapes()
+    {
+        for (int i = 0; i < currentRefs.Count; i++)
+        {
+            var r = currentRefs[i];
+            blendValues[r.uniqueKey] = 0f;
+        }
+        ApplyAllToAvatar();
+        SaveToDisk();
+    }
+
+
     private void BuildRefsIfChanged()
     {
         var root = ResolveActiveAvatarRoot(out string avatarNameGuess);
         if (string.IsNullOrEmpty(avatarNameGuess))
             avatarNameGuess = "DefaultAvatar";
 
-        // Sammle alle aktiven SMR mit Blendshapes (nur unter Avatar-Root wenn gewünscht)
         var smrs = (onlyUnderActiveAvatar && root != null)
             ? root.GetComponentsInChildren<SkinnedMeshRenderer>(true)
             : FindObjectsOfType<SkinnedMeshRenderer>(true);
@@ -96,7 +112,6 @@ public class BlendshapeManager : MonoBehaviour
             }
         }
 
-        // Sort stabil: erst Renderer-Pfad, dann Shape-Name
         newRefs = newRefs
             .OrderBy(r => r.uniqueKey, StringComparer.OrdinalIgnoreCase)
             .ToList();
@@ -110,22 +125,17 @@ public class BlendshapeManager : MonoBehaviour
             currentAvatarName = avatarNameGuess;
             currentSignature = newSignature;
             currentRefs = newRefs;
-            // Alte Blöcke entsorgen & neu aufbauen
             RebuildUIBlocks();
-            // Datei laden (falls vorhanden) & anwenden
             LoadFromDisk();
             ApplyAllToAvatar();
         }
         else
         {
-            // Laufende Pflege: falls ein Renderer inaktiv geworden ist, wird das beim nächsten setChanged erkannt
-            // (wir scannen sowieso kontinuierlich).
         }
     }
 
     private void RebuildUIBlocks()
     {
-        // cleanup
         foreach (var go in activeBlocks)
             if (go) Destroy(go);
         activeBlocks.Clear();
@@ -134,7 +144,6 @@ public class BlendshapeManager : MonoBehaviour
 
         if (currentRefs.Count == 0) return;
 
-        // Anzahl Blöcke (je 9 Slots)
         int neededBlocks = Mathf.CeilToInt(currentRefs.Count / 9f);
 
         int refIdx = 0;
@@ -148,8 +157,6 @@ public class BlendshapeManager : MonoBehaviour
                 Destroy(blockGO);
                 continue;
             }
-
-            // Fülle die 9 Slots oder weniger (am Ende)
             for (int slot = 0; slot < 9; slot++)
             {
                 if (refIdx >= currentRefs.Count)
@@ -159,35 +166,31 @@ public class BlendshapeManager : MonoBehaviour
                 }
 
                 var r = currentRefs[refIdx++];
-                // initialer Wert: entweder gespeicherter Wert (falls bereits geladen) oder aktueller Weight
                 float startVal = 0f;
                 try
                 {
                     startVal = r.smr.GetBlendShapeWeight(r.index);
                 }
                 catch { }
-
-                // Default in Mapping
                 if (!blendValues.ContainsKey(r.uniqueKey))
                     blendValues[r.uniqueKey] = startVal;
 
-                string displayName = r.shapeName; // Du kannst hier "Renderer/Name" anzeigen, wenn gewünscht
+                string displayName = r.shapeName; 
                 block.SetupSlot(slot, displayName, startVal, v =>
                 {
                     blendValues[r.uniqueKey] = v;
                     try { r.smr.SetBlendShapeWeight(r.index, v); } catch { }
-                    SaveToDisk(); // sofort speichern
+                    SaveToDisk(); 
                 });
             }
 
             activeBlocks.Add(blockGO);
         }
 
-        // Überzählige Slots im letzten Block ggf. aus
         if (activeBlocks.Count > 0)
         {
             int remaining = currentRefs.Count % 9;
-            if (remaining == 0) remaining = 9; // voller Block
+            if (remaining == 0) remaining = 9; 
             var lastBlock = activeBlocks[activeBlocks.Count - 1].GetComponent<BlendshapeUIBlock>();
             if (lastBlock != null)
                 lastBlock.ClearUnusedFrom(remaining);
@@ -203,7 +206,6 @@ public class BlendshapeManager : MonoBehaviour
                 try { r.smr.SetBlendShapeWeight(r.index, v); } catch { }
             }
         }
-        // UI spiegeln (falls nach Load)
         int idx = 0;
         foreach (var go in activeBlocks)
         {
@@ -219,14 +221,11 @@ public class BlendshapeManager : MonoBehaviour
                 }
                 var r = currentRefs[idx++];
                 float v = blendValues.TryGetValue(r.uniqueKey, out float vv) ? vv : 0f;
-                // Re-Setup, aber ohne neuen Listener: deshalb einfach Slider direkt setzen
                 if (block.sliders[slot] != null)
                     block.sliders[slot].SetValueWithoutNotify(v);
             }
         }
     }
-
-    // ------------------------- Speicher (pro Avatar) -------------------------
 
     private string GetSaveFolder()
     {
@@ -279,18 +278,13 @@ public class BlendshapeManager : MonoBehaviour
         }
     }
 
-    // ------------------------- Avatar-Erkennung & Utils -------------------------
-
-    // Versucht den aktuellen Avatar-Root zu ermitteln (VRMLoader bevorzugt).
     private Transform ResolveActiveAvatarRoot(out string avatarName)
     {
         avatarName = null;
 
-        // 1) VRMLoader vorhanden? Dann nehmen wir den "customModelOutput"-Child oder das "mainModel".
         var loader = FindFirstObjectByType<VRMLoader>();
         if (loader != null)
         {
-            // Best effort: versuche den aktuell gespeicherten Pfad als AvatarName zu verwenden
             string key = "SavedPathModel";
             if (PlayerPrefs.HasKey(key))
             {
@@ -299,7 +293,6 @@ public class BlendshapeManager : MonoBehaviour
                     avatarName = Path.GetFileNameWithoutExtension(savedPath);
             }
 
-            // Finde den aktiven Avatar unter customModelOutput (falls gesetzt)
             var loaderType = typeof(VRMLoader);
             var customModelOutputField = loaderType.GetField("customModelOutput", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
             var mainModelField = loaderType.GetField("mainModel", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
@@ -311,7 +304,6 @@ public class BlendshapeManager : MonoBehaviour
 
             if (customObj != null)
             {
-                // Nimm das erste aktive Child (geladenes Avatar-Root)
                 foreach (Transform child in customObj.transform)
                 {
                     if (child.gameObject.activeInHierarchy)
@@ -325,20 +317,17 @@ public class BlendshapeManager : MonoBehaviour
             if (root == null && mainObj != null && mainObj.activeInHierarchy)
                 root = mainObj.transform;
 
-            // Falls der Name noch leer ist, fallback auf Rootnamen
             if (root != null && string.IsNullOrEmpty(avatarName))
                 avatarName = root.name;
 
             return root;
         }
 
-        // 2) Fallback: nimm den größten SMR-Cluster in der Szene als Avatar
         var allSmrs = FindObjectsOfType<SkinnedMeshRenderer>(true)
                       .Where(s => s != null && s.gameObject.activeInHierarchy && s.enabled && s.sharedMesh != null && s.sharedMesh.blendShapeCount > 0)
                       .ToList();
         if (allSmrs.Count > 0)
         {
-            // Wähle den Transform, der die meisten dieser SMRs als Nachfahren hat
             Transform bestRoot = null;
             int bestCount = -1;
 
@@ -376,7 +365,6 @@ public class BlendshapeManager : MonoBehaviour
 
     private static string GetTransformPath(Transform t, Transform stopAt)
     {
-        // Erzeuge stabilen Pfad relativ zum Avatar-Root (falls vorhanden)
         var stack = new List<string>();
         var cur = t;
         while (cur != null && cur != stopAt)
