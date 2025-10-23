@@ -9,6 +9,7 @@ Steam users get exclusive additional content:
 * Flower Halo
 * Sakura Halo
 * Retro Halo
+* ERROR! NSO Like Face Overlay!
 
 **Extra Features**
 
