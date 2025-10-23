@@ -99,18 +99,18 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Head Tracking            | ✅           | ✅        | ✅         |
 | Spine Tracking           | ❌           | ❌        | ✅         |
 | Eye Tracking             | ❌           | ❌        | ✅         |
-| Hand Movement            | ❌           | ❌        | ✅         |
+| Hand Movement            | ✅           | ❌        | ✅         |
 | Alarm / Timer            | ✅           | ✅        | ✅         |
 | ScreenSaver              | ❌           | ❌        | ✅         |
 | Touch Regions            | ❌           | ❌        | ✅         |
 | Avatar SFX               | ❌           | ❌        | ✅         |
-| Particle Effects         | ❌           | ❌        | ✅         |
+| Particle Effects         | ✅           | ❌        | ✅         |
 | FPS Control              | ❌           | ✅        | ✅         |
 | Always On Top Toggle     | ❌           | ✅        | ✅         |
 | Chibi Mode               | ❌           | ❌        | ✅         |
 | Post Processing Bloom    | ❌           | ❌        | ✅         |
 | Post Processing AO       | ❌           | ❌        | ✅         |
-| MSAA x8 Support          | ❌           | ❌        | ✅         |
+| MSAA x8 Support          | ✅           | ❌        | ✅         |
 | Big Screen Mode          | ❌           | ❌        | ✅         |
 | System Icon              | ✅           | ❌        | ✅         |
 | System Icon Settings     | ❌           | ❌        | ✅         |
@@ -120,7 +120,7 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | AI Chat                  | ❌           | ✅        | ✅         |
 | Advanced AI Functions    | ❌           | ✅        | ✅         |
 | Markdown Support on AI    | ❌           | ❌        | ✅         |
-| AI API Functions         | ❌           | ✅        | ❌         |
+| AI API Functions         | ❌           | ✅        | ✅         |
 | Free To Use              | ✅           | ✅        | ✅         |
 | Multi Language Support   | ❌           | ✅        | ✅         |
 | AI Voices                | ❌           | ✅        | ❌         |
