@@ -163,8 +163,8 @@ Mate Engine offers smoother animation transitions than Desktop Mate, avoiding th
 ---
 
 ## Performance
+<img width="1025" height="945" alt="image" src="https://github.com/user-attachments/assets/e09368b2-21e2-49e5-a965-774f8007c895" />
 
-![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
 
 **Mate Engine** is lightweight and efficient. RAM usage depends on the avatar’s texture size. For example, the high-quality "Alice" model uses ~190MB of texture memory, leading to ~200MB total RAM usage. Using lighter models will reduce this further.
 
