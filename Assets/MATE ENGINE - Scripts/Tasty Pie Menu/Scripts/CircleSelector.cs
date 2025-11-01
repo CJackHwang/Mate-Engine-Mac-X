@@ -394,7 +394,65 @@ namespace Xamin
                 transform.localScale = Vector3.zero;
             }
         }
+        bool ShouldHideButton(Xamin.Button btn)
+        {
+            if (animatorReceiver == null || animatorReceiver.avatarAnimator == null) return false;
+            var animator = animatorReceiver.avatarAnimator;
 
+            if (btn.showOnlyIfAnimatorBool != null && btn.showOnlyIfAnimatorBool.Length > 0)
+            {
+                bool pass = false;
+                foreach (var param in btn.showOnlyIfAnimatorBool)
+                {
+                    if (string.IsNullOrEmpty(param)) continue;
+                    foreach (var ap in animator.parameters)
+                        if (ap.type == AnimatorControllerParameterType.Bool && ap.name == param && animator.GetBool(param)) { pass = true; break; }
+                    if (pass) break;
+                }
+                if (!pass) return true;
+            }
+
+            if (btn.showOnlyIfStateName != null && btn.showOnlyIfStateName.Length > 0)
+            {
+                var st = animator.GetCurrentAnimatorStateInfo(0);
+                bool pass = false;
+                foreach (var s in btn.showOnlyIfStateName)
+                {
+                    if (string.IsNullOrEmpty(s)) continue;
+                    if (st.IsName(s)) { pass = true; break; }
+                }
+                if (!pass) return true;
+            }
+
+            if (btn.hideIfAnimatorBool != null)
+            {
+                foreach (var param in btn.hideIfAnimatorBool)
+                {
+                    if (string.IsNullOrEmpty(param)) continue;
+                    foreach (var ap in animator.parameters)
+                        if (ap.type == AnimatorControllerParameterType.Bool && ap.name == param && animator.GetBool(param))
+                            return true;
+                }
+            }
+
+            if (btn.hideIfStateName != null)
+            {
+                var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                foreach (var state in btn.hideIfStateName)
+                    if (!string.IsNullOrEmpty(state) && stateInfo.IsName(state))
+                        return true;
+            }
+
+            if (btn != null && btn.id == "clothes")
+            {
+                GameObject avatarGO = animatorReceiver?.avatarAnimator?.gameObject;
+                bool hasClothes = avatarGO != null && (avatarGO.GetComponent<MEClothes>() ?? avatarGO.GetComponentInChildren<MEClothes>(true)) != null;
+                if (!hasClothes) return true;
+            }
+            return false;
+        }
+
+        /*
         bool ShouldHideButton(Xamin.Button btn)
         {
             if (animatorReceiver == null || animatorReceiver.avatarAnimator == null)
@@ -425,5 +483,6 @@ namespace Xamin
             }
             return false;
         }
+        */
     }
 }

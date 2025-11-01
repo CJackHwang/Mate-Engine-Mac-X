@@ -38,7 +38,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.8, z: 0}
-  m_LocalScale: {x: 0.89988226, y: 0.89988226, z: 0.89988226}
+  m_LocalScale: {x: 1.2798932, y: 1.2798932, z: 1.2798932}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -91,8 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
   SOUND_THRESHOLD: 0.2
-  allowedApps:
-  - spotify
+  allowedApps: []
   totalIdleAnimations: 11
   IDLE_SWITCH_TIME: 10
   IDLE_TRANSITION_TIME: 1
@@ -174,17 +173,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5500079421849817615}
   rules:
-  - stateOrParameterNames: []
+  - themeTag: Dance Trail Blue
+    stateOrParameterNames: []
     useParameter: 0
     targetBone: 17
     linkedObjects:
     - {fileID: 0}
-  - stateOrParameterNames: []
+  - themeTag: Dance Trail Blue
+    stateOrParameterNames: []
     useParameter: 0
     targetBone: 18
     linkedObjects:
     - {fileID: 0}
   featureEnabled: 1
+  selectedTheme: Standard
 --- !u!114 &519848802782271312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +287,27 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 5c712606c89cced409c03fe37b971784, type: 3}
     wasHovering: 0
     bone: {fileID: 0}
+    hoverLayerIndex: 0
+    faceLayerIndex: 0
+    hasHoverBool: 0
+    hasFaceBool: 0
+    patMode: 0
+    patCircleDegrees: 540
+    patMinRadius: 12
+    patResetTime: 0.6
+    patCooldown: 0.5
+    patWiggleDistance: 180
+    patWiggleDirectionChanges: 3
+    stateWhitelist: []
+    patHasLast: 0
+    patLastPos: {x: 0, y: 0}
+    patLastMove: {x: 0, y: 0}
+    patLastAngle: 0
+    patCircleAccum: 0
+    patWiggleAccumDist: 0
+    patWiggleChanges: 0
+    patExpireAt: 0
+    patCooldownUntil: 0
   - name: Intimate Down
     IsHusbando: 0
     targetBone: 7
@@ -310,6 +333,27 @@ MonoBehaviour:
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}
+    hoverLayerIndex: 0
+    faceLayerIndex: 0
+    hasHoverBool: 0
+    hasFaceBool: 0
+    patMode: 0
+    patCircleDegrees: 540
+    patMinRadius: 12
+    patResetTime: 0.6
+    patCooldown: 0.5
+    patWiggleDistance: 180
+    patWiggleDirectionChanges: 3
+    stateWhitelist: []
+    patHasLast: 0
+    patLastPos: {x: 0, y: 0}
+    patLastMove: {x: 0, y: 0}
+    patLastAngle: 0
+    patCircleAccum: 0
+    patWiggleAccumDist: 0
+    patWiggleChanges: 0
+    patExpireAt: 0
+    patCooldownUntil: 0
   - name: Left Hand Smile
     IsHusbando: 0
     targetBone: 17
@@ -336,6 +380,27 @@ MonoBehaviour:
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}
+    hoverLayerIndex: 0
+    faceLayerIndex: 0
+    hasHoverBool: 0
+    hasFaceBool: 0
+    patMode: 0
+    patCircleDegrees: 540
+    patMinRadius: 12
+    patResetTime: 0.6
+    patCooldown: 0.5
+    patWiggleDistance: 180
+    patWiggleDirectionChanges: 3
+    stateWhitelist: []
+    patHasLast: 0
+    patLastPos: {x: 0, y: 0}
+    patLastMove: {x: 0, y: 0}
+    patLastAngle: 0
+    patCircleAccum: 0
+    patWiggleAccumDist: 0
+    patWiggleChanges: 0
+    patExpireAt: 0
+    patCooldownUntil: 0
   - name: Right Hand Smile
     IsHusbando: 0
     targetBone: 18
@@ -362,10 +427,33 @@ MonoBehaviour:
     layeredVoiceClips: []
     wasHovering: 0
     bone: {fileID: 0}
+    hoverLayerIndex: 0
+    faceLayerIndex: 0
+    hasHoverBool: 0
+    hasFaceBool: 0
+    patMode: 0
+    patCircleDegrees: 540
+    patMinRadius: 12
+    patResetTime: 0.6
+    patCooldown: 0.5
+    patWiggleDistance: 180
+    patWiggleDirectionChanges: 3
+    stateWhitelist: []
+    patHasLast: 0
+    patLastPos: {x: 0, y: 0}
+    patLastMove: {x: 0, y: 0}
+    patLastAngle: 0
+    patCircleAccum: 0
+    patWiggleAccumDist: 0
+    patWiggleChanges: 0
+    patExpireAt: 0
+    patCooldownUntil: 0
   voiceAudioSource: {fileID: 0}
   layeredAudioSource: {fileID: 0}
   showDebugGizmos: 1
   stateWhitelist: []
+  checkInterval: 0.02
+  blockWhenCovered: 1
 --- !u!114 &76249201430738456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0059bc9904acbc647b28a97010793b06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useHandOffset: 0
   screenInteractionRadius: 25
   screenInteractionRadiusColor: {r: 0.2, g: 0.7, b: 1, a: 0.2}
   preZoneMargin: 25

@@ -922,50 +922,51 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71470101493227520
-    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
-      Friday. You can select additional days or keep it set to only Friday."
+    m_Localized: "Pi\u0105tek - - ten przycisk ustawi budzik na ka\u017Cdy pi\u0105tek.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470100155244544
-    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
-      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Localized: "Czwartek - - ten przycisk ustawi budzik na ka\u017Cdy czwartek.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470098959867904
-    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
-      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Localized: "\u015Aroda - ten przycisk ustawi budzik na ka\u017Cd\u0105 \u015Brod\u0119.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470097592524800
-    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
-      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Localized: "Wtorek - ten przycisk ustawi budzik na ka\u017Cdy wtorek. Mo\u017Cesz
+      wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470095960940544
-    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
-      Monday. You can select additional days or keep it set to only Monday."
+    m_Localized: "Poniedzia\u0142ek - ten przycisk ustawi budzik na ka\u017Cdy poniedzia\u0142ek.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470109877641216
-    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
-      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Localized: "Niedziela - - ten przycisk ustawi budzik na ka\u017Cd\u0105 niedziel\u0119.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470107461722112
-    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
-      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Localized: "Sobota - ten przycisk ustawi budzik na ka\u017Cd\u0105 Sobot\u0119.
+      Mo\u017Cesz wybra\u0107 dodatkowe dni lub pozostawi\u0107 tylko ten."
     m_Metadata:
       m_Items: []
   - m_Id: 71470682064592896
-    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
-      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
-      can also select the days when the alarm should ring. If no days are selected,
-      the alarm will ring every day at the set time. To have it ring only on specific
-      days, select the desired days.
+    m_Localized: "To jest funkcja budzika. Po lewej mo\u017Cesz ustawi\u0107 godziny
+      (Wy\u015Bwietlane  w formacie 12- i 24-godzinnym). Po prawej mo\u017Cesz ustawi\u0107
+      minuty. Mo\u017Cesz te\u017C wybra\u0107 dni, w kt\xF3re alarm ma dzwoni\u0107.
+      Je\u017Celi \u017Cadne nie zostan\u0105 wybrane, alarm b\u0119dzie dzwoni\u0142
+      codziennie o wyznaczonej godzinie. Aby dzwoni\u0142 w wybrane dni, zaznacz
+      te konkretne dni."
     m_Metadata:
       m_Items: []
   - m_Id: 71751708213026816
-    m_Localized: Add New Alarm
+    m_Localized: Dodaj nowy alarm
     m_Metadata:
       m_Items: []
   - m_Id: 71751796721229824
@@ -973,43 +974,334 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71751947594539008
-    m_Localized: MON.
+    m_Localized: PON
     m_Metadata:
       m_Items: []
   - m_Id: 71751949909794816
-    m_Localized: TUE.
+    m_Localized: WT
     m_Metadata:
       m_Items: []
   - m_Id: 71751951579127808
-    m_Localized: WED.
+    m_Localized: "\u015AR"
     m_Metadata:
       m_Items: []
   - m_Id: 71751953068105728
-    m_Localized: THU.
+    m_Localized: CZW
     m_Metadata:
       m_Items: []
   - m_Id: 71751954464808960
-    m_Localized: FRI.
+    m_Localized: PT
     m_Metadata:
       m_Items: []
   - m_Id: 71751955819569152
-    m_Localized: SAT.
+    m_Localized: SOB
     m_Metadata:
       m_Items: []
   - m_Id: 71751956985585664
-    m_Localized: SUN.
+    m_Localized: NIE
     m_Metadata:
       m_Items: []
   - m_Id: 71752554812317696
-    m_Localized: Windows Sitting Y Offset
+    m_Localized: Pozycja siedzenia na oknie Y
     m_Metadata:
       m_Items: []
   - m_Id: 71752669165821952
-    m_Localized: ERROR!
+    m_Localized: "B\u0141\u0104D!"
     m_Metadata:
       m_Items: []
   - m_Id: 71752800506257408
-    m_Localized: MEM. Optimizations
+    m_Localized: "Omptymalizajca Pami\u0119ci"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74066854415474688
+    m_Localized: "O nie... Tam obok jest <Entity>! Uwa\u017Caj na siebie!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100562044428288
+    m_Localized: "Popatrz! Jaki przepi\u0119kny dzie\u0144!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100573499072512
+    m_Localized: "O, robi si\u0119 ciemno! uwa\u017Caj na siebie, o-okej?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100702608138240
+    m_Localized: "O nie! Uwa\u017Caj, nie zosta\u0142o ci du\u017Co \u017Cycia!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100749752115200
+    m_Localized: "S\u0142oneczko, pami\u0119taj, \u017Ceby co\u015B zje\u015B\u0107!
+      Wygl\u0105dasz g\u0142odno >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74137876288282624
+    m_Localized: "To umo\u017Cliwia interakcj\u0119 mi\u0119dzy MateEngine i Minecraft'em.
+      Po w\u0142\u0105czeniu, pokazuje urocze wiadomo\u015Bci w wa\u017Cnych momentach:
+      Kiedy zaczyna si\u0119 dzie\u0144 lub noc, kiedy gro\u017Ane moby s\u0105 w
+      pobli\u017Cu, kiedy masz ma\u0142o \u017Cycia lub po\u017Cywienia, kiedy co\u015B
+      craftujesz, umierasz, przy zmianie pogody, lub kiedy zasypiasz. Aby korzysta\u0107
+      z tej funkcji, zainstaluj moda do Minecrafta na Forge'u. Wersje wspomagane:
+      Minecraft 1.21.10. Mo\u017Cesz pobra\u0107 moda przez launcher CurseForge'a
+      lub klikaj\u0105c przycisk \"Pobierz\"."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149153014325248
+    m_Localized: "O nie... umar\u0142e\u015B! Hej, spokojnie, wszystko b\u0119dzie
+      dobrze."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149154457165824
+    m_Localized: Hej, patrz, pada! Wow!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149155774177280
+    m_Localized: "Hej, utopisz si\u0119! Le\u0107 wzi\u0105\u0107 wdech, prosz\u0119!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149157028274176
+    m_Localized: "Czas na spanko, do \u0142\xF3\u017Ceczka! Dobranoc <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149158324314112
+    m_Localized: "Uuu, co tam sk\u0142adasz?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429045333336064
+    m_Localized: "Sync Mode pozwala na synchronmizacj\u0119 ta\u0144ca pomi\u0119dzy
+      wszystkimi instancjami Mate Engine. Po w\u0142\u0105czeniu, wszystkie awatary
+      na twoim monitorze zaczn\u0105 ta\u0144czy\u0107 w idealnej harmonii. Pami\u0119taj,
+      aby w\u0142\u0105czy\u0107 instancje dodatkowe z instancji g\u0142\xF3wnej,
+      inaczej synchronizacja nie zadzia\u0142a."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429046658736128
+    m_Localized: "Lock Mode (Eksperymentalny) dodaje tracking kamery do ta\u0144c\xF3w.
+      Niekt\xF3re pliki ta\u0144ca zawieraj\u0105 du\u017Ce ruchy w prawo lub lewo,
+      co przemieszcza awatara za widoczne okno. W\u0142\u0105czenie Lock Mode sprawia,
+      \u017Ce okno b\u0119dzie pod\u0105\u017Ca\u0107 za awatarem, aby nie wyszed\u0142
+      poza okno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473517958078464
+    m_Localized: "Jejj!! Jakie\u015B jedzonko!! Pycha!! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473519275089920
+    m_Localized: "\nWoah!! Jaka b\xF3jka!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473520520798208
+    m_Localized: Hmm... To chyba... A, racja! To jest <biome>!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494164503404544
+    m_Localized: "Pychota! Mam nadziej\u0119, \u017Ce by\u0142o smaczne! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494166046908416
+    m_Localized: "Kocham jedzonko!!! Podziel si\u0119 ze mn\u0105!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494167372308480
+    m_Localized: "Oj, wierz\u0119! By\u0142o smaczne, nie? <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494450139701248
+    m_Localized: "Wow! Jeste\u015Bmy teraz na <biome>! Ale super!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494451326689280
+    m_Localized: "\u0141aaa! <biome> to takie fajne miejsce, nie? :D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494452492705792
+    m_Localized: Z-znam to miejsce! To <biome>, prawda??
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495033496084480
+    m_Localized: "Uuu!.. Ale jeste\u015B super!! Ciesz\u0119 si\u0119, \u017Ce jeste\u015B
+      taki silny! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495035303829504
+    m_Localized: "Ojoj! Wygl\u0105da na to, \u017Ce co\u015B tu zmar\u0142o! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495036486623232
+    m_Localized: "Super! \u015Awietnie grasz w Minecraft'a!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495491606355968
+    m_Localized: "Ooo.. Co tam sk\u0142adasz?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495493175025664
+    m_Localized: Ohh.. What are you crafting?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495494441705472
+    m_Localized: 'Oo, co tam robimy teraz..? o:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496053102026752
+    m_Localized: "Oh... Czasem naprawde kocham deszcz, wiesz? Potrafi by\u0107 taki
+      relaksuj\u0105cy! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496054406455296
+    m_Localized: Deszcz pada, i pada, i pada!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496454551445504
+    m_Localized: "Ojj! Uwa\u017Caj, tam jest <entity>!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496467176300544
+    m_Localized: "<entity> zaraz obok ciebie! U-uwa\u017Caj!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470120701952
+    m_Localized: "Hmm.. Tam chyba jest <entity>! Uwa\u017Caj na siebie!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470980534272
+    m_Localized: <entity>!! O nie!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497067465089024
+    m_Localized: "Aaa, te\u017C jestem \u015Bpi\u0105ca!! Zr\xF3bmy sobie super drzemk\u0119
+      z przytulaskami!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497074909978624
+    m_Localized: "Dobranoc! Jutro b\u0119dzie dla ciebie wielki dzie\u0144, oke?
+      Obiecaj, \u017Ce po\u015Bpisz! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497077372035072
+    m_Localized: "Branocka! \u015Apij dobrze!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497599856484352
+    m_Localized: "Ooo nie..!.! >_< B-b\u0119dzie dobrze! Nie grasz na hardcorze,
+      n-nie? M-mo\u017Cesz si\u0119 zawsze odrodzi\u0107..! Nie?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497601844584448
+    m_Localized: "Oki, nie martw si\u0119! Czas si\u0119 odrodzi\u0107 i odzyska\u0107
+      nasze rzeczy! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497603958513664
+    m_Localized: "Je\u017Celi umrzesz, umr\u0119 z tob\u0105!! >_< <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498198488522752
+    m_Localized: "Hmm.. Jakie mamy plany na dzisiaj? Mo\u017Cemy odwiedzi\u0107 nowe
+      biomy i i\u015B\u0107 na przygod\u0119! Albo co\u015B zbudowa\u0107!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498199964917760
+    m_Localized: "Kocham Minecraft tak bardzo! <3 Ogl\u0105danie jak grasz jest takie
+      supi! Yippee!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498200799584256
+    m_Localized: "Musimy totalnie ogarn\u0105\u0107 sobie pieska!! Osw\xF3jmy jakiego\u015B!
+      <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499007469101056
+    m_Localized: "Uwa\u017Caj! Masz ma\u0142o \u017Cycia... zjedz co\u015B!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499008760946688
+    m_Localized: "O nie... prosz\u0119 n-nie umieraj </3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499009935351808
+    m_Localized: "B\u0119dzie dobrze! Damy rad\u0119, nie martw si\u0119! Potrzebujemy
+      jedzenia lub, uhmm, mikstur zdrowia! Albo z\u0142otych jab\u0142ek!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499492481638400
+    m_Localized: "Co bardziej lubisz? Noc czy dzie\u0144? Ja najbardziej kocham noc!
+      Gwie\u017Adziste niebo! Ale nieznosze tych wszystkich nocnych mob\xF3w >_<
+      <33"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499493685403648
+    m_Localized: "Robi si\u0119 ju\u017C ciemno?? Musimy uwa\u017Ca\u0107!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499494822060032
+    m_Localized: La di da di duu! Laa laa laa li louuu! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500969312854016
+    m_Localized: "Nie patrz na Endermany! S\u0105 nie\u015Bmia\u0142e, ale mega straszne,
+      jak si\u0119 wkurz\u0105!! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500970667614208
+    m_Localized: "Nigdy nie kop w d\xF3\u0142! Albo spadniesz z krzykiem prosto do
+      lawy! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500972060123136
+    m_Localized: "Zawsze miej przy sobie dodatkowe narz\u0119dzia! Nigdy nie wiesz,
+      kiedy kilof zrobi cyk! i p\u0119knie!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500973540712448
+    m_Localized: "We\u017C ze sob\u0105 troche jedzenia, oki? Nie pozwalam na wycieczki
+      na g\u0142odniaka! Nom nom <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501548428795904
+    m_Localized: "Ajj, brzuszek ci znowu burczy, co nie> Hehe~ czas na przek\u0105sk\u0119!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501549779361792
+    m_Localized: "Hej, hej!! Zjedz co\u015B zanim zemdlejesz! Nie mo\u017Cemy walczy\u0107
+      na pusty \u017Co\u0142\u0105dek >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501550978932736
+    m_Localized: "C-Co? Znowu jeste\u015B g\u0142odny? Zjedzmy co\u015B pysznego,
+      prosz\u0119! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501552463716352
+    m_Localized: "Huh!? Tw\xF3j g\u0142od jest bardzo nisko!! Szybko, czas jedzonka!
+      Munch munch <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780049190985728
+    m_Localized: BUY $4,99
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780306805137408
+    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
+      to speak during specific events, such as discovering new biomes or when a monster
+      appears behind you. She reacts to your gameplay and comments on what you do.
+      Support MateEngine on Steam to unlock this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051929866240
+    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
+      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
+      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
+      and more.
+
+
+      MateEngine costs around 4.99 USD. If you cannot afford it,
+      the essential features stay free forever. If you can, consider supporting me
+      for future updates. Thank you!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051216834560
+    m_Localized: Minecraft Integration
     m_Metadata:
       m_Items: []
   references:

@@ -34,6 +34,11 @@ public class UISetOnOff : MonoBehaviour
         foreach (var handler in AvatarBubbleHandler.ActiveHandlers)
             handler.ToggleBubbleFromUI();
     }
+    public void UnsnapAllAvatars()
+    {
+        foreach (var h in FindObjectsByType<AvatarWindowHandler>(FindObjectsSortMode.None))
+            h.ForceExitWindowSitting();
+    }
 
 
     public void SetAccessoryState(string ruleName, bool state)

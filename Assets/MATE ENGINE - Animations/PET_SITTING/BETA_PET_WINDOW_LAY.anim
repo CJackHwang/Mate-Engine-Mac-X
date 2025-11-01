@@ -10520,12 +10520,12 @@ AnimationClip:
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
     m_StopTime: 19.958334
-    m_OrientationOffsetY: -10.51
-    m_Level: -0.25
+    m_OrientationOffsetY: -5
+    m_Level: -1.045
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 1
     m_LoopTime: 1
-    m_LoopBlend: 0
+    m_LoopBlend: 1
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 1
     m_LoopBlendPositionXZ: 1

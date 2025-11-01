@@ -79,7 +79,6 @@ public class SettingsHandlerButtons : MonoBehaviour
         }
         SaveLoadHandler.Instance.SaveToDisk();
     }
-
     private void OnRefreshAppsClicked()
     {
         var appManager = FindFirstObjectByType<AllowedAppsManager>();

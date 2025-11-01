@@ -20,6 +20,8 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle enableRandomMessagesToggle;
     public Toggle enableHusbandoModeToggle;
     public Toggle enableAutoMemoryTrimToggle;
+    public Toggle enableMinecraftMessagesToggle;
+    public Toggle enableFeedSystemToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -51,6 +53,8 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableRandomMessagesToggle?.onValueChanged.AddListener(OnEnableRandomMessagesChanged);
         enableHusbandoModeToggle?.onValueChanged.AddListener(OnEnableHusbandoModeChanged);
         enableAutoMemoryTrimToggle?.onValueChanged.AddListener(OnEnableAutoMemoryTrimChanged);
+        enableMinecraftMessagesToggle?.onValueChanged.AddListener(OnEnableMinecraftMessagesChanged);
+        enableFeedSystemToggle?.onValueChanged.AddListener(OnEnableFeedSystemChanged);
         LoadSettings();
         ApplySettings();
     }
@@ -82,8 +86,18 @@ public class SettingsHandlerToggles : MonoBehaviour
         ApplySettings();
         Save();
     }
-
-
+    private void OnEnableMinecraftMessagesChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.enableMinecraftMessages = v;
+        ApplySettings();
+        Save();
+    }
+    private void OnEnableFeedSystemChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.enableFeedSystem = v;
+        ApplySettings();
+        Save();
+    }
 
     #endregion
 
@@ -105,6 +119,8 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(data.enableRandomMessages);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(data.enableHusbandoMode);
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(data.enableAutoMemoryTrim);
+        enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(data.enableMinecraftMessages);
+        enableFeedSystemToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableFeedSystem);
         ApplySettings();
     }
 
@@ -142,6 +158,11 @@ public class SettingsHandlerToggles : MonoBehaviour
         if (uniWindowController != null)
             uniWindowController.isTopmost = data.isTopmost;
 
+        // Food
+        foreach (var c in Resources.FindObjectsOfTypeAll<AvatarFoodController>())
+            c.SetFeatureEnabled(SaveLoadHandler.Instance.data.enableFeedSystem);
+
+
         // Particles
         if (currentParticleHandler == null)
         {
@@ -154,6 +175,10 @@ public class SettingsHandlerToggles : MonoBehaviour
             currentParticleHandler.enabled = data.enableParticles;
         }
         PetVoiceReactionHandler.GlobalHoverObjectsEnabled = data.enableParticles;
+
+        foreach (var amm in Resources.FindObjectsOfTypeAll<AvatarMinecraftMessages>())
+            amm.enableMinecraftMessages = data.enableMinecraftMessages;
+
     }
 
     public void ResetToDefaults()
@@ -173,6 +198,10 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(false);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(false);
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(false);
+        enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(false);
+        enableFeedSystemToggle?.SetIsOnWithoutNotify(false);
+        SaveLoadHandler.Instance.data.enableFeedSystem = false;
+        SaveLoadHandler.Instance.data.enableMinecraftMessages = false;
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;

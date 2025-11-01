@@ -79,8 +79,8 @@ Material:
     - _FadeBottomStart: 0.01
     - _FadeEnd: 0.632
     - _FadeStart: 0
-    - _FadeTopEnd: 0.742
-    - _FadeTopStart: 0.643
+    - _FadeTopEnd: 0.75
+    - _FadeTopStart: 0.7
     - _GlassBlurRadius: 7.67
     - _GlassDistort: 0.15
     - _GlassEnabled: 0
@@ -119,9 +119,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FillColor: {r: 0.11999995, g: 0.11999995, b: 0.19999996, a: 1}
     - _GlassTint: {r: 1, g: 1, b: 1, a: 0.35}
-    - _MainColor: {r: 0.09947666, g: 0.116759844, b: 0.1686135, a: 1}
+    - _MainColor: {r: 0.09947116, g: 0.11675393, b: 0.16860789, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OverlayColor: {r: 0.2894196, g: 0.3397024, b: 0.49056596, a: 1}
+    - _OverlayColor: {r: 0.2894137, g: 0.33969647, b: 0.49056596, a: 1}
     - _OverlayOffset: {r: 0, g: 0, b: 0, a: 0}
     - _OverlayScale: {r: 1, g: 1, b: 0, a: 0}
     - _OverlaySpeed: {r: 0.25, g: 0.25, b: 0, a: 0}

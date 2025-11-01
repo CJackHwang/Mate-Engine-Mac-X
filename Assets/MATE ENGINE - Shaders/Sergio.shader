@@ -1,17 +1,10 @@
-Shader "UI/SimpleMask"
+Shader "Unlit/TransparencyShader"
 {
     SubShader
     {
-        // Standard-UI RenderQueue
-        Tags { "Queue"="Overlay-1" "IgnoreProjector"="True" "RenderType"="Transparent" "CanUseSpriteAtlas"="True" }
-
-        // Kein Farboutput, aber Depth schreiben
+        Tags { "Queue" = "Geometry-1" }
         ColorMask 0
         ZWrite On
-        ZTest Always
-        Cull Off
-        Lighting Off
-
         Pass {}
     }
 }

@@ -128,7 +128,6 @@ public class SettingsHandlerSliders : MonoBehaviour
         danceSwitchTimeSlider?.SetValueWithoutNotify(data.danceSwitchTime);
         danceTransitionTimeSlider?.SetValueWithoutNotify(data.danceTransitionTime);
     }
-
     public void ApplySettings()
     {
         var data = SaveLoadHandler.Instance.data;

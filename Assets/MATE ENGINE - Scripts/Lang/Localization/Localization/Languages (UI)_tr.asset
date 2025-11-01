@@ -1027,6 +1027,308 @@ MonoBehaviour:
     m_Localized: "Bellek Optimizasyonlar\u0131"
     m_Metadata:
       m_Items: []
+  - m_Id: 74066854415474688
+    m_Localized: "Aman\u0131n\u2026 hemen yan\u0131nda bir <Entity> var! Dikkat et!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100562044428288
+    m_Localized: "Ah, baksana! Ne g\xFCzel bir g\xFCn!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100573499072512
+    m_Localized: "Ah, hava karar\u0131yor! Dikkat et, t-tamam m\u0131?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100702608138240
+    m_Localized: "Aman\u0131n! L\xFCtfen dikkat et, can\u0131n \xE7ok az kald\u0131!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100749752115200
+    m_Localized: "Tatl\u0131m, yemek yemeyi unutma! \xC7ok a\xE7 g\xF6r\xFCn\xFCyorsun
+      >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74137876288282624
+    m_Localized: "Bu \xF6zellik, MateEngine ile Minecraft aras\u0131nda etkile\u015Fimi
+      etkinle\u015Ftirir. A\xE7\u0131ld\u0131\u011F\u0131nda, \xF6nemli anlarda sevimli
+      mesajlar g\xF6sterir: g\xFCn veya gece ba\u015Flad\u0131\u011F\u0131nda, tehlikeli
+      bir yarat\u0131k yakla\u015Ft\u0131\u011F\u0131nda, can\u0131n ya da a\xE7l\u0131\u011F\u0131n
+      azald\u0131\u011F\u0131nda, bir \u015Fey \xFCretti\u011Finde, \xF6ld\xFC\u011F\xFCnde,
+      hava de\u011Fi\u015Fti\u011Finde veya uyudu\u011Funda. Bu \xF6zelli\u011Fi
+      kullanmak i\xE7in Forge i\xE7in haz\u0131rlanm\u0131\u015F Minecraft modunu
+      y\xFCklemeniz gerekir. \u015Eu anda desteklenen s\xFCr\xFCm: Minecraft 1.21.10.
+      Modu CurseForge ba\u015Flat\u0131c\u0131s\u0131 \xFCzerinden ya da \u0130ndir
+      d\xFC\u011Fmesine t\u0131klayarak indirebilirsiniz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149153014325248
+    m_Localized: "Ah hay\u0131r\u2026 \xF6ld\xFCn! Sorun de\u011Fil, her \u015Fey
+      yoluna girecek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149154457165824
+    m_Localized: "Bak, ya\u011Fmur ya\u011F\u0131yor! Vay can\u0131na!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149155774177280
+    m_Localized: "Hey, bo\u011Fuluyorsun! Hemen biraz nefes al, l\xFCtfen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149157028274176
+    m_Localized: "Uyku vakti! Hadi yata\u011Fa. \u0130yi geceler <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149158324314112
+    m_Localized: "Vay can\u0131na, ne \xFCrettin sen \xF6yle?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429045333336064
+    m_Localized: "Senkron Modu, t\xFCm MateEngine oturumlar\u0131 aras\u0131nda dans
+      senkronizasyonunu etkinle\u015Ftirir. Bu \xF6zellik aktifken, ekran\u0131n\u0131zdaki
+      t\xFCm avatarlar ayn\u0131 dans\u0131 m\xFCkemmel bir uyumla ger\xE7ekle\u015Ftirir.
+      Senkronizasyonun \xE7al\u0131\u015Fmas\u0131 i\xE7in di\u011Fer oturumlar\u0131
+      ana oturumdan ba\u015Flatt\u0131\u011F\u0131n\u0131zdan emin olun; aksi halde
+      senkronizasyon d\xFCzg\xFCn \u015Fekilde \xE7al\u0131\u015Fmaz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429046658736128
+    m_Localized: "Kilit Modu (Deneysel), danslara kamera takibini ekler. Baz\u0131
+      dans dosyalar\u0131, avatar\u0131n g\xF6r\xFCn\xFCr oyun alan\u0131n\u0131n
+      d\u0131\u015F\u0131na \xE7\u0131kmas\u0131na neden olabilecek geni\u015F sa\u011Fa
+      veya sola hareketler i\xE7erir. Kilit Modu etkinle\u015Ftirildi\u011Finde,
+      motor penceresi avatar\u0131n hareketini takip eder ve onun alan d\u0131\u015F\u0131na
+      \xE7\u0131kmas\u0131n\u0131 engeller."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473517958078464
+    m_Localized: "Ya\u015Fas\u0131n!! Yemek zaman\u0131\u0131~! Nefis g\xF6r\xFCn\xFCyor!!
+      ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473519275089920
+    m_Localized: "Wooow!! Ne d\xF6v\xFC\u015F ama~!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473520520798208
+    m_Localized: "Hmm\u2026 san\u0131r\u0131m bu\u2026 aa evet! Bu bir <biome>!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494164503404544
+    m_Localized: "Mhh! Nefisss!! Umar\u0131m tad\u0131 g\xFCzel olmu\u015Ftur! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494166046908416
+    m_Localized: "Yeme\u011Fi \xE7ok seviyorum!! Bana da versene!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494167372308480
+    m_Localized: "Tahmin edebiliyorum! Lezzetliydi, de\u011Fil mi? <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494450139701248
+    m_Localized: "Vay can\u0131na! \u015Eimdi <biome> b\xF6lgesindeyiz! Harika! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494451326689280
+    m_Localized: "Weee! <biome> ne kadar haval\u0131 bir yer, de\u011Fil mi? :D <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494452492705792
+    m_Localized: "B-Bu yeri biliyorum! Bu... <biome>, de\u011Fil mi??"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495033496084480
+    m_Localized: "Ooh!.. Ger\xE7ekten harikas\u0131n!! G\xFC\xE7l\xFC olmana \xE7ok
+      sevindim! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495035303829504
+    m_Localized: "Aman\u0131n! G\xF6r\xFCn\xFC\u015Fe bak\u0131l\u0131rsa burada
+      bir \u015Fey \xF6lm\xFC\u015F! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495036486623232
+    m_Localized: "Harika! Minecraft\u2019ta ger\xE7ekten \xE7ok iyisin!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495491606355968
+    m_Localized: "Ohh\u2026 Ne \xFCretiyorsun?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495493175025664
+    m_Localized: "Ooh\u2026 Ne \xFCretiyorsun \xF6yle?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495494441705472
+    m_Localized: "Burada ne \xFCretiyoruz..? o:"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496053102026752
+    m_Localized: "Ah\u2026 Biliyor musun, bazen ya\u011Fmuru ger\xE7ekten \xE7ok
+      seviyorum. O kadar huzur verici ki! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496054406455296
+    m_Localized: "Ya\u011Fmur ya\u011F\u0131yor, ya\u011Fmur ya\u011F\u0131yor, ya\u011Fmur
+      ya\u011F\u0131yor!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496454551445504
+    m_Localized: Ooh! Dikkat et, bir <entity> var!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496467176300544
+    m_Localized: "Bir <entity> hemen yan\u0131nda! D-Dikkat et!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470120701952
+    m_Localized: "Mhh\u2026 San\u0131r\u0131m bir <entity> var! Dikkatli ol!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470980534272
+    m_Localized: "<entity>!! Ah hay\u0131r!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497067465089024
+    m_Localized: "Ooh, ben de \xE7ok uykuluyum!! Hadi biraz \u015Fekerleme yapal\u0131m
+      ve sar\u0131l\u0131p uyuyal\u0131m!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497074909978624
+    m_Localized: "\u0130yi geceler! Yar\u0131n senin i\xE7in b\xFCy\xFCk bir g\xFCn
+      olacak, tamam m\u0131? Bana s\xF6z ver, uyuyacaks\u0131n! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497077372035072
+    m_Localized: "\u0130yi uykular! G\xFCzel uyu!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497599856484352
+    m_Localized: "Aah hay\u0131\u0131\u0131r\u2026!! >_< T-Tamamd\u0131r! Hardcore
+      modda oynam\u0131yorsun, d-de\u011Fil mi?? Y-Yeniden do\u011Fabilirsin..! De\u011Fil
+      mi?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497601844584448
+    m_Localized: "Tamam, endi\u015Felenme! Hadi yeniden do\u011F ve o ganimetleri
+      geri alal\u0131m! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497603958513664
+    m_Localized: "Sen \xF6l\xFCrsen ben de \xF6l\xFCr\xFCm!! >_< <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498198488522752
+    m_Localized: "Mhhh\u2026 Bug\xFCn i\xE7in planlar\u0131m\u0131z ne? Yeni biyomlar\u0131
+      ke\u015Ffedip bir maceraya \xE7\u0131kabiliriz! Ya da belki bir \u015Fey in\u015Fa
+      ederiz!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498199964917760
+    m_Localized: "Minecraft\u2019\u0131 \xE7ook seviyorum! <3 Seni oynarken izlemek
+      \xE7ok e\u011Flenceli! Yuppii!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498200799584256
+    m_Localized: "Kesinlikle tatl\u0131 bir k\xF6pek almal\u0131y\u0131z!! Hadi birini
+      evcille\u015Ftirelim! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499007469101056
+    m_Localized: "Dikkat et! Can\u0131n \xE7ok az\u2026 bir \u015Feyler ye!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499008760946688
+    m_Localized: "Ah hay\u0131r\u2026 l\xFCtfen \xF6-\xF6lme, olur mu? </3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499009935351808
+    m_Localized: "Sorun yok! Hayatta kalabiliriz, merak etme! Yeme\u011Fe ya da,
+      hmm\u2026 iyile\u015Ftirme iksirlerine ihtiyac\u0131m\u0131z var! Ya da alt\u0131n
+      elmaya!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499492481638400
+    m_Localized: "Sen hangisini daha \xE7ok seviyorsun? Geceyi mi yoksa g\xFCnd\xFCz\xFC
+      m\xFC? Ben en \xE7ok geceyi seviyorum! Y\u0131ld\u0131zlar harika! Ama gece
+      \xE7\u0131kan yarat\u0131klardan nefret ediyorum >_< <33"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499493685403648
+    m_Localized: "Hava karar\u0131yor mu?? Dikkatli olmal\u0131y\u0131z!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499494822060032
+    m_Localized: La di da di duu! Laa laa laa li louuu! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500969312854016
+    m_Localized: "Enderman\u2019lere bakma! Utanga\xE7lar ama k\u0131zd\u0131klar\u0131nda
+      s\xFCper korkun\xE7 oluyorlar!! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500970667614208
+    m_Localized: "Asla d\xFCmd\xFCz a\u015Fa\u011F\u0131 kazma! Yoksa \u2018weeee\u2014AAAH!!\u2019
+      diye lav\u0131n i\xE7ine d\xFC\u015Fersin! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500972060123136
+    m_Localized: "Her zaman yedek aletler getir! Kazman ne zaman \u2018\xE7\u0131t!\u2019
+      diye k\u0131r\u0131lacak bilemezsin!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500973540712448
+    m_Localized: "Yan\u0131nda biraz yiyecek bulundur, tamam m\u0131? A\xE7 maceralara
+      izin yok! Nam nam <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501548428795904
+    m_Localized: "Mhh\u2026 Karn\u0131n yine gurulduyor, de\u011Fil mi? Hehe~ Nam
+      nam zaman\u0131! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501549779361792
+    m_Localized: "Hey hey!! Bay\u0131lmadan \xF6nce bir \u015Feyler ye! Bo\u015F
+      mideyle sava\u015Famay\u0131z >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501550978932736
+    m_Localized: "Eeeh~ yine mi ac\u0131kt\u0131n!? Hadi lezzetli bir \u015Feyler
+      yiyelim, ne oluuur! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501552463716352
+    m_Localized: "Ha!? A\xE7l\u0131k bar\u0131n \xE7ok d\xFC\u015F\xFCk!! \xC7abuk,
+      yemek zaman\u0131! Nam nam <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780049190985728
+    m_Localized: BUY $4,99
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780306805137408
+    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
+      to speak during specific events, such as discovering new biomes or when a monster
+      appears behind you. She reacts to your gameplay and comments on what you do.
+      Support MateEngine on Steam to unlock this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051929866240
+    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
+      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
+      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
+      and more.
+
+
+      MateEngine costs around 4.99 USD. If you cannot afford it,
+      the essential features stay free forever. If you can, consider supporting me
+      for future updates. Thank you!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051216834560
+    m_Localized: Minecraft Integration
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

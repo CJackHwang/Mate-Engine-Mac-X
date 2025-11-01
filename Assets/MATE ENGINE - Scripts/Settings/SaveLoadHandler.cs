@@ -171,8 +171,10 @@ public class SaveLoadHandler : MonoBehaviour
 
         public int settingsVersion = 0;
         public bool alarmsEnabled = true;
+        public bool enableMinecraftMessages = false;
 
         public string selectedParticleTheme = "Standard";
+        public bool enableFeedSystem = false;
 
         //ALARM
         [Serializable]
@@ -262,6 +264,8 @@ public class SaveLoadHandler : MonoBehaviour
                 avatar.isDragging = false;
             }
 
+            foreach (var food in Resources.FindObjectsOfTypeAll<AvatarFoodController>())
+                food.SetFeatureEnabled(Instance.data.enableFeedSystem);
 
             foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
                 handler.windowSitYOffset = data.windowSitYOffset;

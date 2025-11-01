@@ -675,6 +675,250 @@ MonoBehaviour:
     m_Key: MEM_OPTI
     m_Metadata:
       m_Items: []
+  - m_Id: 74066854415474688
+    m_Key: MC_ENTITY_01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100562044428288
+    m_Key: MC_DAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100573499072512
+    m_Key: MC_NIGHT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100702608138240
+    m_Key: MC_LOWHP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100749752115200
+    m_Key: MC_LOWHUNGER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74137876288282624
+    m_Key: TIP_MC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149153014325248
+    m_Key: MC_DEATH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149154457165824
+    m_Key: MC_RAIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149155774177280
+    m_Key: MC_DROWNING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149157028274176
+    m_Key: MC_SLEEP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149158324314112
+    m_Key: MC_CRAFTING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429045333336064
+    m_Key: TIP_D_SYNC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429046658736128
+    m_Key: TIP_D_LOCK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473517958078464
+    m_Key: MC_EAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473519275089920
+    m_Key: MC_KILL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473520520798208
+    m_Key: MC_BIOME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494164503404544
+    m_Key: MC_EAT_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494166046908416
+    m_Key: MC_EAT_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494167372308480
+    m_Key: MC_EAT_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494450139701248
+    m_Key: MC_BIOME_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494451326689280
+    m_Key: MC_BIOME_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494452492705792
+    m_Key: MC_BIOME_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495033496084480
+    m_Key: MC_KILL_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495035303829504
+    m_Key: MC_KILL_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495036486623232
+    m_Key: MC_KILL_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495491606355968
+    m_Key: MC_CRAFTING_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495493175025664
+    m_Key: MC_CRAFTING_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495494441705472
+    m_Key: MC_CRAFTING_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496053102026752
+    m_Key: MC_RAIN_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496054406455296
+    m_Key: MC_RAIN_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496454551445504
+    m_Key: MC_ENTITY_02
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496467176300544
+    m_Key: MC_ENTITY_03
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470120701952
+    m_Key: MC_ENTITY_04
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470980534272
+    m_Key: MC_ENTITY_05
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497067465089024
+    m_Key: MC_SLEEP_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497074909978624
+    m_Key: MC_SLEEP_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497077372035072
+    m_Key: MC_SLEEP_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497599856484352
+    m_Key: MC_DEATH_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497601844584448
+    m_Key: MC_DEATH_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497603958513664
+    m_Key: MC_DEATH_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498198488522752
+    m_Key: MC_DAY_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498199964917760
+    m_Key: MC_DAY_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498200799584256
+    m_Key: MC_DAY_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499007469101056
+    m_Key: MC_LOWHP_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499008760946688
+    m_Key: MC_LOWHP_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499009935351808
+    m_Key: MC_LOWHP_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499492481638400
+    m_Key: MC_NIGHT_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499493685403648
+    m_Key: MC_NIGHT_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499494822060032
+    m_Key: MC_NIGHT_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500969312854016
+    m_Key: MC_DAY_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500970667614208
+    m_Key: MC_DAY_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500972060123136
+    m_Key: MC_DAY_7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500973540712448
+    m_Key: MC_DAY_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501548428795904
+    m_Key: MC_LOWHUNGER_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501549779361792
+    m_Key: MC_LOWHUNGER_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501550978932736
+    m_Key: MC_LOWHUNGER_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501552463716352
+    m_Key: MC_LOWHUNGER_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780049190985728
+    m_Key: BUY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051216834560
+    m_Key: MC_INTEGRATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051929866240
+    m_Key: DLC_INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780306805137408
+    m_Key: MC_INFO
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -44,6 +44,10 @@ public class PetVoiceReactionHandler : MonoBehaviour
         [Range(20f, 600f)] public float patWiggleDistance = 180f;
         [Range(1, 10)] public int patWiggleDirectionChanges = 3;
 
+        [Header("Per-Region State Whitelist")]
+        [SerializeField] public List<string> stateWhitelist = new List<string>();
+        [HideInInspector] public HashSet<int> whitelistHashes = new HashSet<int>();
+
         [HideInInspector] public bool patHasLast;
         [HideInInspector] public Vector2 patLastPos;
         [HideInInspector] public Vector2 patLastMove;
@@ -63,7 +67,10 @@ public class PetVoiceReactionHandler : MonoBehaviour
     public AudioSource voiceAudioSource;
     public AudioSource layeredAudioSource;
     public bool showDebugGizmos = true;
+
+    [Header("Global State Whitelist")]
     [SerializeField] public List<string> stateWhitelist = new List<string>();
+
     [Range(0f, 0.1f)] public float checkInterval = 0.02f;
 
     [Header("OS Occlusion")]
@@ -79,7 +86,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
 
     readonly HashSet<int> boolParams = new HashSet<int>();
     bool hasIsMaleParam;
-    readonly HashSet<int> whitelistHashes = new HashSet<int>();
+    readonly HashSet<int> globalWhitelistHashes = new HashSet<int>();
 
     AvatarBigScreenHandler cachedBigScreen;
     FieldInfo bigScreenFlag;
@@ -113,14 +120,19 @@ public class PetVoiceReactionHandler : MonoBehaviour
         for (int i = 0; i < ps.Length; i++)
             if (ps[i].nameHash == isMaleHash) { hasIsMaleParam = true; break; }
 
-        whitelistHashes.Clear();
+        globalWhitelistHashes.Clear();
         for (int i = 0; i < stateWhitelist.Count; i++)
             if (!string.IsNullOrEmpty(stateWhitelist[i]))
-                whitelistHashes.Add(Animator.StringToHash(stateWhitelist[i]));
+                globalWhitelistHashes.Add(Animator.StringToHash(stateWhitelist[i]));
 
         for (int i = 0; i < regions.Count; i++)
         {
             var region = regions[i];
+            region.whitelistHashes.Clear();
+            for (int s = 0; s < region.stateWhitelist.Count; s++)
+                if (!string.IsNullOrEmpty(region.stateWhitelist[s]))
+                    region.whitelistHashes.Add(Animator.StringToHash(region.stateWhitelist[s]));
+
             region.bone = avatarAnimator.GetBoneTransform(region.targetBone);
             region.hoverLayerIndex = GetLayerIndexByName(region.hoverAnimationLayer);
             region.faceLayerIndex = GetLayerIndexByName(region.faceAnimationLayer);
@@ -180,8 +192,6 @@ public class PetVoiceReactionHandler : MonoBehaviour
         bool occluded = blockWhenCovered && IsOccludedByOS();
         bool anyBlocked = menuBlocked || bigScreenBlocked || occluded;
 
-        bool stateOk = IsStateAllowedOnce();
-
         for (int r = 0; r < regions.Count; r++)
         {
             var region = regions[r];
@@ -201,6 +211,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
             bool hovering = dist2 <= radius2;
 
             bool genderAllowed = IsRegionAllowedByGender(region);
+            bool stateOk = IsStateAllowedForRegion(region);
 
             if (hovering && !region.wasHovering && stateOk && !anyBlocked && genderAllowed)
             {
@@ -349,12 +360,16 @@ public class PetVoiceReactionHandler : MonoBehaviour
             layeredAudioSource.PlayOneShot(region.layeredVoiceClips[Random.Range(0, region.layeredVoiceClips.Count)]);
     }
 
-    bool IsStateAllowedOnce()
+    bool IsStateAllowedForRegion(VoiceRegion region)
     {
-        if (avatarAnimator == null || whitelistHashes.Count == 0) return false;
+        if (avatarAnimator == null) return false;
         var st = avatarAnimator.GetCurrentAnimatorStateInfo(0);
         int h = st.shortNameHash;
-        return whitelistHashes.Contains(h);
+        if (region.whitelistHashes != null && region.whitelistHashes.Count > 0)
+            return region.whitelistHashes.Contains(h);
+        if (globalWhitelistHashes.Count > 0)
+            return globalWhitelistHashes.Contains(h);
+        return false;
     }
 
     bool IsRegionAllowedByGender(VoiceRegion region)

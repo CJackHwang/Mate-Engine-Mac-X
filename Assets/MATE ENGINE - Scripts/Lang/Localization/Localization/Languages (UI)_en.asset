@@ -976,6 +976,289 @@ MonoBehaviour:
     m_Localized: MEM. Optimizations
     m_Metadata:
       m_Items: []
+  - m_Id: 74066854415474688
+    m_Localized: "Oh no\u2026 there\u2019s a <Entity> right next to you! Stay safe!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100562044428288
+    m_Localized: Oh, look! What a wonderful day!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100573499072512
+    m_Localized: "Oh, it\u2019s getting dark! Stay safe, o-okay?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100702608138240
+    m_Localized: Oh no! Please stay safe, your health is low!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100749752115200
+    m_Localized: "Cutie, don\u2019t forget to eat! You look so hungry >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74137876288282624
+    m_Localized: 'This enables cross-interaction between MateEngine and Minecraft.
+      When activated, it shows cute messages during key moments: when day or night
+      begins, when a dangerous mob is nearby, when your health or hunger is low,
+      when you craft something, die, the weather changes, or you go to sleep. To
+      use this feature, install the Minecraft mod for Forge. Currently supported
+      version: Minecraft 1.21.10. You can download the mod using the CurseForge launcher
+      or by clicking the Download button.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149153014325248
+    m_Localized: "Oh no... you died! It\u2019s okay, everything will be alright."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149154457165824
+    m_Localized: "Look, it\u2019s raining! Whoa!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149155774177280
+    m_Localized: "Hey, you\u2019re drowning! Get some air, please!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149157028274176
+    m_Localized: Sleepy time! Time for bed. Good night <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149158324314112
+    m_Localized: Whoa, what did you just craft here?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429045333336064
+    m_Localized: Sync Mode enables dance synchronization across all MateEngine instances.
+      When activated, all avatars on your monitor will perform the same dance in
+      perfect sync. Make sure to launch the other instances from the main instance,
+      otherwise synchronization will not work.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429046658736128
+    m_Localized: "Lock Mode (Experimental) adds camera tracking to dances. Some dance
+      files include large left or right movements that can move the avatar outside
+      the visible play space. Enabling Lock Mode makes the engine window follow the
+      avatar\u2019s motion, preventing it from moving out of bounds."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473517958078464
+    m_Localized: Yay!! Some food! Yummy!! ^-^
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473519275089920
+    m_Localized: Woah!! What a fight!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473520520798208
+    m_Localized: Mmh.. I think this is... oh right! This is a <biome>!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494164503404544
+    m_Localized: Mhh! Yummyy!! I hope it tasted good! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494166046908416
+    m_Localized: I love food!! Give me some too!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494167372308480
+    m_Localized: I can imagine! It was tasty, right? <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494450139701248
+    m_Localized: Woah! We are now in <biome>! Amazing! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494451326689280
+    m_Localized: Weee! <biome> is such a cool place, right? :D <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494452492705792
+    m_Localized: "I-I know this place! It\u2019s <biome>, right??"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495033496084480
+    m_Localized: "Ohh!.. You\u2019re so good!! I\u2019m glad you\u2019re so strong!
+      <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495035303829504
+    m_Localized: Whoops! Looks like something died here! ^-^
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495036486623232
+    m_Localized: "Amazing! You\u2019re so good at Minecraft!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495491606355968
+    m_Localized: Ohh.. What are you crafting?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495493175025664
+    m_Localized: Ohh.. What are you crafting?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495494441705472
+    m_Localized: 'What are we crafting here..? o:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496053102026752
+    m_Localized: Oh.. Sometimes I really love the rain, you know? It can be so calming!
+      <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496054406455296
+    m_Localized: "It\u2019s raining, it\u2019s raining, it\u2019s raining!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496454551445504
+    m_Localized: "Ohh! Take care, there\u2019s a <entity>!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496467176300544
+    m_Localized: <entity> right next to you! T-take care!! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470120701952
+    m_Localized: "Mhh.. I think there\u2019s a <entity>! Stay safe!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470980534272
+    m_Localized: <entity>!! Oh no!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497067465089024
+    m_Localized: "Ohh, I\u2019m very eepy too!! Let\u2019s have a power nap and cuddle
+      up!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497074909978624
+    m_Localized: "Good night! Tomorrow will be a big day for you, okay? Promise me
+      you\u2019ll sleep! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497077372035072
+    m_Localized: Nighty night! Sleep well!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497599856484352
+    m_Localized: "Ohhh no...!! >_< I-It\u2019s okay! You\u2019re not playing on hardcore
+      mode, r-right?? Y-You can just respawn..! Right?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497601844584448
+    m_Localized: "Okay, don\u2019t worry! Time to respawn and get that loot back!
+      <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497603958513664
+    m_Localized: If you die, I die too!! >_< <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498198488522752
+    m_Localized: Mhhh.. What are our plans today? We could visit some new biomes
+      and go on a journey! Or maybe build something!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498199964917760
+    m_Localized: I love Minecraft so much! <3 Watching you play is so fun! Yippee!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498200799584256
+    m_Localized: "We should definitely get a cute dog!! Let\u2019s tame one! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499007469101056
+    m_Localized: "Take care! You have low health\u2026 eat something!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499008760946688
+    m_Localized: "Oh no.. please d-don\u2019t die </3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499009935351808
+    m_Localized: "It\u2019s all good! We can survive, don\u2019t worry! We need food
+      or, ehh, heal potions! Or a golden apple!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499492481638400
+    m_Localized: What do you like more? The night or the day? I love the night the
+      most! Wonderful stars! But I hate all the mobs at night >_< <33
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499493685403648
+    m_Localized: Is it getting dark?? We should be careful!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499494822060032
+    m_Localized: La di da di duu! Laa laa laa li louuu! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500969312854016
+    m_Localized: "Don\u2019t stare at endermen! They\u2019re shy but super scary
+      when mad!! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500970667614208
+    m_Localized: "Never dig straight down! Or you\u2019ll fall like \u201Cweeee\u2014AAAH!!\u201D
+      into lava! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500972060123136
+    m_Localized: Always bring extra tools! You never know when your pickaxe goes
+      crack! and breaks!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500973540712448
+    m_Localized: Keep some food with you, okay? No hungry adventures allowed! Nom
+      nom <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501548428795904
+    m_Localized: "Mhh.. your tummy\u2019s rumbling again, isn\u2019t it? Hehe~ time
+      for nom noms! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501549779361792
+    m_Localized: "Oi oi!! Eat something before you faint! We can\u2019t fight on
+      an empty stomach >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501550978932736
+    m_Localized: "Eeeh~ you\u2019re hungry again!? Let\u2019s grab something tasty,
+      pleaaase! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501552463716352
+    m_Localized: Huh!? Your hunger bar is low!! Quick, food time! Munch munch <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780049190985728
+    m_Localized: BUY $4,99
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780306805137408
+    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
+      to speak during specific events, such as discovering new biomes or when a monster
+      appears behind you. She reacts to your gameplay and comments on what you do.
+      Support MateEngine on Steam to unlock this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051929866240
+    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
+      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
+      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
+      and more.
+
+
+      MateEngine costs around 4.99 USD. If you cannot afford it,
+      the essential features stay free forever. If you can, consider supporting me
+      for future updates. Thank you!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051216834560
+    m_Localized: Minecraft Integration
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

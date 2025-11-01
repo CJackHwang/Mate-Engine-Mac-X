@@ -19,12 +19,16 @@ namespace Xamin
         public Color customColor;
         public bool useCustomColor;
 
-        // --- NEU: HIDE CONDITION FIELDS ---
         [Header("Button Hide Conditions")]
         [Tooltip("Button wird ausgeblendet, wenn einer dieser Animator-Bool-Parameter true ist (z.B. IsSitting, IsWindowsSit)")]
         public string[] hideIfAnimatorBool;
         [Tooltip("Button wird ausgeblendet, wenn einer dieser States im Base Layer aktiv ist (z.B. Sit, WindowsSit)")]
         public string[] hideIfStateName;
+
+        [Header("Show Only If Animator Bool (true)")]
+        public string[] showOnlyIfAnimatorBool;
+        public string[] showOnlyIfStateName;
+
 
         private UnityEngine.UI.Image imageComponent;
         private bool _isimageComponentNotNull;

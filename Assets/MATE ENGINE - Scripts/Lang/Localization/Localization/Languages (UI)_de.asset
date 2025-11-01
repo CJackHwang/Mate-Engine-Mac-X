@@ -954,50 +954,58 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71470101493227520
-    m_Localized: "Friday \u2013 pressing this button will activate the alarm on every
-      Friday. You can select additional days or keep it set to only Friday."
+    m_Localized: "Freitag \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm jeden
+      Freitag aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden oder
+      es bleibt nur bei Freitag."
     m_Metadata:
       m_Items: []
   - m_Id: 71470100155244544
-    m_Localized: "Thursday \u2013 pressing this button will activate the alarm on
-      every Thursday. You can select additional days or keep it set to only Thursday."
+    m_Localized: "Donnerstag \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm
+      jeden Donnerstag aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden
+      oder es bleibt nur bei Donnerstag."
     m_Metadata:
       m_Items: []
   - m_Id: 71470098959867904
-    m_Localized: "Wednesday \u2013 pressing this button will activate the alarm on
-      every Wednesday. You can select additional days or keep it set to only Wednesday."
+    m_Localized: "Mittwoch \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm jeden
+      Mittwoch aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden oder
+      es bleibt nur bei Mittwoch."
     m_Metadata:
       m_Items: []
   - m_Id: 71470097592524800
-    m_Localized: "Tuesday \u2013 pressing this button will activate the alarm on
-      every Tuesday. You can select additional days or keep it set to only Tuesday."
+    m_Localized: "Dienstag \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm jeden
+      Dienstag aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden oder
+      es bleibt nur bei Dienstag."
     m_Metadata:
       m_Items: []
   - m_Id: 71470095960940544
-    m_Localized: "Monday \u2013 pressing this button will activate the alarm on every
-      Monday. You can select additional days or keep it set to only Monday."
+    m_Localized: "Montag \u2013 Wenn du diesen Knopf dr\xFCckst, wird der Alarm jeden
+      Montag aktiviert. Du kannst zus\xE4tzliche Tage ausw\xE4hlen oder es auf nur
+      Montag belassen."
     m_Metadata:
       m_Items: []
   - m_Id: 71470109877641216
-    m_Localized: "Sunday \u2013 pressing this button will activate the alarm on every
-      Sunday. You can select additional days or keep it set to only Sunday."
+    m_Localized: "Sonntag \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm jeden
+      Sonntag aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden oder
+      es bleibt nur bei Sonntag."
     m_Metadata:
       m_Items: []
   - m_Id: 71470107461722112
-    m_Localized: "Saturday \u2013 pressing this button will activate the alarm on
-      every Saturday. You can select additional days or keep it set to only Saturday."
+    m_Localized: "Samstag \u2013 Durch Dr\xFCcken dieses Knopfs wird der Alarm jeden
+      Samstag aktiviert; zus\xE4tzliche Tage k\xF6nnen ausgew\xE4hlt werden oder
+      es bleibt nur bei Samstag."
     m_Metadata:
       m_Items: []
   - m_Id: 71470682064592896
-    m_Localized: This is the alarm feature. On the left, you can set the hour (displayed
-      in both AM/PM and 24-hour format). On the right, you can set the minutes. You
-      can also select the days when the alarm should ring. If no days are selected,
-      the alarm will ring every day at the set time. To have it ring only on specific
-      days, select the desired days.
+    m_Localized: "Dies ist die Alarmfunktion. Links kannst du die Stunde einstellen
+      (angezeigt im 12-Stunden- und 24-Stunden-Format). Rechts kannst du die Minuten
+      einstellen. Au\xDFerdem kannst du die Wochentage ausw\xE4hlen, an denen der
+      Alarm klingeln soll. Werden keine Tage ausgew\xE4hlt, klingelt der Alarm t\xE4glich
+      zur eingestellten Zeit. Um den Alarm nur an bestimmten Tagen klingeln zu lassen,
+      w\xE4hle die gew\xFCnschten Tage aus."
     m_Metadata:
       m_Items: []
   - m_Id: 71751708213026816
-    m_Localized: Add New Alarm
+    m_Localized: "Neuen Alarm hinzuf\xFCgen"
     m_Metadata:
       m_Items: []
   - m_Id: 71751796721229824
@@ -1009,39 +1017,328 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71751949909794816
-    m_Localized: TUE.
+    m_Localized: DIE.
     m_Metadata:
       m_Items: []
   - m_Id: 71751951579127808
-    m_Localized: WED.
+    m_Localized: MIT.
     m_Metadata:
       m_Items: []
   - m_Id: 71751953068105728
-    m_Localized: THU.
+    m_Localized: DON.
     m_Metadata:
       m_Items: []
   - m_Id: 71751954464808960
-    m_Localized: FRI.
+    m_Localized: FREI.
     m_Metadata:
       m_Items: []
   - m_Id: 71751955819569152
-    m_Localized: SAT.
+    m_Localized: SAM.
     m_Metadata:
       m_Items: []
   - m_Id: 71751956985585664
-    m_Localized: SUN.
+    m_Localized: SON.
     m_Metadata:
       m_Items: []
   - m_Id: 71752554812317696
-    m_Localized: Windows Sitting Y Offset
+    m_Localized: Windows Sitzposition Y-Offset
     m_Metadata:
       m_Items: []
   - m_Id: 71752669165821952
-    m_Localized: ERROR!
+    m_Localized: FEHLER!
     m_Metadata:
       m_Items: []
   - m_Id: 71752800506257408
-    m_Localized: MEM. Optimizations
+    m_Localized: MEM. Opitmierung
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74066854415474688
+    m_Localized: "Oh nein.. da ist ein <Entity> in deiner n\xE4he!! sei vorsichtig
+      okay??"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100562044428288
+    m_Localized: "Oh, schau mal.. was f\xFCr ein sch\xF6ner Tag!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100573499072512
+    m_Localized: Oh.. es wird dunkel! sei vorsichtig.. o-okay?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100702608138240
+    m_Localized: Oh nein! Sei vorsichtig, du hast kaum noch Leben!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74100749752115200
+    m_Localized: "S\xFC\xDFer, vergiss nicht zu essen! Du siehst so hungrig aus >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74137876288282624
+    m_Localized: "Diese Funktion erm\xF6glicht die Interaktion zwischen MateEngine
+      und Minecraft und zeigt niedliche Nachrichten bei wichtigen Momenten wie Tageswechsel,
+      gef\xE4hrlichen Mobs in der N\xE4he, niedrigem Gesundheits- oder Hungerzustand,
+      beim Craften, Sterben, Wetter\xE4nderungen oder Schlafen; zur Nutzung installiere
+      den Minecraft-Mod f\xFCr Forge (Version 1.21.10) \xFCber den CurseForge-Launcher
+      oder den Download-Button."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149153014325248
+    m_Localized: "Oh nein\u2026 du bist gestorben! Aber keine Sorge, alles wird wieder
+      gut."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149154457165824
+    m_Localized: Schau mal, es regnet! Wow!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149155774177280
+    m_Localized: Hey, du bist am ertrinken! Hol bitte etwas Luft!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149157028274176
+    m_Localized: Schlummerzeit! Ab ins Bett. Gute Nacht <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149158324314112
+    m_Localized: Whoa, was hast du hier gerade gecraftet?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429045333336064
+    m_Localized: "Der Sync-Modus erm\xF6glicht die Tanzsynchronisation \xFCber alle
+      MateEngine-Instanzen hinweg.\nWenn aktiviert, f\xFChren alle Avatare auf deinem
+      Monitor denselben Tanz perfekt synchron aus.\nStelle sicher, dass du die anderen
+      Instanzen von der Hauptinstanz aus startest, da die Synchronisation sonst nicht
+      funktioniert."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74429046658736128
+    m_Localized: "Der Lock-Modus (Experimentell) f\xFCgt den T\xE4nzen eine Kamera-Verfolgung
+      hinzu; einige Tanzdateien enthalten gro\xDFe Bewegungen nach links oder rechts,
+      die den Avatar aus dem sichtbaren Spielfeld bewegen k\xF6nnten, aber wenn der
+      Lock-Modus aktiviert ist, folgt das Engine-Fenster den Bewegungen des Avatars,
+      sodass er nicht aus dem Sichtbereich herausrutscht."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473517958078464
+    m_Localized: Juhu!! Essen!! Lecker!! ^-^
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473519275089920
+    m_Localized: Wow!! So ein Kampf!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74473520520798208
+    m_Localized: "Mmh\u2026 ich glaube, das ist\u2026 ach richtig! Das ist ein <biome>!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494164503404544
+    m_Localized: Mmh, so lecker!! Hoffentlich hat es dir geschmeckt! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494166046908416
+    m_Localized: Ich liebe Essen!! Gib mir auch was!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494167372308480
+    m_Localized: Ich kann es mir vorstellen! Es war lecker, nicht war? <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494450139701248
+    m_Localized: Whoa! Wir sind jetzt im <biome>! Unglaublich! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494451326689280
+    m_Localized: Weee! <biome> ist so ein cooler Ort, oder? :D <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74494452492705792
+    m_Localized: I-Ich kenne diesen Ort! Das ist <biome>, oder??
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495033496084480
+    m_Localized: Wow! Du bist echt stark!! Ich freu mich, wie gut du bist! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495035303829504
+    m_Localized: "Hoppla! Sieht so aus, als w\xE4re hier etwas gestorben! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495036486623232
+    m_Localized: Unglaublich! Du bist so gut in Minecraft!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495491606355968
+    m_Localized: Ohh.. was craftest du da?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495493175025664
+    m_Localized: Ohh.. What are you crafting?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74495494441705472
+    m_Localized: 'Was craften wir hier..? o:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496053102026752
+    m_Localized: "Ah.. Manchmal liebe ich den regen, wei\xDFt du? Es kann so beruhigend
+      sein! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496054406455296
+    m_Localized: Es regnet, Es regnet, Es regnet!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496454551445504
+    m_Localized: Ohh! Pass auf, Da ist ein <entity>!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496467176300544
+    m_Localized: <entity> direkt neben dir! P-Pass auf!! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470120701952
+    m_Localized: Mhh.. Ich glaub da ist ein <entity>! Pass auf!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74496470980534272
+    m_Localized: <entity>!! Oh nein!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497067465089024
+    m_Localized: "Ohh, Ich bin auch schl\xE4frig!! Lass uns einen Powernap machen
+      und uns kuddeln!! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497074909978624
+    m_Localized: "Gute Nacht! Morgen wird ein gro\xDFer Tag f\xFCr dich, okay? Versprich
+      mir, dass du schlafen gehst! ^-^"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497077372035072
+    m_Localized: "N\xE4chtle! Schlaf gut!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497599856484352
+    m_Localized: Ohhh nein...!! >_< E-Es ist okay! Du spielst ja nicht auf hardcore,
+      n-nicht wahr?? D-Du kannst einfach respawnen..! Oder?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497601844584448
+    m_Localized: "Okay, Keine Sorge! Zeit zu respawnen und den Loot wieder zur\xFCck
+      bekommen! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74497603958513664
+    m_Localized: Wenn du stirbst, sterb ich auch!! >_< <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498198488522752
+    m_Localized: "Mhhh.. Was sind unsere Pl\xE4ne f\xFCr heute? Wir k\xF6nnten neue
+      Biome erkunden und auf ein Abenteuer gehen! Oder villeicht etwas bauen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498199964917760
+    m_Localized: "Ich liebe Minecraft so viel! <3 Dir beim Spielen zu zuschauen macht
+      so viel Spa\xDF! Yippee!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74498200799584256
+    m_Localized: "Wir sollten definitiv einen s\xFC\xDFen Hund haben!! Lass uns einen
+      z\xE4hmen! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499007469101056
+    m_Localized: "Pass auf! Du hast wenig Leben\u2026 iss was!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499008760946688
+    m_Localized: Oh nein.. bitte s-stirb nicht</3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499009935351808
+    m_Localized: "Es ist alles gut! Wir k\xF6nnen \xFCberleben, keine Sorge! Wir
+      brauchen was zu essen, ehh, Heiltr\xE4nke! Oder einen goldenen Apfel!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499492481638400
+    m_Localized: "Was magst du lieber? Die Nacht, oder den Tag? Ich mag die Nacht
+      am meisten! Wundersch\xF6ne Sterne! Aber ich hasse alle Mobs in der Nacht >_<
+      <33"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499493685403648
+    m_Localized: Es wird Nacht?? Wir sollten aufpassen!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74499494822060032
+    m_Localized: La di da di duu! Laa laa laa li louuu! <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500969312854016
+    m_Localized: "Starre nicht auf die Endermen! Sie sind sch\xFCchtern aber sehr
+      gruselig, wenn sie ver\xE4rgert sind!! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500970667614208
+    m_Localized: "Grabe niemals gerade nach unten! Oder du wirst wie \u201Cweeee\u2014AAAH!!\u201D
+      in die Lava fallen! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500972060123136
+    m_Localized: Nimm immer extra Tools mit dir! Du kannst niemals wissen, wann deine
+      Spitzhacke kracht! Und bricht!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74500973540712448
+    m_Localized: Stell dir sicher, dass du immer was zu essen hast, Ja? Keine hungrigen
+      Abenteuer erlaubt! Nom nom <3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501548428795904
+    m_Localized: "Mhh.. dein Magen knurrt schon wieder, oder? Hehe~ Zeit f\xFCr deine
+      nom noms! <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501549779361792
+    m_Localized: "Oi oi!! Iss bevor du ohnm\xE4chtig f\xE4llst! Wir k\xF6nnen nicht
+      auf einen leeren Magen k\xE4mpfen! >_<"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501550978932736
+    m_Localized: Eeeh~ Du bist schon wieder hungrig!? Lass uns bitte was zu essen
+      besorgen, bitteeeeeeee! ^-^
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74501552463716352
+    m_Localized: "H\xE4!? Dein Hunger Balken ist schon wieder niedrig!! Schnell,
+      Iss was! Kau Kau <3"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780049190985728
+    m_Localized: BUY $4,99
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780306805137408
+    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
+      to speak during specific events, such as discovering new biomes or when a monster
+      appears behind you. She reacts to your gameplay and comments on what you do.
+      Support MateEngine on Steam to unlock this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051929866240
+    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
+      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
+      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
+      and more.
+
+
+      MateEngine costs around 4.99 USD. If you cannot afford it,
+      the essential features stay free forever. If you can, consider supporting me
+      for future updates. Thank you!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74780051216834560
+    m_Localized: Minecraft Integration
     m_Metadata:
       m_Items: []
   references:
