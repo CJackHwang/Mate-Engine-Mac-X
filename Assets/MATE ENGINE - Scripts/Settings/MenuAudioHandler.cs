@@ -17,6 +17,7 @@ public class MenuAudioHandler : MonoBehaviour
     public float startupPitchMin = 1f;
     public float startupPitchMax = 1f;
     [Range(0f, 1f)] public float startupVolume = 1f;
+    [Range(0f, 10f)] public float startupDelaySeconds = 3f;
 
     [Header("Open Menu Sounds")]
     public List<AudioClip> openMenuSounds = new List<AudioClip>();
@@ -57,41 +58,43 @@ public class MenuAudioHandler : MonoBehaviour
     private HashSet<Slider> activeSliders = new HashSet<Slider>();
     private bool wasMenuOpenLastFrame = false;
     private float disableTimer = 0f;
-    private bool hasPlayedStartupSound = false;
+    private static bool s_startupPlayed;
 
     private void OnEnable()
     {
         SetupUIListeners();
         StartCoroutine(MenuMonitor());
+        StartCoroutine(PlayStartupDelayed());
+    }
+
+    private IEnumerator PlayStartupDelayed()
+    {
+        if (s_startupPlayed) yield break;
+        while (SaveLoadHandler.Instance == null || SaveLoadHandler.Instance.data == null) yield return null;
+        yield return new WaitForSecondsRealtime(startupDelaySeconds);
+        if (s_startupPlayed) yield break;
+        if (startupSounds == null || startupSounds.Count == 0) { s_startupPlayed = true; yield break; }
+        float volMul = 1f;
+        if (SaveLoadHandler.Instance != null) volMul = SaveLoadHandler.Instance.data.menuVolume;
+        float finalVol = startupVolume * volMul;
+        if (finalVol <= 0f) { s_startupPlayed = true; yield break; }
+        if (audioSource != null && !audioSource.gameObject.activeSelf) audioSource.gameObject.SetActive(true);
+        if (audioSource == null) { s_startupPlayed = true; yield break; }
+        audioSource.pitch = Random.Range(startupPitchMin, startupPitchMax);
+        audioSource.PlayOneShot(startupSounds[Random.Range(0, startupSounds.Count)], finalVol);
+        s_startupPlayed = true;
     }
 
     private IEnumerator MenuMonitor()
     {
         while (true)
         {
-            bool isOpen = /* AvatarSettingsMenu.IsMenuOpen || */AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive;
-
-
-            if (!hasPlayedStartupSound && SaveLoadHandler.Instance?.data != null)
-            {
-                // Only play once menuVolume is actually set
-                float menuVol = SaveLoadHandler.Instance.data.menuVolume;
-                if (menuVol > 0f)
-                {
-                    PlaySound(startupSounds, startupPitchMin, startupPitchMax, startupVolume);
-                    hasPlayedStartupSound = true;
-                }
-            }
-
+            bool isOpen = AvatarClothesHandler.IsMenuOpen || TutorialMenu.IsActive;
 
             if (isOpen)
             {
-                if (audioSource != null && !audioSource.gameObject.activeSelf)
-                    audioSource.gameObject.SetActive(true);
-
-                if (!wasMenuOpenLastFrame)
-                    PlaySound(openMenuSounds, openMenuPitchMin, openMenuPitchMax, openMenuVolume);
-
+                if (audioSource != null && !audioSource.gameObject.activeSelf) audioSource.gameObject.SetActive(true);
+                if (!wasMenuOpenLastFrame) PlaySound(openMenuSounds, openMenuPitchMin, openMenuPitchMax, openMenuVolume);
                 disableTimer = 0f;
             }
             else
@@ -101,7 +104,6 @@ public class MenuAudioHandler : MonoBehaviour
                     disableTimer = Time.time + disableDelay;
                     PlaySound(closeMenuSounds, closeMenuPitchMin, closeMenuPitchMax, closeMenuVolume);
                 }
-
                 if (disableTimer != 0f && Time.time >= disableTimer && audioSource != null && audioSource.gameObject.activeSelf)
                 {
                     audioSource.gameObject.SetActive(false);
@@ -116,18 +118,11 @@ public class MenuAudioHandler : MonoBehaviour
 
     private void SetupUIListeners()
     {
-        if (audioSource == null)
-        {
-            Debug.LogWarning("MenuAudioHandler: AudioSource not assigned.");
-            return;
-        }
+        if (audioSource == null) return;
 
         foreach (var button in GetComponentsInChildren<Button>(true))
-        {
             if (button.GetComponent<ButtonLinker>() == null)
                 button.onClick.AddListener(() => PlaySound(buttonSounds, buttonPitchMin, buttonPitchMax, buttonVolume));
-        }
-
 
         foreach (var toggle in GetComponentsInChildren<Toggle>(true))
             toggle.onValueChanged.AddListener((_) => PlaySound(toggleSounds, togglePitchMin, togglePitchMax, toggleVolume));
@@ -161,45 +156,30 @@ public class MenuAudioHandler : MonoBehaviour
 
     private void PlaySound(List<AudioClip> clips, float pitchMin, float pitchMax, float volume)
     {
-        if (clips == null || clips.Count == 0 || audioSource == null || !audioSource.gameObject.activeSelf)
-            return;
-
-        float menuVolumeMultiplier = 1f;
-        if (SaveLoadHandler.Instance != null)
-        {
-            menuVolumeMultiplier = SaveLoadHandler.Instance.data.menuVolume;
-        }
-
-        float finalVolume = volume * menuVolumeMultiplier;
-        if (finalVolume <= 0f) return;
-
+        if (clips == null || clips.Count == 0 || audioSource == null || !audioSource.gameObject.activeSelf) return;
+        float volMul = 1f;
+        if (SaveLoadHandler.Instance != null) volMul = SaveLoadHandler.Instance.data.menuVolume;
+        float finalVol = volume * volMul;
+        if (finalVol <= 0f) return;
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
-        audioSource.PlayOneShot(clips[Random.Range(0, clips.Count)], finalVolume);
+        audioSource.PlayOneShot(clips[Random.Range(0, clips.Count)], finalVol);
     }
 
     public void PlayOpenSound()
     {
-        if (audioSource != null && !audioSource.gameObject.activeSelf)
-            audioSource.gameObject.SetActive(true);
-
+        if (audioSource != null && !audioSource.gameObject.activeSelf) audioSource.gameObject.SetActive(true);
         PlaySound(openMenuSounds, openMenuPitchMin, openMenuPitchMax, openMenuVolume);
     }
 
     public void PlayCloseSound()
     {
-        if (audioSource != null && !audioSource.gameObject.activeSelf)
-            audioSource.gameObject.SetActive(true);
-
+        if (audioSource != null && !audioSource.gameObject.activeSelf) audioSource.gameObject.SetActive(true);
         PlaySound(closeMenuSounds, closeMenuPitchMin, closeMenuPitchMax, closeMenuVolume);
     }
 
     public void PlayButtonSound()
     {
-        if (audioSource != null && !audioSource.gameObject.activeSelf)
-            audioSource.gameObject.SetActive(true);
-
+        if (audioSource != null && !audioSource.gameObject.activeSelf) audioSource.gameObject.SetActive(true);
         PlaySound(buttonSounds, buttonPitchMin, buttonPitchMax, buttonVolume);
     }
-
-
 }
