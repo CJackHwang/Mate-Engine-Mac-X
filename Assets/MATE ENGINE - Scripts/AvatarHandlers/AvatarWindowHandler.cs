@@ -7,8 +7,11 @@ public class AvatarWindowHandler : MonoBehaviour
 {
     [Header("Snap Safety")]
     public float minDragHoldSecondsToSit = 1f;
+    public float unsnapCooldownSeconds = 0.3f;
     float _dragStartTime = -1f;
     bool _canSitHold;
+    float _unsnapCooldownUntil = -1f;
+
     [Header("Snap Probe Offset")]
     public float probeZoneYOffsetLocal = 0f;
     Vector3 GetProbeWorld() => GetHipWorld() + transform.up * (probeZoneYOffsetLocal * transform.lossyScale.y);
@@ -226,7 +229,7 @@ public class AvatarWindowHandler : MonoBehaviour
         if (controller.isDragging && !animator.GetBool("isSitting"))
         {
             if (snappedHWND == IntPtr.Zero) { if (_canSitHold && DraggedPastSnapThreshold()) TrySnap(); }
-            else if (!IsStillNearSnappedWindow()) { SetGuardZoneFromCurrent(); ClearSnapAndHide(); }
+            else if (!IsStillNearSnappedWindow()) { SetGuardZoneFromCurrent(); ClearSnapAndHide(true); }
             else FollowSnapped(true);
         }
         else if (!controller.isDragging && snappedHWND != IntPtr.Zero) FollowSnapped(false);
@@ -338,12 +341,13 @@ public class AvatarWindowHandler : MonoBehaviour
         GetWindowThreadProcessId(hWnd, out uint pid);
         return pid == _currentPid;
     }
-    void ClearSnapAndHide()
+    void ClearSnapAndHide(bool fromUnsnap = false)
     {
         _havePrevSnapRect = false;
         _snapSmoothingActive = false;
         _snapVelX = _snapVelY = 0f;
         if (controller != null && controller.isDragging) _recentUnsnap = true;
+        if (fromUnsnap) _unsnapCooldownUntil = Time.unscaledTime + Mathf.Max(0f, unsnapCooldownSeconds);
         snappedHWND = IntPtr.Zero;
         seatCalibrated = false;
         if (animator != null) { animator.SetBool("isWindowSit", false); animator.SetBool("isSitting", false); animator.SetBool("isTaskbarSit", false); }
@@ -351,6 +355,7 @@ public class AvatarWindowHandler : MonoBehaviour
         _guard = _latch = 0;
         activeOccluders.Clear();
     }
+
     void UpdateCachedWindows()
     {
         cachedWindows.Clear();
@@ -398,6 +403,7 @@ public class AvatarWindowHandler : MonoBehaviour
     }
     void TrySnap()
     {
+        if (Time.unscaledTime < _unsnapCooldownUntil) return;
         if (IsSitBlocked()) return;
         if (useGuardZone && _guardZoneActive && ComputeZoneDesktop(out float gx, out float gy))
         {

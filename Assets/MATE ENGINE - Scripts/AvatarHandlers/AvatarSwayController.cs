@@ -8,6 +8,7 @@ public class AvatarSwayController : MonoBehaviour
     [Header("References")]
     public Animator animator;
     public string draggingParam = "isDragging";
+    public string windowSitParam = "isWindowSit";
 
     [Header("Space")]
     public bool useLocalRotation = true;
@@ -45,8 +46,13 @@ public class AvatarSwayController : MonoBehaviour
     public string[] allowedStates = { "Drag" };
     public int stateLayerIndex = 0;
 
+    [Header("Stability")]
+    public bool neutralizeEveryUpdate = true;
+    public bool disableWhileWindowSit = true;
+
     Animator anim;
     int draggingHash;
+    int windowSitHash;
     Animator cachedForBones;
 
     Transform hips;
@@ -67,6 +73,18 @@ public class AvatarSwayController : MonoBehaviour
     Vector2 filteredDelta;
     Vector2 prevMousePos;
 
+    Quaternion lastHipAddLocal = Quaternion.identity;
+    Quaternion lastArmLAddLocal = Quaternion.identity;
+    Quaternion lastArmRAddLocal = Quaternion.identity;
+    Quaternion lastLegLAddLocal = Quaternion.identity;
+    Quaternion lastLegRAddLocal = Quaternion.identity;
+
+    Quaternion lastHipAddWorld = Quaternion.identity;
+    Quaternion lastArmLAddWorld = Quaternion.identity;
+    Quaternion lastArmRAddWorld = Quaternion.identity;
+    Quaternion lastLegLAddWorld = Quaternion.identity;
+    Quaternion lastLegRAddWorld = Quaternion.identity;
+
 #if UNITY_STANDALONE_WIN
     IntPtr hwnd;
     Vector2Int prevWinPos;
@@ -75,6 +93,7 @@ public class AvatarSwayController : MonoBehaviour
     void Awake()
     {
         draggingHash = Animator.StringToHash(draggingParam);
+        windowSitHash = Animator.StringToHash(windowSitParam);
         prevMousePos = Input.mousePosition;
 #if UNITY_STANDALONE_WIN
         hwnd = Process.GetCurrentProcess().MainWindowHandle;
@@ -82,20 +101,28 @@ public class AvatarSwayController : MonoBehaviour
 #endif
     }
 
+    void OnDisable()
+    {
+        ClearPreviousAdditivesIfAny();
+    }
+
     void Update()
     {
         EnsureAnimatorAndBones();
         if (!anim || !hips) return;
 
+        if (neutralizeEveryUpdate) ClearPreviousAdditivesIfAny();
+
         bool dragging = anim.GetBool(draggingHash);
+        bool sitting = anim.GetBool(windowSitHash);
         bool whitelisted = IsInAllowedState();
-        bool active = dragging && whitelisted;
+        bool active = dragging && whitelisted && !(disableWhileWindowSit && sitting);
 
         float dt = Time.deltaTime;
         Vector2 delta = Vector2.zero;
 
 #if UNITY_STANDALONE_WIN
-        if (useWindowVelocity && hwnd != IntPtr.Zero)
+        if (useWindowVelocity && hwnd != IntPtr.Zero && active)
         {
             Vector2Int wp = GetWindowPosition(hwnd);
             Vector2Int d = wp - prevWinPos;
@@ -123,74 +150,106 @@ public class AvatarSwayController : MonoBehaviour
         float targetLeanZ = Mathf.Clamp(signH * filteredDelta.x * horizontalVelocityToLean, -maxLeanZ, maxLeanZ);
         float targetLeanX = Mathf.Clamp(signV * filteredDelta.y * verticalVelocityToPitch, -maxLeanX, maxLeanX);
 
-        Spring(ref leanZ, ref leanZVel, targetLeanZ, springFrequency, dampingRatio, dt);
-        Spring(ref leanX, ref leanXVel, targetLeanX, springFrequency, dampingRatio, dt);
+        Spring(ref leanZ, ref leanZVel, active ? targetLeanZ : 0f, springFrequency, dampingRatio, dt);
+        Spring(ref leanX, ref leanXVel, active ? targetLeanX : 0f, springFrequency, dampingRatio, dt);
 
         limbZ = Mathf.Lerp(limbZ, -leanZ, 1f - Mathf.Exp(-limbLag * dt));
         limbX = Mathf.Lerp(limbX, -leanX, 1f - Mathf.Exp(-limbLag * dt));
 
-        effectWeight = Mathf.MoveTowards(effectWeight, active ? 1f : 0f, blendSpeed * dt);
+        float outSpeed = active ? blendSpeed : blendSpeed * 2f;
+        effectWeight = Mathf.MoveTowards(effectWeight, active ? 1f : 0f, outSpeed * dt);
     }
 
     void LateUpdate()
     {
-        if (!anim || !hips || effectWeight <= 0.0001f) return;
+        if (!anim || !hips) return;
+        if (effectWeight <= 0.0001f) { ClearPreviousAdditivesIfAny(); return; }
 
         float xH = leanX * effectWeight;
         float zH = leanZ * effectWeight;
 
         if (useLocalRotation)
         {
-            Quaternion baseLocal = hips.localRotation;
             Quaternion addLocal = Quaternion.Euler(xH, 0f, zH);
-            hips.localRotation = baseLocal * addLocal;
+            hips.localRotation = hips.localRotation * addLocal;
+            lastHipAddLocal = addLocal;
+            if (armsAdditive > 0f)
+            {
+                float sA = invertArms ? -1f : 1f;
+                float xA = Mathf.Clamp(limbX * armsAdditive, -armsMaxX, armsMaxX) * sA * effectWeight;
+                float zA = Mathf.Clamp(limbZ * armsAdditive, -armsMaxZ, armsMaxZ) * sA * effectWeight;
+                Quaternion addA = Quaternion.Euler(xA, 0f, zA);
+                if (leftUpperArm) { leftUpperArm.localRotation = leftUpperArm.localRotation * addA; lastArmLAddLocal = addA; } else lastArmLAddLocal = Quaternion.identity;
+                if (rightUpperArm) { rightUpperArm.localRotation = rightUpperArm.localRotation * addA; lastArmRAddLocal = addA; } else lastArmRAddLocal = Quaternion.identity;
+            }
+            else
+            {
+                lastArmLAddLocal = Quaternion.identity;
+                lastArmRAddLocal = Quaternion.identity;
+            }
+
+            if (legsAdditive > 0f)
+            {
+                float sL = invertLegs ? -1f : 1f;
+                float xL = Mathf.Clamp(limbX * legsAdditive, -legsMaxX, legsMaxX) * sL * effectWeight;
+                float zL = Mathf.Clamp(limbZ * legsAdditive, -legsMaxZ, legsMaxZ) * sL * effectWeight;
+                Quaternion addL = Quaternion.Euler(xL, 0f, zL);
+                if (leftUpperLeg) { leftUpperLeg.localRotation = leftUpperLeg.localRotation * addL; lastLegLAddLocal = addL; } else lastLegLAddLocal = Quaternion.identity;
+                if (rightUpperLeg) { rightUpperLeg.localRotation = rightUpperLeg.localRotation * addL; lastLegRAddLocal = addL; } else lastLegRAddLocal = Quaternion.identity;
+            }
+            else
+            {
+                lastLegLAddLocal = Quaternion.identity;
+                lastLegRAddLocal = Quaternion.identity;
+            }
+
+            lastHipAddWorld = Quaternion.identity;
+            lastArmLAddWorld = Quaternion.identity;
+            lastArmRAddWorld = Quaternion.identity;
+            lastLegLAddWorld = Quaternion.identity;
+            lastLegRAddWorld = Quaternion.identity;
         }
         else
         {
             Transform space = globalReference ? globalReference : transform;
-            Quaternion baseWorld = hips.rotation;
-            Quaternion addWorld = Quaternion.AngleAxis(xH, space.right) * Quaternion.AngleAxis(zH, space.forward);
-            hips.rotation = addWorld * baseWorld;
-        }
-
-        if (armsAdditive > 0f)
-        {
-            float sA = invertArms ? -1f : 1f;
-            float xA = Mathf.Clamp(limbX * armsAdditive, -armsMaxX, armsMaxX) * sA * effectWeight;
-            float zA = Mathf.Clamp(limbZ * armsAdditive, -armsMaxZ, armsMaxZ) * sA * effectWeight;
-
-            if (useLocalRotation)
+            Quaternion addWorldH = Quaternion.AngleAxis(xH, space.right) * Quaternion.AngleAxis(zH, space.forward);
+            hips.rotation = addWorldH * hips.rotation;
+            lastHipAddWorld = addWorldH;
+            if (armsAdditive > 0f)
             {
-                if (leftUpperArm) leftUpperArm.localRotation = leftUpperArm.localRotation * Quaternion.Euler(xA, 0f, zA);
-                if (rightUpperArm) rightUpperArm.localRotation = rightUpperArm.localRotation * Quaternion.Euler(xA, 0f, zA);
+                float sA = invertArms ? -1f : 1f;
+                float xA = Mathf.Clamp(limbX * armsAdditive, -armsMaxX, armsMaxX) * sA * effectWeight;
+                float zA = Mathf.Clamp(limbZ * armsAdditive, -armsMaxZ, armsMaxZ) * sA * effectWeight;
+                Quaternion addWorldA = Quaternion.AngleAxis(xA, space.right) * Quaternion.AngleAxis(zA, space.forward);
+                if (leftUpperArm) { leftUpperArm.rotation = addWorldA * leftUpperArm.rotation; lastArmLAddWorld = addWorldA; } else lastArmLAddWorld = Quaternion.identity;
+                if (rightUpperArm) { rightUpperArm.rotation = addWorldA * rightUpperArm.rotation; lastArmRAddWorld = addWorldA; } else lastArmRAddWorld = Quaternion.identity;
             }
             else
             {
-                Transform space = globalReference ? globalReference : transform;
-                Quaternion addWorld = Quaternion.AngleAxis(xA, space.right) * Quaternion.AngleAxis(zA, space.forward);
-                if (leftUpperArm) leftUpperArm.rotation = addWorld * leftUpperArm.rotation;
-                if (rightUpperArm) rightUpperArm.rotation = addWorld * rightUpperArm.rotation;
+                lastArmLAddWorld = Quaternion.identity;
+                lastArmRAddWorld = Quaternion.identity;
             }
-        }
 
-        if (legsAdditive > 0f)
-        {
-            float sL = invertLegs ? -1f : 1f;
-            float xL = Mathf.Clamp(limbX * legsAdditive, -legsMaxX, legsMaxX) * sL * effectWeight;
-            float zL = Mathf.Clamp(limbZ * legsAdditive, -legsMaxZ, legsMaxZ) * sL * effectWeight;
-
-            if (useLocalRotation)
+            if (legsAdditive > 0f)
             {
-                if (leftUpperLeg) leftUpperLeg.localRotation = leftUpperLeg.localRotation * Quaternion.Euler(xL, 0f, zL);
-                if (rightUpperLeg) rightUpperLeg.localRotation = rightUpperLeg.localRotation * Quaternion.Euler(xL, 0f, zL);
+                float sL = invertLegs ? -1f : 1f;
+                float xL = Mathf.Clamp(limbX * legsAdditive, -legsMaxX, legsMaxX) * sL * effectWeight;
+                float zL = Mathf.Clamp(limbZ * legsAdditive, -legsMaxZ, legsMaxZ) * sL * effectWeight;
+                Quaternion addWorldL = Quaternion.AngleAxis(xL, space.right) * Quaternion.AngleAxis(zL, space.forward);
+                if (leftUpperLeg) { leftUpperLeg.rotation = addWorldL * leftUpperLeg.rotation; lastLegLAddWorld = addWorldL; } else lastLegLAddWorld = Quaternion.identity;
+                if (rightUpperLeg) { rightUpperLeg.rotation = addWorldL * rightUpperLeg.rotation; lastLegRAddWorld = addWorldL; } else lastLegRAddWorld = Quaternion.identity;
             }
             else
             {
-                Transform space = globalReference ? globalReference : transform;
-                Quaternion addWorld = Quaternion.AngleAxis(xL, space.right) * Quaternion.AngleAxis(zL, space.forward);
-                if (leftUpperLeg) leftUpperLeg.rotation = addWorld * leftUpperLeg.rotation;
-                if (rightUpperLeg) rightUpperLeg.rotation = addWorld * rightUpperLeg.rotation;
+                lastLegLAddWorld = Quaternion.identity;
+                lastLegRAddWorld = Quaternion.identity;
             }
+
+            lastHipAddLocal = Quaternion.identity;
+            lastArmLAddLocal = Quaternion.identity;
+            lastArmRAddLocal = Quaternion.identity;
+            lastLegLAddLocal = Quaternion.identity;
+            lastLegRAddLocal = Quaternion.identity;
         }
     }
 
@@ -215,6 +274,7 @@ public class AvatarSwayController : MonoBehaviour
             leftUpperLeg = anim.GetBoneTransform(HumanBodyBones.LeftUpperLeg);
             rightUpperLeg = anim.GetBoneTransform(HumanBodyBones.RightUpperLeg);
             cachedForBones = anim;
+            ClearPreviousAdditivesIfAny();
         }
     }
 
@@ -238,6 +298,36 @@ public class AvatarSwayController : MonoBehaviour
         float a = w * w * (xt - x) - 2f * z * w * v;
         v += a * dt;
         x += v * dt;
+    }
+
+    void ClearPreviousAdditivesIfAny()
+    {
+        if (useLocalRotation)
+        {
+            if (hips && lastHipAddLocal != Quaternion.identity) hips.localRotation = hips.localRotation * Quaternion.Inverse(lastHipAddLocal);
+            if (leftUpperArm && lastArmLAddLocal != Quaternion.identity) leftUpperArm.localRotation = leftUpperArm.localRotation * Quaternion.Inverse(lastArmLAddLocal);
+            if (rightUpperArm && lastArmRAddLocal != Quaternion.identity) rightUpperArm.localRotation = rightUpperArm.localRotation * Quaternion.Inverse(lastArmRAddLocal);
+            if (leftUpperLeg && lastLegLAddLocal != Quaternion.identity) leftUpperLeg.localRotation = leftUpperLeg.localRotation * Quaternion.Inverse(lastLegLAddLocal);
+            if (rightUpperLeg && lastLegRAddLocal != Quaternion.identity) rightUpperLeg.localRotation = rightUpperLeg.localRotation * Quaternion.Inverse(lastLegRAddLocal);
+            lastHipAddLocal = Quaternion.identity;
+            lastArmLAddLocal = Quaternion.identity;
+            lastArmRAddLocal = Quaternion.identity;
+            lastLegLAddLocal = Quaternion.identity;
+            lastLegRAddLocal = Quaternion.identity;
+        }
+        else
+        {
+            if (hips && lastHipAddWorld != Quaternion.identity) hips.rotation = Quaternion.Inverse(lastHipAddWorld) * hips.rotation;
+            if (leftUpperArm && lastArmLAddWorld != Quaternion.identity) leftUpperArm.rotation = Quaternion.Inverse(lastArmLAddWorld) * leftUpperArm.rotation;
+            if (rightUpperArm && lastArmRAddWorld != Quaternion.identity) rightUpperArm.rotation = Quaternion.Inverse(lastArmRAddWorld) * rightUpperArm.rotation;
+            if (leftUpperLeg && lastLegLAddWorld != Quaternion.identity) leftUpperLeg.rotation = Quaternion.Inverse(lastLegLAddWorld) * leftUpperLeg.rotation;
+            if (rightUpperLeg && lastLegRAddWorld != Quaternion.identity) rightUpperLeg.rotation = Quaternion.Inverse(lastLegRAddWorld) * rightUpperLeg.rotation;
+            lastHipAddWorld = Quaternion.identity;
+            lastArmLAddWorld = Quaternion.identity;
+            lastArmRAddWorld = Quaternion.identity;
+            lastLegLAddWorld = Quaternion.identity;
+            lastLegRAddWorld = Quaternion.identity;
+        }
     }
 
 #if UNITY_STANDALONE_WIN
