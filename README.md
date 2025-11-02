@@ -84,7 +84,7 @@ Want to try with a free model?
 ## Feature Comparison
 Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 
-| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (1.9.8) |
+| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (X3.0) |
 |--------------------------|--------------|-----------|------------|
 | Open Source              | ❌           | ❌        | ✅         |
 | Mod Support              | ❌           | ❌        | ✅         |
@@ -143,6 +143,8 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Debugging Menu    | ❌           | ❌        | ✅         |
 | Up to 9 Avatars at the Same Time    | ❌           | ❌        | ✅         |
 | Sync Dances between multiple Avatars   | ❌           | ❌        | ✅         |
+| Minecraft Integration   | ❌           | ❌        | ✅         |
+| Food System   | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
