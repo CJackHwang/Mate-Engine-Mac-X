@@ -416,7 +416,7 @@ Material:
     - _BlackLightMasking3Key: 4
     - _BlackLightMaskingEnabled: 0
     - _BlendOp: 0
-    - _BlendOpAlpha: 4
+    - _BlendOpAlpha: 0
     - _BlendOpAlphaFA: 4
     - _BlendOpFA: 4
     - _BlueAlphaAdd: 0
@@ -503,7 +503,7 @@ Material:
     - _CubeMapUVMode: 1
     - _CubeMapWorldNormalsStrength: 1
     - _CubemapBlendType: 0
-    - _Cull: 0
+    - _Cull: 2
     - _CurvFix: 1
     - _CurvatureU: 0
     - _CurvatureV: 0
@@ -793,8 +793,8 @@ Material:
     - _DistortionStrengthAudioLinkBand: 0
     - _DistortionUvToDistort: 0
     - _DitherMaxValue: 255
-    - _DstBlend: 10
-    - _DstBlendAlpha: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 10
     - _DstBlendAlphaFA: 1
     - _DstBlendFA: 1
     - _DummyProperty: 0
@@ -1877,8 +1877,8 @@ Material:
     - _OutlineCull: 1
     - _OutlineDeleteMesh: 0
     - _OutlineDisableInVR: 0
-    - _OutlineDstBlend: 10
-    - _OutlineDstBlendAlpha: 1
+    - _OutlineDstBlend: 0
+    - _OutlineDstBlendAlpha: 0
     - _OutlineDstBlendAlphaFA: 1
     - _OutlineDstBlendFA: 1
     - _OutlineEmission: 0
@@ -2675,7 +2675,7 @@ Material:
     - _VoronoiType: 1
     - _ZClip: 1
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - _e2gai: 2
     - _e2gci: 2
     - _egai: 2

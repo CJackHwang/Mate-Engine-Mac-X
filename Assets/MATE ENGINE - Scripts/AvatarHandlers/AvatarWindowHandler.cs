@@ -226,7 +226,7 @@ public class AvatarWindowHandler : MonoBehaviour
             }
             if (!handled && (IsIconic(snappedHWND) || IsCloaked(snappedHWND))) { ClearSnapAndHide(); }
         }
-        if (controller.isDragging && !animator.GetBool("isSitting"))
+        if (controller.isDragging)
         {
             if (snappedHWND == IntPtr.Zero) { if (_canSitHold && DraggedPastSnapThreshold()) TrySnap(); }
             else if (!IsStillNearSnappedWindow()) { SetGuardZoneFromCurrent(); ClearSnapAndHide(true); }
@@ -350,7 +350,7 @@ public class AvatarWindowHandler : MonoBehaviour
         if (fromUnsnap) _unsnapCooldownUntil = Time.unscaledTime + Mathf.Max(0f, unsnapCooldownSeconds);
         snappedHWND = IntPtr.Zero;
         seatCalibrated = false;
-        if (animator != null) { animator.SetBool("isWindowSit", false); animator.SetBool("isSitting", false); animator.SetBool("isTaskbarSit", false); }
+        if (animator != null) { animator.SetBool("isWindowSit", false); animator.SetBool("isTaskbarSit", false); }
         SetTopMost(true); SetTargetQuadActive(false); SetOtherQuadsActive(0);
         _guard = _latch = 0;
         activeOccluders.Clear();

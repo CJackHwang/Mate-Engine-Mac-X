@@ -329,7 +329,7 @@ Shader "Hidden/Locked/.poiyomi/Poiyomi Toon/1fca1b962391ce9429ab6ff2c92881aa"
 				ZFail [_StencilZFailOp]
 			}
 			ZWrite [_ZWrite]
-			Cull Off
+			Cull Back
 			ZTest [_ZTest]
 			ColorMask RGBA
 			Offset [_OffsetFactor], [_OffsetUnits]
@@ -3838,7 +3838,7 @@ Shader "Hidden/Locked/.poiyomi/Poiyomi Toon/1fca1b962391ce9429ab6ff2c92881aa"
 				ZFail [_StencilZFailOp]
 			}
 			ZWrite Off
-			Cull Off
+			Cull Back
 			ZTest [_ZTest]
 			ColorMask RGBA
 			Offset [_OffsetFactor], [_OffsetUnits]
@@ -6767,7 +6767,7 @@ Shader "Hidden/Locked/.poiyomi/Poiyomi Toon/1fca1b962391ce9429ab6ff2c92881aa"
 				ZFail [_StencilZFailOp]
 			}
 			ZWrite [_ZWrite]
-			Cull Off
+			Cull Back
 			AlphaToMask Off
 			ZTest [_ZTest]
 			ColorMask RGBA
