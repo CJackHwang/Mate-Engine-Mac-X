@@ -1,3 +1,6 @@
+# MateEngine for Linux (Unoffical)
+Github: https://github.com/Marksonthegamer/Mate-Engine-Linux-Port
+
 # Support MateEngine on Steam!
 Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
 Or use it for free here! Any Purchase on Steam will help Developement and future updates!
@@ -84,7 +87,7 @@ Want to try with a free model?
 ## Feature Comparison
 Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 
-| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (1.9.8) |
+| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (X3.0) |
 |--------------------------|--------------|-----------|------------|
 | Open Source              | ❌           | ❌        | ✅         |
 | Mod Support              | ❌           | ❌        | ✅         |
@@ -143,6 +146,8 @@ Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
 | Debugging Menu    | ❌           | ❌        | ✅         |
 | Up to 9 Avatars at the Same Time    | ❌           | ❌        | ✅         |
 | Sync Dances between multiple Avatars   | ❌           | ❌        | ✅         |
+| Minecraft Integration   | ❌           | ❌        | ✅         |
+| Food System   | ❌           | ❌        | ✅         |
 ---
 
 ## Steam Release Support
