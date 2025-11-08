@@ -130,7 +130,7 @@ public class AvatarWindowHandler : MonoBehaviour
             for (int i = 0; i < pre; i++) EnsureOtherQuad(i);
             SetTargetQuadActive(false); SetOtherQuadsActive(0);
         }
-        SetTopMost(true);
+        SetTopMost(SaveLoadHandler.Instance != null ? SaveLoadHandler.Instance.data.isTopmost : true);
         _nextEnumTime = 0f;
         _prevLossyScale = transform.lossyScale;
         _lastSnapTopY = int.MinValue;
@@ -351,7 +351,8 @@ public class AvatarWindowHandler : MonoBehaviour
         snappedHWND = IntPtr.Zero;
         seatCalibrated = false;
         if (animator != null) { animator.SetBool("isWindowSit", false); animator.SetBool("isTaskbarSit", false); }
-        SetTopMost(true); SetTargetQuadActive(false); SetOtherQuadsActive(0);
+        SetTopMost(SaveLoadHandler.Instance != null ? SaveLoadHandler.Instance.data.isTopmost : true);
+        SetTargetQuadActive(false); SetOtherQuadsActive(0);
         _guard = _latch = 0;
         activeOccluders.Clear();
     }
