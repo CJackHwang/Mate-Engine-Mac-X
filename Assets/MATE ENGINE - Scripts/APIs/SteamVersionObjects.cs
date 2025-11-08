@@ -1,27 +1,47 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class SteamVersionObjects : MonoBehaviour
 {
-    [Header("Enable These Only on Steam Version")]
-    public List<GameObject> steamOnlyObjects = new List<GameObject>();
+    public int steamAppId = 0;
+    public int ttlDays = 14;
+    public float retrySeconds = 5f;
+    public float maxWaitSeconds = 180f;
 
-    [Header("Enable These Only on Non-Steam Version")]
+    public List<GameObject> steamOnlyObjects = new List<GameObject>();
     public List<GameObject> notSteamObjects = new List<GameObject>();
 
-    private void Start()
+    bool lastEntitled;
+
+    void Start()
     {
-        if (!SteamChecker.IsSteamVersionInitialized)
-            SteamChecker.Initialize();
+        if (!SteamDRM.Initialized) SteamDRM.Initialize(steamAppId, ttlDays);
+        lastEntitled = SteamDRM.IsEntitled;
+        Apply(lastEntitled);
+        StartCoroutine(ReinitLoop());
+    }
 
-        bool isSteam = SteamChecker.IsSteamVersion();
+    void Update()
+    {
+        var e = SteamDRM.IsEntitled;
+        if (e != lastEntitled) { lastEntitled = e; Apply(e); }
+    }
 
-        foreach (var obj in steamOnlyObjects)
-            if (obj != null)
-                obj.SetActive(isSteam);
+    IEnumerator ReinitLoop()
+    {
+        float t = 0f;
+        while (!SteamDRM.IsEntitled && t < maxWaitSeconds)
+        {
+            SteamDRM.TryInitLive(steamAppId, ttlDays);
+            yield return new WaitForSeconds(retrySeconds);
+            t += retrySeconds;
+        }
+    }
 
-        foreach (var obj in notSteamObjects)
-            if (obj != null)
-                obj.SetActive(!isSteam);
+    void Apply(bool isSteam)
+    {
+        for (int i = 0; i < steamOnlyObjects.Count; i++) if (steamOnlyObjects[i]) steamOnlyObjects[i].SetActive(isSteam);
+        for (int i = 0; i < notSteamObjects.Count; i++) if (notSteamObjects[i]) notSteamObjects[i].SetActive(!isSteam);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class AccessoiresHandler : MonoBehaviour
@@ -14,11 +15,17 @@ public class AccessoiresHandler : MonoBehaviour
         public bool steamExclusive = false;
         public Vector3 positionOffset = Vector3.zero;
     }
+
+    public int steamAppId = 0;
+    public int ttlDays = 14;
+    public float retrySeconds = 5f;
+    public float maxWaitSeconds = 180f;
+
     public Animator animator;
     public List<AccessoryRule> rules = new List<AccessoryRule>();
     public bool featureEnabled = true;
 
-    private class BoneTracking
+    class BoneTracking
     {
         public Transform bone;
         public GameObject obj;
@@ -27,21 +34,20 @@ public class AccessoiresHandler : MonoBehaviour
         public bool lastActiveState;
     }
 
-    private Dictionary<AccessoryRule, BoneTracking> trackingMap = new Dictionary<AccessoryRule, BoneTracking>();
+    Dictionary<AccessoryRule, BoneTracking> trackingMap = new Dictionary<AccessoryRule, BoneTracking>();
 
     void Start()
     {
         if (animator == null) animator = GetComponent<Animator>();
-        if (!SteamChecker.IsSteamVersionInitialized) SteamChecker.Initialize();
+        if (!SteamDRM.Initialized) SteamDRM.Initialize(steamAppId, ttlDays);
 
         foreach (var rule in rules)
         {
             if (rule.linkedObject == null) continue;
-
             Transform boneTransform = animator.GetBoneTransform(rule.targetBone);
             if (boneTransform == null) continue;
 
-            BoneTracking tracking = new BoneTracking
+            var tracking = new BoneTracking
             {
                 bone = boneTransform,
                 obj = rule.linkedObject,
@@ -49,22 +55,23 @@ public class AccessoiresHandler : MonoBehaviour
                 currentRotation = boneTransform.rotation,
                 lastActiveState = false
             };
-
             trackingMap[rule] = tracking;
         }
+
+        StartCoroutine(ReinitLoop());
     }
 
     void Update()
     {
         foreach (var kvp in trackingMap)
         {
-            AccessoryRule rule = kvp.Key;
-            BoneTracking tracking = kvp.Value;
+            var rule = kvp.Key;
+            var tracking = kvp.Value;
 
             bool shouldBeActive =
                 featureEnabled &&
                 rule.isEnabled &&
-                (!rule.steamExclusive || SteamChecker.IsSteamVersion());
+                (!rule.steamExclusive || SteamDRM.IsEntitled);
 
             if (tracking.obj != null && tracking.lastActiveState != shouldBeActive)
             {
@@ -90,38 +97,22 @@ public class AccessoiresHandler : MonoBehaviour
 
     void OnEnable()
     {
-        if (!ActiveHandlers.Contains(this))
-            ActiveHandlers.Add(this);
+        if (!ActiveHandlers.Contains(this)) ActiveHandlers.Add(this);
     }
 
     void OnDisable()
     {
         ActiveHandlers.Remove(this);
     }
-}
 
-public static class SteamChecker
-{
-    private static bool initialized = false;
-    private static bool steamDetected = false;
-
-    public static bool IsSteamVersionInitialized => initialized;
-
-    public static void Initialize()
+    IEnumerator ReinitLoop()
     {
-        initialized = true;
-        try
+        float t = 0f;
+        while (!SteamDRM.IsEntitled && t < maxWaitSeconds)
         {
-            steamDetected = Steamworks.SteamAPI.Init() && Steamworks.SteamAPI.IsSteamRunning();
+            SteamDRM.TryInitLive(steamAppId, ttlDays);
+            yield return new WaitForSeconds(retrySeconds);
+            t += retrySeconds;
         }
-        catch
-        {
-            steamDetected = false;
-        }
-    }
-
-    public static bool IsSteamVersion()
-    {
-        return steamDetected;
     }
 }
