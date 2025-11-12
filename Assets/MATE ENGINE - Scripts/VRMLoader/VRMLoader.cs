@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using UniVRM10;
 using System;
+using Newtonsoft.Json;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,10 +47,59 @@ public class VRMLoader : MonoBehaviour
             PlayerPrefs.DeleteKey(LegacyModelPathKey);
             PlayerPrefs.Save();
         }
-
+        if (SaveLoadHandler.Instance != null && SaveLoadHandler.Instance.data.enableRandomAvatar)
+        {
+            TryLoadRandomAvatar();
+            return;
+        }
         if (!string.IsNullOrEmpty(savedPath))
             LoadVRM(savedPath);
     }
+    private void TryLoadRandomAvatar()
+    {
+        var options = new System.Collections.Generic.List<string>();
+        if (mainModel != null) options.Add("__DEFAULT__");
+
+        var lib = FindFirstObjectByType<AvatarLibraryMenu>();
+        if (lib != null && lib.dlcAvatars != null)
+        {
+            for (int i = 0; i < lib.dlcAvatars.Count; i++)
+            {
+                var p = lib.dlcAvatars[i]?.prefab;
+                if (p != null) options.Add(p.name);
+            }
+        }
+
+        try
+        {
+            string avatarsPath = System.IO.Path.Combine(Application.persistentDataPath, "avatars.json");
+            if (System.IO.File.Exists(avatarsPath))
+            {
+                var entries = JsonConvert.DeserializeObject<System.Collections.Generic.List<AvatarLibraryMenu.AvatarEntry>>(System.IO.File.ReadAllText(avatarsPath));
+                if (entries != null)
+                {
+                    for (int i = 0; i < entries.Count; i++)
+                    {
+                        var fp = entries[i].filePath;
+                        if (!string.IsNullOrEmpty(fp)) options.Add(fp);
+                    }
+                }
+            }
+        }
+        catch { }
+
+        if (options.Count == 0)
+        {
+            ActivateDefaultModel();
+            return;
+        }
+
+        int idx = UnityEngine.Random.Range(0, options.Count);
+        string pick = options[idx];
+        if (pick == "__DEFAULT__") ActivateDefaultModel();
+        else LoadVRM(pick);
+    }
+
 
     public void OpenFileDialogAndLoadVRM()
     {

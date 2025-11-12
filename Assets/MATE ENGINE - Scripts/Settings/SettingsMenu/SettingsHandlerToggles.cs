@@ -22,6 +22,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle enableAutoMemoryTrimToggle;
     public Toggle enableMinecraftMessagesToggle;
     public Toggle enableFeedSystemToggle;
+    public Toggle enableRandomAvatarToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -55,6 +56,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableAutoMemoryTrimToggle?.onValueChanged.AddListener(OnEnableAutoMemoryTrimChanged);
         enableMinecraftMessagesToggle?.onValueChanged.AddListener(OnEnableMinecraftMessagesChanged);
         enableFeedSystemToggle?.onValueChanged.AddListener(OnEnableFeedSystemChanged);
+        enableRandomAvatarToggle?.onValueChanged.AddListener(OnEnableRandomAvatarChanged);
         LoadSettings();
         ApplySettings();
     }
@@ -98,7 +100,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         ApplySettings();
         Save();
     }
-
+    private void OnEnableRandomAvatarChanged(bool v) { SaveLoadHandler.Instance.data.enableRandomAvatar = v; Save(); }
     #endregion
 
     public void LoadSettings()
@@ -121,6 +123,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(data.enableAutoMemoryTrim);
         enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(data.enableMinecraftMessages);
         enableFeedSystemToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableFeedSystem);
+        enableRandomAvatarToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableRandomAvatar);
         ApplySettings();
     }
 
@@ -200,8 +203,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(false);
         enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(false);
         enableFeedSystemToggle?.SetIsOnWithoutNotify(false);
-        SaveLoadHandler.Instance.data.enableFeedSystem = false;
-        SaveLoadHandler.Instance.data.enableMinecraftMessages = false;
+        enableRandomAvatarToggle?.SetIsOnWithoutNotify(false);
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
@@ -219,6 +221,8 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.enableRandomMessages = false;
         data.enableHusbandoMode = false;
         data.enableAutoMemoryTrim = false;
+        data.enableFeedSystem = false;
+        data.enableMinecraftMessages = false;
         SaveLoadHandler.Instance.SaveToDisk();
         ApplySettings();
     }

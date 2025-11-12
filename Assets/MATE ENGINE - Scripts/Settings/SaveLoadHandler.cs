@@ -175,6 +175,7 @@ public class SaveLoadHandler : MonoBehaviour
 
         public string selectedParticleTheme = "Standard";
         public bool enableFeedSystem = false;
+        public bool enableRandomAvatar = false;
 
         //ALARM
         [Serializable]
