@@ -320,9 +320,9 @@ namespace CustomDancePlayer
         {
             SetWaiting(true);
             SetDancing(false);
+            int target = NextIndexForManual(true);
             if (enableSync && isLeader)
             {
-                int target = NextFromFiltered(true);
                 var e = target >= 0 && target < entries.Count ? entries[target] : null;
                 double at = UtcNow() + leadSeconds;
                 guardActive = true;
@@ -332,16 +332,15 @@ namespace CustomDancePlayer
                 Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
                 return;
             }
-            PlayNext();
+            if (target >= 0) PlayIndex(target);
         }
-
         void OnPrevClicked()
         {
             SetWaiting(true);
             SetDancing(false);
+            int target = NextIndexForManual(false);
             if (enableSync && isLeader)
             {
-                int target = NextFromFiltered(false);
                 var e = target >= 0 && target < entries.Count ? entries[target] : null;
                 double at = UtcNow() + leadSeconds;
                 guardActive = true;
@@ -351,7 +350,7 @@ namespace CustomDancePlayer
                 Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
                 return;
             }
-            PlayPrev();
+            if (target >= 0) PlayIndex(target);
         }
 
         void OnStopClicked()
@@ -940,7 +939,6 @@ namespace CustomDancePlayer
         {
             yield return Resources.UnloadUnusedAssets();
         }
-
         void TryAutoNext()
         {
             if (autoNextScheduled) return;
@@ -951,10 +949,10 @@ namespace CustomDancePlayer
         IEnumerator AutoNextCo()
         {
             yield return null;
-            PlayNext();
+            int target = NextIndexForAuto();
+            if (target >= 0) PlayIndex(target);
             autoNextScheduled = false;
         }
-
         public bool IsPlaying => isPlaying;
         public AnimationClip GetCurrentClip() => loadedEntry != null ? loadedEntry.clip : null;
         public float GetPlaybackTime()
@@ -1050,7 +1048,6 @@ namespace CustomDancePlayer
                 yield return wait;
             }
         }
-
         IEnumerator LeaderAutoNextWatcher()
         {
             var wait = new WaitForSecondsRealtime(0.05f);
@@ -1068,7 +1065,7 @@ namespace CustomDancePlayer
                             guardActive = true;
                             guardUntilUtc = at;
                             EnforceHold();
-                            int target = NextFromFiltered(true);
+                            int target = NextIndexForAuto();
                             var e = target >= 0 && target < entries.Count ? entries[target] : null;
                             ScheduleLocal(() => TryPlayByStableIdOrFallback(e != null ? e.stableId : null, target, e != null ? e.id : null), at);
                             Broadcast("PlayByStableId", e != null ? e.stableId : null, target, e != null ? e.id : null, at);
@@ -1346,6 +1343,49 @@ namespace CustomDancePlayer
                 }
             }
         }
+
+        // RNG, Shuffle
+        public bool loopOn = false;
+        public bool shuffleOn = false;
+
+        int PickRandomFromFilteredExcludingCurrent()
+        {
+            if (entries.Count == 0) return -1;
+            List<int> pool = (filteredQueue != null && filteredQueue.Count > 0) ? filteredQueue : Enumerable.Range(0, entries.Count).ToList();
+            if (pool.Count == 0) return -1;
+            if (pool.Count == 1) return pool[0];
+            int pick;
+            do { pick = pool[UnityEngine.Random.Range(0, pool.Count)]; } while (pick == currentIndex);
+            return pick;
+        }
+
+        int NextIndexSequential(bool forward)
+        {
+            if (entries.Count == 0) return -1;
+            if (filteredQueue == null || filteredQueue.Count == 0)
+            {
+                if (currentIndex < 0) return 0;
+                return forward ? (currentIndex + 1) % entries.Count : (currentIndex <= 0 ? entries.Count - 1 : currentIndex - 1);
+            }
+            int pos = filteredQueue.IndexOf(currentIndex);
+            if (pos < 0) return filteredQueue[0];
+            if (forward) return filteredQueue[(pos + 1) % filteredQueue.Count];
+            return pos == 0 ? filteredQueue[filteredQueue.Count - 1] : filteredQueue[pos - 1];
+        }
+
+        int NextIndexForManual(bool forward)
+        {
+            if (shuffleOn) return PickRandomFromFilteredExcludingCurrent();
+            return NextIndexSequential(forward);
+        }
+
+        int NextIndexForAuto()
+        {
+            if (loopOn && currentIndex >= 0) return currentIndex;
+            if (shuffleOn) return PickRandomFromFilteredExcludingCurrent();
+            return NextIndexSequential(true);
+        }
+
 
         void UnmuteFollower()
         {

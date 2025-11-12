@@ -16,6 +16,8 @@ namespace CustomDancePlayer
         public Toggle showFavoriteToggle;
         public bool ignoreCase = true;
         public string favoritesFileName = "favorite_songs.json";
+        public Toggle loopToggle;
+        public Toggle shuffleToggle;
 
         readonly Dictionary<Transform, string> titleRaw = new();
         readonly Dictionary<Transform, string> titleNorm = new();
@@ -52,7 +54,6 @@ namespace CustomDancePlayer
             if (!contentRoot) return;
             if (contentRoot.childCount != lastChildCount) { ReindexAndWire(); ApplyFilter(lastQuery); }
         }
-
         void HookInputs(bool on)
         {
             if (searchInput)
@@ -70,7 +71,29 @@ namespace CustomDancePlayer
                 if (on) showFavoriteToggle.onValueChanged.AddListener(OnShowFavChanged);
                 else showFavoriteToggle.onValueChanged.RemoveListener(OnShowFavChanged);
             }
+            if (loopToggle)
+            {
+                if (on) loopToggle.onValueChanged.AddListener(OnLoopChanged);
+                else loopToggle.onValueChanged.RemoveListener(OnLoopChanged);
+            }
+            if (shuffleToggle)
+            {
+                if (on) shuffleToggle.onValueChanged.AddListener(OnShuffleChanged);
+                else shuffleToggle.onValueChanged.RemoveListener(OnShuffleChanged);
+            }
         }
+        void OnLoopChanged(bool v)
+        {
+            if (!handler) handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (handler) handler.loopOn = v;
+        }
+
+        void OnShuffleChanged(bool v)
+        {
+            if (!handler) handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (handler) handler.shuffleOn = v;
+        }
+
 
         void OnSearchText(string s)
         {
