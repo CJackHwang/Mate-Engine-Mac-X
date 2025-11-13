@@ -1265,50 +1265,100 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "La integraci\xF3n de Minecraft es una funci\xF3n exclusiva de Steam.
+      Permite que el avatar hable durante eventos espec\xEDficos, como descubrir
+      nuevos biomas o cuando un monstruo aparece detr\xE1s de ti. Ella reacciona
+      a tu partida y comenta lo que haces. Apoya MateEngine en Steam para desbloquear
+      esta funci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "La versi\xF3n de Steam incluye cuatro accesorios: Flower Halo,
+      Sakura Halo, Retro Halo y Error Face Mask. Tambi\xE9n a\xF1ade una funci\xF3n:
+      mensajes basados en eventos que permiten que el avatar hable mientras se arrastra,
+      baila, se sienta, se relaja y m\xE1s.\n\nMateEngine cuesta alrededor de 4.99
+      USD. Si no puedes permitirte comprarlo, las funciones esenciales seguir\xE1n
+      siendo gratuitas para siempre. Si puedes, considera apoyarme para futuras actualizaciones.
+      \xA1Gracias"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
-    m_Localized: Minecraft Integration
+    m_Localized: "Integraci\xF3n de Minecraft"
     m_Metadata:
       m_Items: []
   - m_Id: 78533177715499008
-    m_Localized: Timer
+    m_Localized: Temporizador
     m_Metadata:
       m_Items: []
   - m_Id: 78533281222533120
-    m_Localized: Start
+    m_Localized: Iniciar
     m_Metadata:
       m_Items: []
   - m_Id: 78533283390988288
-    m_Localized: Stop
+    m_Localized: Detener
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "Esta es la funci\xF3n de temporizador. Puedes configurarlo hasta
+      un m\xE1ximo de 24 horas y 59 minutos. Tambi\xE9n puedes a\xF1adir un texto
+      personalizado para etiquetar el temporizador y saber para qu\xE9 es. Por ejemplo,
+      config\xFAralo a 15 minutos y a\xF1ade una nota para recordarte cuando tu pizza
+      est\xE9 lista. Despu\xE9s de que termine, podr\xE1s reutilizarlo cuando quieras."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: Iniciar con un avatar aleatorio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "Activar la funci\xF3n de integraci\xF3n de Minecraft permite que
+      el avatar reaccione a tu partida mediante eventos como bajas, dormir, ciclos
+      de d\xEDa y noche, muertes, descubrimiento de biomas, detecci\xF3n de mobs,
+      cambios de clima, poca salud y m\xE1s. Aseg\xFArate de tener el mod instalado
+      para usar esta funci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: "Integraci\xF3n de Minecraft"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: Mensajes de Minecraft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "La integraci\xF3n de Minecraft es una funci\xF3n exclusiva de Steam.
+      Permite que el avatar hable durante eventos espec\xEDficos, como descubrir
+      nuevos biomas o cuando un monstruo aparece detr\xE1s de ti. Ella reacciona
+      a tu jugabilidad y comenta lo que haces. Apoya MateEngine en Steam para desbloquear
+      esta funci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: Comprar MateEngine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "El Sistema de Comida te permite pulsar el bot\xF3n central del
+      rat\xF3n sobre el avatar para abrir el nuevo men\xFA circular de comida. Puedes
+      generar un batido y acercarlo a la cabeza del avatar para que lo beba con efectos
+      de sonido. La funci\xF3n est\xE1 actualmente en Acceso Anticipado y se a\xF1adir\xE1n
+      m\xE1s alimentos y un peque\xF1o sistema de hambre en futuras actualizaciones."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: Sistema de Comida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "El Sistema de Comida es una funci\xF3n de Acceso Anticipado disponible
+      solo para usuarios de Steam. Te permite generar batidos y otros alimentos.
+      Mant\xE9n el batido con el rat\xF3n y ac\xE9rcalo a la cabeza del avatar para
+      que lo beba. Apoya al desarrollador para acceder a esta funci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: "A\xF1adir temporizador"
     m_Metadata:
       m_Items: []
   references:

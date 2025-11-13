@@ -939,6 +939,44 @@ MonoBehaviour:
     m_Key: RANDOM_AVATAR
     m_Metadata:
       m_Items: []
+  - m_Id: 78942061286432768
+    m_Key: MC_INF
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Key: MC_INT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Key: MC_MSG
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Key: MC_LOCK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Key: BUY_ME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Key: 'FOOD_INFO
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Key: FOOD_TITLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Key: FOOD_LOCK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Key: ADD_TIMER
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

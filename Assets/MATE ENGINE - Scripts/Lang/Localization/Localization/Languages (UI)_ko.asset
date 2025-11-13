@@ -1394,50 +1394,126 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uC5F0\uB3D9 \uAE30\uB2A5\uC740
+      Steam \uC804\uC6A9 \uAE30\uB2A5\uC785\uB2C8\uB2E4. \uC0C8\uB85C\uC6B4 \uC0DD\uBB3C\uAD70\uACC4\uB97C
+      \uBC1C\uACAC\uD558\uAC70\uB098 \uB4A4\uC5D0\uC11C \uBAAC\uC2A4\uD130\uAC00
+      \uB098\uD0C0\uB098\uB294 \uB4F1 \uD2B9\uC815 \uC774\uBCA4\uD2B8 \uBC1C\uC0DD
+      \uC2DC \uC544\uBC14\uD0C0\uAC00 \uB9D0\uC744 \uD569\uB2C8\uB2E4. \uC544\uBC14\uD0C0\uB294
+      \uC0AC\uC6A9\uC790\uC758 \uAC8C\uC784 \uD50C\uB808\uC774\uC5D0 \uBC18\uC751\uD558\uBA70
+      \uD50C\uB808\uC774 \uB0B4\uC6A9\uC5D0 \uB300\uD574 \uCF54\uBA58\uD2B8\uD569\uB2C8\uB2E4.
+      \uC774 \uAE30\uB2A5\uC744 \uC7A0\uAE08 \uD574\uC81C\uD558\uB824\uBA74 Steam\uC5D0\uC11C
+      MateEngine\uC744 \uD6C4\uC6D0\uD574 \uC8FC\uC138\uC694."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "Steam \uBC84\uC804\uC5D0\uB294 \uAF43 \uD5E4\uC77C\uB85C, \uBC9A\uAF43
+      \uD5E4\uC77C\uB85C, \uB808\uD2B8\uB85C \uD5E4\uC77C\uB85C, \uC5D0\uB7EC \uB9C8\uC2A4\uD06C
+      4\uAC00\uC9C0 \uC561\uC138\uC11C\uB9AC\uAC00 \uD3EC\uD568\uB418\uC5B4 \uC788\uC2B5\uB2C8\uB2E4.
+      \uB610\uD55C \uC544\uBC14\uD0C0\uAC00 \uB4DC\uB798\uADF8, \uCDA4\uCD94\uAE30,
+      \uC549\uAE30, \uD734\uC2DD \uB4F1 \uB2E4\uC591\uD55C \uC774\uBCA4\uD2B8\uC5D0
+      \uB9DE\uCDB0 \uB300\uD654\uD558\uB294 \uC774\uBCA4\uD2B8 \uAE30\uBC18 \uBA54\uC2DC\uC9C0
+      \uAE30\uB2A5\uB3C4 \uCD94\uAC00\uB429\uB2C8\uB2E4.\n\nMateEngine\uC740 \uC57D
+      4.99 USD\uC785\uB2C8\uB2E4. \uAD6C\uB9E4\uAC00 \uC5B4\uB835\uB354\uB77C\uB3C4,
+      \uD575\uC2EC \uAE30\uB2A5\uC740 \uC601\uC6D0\uD788 \uBB34\uB8CC\uB85C \uC81C\uACF5\uB429\uB2C8\uB2E4.
+      \uC5EC\uB825\uC774 \uB418\uC2E0\uB2E4\uBA74, \uD5A5\uD6C4 \uC5C5\uB370\uC774\uD2B8\uB97C
+      \uC704\uD574 \uC800\uB97C \uD6C4\uC6D0\uD574 \uC8FC\uC138\uC694. \uAC10\uC0AC\uD569\uB2C8\uB2E4!"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
-    m_Localized: Minecraft Integration
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uC5F0\uB3D9"
     m_Metadata:
       m_Items: []
   - m_Id: 78533177715499008
-    m_Localized: Timer
+    m_Localized: "\uD0C0\uC774\uBA38"
     m_Metadata:
       m_Items: []
   - m_Id: 78533281222533120
-    m_Localized: Start
+    m_Localized: "\uC2DC\uC791"
     m_Metadata:
       m_Items: []
   - m_Id: 78533283390988288
-    m_Localized: Stop
+    m_Localized: "\uC911\uC9C0"
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "\uC774 \uAE30\uB2A5\uC740 \uD0C0\uC774\uBA38 \uAE30\uB2A5\uC785\uB2C8\uB2E4.
+      \uCD5C\uB300 23\uC2DC\uAC04 59\uBD84\uAE4C\uC9C0 \uC124\uC815\uD560 \uC218
+      \uC788\uC2B5\uB2C8\uB2E4. \uD0C0\uC774\uBA38\uC5D0 \uC6A9\uB3C4\uB97C \uC54C
+      \uC218 \uC788\uB3C4\uB85D \uC0AC\uC6A9\uC790 \uC9C0\uC815 \uD14D\uC2A4\uD2B8\uB97C
+      \uC785\uB825\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC608\uB97C \uB4E4\uC5B4,
+      15\uBD84\uC73C\uB85C \uC124\uC815\uD558\uACE0 \uD53C\uC790 \uC900\uBE44 \uC2DC\uAC04\uC744
+      \uC54C\uB824\uC8FC\uB294 \uBA54\uBAA8\uB97C \uCD94\uAC00\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.
+      \uD0C0\uC774\uBA38\uAC00 \uC885\uB8CC\uB41C \uD6C4\uC5D0\uB3C4 \uC5B8\uC81C\uB4E0\uC9C0
+      \uC7AC\uC0AC\uC6A9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: "\uB79C\uB364\uD55C \uC544\uBC14\uD0C0\uB85C \uC2DC\uC791"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uC5F0\uB3D9 \uAE30\uB2A5\uC774
+      \uD65C\uC131\uD654\uB418\uC5C8\uC744 \uB54C, \uBAAC\uC2A4\uD130\uB97C \uBC1C\uACAC\uD558\uAC70\uB098,
+      \uC8FD\uC774\uAC70\uB098, \uB0AE/\uBC24\uC774 \uBC14\uB00C\uAC70\uB098, \uC0C8\uB85C\uC6B4
+      \uC9C0\uD615\uC744 \uBC1C\uACAC\uD558\uAC70\uB098, \uC0AC\uB9DD/\uB0A0\uC528\uBCC0\uD654/\uCDE8\uCE68/\uB0AE\uC740
+      \uCCB4\uB825 \uB4F1 \uB2E4\uC591\uD55C \uC774\uBCA4\uD2B8\uC5D0\uC11C \uC544\uBC14\uD0C0\uAC00
+      \uBC18\uC751\uC744 \uD569\uB2C8\uB2E4. \uC774 \uAE30\uB2A5\uC744 \uC0AC\uC6A9\uD558\uB824\uBA74
+      \uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uBAA8\uB4DC\uAC00 \uC124\uCE58\uB418\uC5B4
+      \uC788\uB294\uC9C0 \uD655\uC778\uD558\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uC5F0\uB3D9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uBA54\uC138\uC9C0"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8 \uC5F0\uB3D9 \uAE30\uB2A5\uC740
+      Steam \uC804\uC6A9 \uAE30\uB2A5\uC785\uB2C8\uB2E4. \uC0C8\uB85C\uC6B4 \uC0DD\uBB3C\uAD70\uACC4\uB97C
+      \uBC1C\uACAC\uD558\uAC70\uB098 \uB4A4\uC5D0\uC11C \uBAAC\uC2A4\uD130\uAC00
+      \uB098\uD0C0\uB098\uB294 \uB4F1 \uD2B9\uC815 \uC774\uBCA4\uD2B8 \uBC1C\uC0DD
+      \uC2DC \uC544\uBC14\uD0C0\uAC00 \uB9D0\uC744 \uD569\uB2C8\uB2E4. \uC544\uBC14\uD0C0\uB294
+      \uC0AC\uC6A9\uC790\uC758 \uAC8C\uC784 \uD50C\uB808\uC774\uC5D0 \uBC18\uC751\uD558\uBA70
+      \uD50C\uB808\uC774 \uB0B4\uC6A9\uC5D0 \uB300\uD574 \uCF54\uBA58\uD2B8\uD569\uB2C8\uB2E4.
+      \uC774 \uAE30\uB2A5\uC744 \uC7A0\uAE08 \uD574\uC81C\uD558\uB824\uBA74 Steam\uC5D0\uC11C
+      MateEngine\uC744 \uD6C4\uC6D0\uD574 \uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: "Mate Engine \uAD6C\uB9E4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "Food System\uC744 \uD1B5\uD574 \uC544\uBC14\uD0C0 \uC704\uC5D0\uC11C
+      \uB9C8\uC6B0\uC2A4 \uAC00\uC6B4\uB370 \uBC84\uD2BC\uC744 \uB20C\uB7EC \uC0C8\uB85C\uC6B4
+      \uC74C\uC2DD \uC6D0\uD615 \uBA54\uB274\uB97C \uC5F4 \uC218 \uC788\uC2B5\uB2C8\uB2E4.
+      \uC2A4\uBB34\uB514\uB97C \uC18C\uD658\uD558\uC5EC \uC544\uBC14\uD0C0 \uBA38\uB9AC
+      \uCABD\uC73C\uB85C \uAC00\uC838\uAC00\uBA74 \uD6A8\uACFC\uC74C\uACFC \uD568\uAED8
+      \uB9C8\uC2DC\uAC8C \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. \uC774 \uAE30\uB2A5\uC740
+      \uD604\uC7AC \uC55E\uC11C \uD574\uBCF4\uAE30(Early Access) \uB2E8\uACC4\uC774\uBA70,
+      \uD5A5\uD6C4 \uC5C5\uB370\uC774\uD2B8\uB97C \uD1B5\uD574 \uAC04\uB2E8\uD55C
+      \uBC30\uACE0\uD514 \uC2DC\uC2A4\uD15C\uC744 \uD3EC\uD568\uD55C \uB354 \uB9CE\uC740
+      \uC74C\uC2DD \uC544\uC774\uD15C\uC774 \uCD94\uAC00\uB420 \uC608\uC815\uC785\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: Food System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "Food System\uC740 Steam \uC0AC\uC6A9\uC790\uB9CC \uC0AC\uC6A9\uD560
+      \uC218 \uC788\uB294 \uAE30\uB2A5\uC785\uB2C8\uB2E4. \uC2A4\uBB34\uB514\uB098
+      \uB2E4\uB978 \uC74C\uC2DD\uC744 \uC18C\uD658\uD560 \uC218 \uC788\uACE0, \uC544\uBC14\uD0C0\uC5D0\uAC8C
+      \uC8FC\uB294 \uAC83\uC73C\uB85C \uB9C8\uC2DC\uB3C4\uB85D \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.
+      \uC774 \uAE30\uB2A5\uC744 \uC774\uC6A9\uD558\uB824\uBA74 \uAC1C\uBC1C\uC790\uB97C
+      \uD6C4\uC6D0\uD574 \uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: "\uD0C0\uC774\uBA38 \uCD94\uAC00"
     m_Metadata:
       m_Items: []
   references:

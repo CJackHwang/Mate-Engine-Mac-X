@@ -1282,30 +1282,30 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "Integracja z Minecraftem jest dost\u0119pna tylko w wersji na Steam.
+      Pozwala ona m\xF3wi\u0107 twojej postaci podczas konkretnych sytuacji, takich
+      jak odkrywanie nowych biom\xF3w, albo gdy potw\xF3r znajdzie si\u0119 za tob\u0105.
+      Reaguje na to jak grasz i komentuje co robisz. Wesprzyj MateEngine na Steam
+      aby uzyska\u0107 dost\u0119p do tej funkcji."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "Wersja na Steam zawiera cztery akcesoria: Flower Halo, Sakura Halo,
+      Retro Halo, oraz Error Face Mask. Dodaje tak\u017Ce funkcj\u0119 wiadomo\u015Bci
+      oparte na zdarzeniach kt\xF3re sprawiaj\u0105, \u017Ce posta\u0107 mo\u017Ce
+      m\xF3wi\u0107 w trakcie przeci\u0105gania, ta\u0144czenia, siedzenia, relaksu
+      itp.\n\nMateEngine kosztuje oko\u0142o 27z\u0142. Je\u015Bli nie mo\u017Cesz
+      sobie na to pozwoli\u0107, najwa\u017Cniejsze funkcje pozostaj\u0105 darmowe
+      a zawszze. Je\u015Bli mo\u017Cesz, rozwa\u017C swoje wsparcie dla przysz\u0142ych
+      aktualizacji. Dzi\u0119kuj\u0119!"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
-    m_Localized: Minecraft Integration
+    m_Localized: Integracja z Minecraftem
     m_Metadata:
       m_Items: []
   - m_Id: 78533177715499008
-    m_Localized: Timer
+    m_Localized: Minutnik
     m_Metadata:
       m_Items: []
   - m_Id: 78533281222533120
@@ -1317,15 +1317,69 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "To jest funkcja Minutnika. Mo\u017Cesz ustawi\u0107 czas do 24
+      godzin i 59 minut. Mo\u017Cesz te\u017C wpisa\u0107 w\u0142asny tekst, aby
+      okre\u015Bli\u0107 funkcj\u0119 minutnika. Na przyk\u0142ad, ustaw go na 15
+      minut i dodaj notk\u0119, \u017Ceby pami\u0119ta\u0107 o wyj\u0119ciu pizzy
+      z piekarnika. Kiedy minutnik si\u0119 sko\u0144czy, mo\u017Cesz go u\u017Cy\u0107
+      ponownie w dowolnym momencie."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: Start z losowym awatarem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "W\u0142\u0105czenie integracji z Minecraftem pozwala awatarowi
+      na reagowanie na wydarzenia w twojej rozgrywce, takich jak pokonywanie przeciwnik\xF3w,
+      spanie, cykl dnia i nocy, \u015Bmierci, odkrywanie biome'\xF3w, wykrywanie
+      mob\xF3w, zmiany pogodowe, niskiego poziomu zdrowia i wi\u0119cej. Upewnij
+      si\u0119, \u017Ce masz zainstalowanego moda, aby korzysta\u0107 z tej funkcji."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: Integracja z Minecraftem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: "Wiadomo\u015Bci z Minecrafta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "Integracja z Minecraftem jest wy\u0142\u0105cznie Steamow\u0105
+      funkcj\u0105. Pozwala ona awatarowi odzywa\u0107 si\u0119 w konkretnych momentach,
+      takich jak odkrywanie nowych biom\xF3w czy pojawienie sie potwora za tob\u0105.
+      Reaguje on na twoj\u0105 rozgrywk\u0119 i komentuje na temat tego, co robisz.
+      Wesprzyj MateEngine na Steamie aby odblokowa\u0107 t\u0119 funkcj\u0119."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: Kup Mate Engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "System jedzenia pozwala ci klikn\u0105\u0107 \u015Brodkowym przyciskiem
+      myszy na awatara, aby otworzy\u0107 nowe menu ko\u0142owe przek\u0105sek. Mo\u017Cesz
+      przywo\u0142a\u0107 smoothie i przybli\u017Cy\u0107 je do g\u0142owy postaci,
+      aby zacz\u0119\u0142a pi\u0107 z efektami d\u017Awi\u0119kowymi. Ta funkcja
+      jest narazie w fazie wczesnego dost\u0119pu i wi\u0119cej potraw, jak i prosty
+      system g\u0142odu, zostan\u0105 dodane w nast\u0119pnych wersjach."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: System jedzenia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "System jedzenia jest funkcj\u0105 wczesnego dost\u0119pu dost\u0119pn\u0105
+      dla u\u017Cytkownik\xF3w Steam. Pozwala przywo\u0142a\u0107 smoothie i inne
+      produkty \u017Cywno\u015Bciowe. Przytrzymaj smoothie myszk\u0105 i zbli\u017C
+      do g\u0142owy awatara, aby zacz\u0105\u0142 pi\u0107. Wesprzyj dewelopera,
+      aby otrzyma\u0107 dost\u0119p do tej funkcji."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: Dodaj minutnik
     m_Metadata:
       m_Items: []
   references:

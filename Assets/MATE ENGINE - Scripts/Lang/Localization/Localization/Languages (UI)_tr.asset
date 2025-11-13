@@ -1307,50 +1307,109 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "Minecraft Entegrasyonu yaln\u0131zca Steam s\xFCr\xFCm\xFCne \xF6zel
+      bir \xF6zelliktir. Bu \xF6zellik, avatar\u0131n belirli olaylar s\u0131ras\u0131nda
+      konu\u015Fmas\u0131n\u0131 sa\u011Flar. \xF6rne\u011Fin yeni bir biyom ke\u015Ffetti\u011Finizde
+      ya da arkan\u0131zda bir canavar belirdi\u011Finde. Avatar, oynay\u0131\u015F\u0131n\u0131za
+      tepki verir ve yapt\u0131klar\u0131n\u0131z hakk\u0131nda yorum yapar. Bu \xF6zelli\u011Fin
+      kilidini a\xE7mak i\xE7in MateEngine\u2019i Steam \xFCzerinden destekleyin."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "Steam s\xFCr\xFCm\xFCnde d\xF6rt aksesuar bulunur: \xC7i\xE7ek
+      Halosu, Sakura Halosu, Retro Halosu ve Hata Maskesi. Ayr\u0131ca bir \xF6zellik
+      daha ekler s\xFCr\xFCkleme, dans etme, oturma, dinlenme gibi anlarda avatar\u0131n
+      konu\u015Fmas\u0131n\u0131 sa\u011Flayan olay tabanl\u0131 mesajlar.\n\nMateEngine
+      yakla\u015F\u0131k 4.99 USD\u2019dir. E\u011Fer bunu kar\u015F\u0131layam\u0131yorsan\u0131z,
+      temel \xF6zellikler sonsuza kadar \xFCcretsiz kalacakt\u0131r. E\u011Fer imkan\u0131n\u0131z
+      varsa, gelecekteki g\xFCncellemeler i\xE7in beni desteklemeyi d\xFC\u015F\xFCnebilirsiniz.
+      Te\u015Fekk\xFCr ederim!"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
-    m_Localized: Minecraft Integration
+    m_Localized: Minecraft Entegrasyonu
     m_Metadata:
       m_Items: []
   - m_Id: 78533177715499008
-    m_Localized: Timer
+    m_Localized: "Zamanlay\u0131c\u0131"
     m_Metadata:
       m_Items: []
   - m_Id: 78533281222533120
-    m_Localized: Start
+    m_Localized: "Ba\u015Flat"
     m_Metadata:
       m_Items: []
   - m_Id: 78533283390988288
-    m_Localized: Stop
+    m_Localized: Durdur
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "Bu, zamanlay\u0131c\u0131 \xF6zelli\u011Fidir. En fazla 24 saat
+      59 dakikaya kadar bir zamanlay\u0131c\u0131 ayarlayabilirsiniz. Ayr\u0131ca,
+      zamanlay\u0131c\u0131n\u0131za ne i\xE7in oldu\u011Funu hat\u0131rlamak i\xE7in
+      \xF6zel bir not da ekleyebilirsiniz. \xD6rne\u011Fin, pizzan\u0131z\u0131n
+      ne zaman haz\u0131r olaca\u011F\u0131n\u0131 hat\u0131rlamak i\xE7in 15 dakikaya
+      ayarlay\u0131p bir not ekleyebilirsiniz. Zamanlay\u0131c\u0131 sona erdikten
+      sonra, istedi\u011Finiz zaman tekrar kullanabilirsiniz."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: "Rastgele Avatarla Ba\u015Flat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "Minecraft Entegrasyonu \xF6zelli\u011Fini etkinle\u015Ftirmek,
+      avatar\u0131n oynay\u0131\u015F\u0131n\u0131za \xE7e\u015Fitli olaylar arac\u0131l\u0131\u011F\u0131yla
+      tepki vermesini sa\u011Flar. Bunlara \xF6ld\xFCrmeler, uyuma, gece ve g\xFCnd\xFCz
+      d\xF6ng\xFCleri, \xF6l\xFCmler, biyom ke\u015Fifleri, yarat\u0131k tespitleri,
+      hava de\u011Fi\u015Fimleri, d\xFC\u015F\xFCk sa\u011Fl\u0131k durumu ve daha
+      fazlas\u0131 dahildir. Bu \xF6zelli\u011Fi kullanabilmek i\xE7in modu kurdu\u011Funuzdan
+      emin olun."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: Minecraft Entegrasyonu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: "Minecraft Mesajlar\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "Minecraft Entegrasyonu yaln\u0131zca Steam s\xFCr\xFCm\xFCne \xF6zel
+      bir \xF6zelliktir. Bu \xF6zellik, avatar\u0131n belirli olaylar s\u0131ras\u0131nda
+      konu\u015Fmas\u0131n\u0131 sa\u011Flar \xF6rne\u011Fin yeni bir biyom ke\u015Ffetti\u011Finizde
+      ya da arkan\u0131zda bir canavar belirdi\u011Finde. Avatar, oynay\u0131\u015F\u0131n\u0131za
+      tepki verir ve yapt\u0131klar\u0131n\u0131z hakk\u0131nda yorum yapar. Bu \xF6zelli\u011Fin
+      kilidini a\xE7mak i\xE7in MateEngine\u2019i Steam \xFCzerinden destekleyin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: "Mate Engine'i Sat\u0131n Al."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "Yemek Sistemi, fare tekerle\u011Fi tu\u015Funa basarak yeni yiyecek
+      men\xFCs\xFCn\xFC a\xE7man\u0131 sa\u011Flar. Bir smoothie (i\xE7ecek) olu\u015Fturabilir
+      ve ses efektleri e\u015Fli\u011Finde avatar\u0131n kafas\u0131na g\xF6t\xFCrerek
+      i\xE7mesini sa\u011Flayabilirsin. Bu \xF6zellik \u015Fu anda Erken Eri\u015Fim
+      a\u015Famas\u0131ndad\u0131r ve gelecekteki g\xFCncellemelerde k\xFC\xE7\xFCk
+      bir a\xE7l\u0131k sistemiyle birlikte daha fazla yiyecek eklenecektir."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: Yemek Sistemi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "Yemek Sistemi, yaln\u0131zca Steam kullan\u0131c\u0131lar\u0131na
+      \xF6zel bir Erken Eri\u015Fim \xF6zelli\u011Fidir. Bu sistem, smoothie\u2019ler
+      ve di\u011Fer yiyecekleri olu\u015Fturman\u0131 sa\u011Flar. Bir smoothie\u2019yi
+      farenle tutup avatar\u0131n kafas\u0131na g\xF6t\xFCr b\xF6ylece i\xE7ebilir.
+      Bu \xF6zelli\u011Fe eri\u015Fmek i\xE7in geli\u015Ftiriciyi destekleyebilirsin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: "Zamanlay\u0131c\u0131 Ekle"
     m_Metadata:
       m_Items: []
   references:

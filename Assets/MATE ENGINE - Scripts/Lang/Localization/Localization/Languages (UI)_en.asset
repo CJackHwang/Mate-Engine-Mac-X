@@ -1283,6 +1283,55 @@ MonoBehaviour:
     m_Localized: Start With Random Avatar
     m_Metadata:
       m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: Enabling the Minecraft Integration feature allows the avatar to
+      react to your gameplay through events such as kills, sleeping, day and night
+      cycles, deaths, biome discoveries, mob detections, weather changes, low health,
+      and more. Make sure you have the mod installed to use this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: Minecraft Integration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: Minecraft Messages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
+      to speak during specific events, such as discovering new biomes or when a monster
+      appears behind you. She reacts to your gameplay and comments on what you do.
+      Support MateEngine on Steam to unlock this feature.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: Buy Mate Engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "The Food System lets you press the middle mouse button on the avatar
+      to open the new food circle menu. You can spawn a smoothie and bring it to
+      the avatar\u2019s head to make her drink with sound effects. The feature is
+      currently in Early Access, and more food items, including a small hunger system,
+      will be added in future updates."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: Food System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "The Food System is an Early Access feature available only to Steam
+      users. It lets you spawn smoothies and other food items. Hold a smoothie with
+      your mouse and bring it to the avatar\u2019s head so she can drink it. Support
+      the developer to gain access to this feature."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: Add Timer
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

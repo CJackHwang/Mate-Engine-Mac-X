@@ -1354,50 +1354,103 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "L'Int\xE9gration Minecraft est une fonction unique \xE0 Steam.
+      Elle permet \xE0 l'avatar de parler durant certains \xE9v\xE9nements, comme
+      d\xE9couvrir de nouveaux biomes ou quand un monstre appara\xEEt derri\xE8re
+      vous. Elle r\xE9agit \xE0 votre gameplay et commente ce que vous faites. Supportez
+      MateEngine sur Steam pour d\xE9bloquer cette fonction."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "La version Steam inclut quatre accessoires : Halo Fleuri, Halo
+      Sakura, Halo Retro, et le Masque Erreur. Elle ajoute aussi une fonction, les
+      messages bas\xE9s sur l'\xE9v\xE9nement qui laissent l'avatar parler pendant
+      qu'il est d\xE9plac\xE9, qu'il danse, est assis, se relaxe, et plus encore.\n\nMateEngine
+      co\xFBte environ 5,49\u20AC. Si vous ne pouvez pas l'acheter, les fonctions
+      essentielles resteront toujours gratuites. Si vous pouvez, consid\xE9rez de
+      me supporter pour les prochaines mises \xE0 jour. Merci!"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
-    m_Localized: Minecraft Integration
+    m_Localized: "Int\xE9gration Minecraft"
     m_Metadata:
       m_Items: []
   - m_Id: 78533177715499008
-    m_Localized: Timer
+    m_Localized: Minuteur
     m_Metadata:
       m_Items: []
   - m_Id: 78533281222533120
-    m_Localized: Start
+    m_Localized: "D\xE9marrer"
     m_Metadata:
       m_Items: []
   - m_Id: 78533283390988288
-    m_Localized: Stop
+    m_Localized: "Arr\xEAter"
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "C'est la fonction minuteur. Vous pouvez mettre un minuteur pour
+      jusqu'\xE0 24h et 59 minutes. Vous pouvez aussi entrer un texte personnalis\xE9
+      pour nommer votre minuteur, ainsi vous savez \xE0 quoi il sert. Par exemple,
+      mettez le \xE0 15 minutes et ajoutez une note pour vous rappeler quand votre
+      pizza est pr\xEAte. Une fois que le minuteur est termin\xE9, vous pouvez le
+      r\xE9utiliser n'importe quand."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: "D\xE9marrer avec un avatar al\xE9atoire"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "Activer l'Int\xE9gration Minecraft permet \xE0 l'avatar de r\xE9agir
+      aux \xE9v\xE9nements tels que tuer, dormir, les cycles jour-nuit, les morts,
+      la d\xE9couverte de biomes, la d\xE9tection de cr\xE9atures, les changements
+      m\xE9t\xE9os, une vie basse, et plus. V\xE9rifiez que vous avez le mod install\xE9
+      pour cette fonction."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: "Int\xE9gration Minecraft "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: 'Messages Minecraft '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "L'int\xE9gration Minecraft est une fonction unique \xE0 Steam.
+      Elle permet \xE0 l'avatar de parler durant certains \xE9v\xE9nements, comme
+      d\xE9couvrir de nouveaux biomes ou quand un monstre appara\xEEt derri\xE8re
+      vous. Elle r\xE9agit \xE0 votre gameplay et commente ce que vous faites. Supportez
+      MateEngine sur Steam pour d\xE9bloquer cette fonction."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: Acheter Mate Engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "Le Syst\xE8me de Nourriture vous permet d'appuyer sur l'avatar
+      avec le bouton de votre clic-molette pour ouvrir le nouveau menu de nourriture.
+      Vous pouvez faire appara\xEEtre un smoothie et l'apporter \xE0 la t\xEAte de
+      votre avatar pour la faire boire avec des effets sonores. Cette fonction est
+      actuellement en acc\xE8s anticip\xE9, et d'autres aliments, incluant un petit
+      syst\xE8me de faim, seront ajout\xE9s dans de futures mises \xE0 jour."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: "Syst\xE8me de Nourriture"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "Le Syst\xE8me de Nourriture est une fonction en acc\xE8s anticip\xE9
+      disponible uniquement aux utilisateurs Steam. Elle vous laisse faire appara\xEEtre
+      des smoothies et autres aliments. Tenez un smoothie avec votre souris et apportez
+      le \xE0 la t\xEAte de votre avatar pour qu'elle puisse le boire. Supportez
+      le d\xE9veloppeur pour gagner acc\xE8s \xE0 cette fonction."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: Ajouter un Minuteur
     m_Metadata:
       m_Items: []
   references:

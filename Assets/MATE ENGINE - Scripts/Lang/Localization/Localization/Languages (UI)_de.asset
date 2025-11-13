@@ -1005,7 +1005,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 71751708213026816
-    m_Localized: "Neuen Alarm hinzuf\xFCgen"
+    m_Localized: "Alarm hinzuf\xFCgen"
     m_Metadata:
       m_Items: []
   - m_Id: 71751796721229824
@@ -1319,22 +1319,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74780306805137408
-    m_Localized: Minecraft Integration is a Steam-only feature. It allows the avatar
-      to speak during specific events, such as discovering new biomes or when a monster
-      appears behind you. She reacts to your gameplay and comments on what you do.
-      Support MateEngine on Steam to unlock this feature.
+    m_Localized: "Die Minecraft-Integration ist ein exklusives Feature der Steam-Version.
+      Sie erm\xF6glicht es dem Avatar, bei bestimmten Ereignissen zu sprechen \u2013
+      zum Beispiel, wenn du neue Biome entdeckst oder ein Monster hinter dir auftaucht.
+      Sie reagiert auf dein Gameplay und kommentiert, was du tust. Unterst\xFCtze
+      MateEngine auf Steam, um dieses Feature freizuschalten."
     m_Metadata:
       m_Items: []
   - m_Id: 74780051929866240
-    m_Localized: 'The Steam version includes four accessories: Flower Halo, Sakura
-      Halo, Retro Halo, and Error Face Mask. It also adds one feature, event based
-      messages that let the avatar talk while dragging, dancing, sitting, relaxing,
-      and more.
-
-
-      MateEngine costs around 4.99 USD. If you cannot afford it,
-      the essential features stay free forever. If you can, consider supporting me
-      for future updates. Thank you!'
+    m_Localized: "Die Steam-Version enth\xE4lt vier Accessoires: Blumen-Halo, Sakura-Halo,
+      Retro-Halo und Error-Gesichtsmaske. Au\xDFerdem f\xFCgt sie ein Feature hinzu:
+      Ereignisbasierte Nachrichten, durch die der Avatar w\xE4hrend des Ziehens,
+      Tanzens, Sitzens, Entspannens und mehr sprechen kann.\n\nMateEngine kostet
+      etwa 4,99 USD. Wenn du es dir nicht leisten kannst, bleiben die wichtigsten
+      Funktionen f\xFCr immer kostenlos. Wenn du kannst, erw\xE4ge bitte, mich f\xFCr
+      zuk\xFCnftige Updates zu unterst\xFCtzen. Danke!"
     m_Metadata:
       m_Items: []
   - m_Id: 74780051216834560
@@ -1354,15 +1353,69 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 78533389917921280
-    m_Localized: "This is the timer function. You can set a timer for up to 24 hours
-      and 59 minutes. You can also enter custom text to label your timer, so you
-      know what it\u2019s for. For example, set it to 15 minutes and add a note to
-      remind yourself when your pizza is ready. After the timer ends, you can reuse
-      it anytime."
+    m_Localized: "Dies ist die Timer-Funktion. Du kannst einen Timer f\xFCr bis zu
+      24 Stunden und 59 Minuten einstellen. Au\xDFerdem kannst du einen eigenen Text
+      hinzuf\xFCgen, um den Zweck deines Timers zu beschreiben. Zum Beispiel kannst
+      du ihn auf 15 Minuten stellen und eine Notiz hinzuf\xFCgen, die dich daran
+      erinnert, wann deine Pizza fertig ist. Nach Ablauf des Timers kannst du ihn
+      jederzeit wiederverwenden."
     m_Metadata:
       m_Items: []
   - m_Id: 78900503145127936
-    m_Localized: Start With Random Avatar
+    m_Localized: "Mit zuf\xE4lligem Avatar starten"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942061286432768
+    m_Localized: "Wenn du die Minecraft-Integrationsfunktion aktivierst, kann der
+      Avatar auf dein Gameplay reagieren \u2013 bei Ereignissen wie Kills, Schlafen,
+      Tag- und Nachtwechsel, Toden, Biomentdeckungen, Monstervorkommen, Wetter\xE4nderungen,
+      niedrigem Gesundheitszustand und mehr. Stelle sicher, dass du die Mod installiert
+      hast, um dieses Feature nutzen zu k\xF6nnen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942197488066560
+    m_Localized: Minecraft Integration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942349086990336
+    m_Localized: Minecraft Nachrichten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942769763098624
+    m_Localized: "Die Minecraft-Integration ist ein exklusives Feature der Steam-Version.
+      Sie erm\xF6glicht es dem Avatar, bei bestimmten Ereignissen zu sprechen \u2013
+      zum Beispiel, wenn du neue Biome entdeckst oder ein Monster hinter dir auftaucht.
+      Sie reagiert auf dein Gameplay und kommentiert, was du tust. Unterst\xFCtze
+      MateEngine auf Steam, um dieses Feature freizuschalten."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942879666446336
+    m_Localized: Mate Engine Kaufen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78942992686161920
+    m_Localized: "Das Food-System erm\xF6glicht es dir, mit der mittleren Maustaste
+      auf den Avatar zu klicken, um das neue Food-Kreismen\xFC zu \xF6ffnen. Du kannst
+      einen Smoothie spawnen und ihn zum Kopf des Avatars bringen, damit sie ihn
+      mit Soundeffekten trinkt. Dieses Feature befindet sich derzeit im Early Access,
+      und in zuk\xFCnftigen Updates werden weitere Nahrungsmittel sowie ein kleines
+      Hungersystem hinzugef\xFCgt."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943100634963968
+    m_Localized: Food System
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943336845582336
+    m_Localized: "Das Food-System ist ein Early-Access-Feature, das nur Steam-Nutzern
+      zur Verf\xFCgung steht. Es erm\xF6glicht dir, Smoothies und andere Nahrungsmittel
+      zu spawnen. Halte einen Smoothie mit der Maus und bring ihn zum Kopf des Avatars,
+      damit sie ihn trinken kann. Unterst\xFCtze den Entwickler, um Zugriff auf dieses
+      Feature zu erhalten."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78943700919558144
+    m_Localized: "Timer hinzuf\xFCgen"
     m_Metadata:
       m_Items: []
   references:
