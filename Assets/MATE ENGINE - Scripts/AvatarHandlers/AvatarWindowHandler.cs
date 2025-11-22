@@ -137,8 +137,15 @@ public class AvatarWindowHandler : MonoBehaviour
         cachedWindows.Capacity = Mathf.Max(cachedWindows.Capacity, 128);
         activeOccluders.Capacity = Mathf.Max(activeOccluders.Capacity, maxOtherQuads);
     }
-    void OnDisable() { CleanupOccluderArtifacts(); }
-    void OnDestroy() { CleanupOccluderArtifacts(); }
+    void OnDisable()
+    {
+        ClearSnapAndHide();
+    }
+
+    void OnDestroy()
+    {
+        CleanupOccluderArtifacts();
+    }
 
     void BuildBlockSitCache()
     {
