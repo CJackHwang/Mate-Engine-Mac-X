@@ -31,7 +31,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     [Header("Optional")]
     public bool OnlyMoveWhenFocused = false;
 
-    [Header("Avatar Bounds Based Blocking")]
+    [Header("Avatar Bounds Based Blocking (Left/Right only)")]
     public bool UseAvatarBoundsBlocking = true;
 
     [Tooltip("Root transform whose child Renderers define the avatar bounds. If null, this GameObject is used.")]
@@ -51,16 +51,16 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     public bool DrawBlockingDebug = true;
     [Range(0f, 1f)] public float DebugOverlayAlpha = 0.55f;
 
-    const int SM_XVIRTUALSCREEN = 76;
-    const int SM_YVIRTUALSCREEN = 77;
-    const int SM_CXVIRTUALSCREEN = 78;
-    const int SM_CYVIRTUALSCREEN = 79;
-
     const uint SWP_NOSIZE = 0x0001;
     const uint SWP_NOZORDER = 0x0004;
     const uint SWP_NOACTIVATE = 0x0010;
 
     const uint GW_OWNER = 4;
+
+    const uint MONITOR_DEFAULTTONEAREST = 2;
+
+    const int SM_XVIRTUALSCREEN = 76;
+    const int SM_CXVIRTUALSCREEN = 78;
 
     [StructLayout(LayoutKind.Sequential)]
     struct RECT
@@ -76,6 +76,15 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     {
         public int X;
         public int Y;
+    }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    struct MONITORINFO
+    {
+        public int cbSize;
+        public RECT rcMonitor;
+        public RECT rcWork;
+        public uint dwFlags;
     }
 
     [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
@@ -96,6 +105,9 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
     [DllImport("user32.dll")] static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
     [DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
+
+    [DllImport("user32.dll")] static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
 
     int _baseLayerIndex = 0;
     IntPtr _hwnd = IntPtr.Zero;
@@ -215,18 +227,16 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         float xL = bi.effectiveMinXUnity;
         float xR = bi.effectiveMaxXUnity;
-        float yTop = 0f;
-        float h = Screen.height;
 
-        DrawVLine(xL, yTop, h, 2f);
-        DrawVLine(xR, yTop, h, 2f);
+        DrawVLine(xL, 0f, Screen.height, 2f);
+        DrawVLine(xR, 0f, Screen.height, 2f);
 
         float thr = bi.edgeThresholdUnity;
         float xLT = Mathf.Clamp(thr, 0f, Screen.width);
         float xRT = Mathf.Clamp(Screen.width - thr, 0f, Screen.width);
 
-        DrawVLine(xLT, yTop, h, 1f);
-        DrawVLine(xRT, yTop, h, 1f);
+        DrawVLine(xLT, 0f, Screen.height, 1f);
+        DrawVLine(xRT, 0f, Screen.height, 1f);
 
         GUI.color = prev;
     }
@@ -412,8 +422,8 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         if (!TryGetBlockingInfo(out BlockingInfo bi))
             return 0;
 
-        float leftDist = bi.effectiveMinGlobalX - bi.virtualLeft;
-        float rightDist = bi.virtualRight - bi.effectiveMaxGlobalX;
+        float leftDist = bi.effectiveMinGlobalX - bi.monitorLeft;
+        float rightDist = bi.monitorRight - bi.effectiveMaxGlobalX;
 
         if (leftDist <= bi.edgeThresholdGlobal && rightDist <= bi.edgeThresholdGlobal)
         {
@@ -441,14 +451,13 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         int w = r.Right - r.Left;
 
-        int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-        int vy = GetSystemMetrics(SM_YVIRTUALSCREEN);
-        int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-        int vh = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-
-        int minY = vy;
-        int maxY = vy + vh - (r.Bottom - r.Top);
-        if (maxY < minY) maxY = minY;
+        if (!TryGetMonitorBounds(_hwnd, out int monitorLeft, out int monitorRight))
+        {
+            int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+            int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+            monitorLeft = vx;
+            monitorRight = vx + vw;
+        }
 
         int minX;
         int maxX;
@@ -460,8 +469,8 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         }
         else
         {
-            int minWinX = vx;
-            int maxWinX = vx + vw - w;
+            int minWinX = monitorLeft;
+            int maxWinX = monitorRight - w;
             if (maxWinX < minWinX) maxWinX = minWinX;
             minX = minWinX;
             maxX = maxWinX;
@@ -479,12 +488,13 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         int targetX = r.Left + Mathf.RoundToInt(move * _dir);
         int clampedX = Mathf.Clamp(targetX, minX, maxX);
-        int clampedY = Mathf.Clamp(r.Top, minY, maxY);
 
         int actualMoved = Mathf.Abs(clampedX - r.Left);
         _remainingPixels -= actualMoved;
 
-        if (!SetWindowPos(_hwnd, IntPtr.Zero, clampedX, clampedY, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE))
+        int yKeep = r.Top;
+
+        if (!SetWindowPos(_hwnd, IntPtr.Zero, clampedX, yKeep, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE))
         {
             StopWalking();
             ScheduleNextDecision(false);
@@ -571,10 +581,29 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 #endif
     }
 
+    bool TryGetMonitorBounds(IntPtr hwnd, out int left, out int right)
+    {
+        left = 0;
+        right = 0;
+
+        IntPtr mon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+        if (mon == IntPtr.Zero) return false;
+
+        MONITORINFO mi = new MONITORINFO();
+        mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+
+        if (!GetMonitorInfo(mon, ref mi))
+            return false;
+
+        left = mi.rcMonitor.Left;
+        right = mi.rcMonitor.Right;
+        return true;
+    }
+
     struct BlockingInfo
     {
-        public int virtualLeft;
-        public int virtualRight;
+        public int monitorLeft;
+        public int monitorRight;
         public float effectiveMinXUnity;
         public float effectiveMaxXUnity;
         public int effectiveMinGlobalX;
@@ -612,12 +641,18 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         float scaleX = clientW / (float)Screen.width;
 
-        if (!TryGetAvatarScreenBoundsUnity(cam, out float minXU, out float maxXU, out float minYU, out float maxYU))
+        if (!TryGetMonitorBounds(_hwnd, out int monitorLeft, out int monitorRight))
+        {
+            int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+            int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+            monitorLeft = vx;
+            monitorRight = vx + vw;
+        }
+
+        if (!TryGetAvatarScreenBoundsUnity(cam, out float minXU, out float maxXU))
         {
             minXU = 0f;
             maxXU = Screen.width;
-            minYU = 0f;
-            maxYU = Screen.height;
         }
 
         float effMinXU = Mathf.Clamp(minXU + BoundsInsetLeft, 0f, Screen.width);
@@ -630,12 +665,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
             effMaxXU = mid;
         }
 
-        int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-        int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-
-        int virtualLeft = vx;
-        int virtualRight = vx + vw;
-
         int borderLeft = clientX - winRect.Left;
 
         int effMinGlobalX = clientX + Mathf.RoundToInt(effMinXU * scaleX);
@@ -643,13 +672,13 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         int thrGlobal = Mathf.RoundToInt(EdgeThresholdUnityPixels * scaleX);
 
-        int minWindowX = virtualLeft - borderLeft - Mathf.RoundToInt(effMinXU * scaleX);
-        int maxWindowX = virtualRight - borderLeft - Mathf.RoundToInt(effMaxXU * scaleX);
+        int minWindowX = monitorLeft - borderLeft - Mathf.RoundToInt(effMinXU * scaleX);
+        int maxWindowX = monitorRight - borderLeft - Mathf.RoundToInt(effMaxXU * scaleX);
 
         if (maxWindowX < minWindowX) maxWindowX = minWindowX;
 
-        bi.virtualLeft = virtualLeft;
-        bi.virtualRight = virtualRight;
+        bi.monitorLeft = monitorLeft;
+        bi.monitorRight = monitorRight;
         bi.effectiveMinXUnity = effMinXU;
         bi.effectiveMaxXUnity = effMaxXU;
         bi.effectiveMinGlobalX = effMinGlobalX;
@@ -662,12 +691,10 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         return true;
     }
 
-    bool TryGetAvatarScreenBoundsUnity(Camera cam, out float minX, out float maxX, out float minY, out float maxY)
+    bool TryGetAvatarScreenBoundsUnity(Camera cam, out float minX, out float maxX)
     {
         minX = float.PositiveInfinity;
         maxX = float.NegativeInfinity;
-        minY = float.PositiveInfinity;
-        maxY = float.NegativeInfinity;
 
         if (_boundsRenderers == null || _boundsRenderers.Length == 0)
             return false;
@@ -700,8 +727,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
                 any = true;
                 if (sp.x < minX) minX = sp.x;
                 if (sp.x > maxX) maxX = sp.x;
-                if (sp.y < minY) minY = sp.y;
-                if (sp.y > maxY) maxY = sp.y;
             }
         }
 
@@ -709,21 +734,12 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         minX = Mathf.Clamp(minX, 0f, Screen.width);
         maxX = Mathf.Clamp(maxX, 0f, Screen.width);
-        minY = Mathf.Clamp(minY, 0f, Screen.height);
-        maxY = Mathf.Clamp(maxY, 0f, Screen.height);
 
         if (maxX < minX)
         {
             float mid = (minX + maxX) * 0.5f;
             minX = mid;
             maxX = mid;
-        }
-
-        if (maxY < minY)
-        {
-            float mid = (minY + maxY) * 0.5f;
-            minY = mid;
-            maxY = mid;
         }
 
         return true;
