@@ -151,6 +151,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -172,6 +174,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -388,9 +391,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: 0.08665845, z: 0.018566467}
-    m_Extent: {x: 0.1426712, y: 0.23913088, z: 0.111585654}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &141639536432769363
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +469,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.1449344, y: -0.04819596, z: 0.04801678}
     Radius: 0.25
@@ -939,7 +942,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.029156718, y: 0.00000047683716, z: 0}
     Radius: 0.03887563
@@ -1095,6 +1098,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1116,6 +1121,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -1332,9 +1338,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: 0.26859805, z: -0.0784556}
-    m_Extent: {x: 0.24100028, y: 0.3468453, z: 0.24467626}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &681651398412067177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1735,7 +1741,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.0012102649, y: -0.050503075, z: -0.15192898}
     Radius: 0.25
@@ -2171,7 +2177,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.000000007450581, y: -0.04332453, z: 0.070436314}
     Radius: 0.04440666
@@ -2409,7 +2415,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.091658734, y: -0.047337115, z: 0.12244308}
     Radius: 0.25
@@ -2721,7 +2727,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.054787427, y: -0.00002193451, z: 0.004472661}
     Radius: 0.05496971
@@ -2836,7 +2842,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.029156726, y: 0.00000035762787, z: 0.0000000055879354}
     Radius: 0.038875636
@@ -3269,7 +3275,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0, y: 0, z: 0}
     Radius: 0.030639887
@@ -3317,7 +3323,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.04672795, y: -0.045960963, z: 0.24171346}
     Radius: 0.25
@@ -3595,7 +3601,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.00000012293458, y: -0.09706086, z: -0.010604255}
     Radius: 0.048819214
@@ -3965,7 +3971,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.033763945, y: -0.00000047683716, z: 0.000000015832484}
     Radius: 0.03376396
@@ -4017,7 +4023,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.17638658, y: -0.04677075, z: 0.17152716}
     Radius: 0.25
@@ -4167,7 +4173,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.14317673, y: -0.049349546, z: -0.05195661}
     Radius: 0.25
@@ -4368,7 +4374,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 690ea0146224b8b4694a1925dddeb352, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMMeta
   Meta: {fileID: 11400000, guid: ab414d25e744a9241ad081a350d1aef4, type: 2}
 --- !u!114 &7374581964660996256
 MonoBehaviour:
@@ -4381,7 +4387,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3869812175467a143ab9cd865752b4a9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMHumanoidDescription
   Avatar: {fileID: 9000000, guid: 181233dfba0904a4fac68ca88010ae52, type: 2}
   Description: {fileID: 11400000, guid: 9563830b337915245a0883673cb95c37, type: 2}
 --- !u!95 &3300561100374090377
@@ -4417,7 +4423,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b678c1df50cfb547990db24a32856da, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMBlendShapeProxy
   BlendShapeAvatar: {fileID: 11400000, guid: ce7a578fd4a92d2468389d33a0813e9b, type: 2}
 --- !u!114 &307619874045680078
 MonoBehaviour:
@@ -4430,7 +4436,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dedba1309bdf12b42af2362f52eea134, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMFirstPerson
   FirstPersonBone: {fileID: 1965207668382724130}
   FirstPersonOffset: {x: 0, y: 0, z: 0}
   Renderers:
@@ -4467,7 +4473,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0a1a470564f16f4f94acb4b9ef56367, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMLookAtHead
   DrawGizmo: 1
   UpdateType: 1
   Target: {fileID: 0}
@@ -4485,7 +4491,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8b72334adf6f7948bd98b4f0a873949, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMLookAtBoneApplyer
   DrawGizmo: 0
   LeftEye:
     Transform: {fileID: 2721551385872682500}
@@ -4872,7 +4878,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.24348323, y: -0.049119294, z: -0.032007996}
     Radius: 0.25
@@ -4991,7 +4997,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.000000007450581, y: -0.04332453, z: 0.070436314}
     Radius: 0.04440666
@@ -5101,7 +5107,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.07706288, y: -0.050261974, z: -0.13103238}
     Radius: 0.25
@@ -5770,6 +5776,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5793,6 +5801,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -6009,9 +6018,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: 0.46254456, z: -0.017831072}
-    m_Extent: {x: 0.08126597, y: 0.105754256, z: 0.088670224}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &3929618298767792358
 GameObject:
   m_ObjectHideFlags: 0
@@ -6318,6 +6327,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6339,6 +6350,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -6552,49 +6564,12 @@ SkinnedMeshRenderer:
   - {fileID: 5694574642567543813}
   - {fileID: 6045335085057366295}
   - {fileID: 7591127339338998341}
-  m_BlendShapeWeights:
-  - 0
-  - 0
-  - 0
-  - 60
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: -0.000000029802322, y: -0.21048835, z: 0.019384302}
-    m_Extent: {x: 0.6041647, y: 0.61423624, z: 0.10792231}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &4217796050115270911
 GameObject:
   m_ObjectHideFlags: 0
@@ -6658,7 +6633,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6692,7 +6667,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6728,7 +6703,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6765,7 +6740,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6819,7 +6794,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6858,7 +6833,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6897,7 +6872,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6934,7 +6909,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -6972,7 +6947,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSpringBoneTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7010,7 +6985,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7041,7 +7016,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7072,7 +7047,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7103,7 +7078,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7134,7 +7109,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7165,7 +7140,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7196,7 +7171,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7227,7 +7202,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7258,7 +7233,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7289,7 +7264,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7320,7 +7295,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7351,7 +7326,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00ea06e1753e16f4ca870c39c067c86b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBone
   m_comment: Generated by VRMSkirtTool 1.1.2
   m_gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_stiffnessForce: 1
@@ -7615,6 +7590,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7636,6 +7613,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -7852,9 +7830,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: -0.002971083, y: 0.5333538, z: 0.054524444}
-    m_Extent: {x: 0.049806908, y: 0.01584661, z: 0.01133593}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &4404957003010694670
 GameObject:
   m_ObjectHideFlags: 0
@@ -8152,6 +8130,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -8173,6 +8153,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -8389,9 +8370,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: 0.28061777, z: 0.014284179}
-    m_Extent: {x: 0.26574588, y: 0.10166389, z: 0.11050311}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &4584050607316086364
 GameObject:
   m_ObjectHideFlags: 0
@@ -9106,6 +9087,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9127,6 +9110,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -9340,13 +9324,12 @@ SkinnedMeshRenderer:
   - {fileID: 5694574642567543813}
   - {fileID: 6045335085057366295}
   - {fileID: 7591127339338998341}
-  m_BlendShapeWeights:
-  - 60
+  m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: -0.5242471, z: 0.01623575}
-    m_Extent: {x: 0.108830936, y: 0.3035204, z: 0.08989027}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &5070512379900381775
 GameObject:
   m_ObjectHideFlags: 0
@@ -9833,7 +9816,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.23658125, y: -0.047980487, z: 0.06669705}
     Radius: 0.25
@@ -9960,6 +9943,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9981,6 +9966,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -10197,9 +10183,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: -0.000000007450581, y: 0.41253024, z: -0.0016610064}
-    m_Extent: {x: 0.09926437, y: 0.037480175, z: 0.025659598}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &5557053514830869489
 GameObject:
   m_ObjectHideFlags: 0
@@ -10313,7 +10299,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.049759176, y: -0.037012994, z: 0}
     Radius: 0.09191966
@@ -10427,7 +10413,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.1948451, y: -0.050469697, z: -0.14902852}
     Radius: 0.25
@@ -10487,7 +10473,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.020222604, y: 0.05763209, z: 0.03521967}
     Radius: 0.08349979
@@ -11286,7 +11272,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.033763975, y: -0.00000035762787, z: 0.000000010244548}
     Radius: 0.033763956
@@ -11339,7 +11325,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.00000012293458, y: -0.09706086, z: -0.010604255}
     Radius: 0.048819214
@@ -11618,7 +11604,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.054787427, y: -0.00002193451, z: 0.00447267}
     Radius: 0.05496971
@@ -11926,7 +11912,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0, y: 0.040812373, z: 0.018383935}
     Radius: 0.061279774
@@ -12204,6 +12190,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12226,6 +12214,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -12442,9 +12431,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0.06376612, y: 0.073355705, z: -0.22179544}
-    m_Extent: {x: 0.17428672, y: 0.5086237, z: 0.2408522}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &7594743167403460436
 GameObject:
   m_ObjectHideFlags: 0
@@ -12488,7 +12477,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: 0.022420738, y: -0.04700303, z: 0.15140168}
     Radius: 0.25
@@ -12963,6 +12952,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12984,6 +12975,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -13200,9 +13192,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: -0.74335575, z: 0.015573464}
-    m_Extent: {x: 0.09658916, y: 0.09089324, z: 0.09487717}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &8129369412506445213
 GameObject:
   m_ObjectHideFlags: 0
@@ -13317,6 +13309,8 @@ SkinnedMeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13338,6 +13332,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -13554,9 +13549,9 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5613081165609622342}
   m_AABB:
-    m_Center: {x: 0, y: 0.07412529, z: -0.0116882175}
-    m_Extent: {x: 0.47171074, y: 0.29198432, z: 0.24875133}
-  m_DirtyAABB: 0
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
 --- !u!1 &8197123125055394839
 GameObject:
   m_ObjectHideFlags: 0
@@ -14362,7 +14357,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 646b65a4a57afd34d8c4ed557efb46a5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMSpringBoneColliderGroup
   Colliders:
   - Offset: {x: -0.055176, y: -0.051505506, z: -0.2387972}
     Radius: 0.25

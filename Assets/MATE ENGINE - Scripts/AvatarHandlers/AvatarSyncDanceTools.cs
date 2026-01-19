@@ -54,8 +54,8 @@ namespace CustomDancePlayer
         {
             if (!isMain) return;
             bool allowBroadcast = syncToggle == null ? true : syncToggle.isOn;
-            if (allowBroadcast) ReleaseLock();   
-            else AcquireLock();                
+            if (allowBroadcast) ReleaseLock();
+            else AcquireLock();
         }
 
         void AcquireLock()

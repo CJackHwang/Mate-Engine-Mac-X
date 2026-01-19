@@ -23,6 +23,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle enableMinecraftMessagesToggle;
     public Toggle enableFeedSystemToggle;
     public Toggle enableRandomAvatarToggle;
+    public Toggle enableLocomotionToggle;
 
     [Header("External Objects")]
     public GameObject bloomObject;
@@ -57,6 +58,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableMinecraftMessagesToggle?.onValueChanged.AddListener(OnEnableMinecraftMessagesChanged);
         enableFeedSystemToggle?.onValueChanged.AddListener(OnEnableFeedSystemChanged);
         enableRandomAvatarToggle?.onValueChanged.AddListener(OnEnableRandomAvatarChanged);
+        enableLocomotionToggle?.onValueChanged.AddListener(OnEnableLocomotionChanged);
         LoadSettings();
         ApplySettings();
     }
@@ -101,6 +103,8 @@ public class SettingsHandlerToggles : MonoBehaviour
         Save();
     }
     private void OnEnableRandomAvatarChanged(bool v) { SaveLoadHandler.Instance.data.enableRandomAvatar = v; Save(); }
+    private void OnEnableLocomotionChanged(bool v) { SaveLoadHandler.Instance.data.enableLocomotion = v; ApplySettings(); Save(); }
+
     #endregion
 
     public void LoadSettings()
@@ -124,6 +128,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(data.enableMinecraftMessages);
         enableFeedSystemToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableFeedSystem);
         enableRandomAvatarToggle?.SetIsOnWithoutNotify(SaveLoadHandler.Instance.data.enableRandomAvatar);
+        enableLocomotionToggle?.SetIsOnWithoutNotify(data.enableLocomotion);
         ApplySettings();
     }
 
@@ -182,6 +187,9 @@ public class SettingsHandlerToggles : MonoBehaviour
         foreach (var amm in Resources.FindObjectsOfTypeAll<AvatarMinecraftMessages>())
             amm.enableMinecraftMessages = data.enableMinecraftMessages;
 
+        foreach (var loco in Resources.FindObjectsOfTypeAll<AvatarLocomotionController>())
+            loco.EnableLocomotion = data.enableLocomotion;
+
     }
 
     public void ResetToDefaults()
@@ -204,6 +212,9 @@ public class SettingsHandlerToggles : MonoBehaviour
         enableMinecraftMessagesToggle?.SetIsOnWithoutNotify(false);
         enableFeedSystemToggle?.SetIsOnWithoutNotify(false);
         enableRandomAvatarToggle?.SetIsOnWithoutNotify(false);
+        enableLocomotionToggle?.SetIsOnWithoutNotify(false);
+        SaveLoadHandler.Instance.data.enableLocomotion = false;
+
 
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;

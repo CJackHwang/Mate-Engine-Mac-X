@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 329dca3bf78fcdd42b2df941673db76f, type: 3}
   m_Name: BlendShape
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.BlendShapeAvatar
   Clips:
   - {fileID: 11400000, guid: a37baac9b1d9a7d47891b021f62a6adb, type: 2}
   - {fileID: 11400000, guid: 5571645dee3d11d4da4ec225dffedf6d, type: 2}

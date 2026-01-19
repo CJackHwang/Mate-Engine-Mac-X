@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63b589176a34b344b9ccbee2b7e7114a, type: 3}
   m_Name: Meta
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: VRM::VRM.VRMMetaObject
   ExporterVersion: UniVRM-0.97.0
   Title: "\u30BE\u30E1\u3061\u3083\u3093"
   Version: 1.3

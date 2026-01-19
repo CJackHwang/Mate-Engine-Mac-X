@@ -89,8 +89,8 @@ namespace CustomDancePlayer
         float playStartTime = 0f;
         bool isPlaying = false;
         List<int> filteredQueue = null;
-        bool holdDuringTransition;   
-        bool pendingStop;          
+        bool holdDuringTransition;
+        bool pendingStop;
 
 
         readonly HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
@@ -1234,9 +1234,9 @@ namespace CustomDancePlayer
         void EnforceHold()
         {
             holdDuringTransition = true;
-            FreezeAnimator();   
-            PauseAudio();       
-            SetDancing(false); 
+            FreezeAnimator();
+            PauseAudio();
+            SetDancing(false);
             SetWaiting(true);
         }
 

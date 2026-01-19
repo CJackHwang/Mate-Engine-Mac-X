@@ -177,6 +177,9 @@ public class SaveLoadHandler : MonoBehaviour
         public bool enableFeedSystem = false;
         public bool enableRandomAvatar = false;
 
+        public bool enableLocomotion = false;
+
+
         //ALARM
         [Serializable]
         public class AlarmEntry
@@ -288,6 +291,10 @@ public class SaveLoadHandler : MonoBehaviour
 
             foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
                 handler.windowSitYOffset = data.windowSitYOffset;
+
+            foreach (var loco in Resources.FindObjectsOfTypeAll<AvatarLocomotionController>())
+                loco.EnableLocomotion = data.enableLocomotion;
+
         }
     }
 }

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 976e99d37c093ce4c9b249c81c2cbdd5, type: 3}
   m_Name: AvatarDescription
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: UniHumanoid::UniHumanoid.AvatarDescription
   armStretch: 0.05
   legStretch: 0.05
   upperArmTwist: 0.5
