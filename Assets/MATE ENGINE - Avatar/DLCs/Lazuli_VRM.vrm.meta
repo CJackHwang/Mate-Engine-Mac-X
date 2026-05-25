@@ -2,7 +2,67 @@ fileFormatVersion: 2
 guid: b1a7b51c0c8690346859a3703d11510b
 ScriptedImporter:
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lazuli_Body_mtoon
+    second: {fileID: 2100000, guid: b5f2df89700df40bfbd6bf8fe9fda997, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lazuli_Costume_mtoon
+    second: {fileID: 2100000, guid: 213e21609709542dbaf3c522d5d22897, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lazuli_Face_Emotion_mtoon
+    second: {fileID: 2100000, guid: 4e990d5c1c7594db896b88eb1cc6970d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lazuli_Face_mtoon
+    second: {fileID: 2100000, guid: bdd38faaa7ddd49ffb46131fe8faee69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Lazuli_Hair_mtoon
+    second: {fileID: 2100000, guid: cee22ec93916c4c96bcc31d65552f8e5, type: 2}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: Mask_Lazuli_Face_Outline.linear
+    second: {fileID: 2800000, guid: 499b8fdf322184d09aa98e2926be165e, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: NormalMap_Lazuli_Costume.normal
+    second: {fileID: 2800000, guid: 7c4daf3d4272d4b66ac3445afd56d40f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: T_Lazuli_Body
+    second: {fileID: 2800000, guid: 6dc4900a0ca984aac83e5e072533fcaa, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: T_Lazuli_Costume
+    second: {fileID: 2800000, guid: 43ac622e6eb9046f780e64238a51f63f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: T_Lazuli_Face
+    second: {fileID: 2800000, guid: 11d22ff07b9c54ece93cd553754e0c6f, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: T_Lazuli_Hair
+    second: {fileID: 2800000, guid: 66a8a083be4dd4e5f89adad73472dd64, type: 3}
+  - first:
+      type: UnityEngine:Texture
+      assembly: UnityEngine.CoreModule
+      name: thumbnail__VRM10
+    second: {fileID: 2800000, guid: 42e72397d511747f88e7b33e1ce450b9, type: 3}
   serializedVersion: 2
   userData: 
   assetBundleName: 
