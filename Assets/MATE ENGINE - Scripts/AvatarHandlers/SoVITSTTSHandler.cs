@@ -163,6 +163,7 @@ public class SoVITSTTSHandler : MonoBehaviour
 
         if (audioSource != null)
         {
+            audioSource.volume = SaveLoadHandler.Instance?.data.ttsVolume ?? 1f;
             audioSource.clip = clip;
             audioSource.Play();
             yield return new WaitWhile(() => audioSource.isPlaying);

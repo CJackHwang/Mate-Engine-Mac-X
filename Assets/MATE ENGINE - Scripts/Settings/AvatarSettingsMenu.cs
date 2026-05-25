@@ -12,6 +12,7 @@ public class AvatarSettingsMenu : MonoBehaviour
     public Button applyButton, resetButton, windowSizeButton, refreshAppsListButton;
     public Slider soundThresholdSlider, idleSwitchTimeSlider, idleTransitionTimeSlider,
                   avatarSizeSlider, fpsLimitSlider, petVolumeSlider, effectsVolumeSlider, menuVolumeSlider,
+                  ttsVolumeSlider,
                   headBlendSlider, spineBlendSlider, eyeBlendSlider, hueShiftSlider, saturationSlider,
                   bigScreenSaverTimeoutSlider;
     public Toggle enableDancingToggle, enableMouseTrackingToggle, isTopmostToggle,
@@ -218,6 +219,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         petVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.petVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
         effectsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.effectsVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
         menuVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.menuVolume = v; UpdateAllCategoryVolumes(); SaveAll(); });
+        ttsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.ttsVolume = v; SaveAll(); });
         enableDancingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableDancing = v; SaveAll(); });
         enableMouseTrackingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableMouseTracking = v; SaveAll(); });
         isTopmostToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.isTopmost = v; ApplySettings(); SaveAll(); });
@@ -389,6 +391,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         petVolumeSlider?.SetValueWithoutNotify(data.petVolume);
         effectsVolumeSlider?.SetValueWithoutNotify(data.effectsVolume);
         menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
+        ttsVolumeSlider?.SetValueWithoutNotify(data.ttsVolume);
         enableWindowSittingToggle?.SetIsOnWithoutNotify(data.enableWindowSitting);
         enableDiscordRPCToggle?.SetIsOnWithoutNotify(data.enableDiscordRPC);
         headBlendSlider?.SetValueWithoutNotify(data.headBlend);
@@ -474,6 +477,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         data.petVolume = petVolumeSlider?.value ?? 1f;
         data.effectsVolume = effectsVolumeSlider?.value ?? 1f;
         data.menuVolume = menuVolumeSlider?.value ?? 1f;
+        data.ttsVolume = ttsVolumeSlider?.value ?? 1f;
         data.enableWindowSitting = enableWindowSittingToggle?.isOn ?? false;
         data.enableDiscordRPC = enableDiscordRPCToggle?.isOn ?? true;
         data.headBlend = headBlendSlider?.value ?? 0.7f;

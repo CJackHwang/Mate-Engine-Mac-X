@@ -7,6 +7,7 @@ public class SettingsHandlerAudio : MonoBehaviour
     public Slider petVolumeSlider;
     public Slider effectsVolumeSlider;
     public Slider menuVolumeSlider;
+    [SerializeField] private Slider ttsVolumeSlider;
 
     public List<AudioSource> petAudioSources = new List<AudioSource>();
     public List<AudioSource> effectsAudioSources = new List<AudioSource>();
@@ -26,6 +27,7 @@ public class SettingsHandlerAudio : MonoBehaviour
         petVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.petVolume = v; UpdateAllCategoryVolumes(); Save(); });
         effectsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.effectsVolume = v; UpdateAllCategoryVolumes(); Save(); });
         menuVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.menuVolume = v; UpdateAllCategoryVolumes(); Save(); });
+        ttsVolumeSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.ttsVolume = v; Save(); });
     }
 
     public void LoadSettings()
@@ -34,6 +36,7 @@ public class SettingsHandlerAudio : MonoBehaviour
         petVolumeSlider?.SetValueWithoutNotify(data.petVolume);
         effectsVolumeSlider?.SetValueWithoutNotify(data.effectsVolume);
         menuVolumeSlider?.SetValueWithoutNotify(data.menuVolume);
+        ttsVolumeSlider?.SetValueWithoutNotify(data.ttsVolume);
         UpdateAllCategoryVolumes();
     }
 
@@ -43,6 +46,7 @@ public class SettingsHandlerAudio : MonoBehaviour
         data.petVolume = petVolumeSlider?.value ?? data.petVolume;
         data.effectsVolume = effectsVolumeSlider?.value ?? data.effectsVolume;
         data.menuVolume = menuVolumeSlider?.value ?? data.menuVolume;
+        data.ttsVolume = ttsVolumeSlider?.value ?? data.ttsVolume;
         UpdateAllCategoryVolumes();
     }
 
@@ -51,11 +55,13 @@ public class SettingsHandlerAudio : MonoBehaviour
         petVolumeSlider?.SetValueWithoutNotify(1f);
         effectsVolumeSlider?.SetValueWithoutNotify(1f);
         menuVolumeSlider?.SetValueWithoutNotify(1f);
+        ttsVolumeSlider?.SetValueWithoutNotify(1f);
 
         var data = SaveLoadHandler.Instance.data;
         data.petVolume = 1f;
         data.effectsVolume = 1f;
         data.menuVolume = 1f;
+        data.ttsVolume = 1f;
 
         UpdateAllCategoryVolumes();
         SaveLoadHandler.Instance.SaveToDisk();
