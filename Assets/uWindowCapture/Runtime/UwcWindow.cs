@@ -15,12 +15,14 @@ public class UwcWindow
         onSizeChanged.AddListener(OnSizeChanged);
         onIconCaptured.AddListener(OnIconCaptured);
 
+#if UNITY_STANDALONE_WIN
         CreateIconTexture();
 
         parentWindow = UwcManager.FindParent(id);
         if (parentWindow != null) {
             parentWindow.onChildAdded.Invoke(this);
         }
+#endif
     }
 
     public int id 
@@ -37,37 +39,79 @@ public class UwcWindow
 
     public System.IntPtr handle
     {
-        get { return Lib.GetWindowHandle(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowHandle(id);
+#else
+            return System.IntPtr.Zero;
+#endif
+        }
     }
 
     public System.IntPtr ownerHandle
     {
-        get { return Lib.GetWindowOwnerHandle(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowOwnerHandle(id);
+#else
+            return System.IntPtr.Zero;
+#endif
+        }
     }
 
     public System.IntPtr parentHandle
     {
-        get { return Lib.GetWindowParentHandle(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowParentHandle(id);
+#else
+            return System.IntPtr.Zero;
+#endif
+        }
     }
 
     public System.IntPtr instance
     {
-        get { return Lib.GetWindowInstance(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowInstance(id);
+#else
+            return System.IntPtr.Zero;
+#endif
+        }
     }
 
     public int processId
     {
-        get { return Lib.GetWindowProcessId(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowProcessId(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int threadId
     {
-        get { return Lib.GetWindowThreadId(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowThreadId(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public bool isValid
     {
-        get { return Lib.CheckWindowExistence(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.CheckWindowExistence(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isAlive
@@ -88,32 +132,68 @@ public class UwcWindow
 
     public bool isVisible
     {
-        get { return Lib.IsWindowVisible(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowVisible(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isAltTabWindow
     {
-        get { return Lib.IsAltTabWindow(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsAltTabWindow(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isDesktop
     {
-        get { return Lib.IsDesktop(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsDesktop(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isEnabled
     {
-        get { return Lib.IsWindowEnabled(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowEnabled(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isUnicode
     {
-        get { return Lib.IsWindowUnicode(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowUnicode(id);
+#else
+            return false;
+#endif
+        }
     }
 
-    public bool isZoomed 
+    public bool isZoomed
     {
-        get { return Lib.IsWindowZoomed(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowZoomed(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isMaximized
@@ -123,7 +203,13 @@ public class UwcWindow
 
     public bool isIconic
     {
-        get { return Lib.IsWindowIconic(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowIconic(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isMinimized
@@ -133,107 +219,233 @@ public class UwcWindow
 
     public bool isHungup
     {
-        get { return Lib.IsWindowHungUp(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowHungUp(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isTouchable
     {
-        get { return Lib.IsWindowTouchable(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowTouchable(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isApplicationFrameWindow
     {
-        get { return Lib.IsApplicationFrameWindow(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsApplicationFrameWindow(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isUWP
     {
-        get { return Lib.IsWindowUWP(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowUWP(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public bool isBackground
     {
-        get { return Lib.IsWindowBackground(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.IsWindowBackground(id);
+#else
+            return false;
+#endif
+        }
     }
 
     public string title
     {
-        get { return Lib.GetWindowTitle(id); } 
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowTitle(id);
+#else
+            return null;
+#endif
+        }
     }
 
     public string className
     {
-        get { return Lib.GetWindowClassName(id); } 
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowClassName(id);
+#else
+            return null;
+#endif
+        }
     }
 
     public int rawX
     {
-        get { return Lib.GetWindowX(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowX(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int rawY
     {
-        get { return Lib.GetWindowY(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowY(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int rawWidth
     {
-        get { return Lib.GetWindowWidth(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowWidth(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int rawHeight
     {
-        get { return Lib.GetWindowHeight(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowHeight(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int x
     {
-        get { return rawX + Lib.GetWindowTextureOffsetX(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return rawX + Lib.GetWindowTextureOffsetX(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int y
     {
-        get { return rawY + Lib.GetWindowTextureOffsetY(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return rawY + Lib.GetWindowTextureOffsetY(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int width
     {
-        get { return Lib.GetWindowTextureWidth(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowTextureWidth(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int height
     {
-        get { return Lib.GetWindowTextureHeight(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowTextureHeight(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int zOrder
     {
-        get { return Lib.GetWindowZOrder(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowZOrder(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public System.IntPtr buffer
     {
-        get { return Lib.GetWindowBuffer(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowBuffer(id);
+#else
+            return System.IntPtr.Zero;
+#endif
+        }
     }
 
     public int textureOffsetX
     {
-        get { return Lib.GetWindowTextureOffsetX(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowTextureOffsetX(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int textureOffsetY
     {
-        get { return Lib.GetWindowTextureOffsetY(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowTextureOffsetY(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int iconWidth
     {
-        get { return Lib.GetWindowIconWidth(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowIconWidth(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     public int iconHeight
     {
-        get { return Lib.GetWindowIconHeight(id); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowIconHeight(id);
+#else
+            return 0;
+#endif
+        }
     }
 
     private Texture2D backTexture_;
@@ -259,14 +471,34 @@ public class UwcWindow
 
     public CaptureMode captureMode
     {
-        get { return Lib.GetWindowCaptureMode(id); }
-        set { Lib.SetWindowCaptureMode(id, value); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowCaptureMode(id);
+#else
+            return CaptureMode.Auto;
+#endif
+        }
+        set {
+#if UNITY_STANDALONE_WIN
+            Lib.SetWindowCaptureMode(id, value);
+#endif
+        }
     }
 
     public bool cursorDraw
     {
-        get { return Lib.GetWindowCursorDraw(id); }
-        set { Lib.SetWindowCursorDraw(id, value); }
+        get {
+#if UNITY_STANDALONE_WIN
+            return Lib.GetWindowCursorDraw(id);
+#else
+            return false;
+#endif
+        }
+        set {
+#if UNITY_STANDALONE_WIN
+            Lib.SetWindowCursorDraw(id, value);
+#endif
+        }
     }
 
     private UnityEvent onCaptured_ = new UnityEvent();
@@ -304,20 +536,26 @@ public class UwcWindow
 
     public void RequestUpdateTitle()
     {
+#if UNITY_STANDALONE_WIN
         Lib.RequestUpdateWindowTitle(id);
+#endif
     }
 
     public void RequestCaptureIcon()
     {
+#if UNITY_STANDALONE_WIN
         Lib.RequestCaptureIcon(id);
+#endif
     }
 
     public void RequestCapture(CapturePriority priority = CapturePriority.High)
     {
+#if UNITY_STANDALONE_WIN
         if (!texture) {
             CreateWindowTexture();
         }
         Lib.RequestCaptureWindow(id, priority);
+#endif
     }
 
     void OnSizeChanged()
@@ -342,6 +580,7 @@ public class UwcWindow
 
     void CreateWindowTexture(bool force = false)
     {
+#if UNITY_STANDALONE_WIN
         var w = width;
         var h = height;
         if (w <= 0 || h <= 0) return;
@@ -359,6 +598,7 @@ public class UwcWindow
                 Debug.LogErrorFormat("Width: {0}, Height: {1}", w, h);
             }
         }
+#endif
     }
 
     void UpdateWindowTexture()
@@ -380,6 +620,7 @@ public class UwcWindow
 
     void CreateIconTexture()
     {
+#if UNITY_STANDALONE_WIN
         var w = iconWidth;
         var h = iconHeight;
         if (w == 0 || h == 0) return;
@@ -388,21 +629,34 @@ public class UwcWindow
         iconTexture_.wrapMode = TextureWrapMode.Clamp;
         Lib.SetWindowIconTexturePtr(id, iconTexture_.GetNativeTexturePtr());
         errorIconTexture_ = Resources.Load<Texture2D>("uWindowCapture/Textures/uWC_No_Image");
+#endif
     }
 
     public Color32[] GetPixels(int x, int y, int width, int height)
     {
+#if UNITY_STANDALONE_WIN
         return Lib.GetWindowPixels(id, x, y, width, height);
+#else
+        return null;
+#endif
     }
 
     public bool GetPixels(Color32[] colors, int x, int y, int width, int height)
     {
+#if UNITY_STANDALONE_WIN
         return Lib.GetWindowPixels(id, colors, x, y, width, height);
+#else
+        return false;
+#endif
     }
 
     public Color32 GetPixel(int x, int y)
     {
+#if UNITY_STANDALONE_WIN
         return Lib.GetWindowPixel(id, x, y);
+#else
+        return default(Color32);
+#endif
     }
 }
 

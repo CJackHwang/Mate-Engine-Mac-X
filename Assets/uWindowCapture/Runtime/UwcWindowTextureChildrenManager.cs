@@ -12,14 +12,18 @@ public class UwcWindowTextureChildrenManager : MonoBehaviour
 
     void Awake()
     {
+#if UNITY_STANDALONE_WIN
         windowTexture_ = GetComponent<UwcWindowTexture>();
         windowTexture_.onWindowChanged.AddListener(OnWindowChanged);
         OnWindowChanged(windowTexture_.window, null);
+#endif
     }
 
     void Update()
     {
+#if UNITY_STANDALONE_WIN
         UpdateChildren();
+#endif
     }
 
     UwcWindowTexture InstantiateChild()

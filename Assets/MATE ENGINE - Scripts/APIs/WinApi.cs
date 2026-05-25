@@ -1,11 +1,12 @@
 /**
  * Windows API wrapper
- * 
+ *
  * License: CC0, https://creativecommons.org/publicdomain/zero/1.0/
- * 
+ *
  * Author: Kirurobo, http://twitter.com/kirurobo
  * Author: Ru--en, http://twitter.com/ru__en
  */
+#if UNITY_STANDALONE_WIN
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -83,7 +84,7 @@ namespace Kirurobo
         public static readonly uint MSGFLT_ALLOW = 1;
         public static readonly uint MSGFLT_DISALLOW = 2;
         public static readonly uint MSGFLT_RESET = 0;
-        
+
         public static readonly uint MSGFLTINFO_NONE = 0;
         public static readonly uint MSGFLTINFO_ALLOWED_HIGHER = 3;
         public static readonly uint MSGFLTINFO_ALREADYALLOWED_FORWND = 1;
@@ -92,7 +93,7 @@ namespace Kirurobo
         public static readonly uint ULW_COLORKEY = 0x00000001;
         public static readonly uint ULW_ALPHA = 0x00000002;
         public static readonly uint ULW_OPAQUE = 0x00000004;
-        
+
         public static readonly uint LWA_COLORKEY = 0x00000001;
         public static readonly uint LWA_ALPHA = 0x00000002;
 
@@ -483,7 +484,6 @@ namespace Kirurobo
             public OpenFileName()
             {
                 this.structSize = Marshal.SizeOf(this);
-                //this.filter = "All Files\0*.*\0\0";
                 this.file = new string('\0', 4096);
                 this.maxFile = this.file.Length;
                 this.fileTitle = new string('\0', 256);
@@ -500,3 +500,4 @@ namespace Kirurobo
         #endregion
     }
 }
+#endif

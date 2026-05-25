@@ -23,8 +23,10 @@ public class UwcCursorTexture : MonoBehaviour
 
     void Update()
     {
+#if UNITY_STANDALONE_WIN
         cursor.CreateTextureIfNeeded();
         cursor.RequestCapture();
+#endif
     }
 
     void OnTextureChanged()

@@ -207,21 +207,26 @@ public class UwcWindowTexture : MonoBehaviour
 
     void Awake()
     {
+#if UNITY_STANDALONE_WIN
         renderer_ = GetComponent<Renderer>();
         material_ = renderer_.material; // clone
         meshFilter_ = GetComponent<MeshFilter>();
         collider_ = GetComponent<Collider>();
 
         list_.Add(this);
+#endif
     }
 
     void OnDestroy()
     {
+#if UNITY_STANDALONE_WIN
         list_.Remove(this);
+#endif
     }
 
     void Update()
     {
+#if UNITY_STANDALONE_WIN
         UpdateSearchTiming();
         UpdateTargetWindow();
 
@@ -238,6 +243,7 @@ public class UwcWindowTexture : MonoBehaviour
         UpdateRequestCapture();
 
         UpdateBasicComponents();
+#endif
     }
 
     void OnWillRenderObject()

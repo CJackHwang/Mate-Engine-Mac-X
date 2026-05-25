@@ -48,6 +48,9 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void Start()
     {
+#if !UNITY_STANDALONE_WIN
+        return;
+#endif
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
         animator = avatarAnimator ?? GetComponent<Animator>();
 
@@ -68,6 +71,9 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void Update()
     {
+#if !UNITY_STANDALONE_WIN
+        return;
+#endif
         if (unityHWND == IntPtr.Zero || animator == null) return;
 
         UpdateUnityWindowPosition();
@@ -139,6 +145,7 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void UpdatePinkZone()
     {
+#if UNITY_STANDALONE_WIN
         GetWindowRect(unityHWND, out RECT rect);
         int unityWidth = rect.Right - rect.Left;
         int unityHeight = rect.Bottom - rect.Top;
@@ -146,14 +153,16 @@ public class AvatarTaskbarController : MonoBehaviour
         float centerX = unityPos.x + unityWidth / 2f + snapZoneOffset.x;
         float bottomY = unityPos.y + unityHeight + snapZoneOffset.y;
 
-
         pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2f, bottomY, snapZoneSize.x, snapZoneSize.y);
+#endif
     }
 
     void UpdateUnityWindowPosition()
     {
+#if UNITY_STANDALONE_WIN
         GetWindowRect(unityHWND, out RECT rect);
         unityPos = new Vector2(rect.Left, rect.Top);
+#endif
     }
 
     void UpdateTaskbarRect()
@@ -193,6 +202,7 @@ public class AvatarTaskbarController : MonoBehaviour
     #region WinAPI
     private const int ABM_GETTASKBARPOS = 0x00000005;
 
+#if UNITY_STANDALONE_WIN
     [StructLayout(LayoutKind.Sequential)]
     struct APPBARDATA
     {
@@ -218,5 +228,6 @@ public class AvatarTaskbarController : MonoBehaviour
 
     [DllImport("user32.dll")]
     static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+#endif
     #endregion
 }

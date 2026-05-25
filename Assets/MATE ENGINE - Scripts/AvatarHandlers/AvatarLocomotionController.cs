@@ -62,6 +62,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     const int SM_XVIRTUALSCREEN = 76;
     const int SM_CXVIRTUALSCREEN = 78;
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     [StructLayout(LayoutKind.Sequential)]
     struct RECT
     {
@@ -108,6 +109,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
     [DllImport("user32.dll")] static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+#endif
 
     int _baseLayerIndex = 0;
     IntPtr _hwnd = IntPtr.Zero;
@@ -441,7 +443,10 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     void StepWalk()
     {
         if (!_walking) return;
-
+#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+        StopWalking();
+        return;
+#else
         if (!GetWindowRect(_hwnd, out RECT r))
         {
             StopWalking();
@@ -509,6 +514,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         if (_remainingPixels <= 0.01f)
             EndWalk();
+#endif
     }
 
     void EndWalk()
@@ -585,7 +591,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     {
         left = 0;
         right = 0;
-
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         IntPtr mon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
         if (mon == IntPtr.Zero) return false;
 
@@ -598,6 +604,9 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         left = mi.rcMonitor.Left;
         right = mi.rcMonitor.Right;
         return true;
+#else
+        return false;
+#endif
     }
 
     struct BlockingInfo
@@ -617,7 +626,9 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     bool TryGetBlockingInfo(out BlockingInfo bi)
     {
         bi = default;
-
+#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
+        return false;
+#else
         if (_hwnd == IntPtr.Zero) return false;
 
         Camera cam = BoundsCamera != null ? BoundsCamera : Camera.main;
@@ -689,6 +700,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         bi.maxWindowX = maxWindowX;
 
         return true;
+#endif
     }
 
     bool TryGetAvatarScreenBoundsUnity(Camera cam, out float minX, out float maxX)

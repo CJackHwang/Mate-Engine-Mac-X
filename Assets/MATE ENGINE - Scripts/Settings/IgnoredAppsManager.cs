@@ -21,8 +21,10 @@ public class AllowedAppsManager : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_STANDALONE_WIN
         enumerator = new MMDeviceEnumerator();
         UpdateDefaultDevice();
+#endif
 
         addToAllowedListButton.onClick.AddListener(() =>
         {
@@ -47,15 +49,18 @@ public class AllowedAppsManager : MonoBehaviour
 
     private void UpdateDefaultDevice()
     {
+#if UNITY_STANDALONE_WIN
         defaultDevice?.Dispose();
         defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+#endif
     }
 
     private void RefreshRunningAppsDropdown()
     {
-        UpdateDefaultDevice(); // Ensure defaultDevice is fresh
-
+#if UNITY_STANDALONE_WIN
+        UpdateDefaultDevice();
         currentRunningAppNames = GetRunningAudioAppNames();
+#endif
 
         var filteredAppNames = currentRunningAppNames
             .Where(app => !allowedApps.Contains(app))
@@ -107,6 +112,7 @@ public class AllowedAppsManager : MonoBehaviour
     private List<string> GetRunningAudioAppNames()
     {
         var appNames = new HashSet<string>();
+#if UNITY_STANDALONE_WIN
         try
         {
             var sessions = defaultDevice.AudioSessionManager.Sessions;
@@ -126,7 +132,7 @@ public class AllowedAppsManager : MonoBehaviour
             }
         }
         catch { }
-
+#endif
         return appNames.OrderBy(n => n).ToList();
     }
 

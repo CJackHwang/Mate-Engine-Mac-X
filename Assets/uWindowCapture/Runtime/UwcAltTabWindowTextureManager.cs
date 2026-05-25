@@ -7,12 +7,14 @@ public class UwcAltTabWindowTextureManager : UwcWindowTextureManager
 {
     void Start()
     {
+#if UNITY_STANDALONE_WIN
         UwcManager.onWindowAdded.AddListener(OnWindowAdded);
         UwcManager.onWindowRemoved.AddListener(OnWindowRemoved);
 
         foreach (var pair in UwcManager.windows) {
             OnWindowAdded(pair.Value);
         }
+#endif
     }
 
     void OnWindowAdded(UwcWindow window)

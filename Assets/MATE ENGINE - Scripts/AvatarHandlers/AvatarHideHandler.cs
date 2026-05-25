@@ -49,6 +49,9 @@ public class AvatarHideHandler : MonoBehaviour
     int snapCompX;
     int calibRemaining;
 
+    [StructLayout(LayoutKind.Sequential)]
+    struct RECT { public int Left, Top, Right, Bottom; }
+
     struct MonitorData
     {
         public IntPtr hmon;
@@ -206,6 +209,20 @@ public class AvatarHideHandler : MonoBehaviour
 #endif
     }
 
+    void SetHide(bool left, bool right)
+    {
+        if (animator == null) return;
+        animator.SetBool("HideLeft", left);
+        animator.SetBool("HideRight", right);
+    }
+
+    void SetTopMost(bool on)
+    {
+#if UNITY_STANDALONE_WIN
+        SetWindowPos(unityHWND, on ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+#endif
+    }
+
 #if UNITY_STANDALONE_WIN
     int GetBaseDesiredEdgeX(RECT mon, Side side)
     {
@@ -223,9 +240,7 @@ public class AvatarHideHandler : MonoBehaviour
         {
             int err = baseDesired - current;
             if (err != 0)
-            {
                 snapCompX = Mathf.Clamp(snapCompX + err, -Mathf.Abs(maxSnapCompensationPx), Mathf.Abs(maxSnapCompensationPx));
-            }
         }
 
         calibRemaining--;
@@ -234,19 +249,8 @@ public class AvatarHideHandler : MonoBehaviour
     void GetAllowedEdgesForMonitor(IntPtr hmon, out bool allowLeft, out bool allowRight)
     {
         List<MonitorData> mons = GetAllMonitors();
-        if (mons.Count == 0)
-        {
-            allowLeft = false;
-            allowRight = false;
-            return;
-        }
-
-        if (mons.Count == 1)
-        {
-            allowLeft = true;
-            allowRight = true;
-            return;
-        }
+        if (mons.Count == 0) { allowLeft = false; allowRight = false; return; }
+        if (mons.Count == 1) { allowLeft = true; allowRight = true; return; }
 
         RECT cur = GetMonitorRectFromHandle(hmon);
         bool hasLeftNeighbor = false;
@@ -258,13 +262,10 @@ public class AvatarHideHandler : MonoBehaviour
         for (int i = 0; i < mons.Count; i++)
         {
             RECT r = mons[i].rect;
-
             int overlap = VerticalOverlap(cur, r);
             if (overlap < minOverlap) continue;
-
             if (Mathf.Abs(r.Right - cur.Left) <= tol) hasLeftNeighbor = true;
             if (Mathf.Abs(r.Left - cur.Right) <= tol) hasRightNeighbor = true;
-
             if (hasLeftNeighbor && hasRightNeighbor) break;
         }
 
@@ -289,7 +290,6 @@ public class AvatarHideHandler : MonoBehaviour
         {
             GCHandle h = GCHandle.FromIntPtr(dwData);
             List<MonitorData> target = (List<MonitorData>)h.Target;
-
             MONITORINFO mi = new MONITORINFO();
             mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
             if (GetMonitorInfo(hMonitor, ref mi))
@@ -319,8 +319,7 @@ public class AvatarHideHandler : MonoBehaviour
         float clientW = Mathf.Max(1f, uCli.Right - uCli.Left);
         float pxW = Mathf.Max(1, cam.pixelWidth);
         float sx = Mathf.Clamp(sp.x, 0, cam.pixelWidth) * (clientW / pxW);
-        int desktopX = uCli.Left + Mathf.RoundToInt(sx);
-        return desktopX;
+        return uCli.Left + Mathf.RoundToInt(sx);
     }
 
     void SnapTo(Side side, POINT cp, IntPtr hmon, RECT mon)
@@ -377,12 +376,6 @@ public class AvatarHideHandler : MonoBehaviour
             unsnapCooldownUntil = Time.unscaledTime + Mathf.Max(0f, unsnapCooldownSeconds);
     }
 
-    void SetHide(bool left, bool right)
-    {
-        animator.SetBool("HideLeft", left);
-        animator.SetBool("HideRight", right);
-    }
-
     void MoveSmooth(int curX, int curY, int targetX, int targetY)
     {
         if (!enableSmoothing || !smoothingActive)
@@ -399,11 +392,9 @@ public class AvatarHideHandler : MonoBehaviour
 
         if (Mathf.Abs(targetX - ix) <= 1 && Mathf.Abs(targetY - iy) <= 1)
         {
-            ix = targetX;
-            iy = targetY;
+            ix = targetX; iy = targetY;
             smoothingActive = false;
-            velX = 0f;
-            velY = 0f;
+            velX = 0f; velY = 0f;
         }
 
         if (ix != curX || iy != curY) MoveOnly(ix, iy);
@@ -442,7 +433,6 @@ public class AvatarHideHandler : MonoBehaviour
     {
         RECT fallback = GetVirtualScreenRect();
         if (hmon == IntPtr.Zero) return fallback;
-
         MONITORINFO mi = new MONITORINFO();
         mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
         if (!GetMonitorInfo(hmon, ref mi)) return fallback;
@@ -454,7 +444,6 @@ public class AvatarHideHandler : MonoBehaviour
         RECT fallback = GetVirtualScreenRect();
         IntPtr hmon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
         if (hmon == IntPtr.Zero) return fallback;
-
         MONITORINFO mi = new MONITORINFO();
         mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
         if (!GetMonitorInfo(hmon, ref mi)) return fallback;
@@ -475,28 +464,14 @@ public class AvatarHideHandler : MonoBehaviour
     {
         r = new RECT();
         if (!GetClientRect(unityHWND, out RECT client)) return false;
-
-        POINT p;
-        p.x = 0;
-        p.y = 0;
+        POINT p; p.x = 0; p.y = 0;
         if (!ClientToScreen(unityHWND, ref p)) return false;
-
-        r.Left = p.x;
-        r.Top = p.y;
-        r.Right = p.x + client.Right;
-        r.Bottom = p.y + client.Bottom;
+        r.Left = p.x; r.Top = p.y;
+        r.Right = p.x + client.Right; r.Bottom = p.y + client.Bottom;
         return true;
     }
 
-    void SetTopMost(bool on)
-    {
-        SetWindowPos(unityHWND, on ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-    }
-
     delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
-
-    [StructLayout(LayoutKind.Sequential)]
-    struct RECT { public int Left, Top, Right, Bottom; }
 
     [StructLayout(LayoutKind.Sequential)]
     struct POINT { public int x; public int y; }

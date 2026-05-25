@@ -54,11 +54,13 @@ public class UwcIconTexture : MonoBehaviour
 
     void Update()
     {
+#if UNITY_STANDALONE_WIN
         if (windowTexture != null) {
             if (window == null || window != windowTexture_.window) {
                 window = windowTexture_.window;
             }
         }
+#endif
     }
 
     void OnIconCaptured()

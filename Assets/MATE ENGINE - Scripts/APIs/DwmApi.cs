@@ -1,12 +1,13 @@
 /**
  * DWM API wrapper
- * 
+ *
  * License: CC0, https://creativecommons.org/publicdomain/zero/1.0/
- * 
+ *
  * Author: Kirurobo, http://twitter.com/kirurobo
  * Author: Ru--en, http://twitter.com/ru__en
  * Reference: Ron Fosner, http://msdn.microsoft.com/ja-jp/magazine/cc163435.aspx
  */
+#if UNITY_STANDALONE_WIN
 using System;
 using System.Runtime.InteropServices;
 
@@ -120,38 +121,35 @@ namespace Kirurobo
             DWMNCRP_ENABLED = 2,
             DWMNCRP_LAST = 3,
         }
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmEnableBlurBehindWindow(IntPtr hWnd, DWM_BLURBEHIND pBlurBehind);
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DwmIsCompositionEnabled();
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmEnableComposition(bool bEnable);
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmGetColorizationColor(
             out int pcrColorization,
             [MarshalAs(UnmanagedType.Bool)]out bool pfOpaqueBlend
         );
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern IntPtr DwmRegisterThumbnail(IntPtr dest, IntPtr source);
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmUnregisterThumbnail(IntPtr hThumbnail);
-        
+
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmUpdateThumbnailProperties(IntPtr hThumbnail, DWM_THUMBNAIL_PROPERTIES props);
 
         /// <summary>
         /// Apply glass effect to specified margins
         /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="pMargins"></param>
-        /// <returns></returns>
         [DllImport("dwmapi.dll", PreserveSig = false)]
         public static extern void DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMargins);
 
@@ -161,8 +159,6 @@ namespace Kirurobo
         /// <summary>
         /// Apply glass effect to all client area
         /// </summary>
-        /// <param name="hwnd"></param>
-        /// <returns></returns>
         public static void DwmExtendIntoClientAll(IntPtr hWnd)
         {
             MARGINS margins = new MARGINS(-1, -1, -1, -1);
@@ -171,3 +167,4 @@ namespace Kirurobo
         #endregion
     }
 }
+#endif

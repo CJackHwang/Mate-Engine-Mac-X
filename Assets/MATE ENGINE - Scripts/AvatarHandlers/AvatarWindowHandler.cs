@@ -193,12 +193,14 @@ public class AvatarWindowHandler : MonoBehaviour
 
         if (controller.isDragging && !wasDragging)
         {
+#if UNITY_STANDALONE_WIN
             Kirurobo.WinApi.POINT cp;
             if (Kirurobo.WinApi.GetCursorPos(out cp))
             {
                 _dragStartCursorX = cp.x; _dragStartCursorY = cp.y;
                 if (snappedHWND != IntPtr.Zero && isWindowSitNow) _snapCursorY = cp.y;
             }
+#endif
             _dragStartTime = Time.unscaledTime;
             _canSitHold = false;
         }
@@ -272,9 +274,13 @@ public class AvatarWindowHandler : MonoBehaviour
     void LateUpdate() { UpdateOccluderQuadsFrameSync(); }
     bool DraggedPastSnapThreshold()
     {
+#if UNITY_STANDALONE_WIN
         Kirurobo.WinApi.POINT cp;
         if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
         return Mathf.Abs(cp.x - _dragStartCursorX) >= minDragPixelsToSnap || Mathf.Abs(cp.y - _dragStartCursorY) >= minDragPixelsToSnap;
+#else
+        return true;
+#endif
     }
     void SetGuardZoneFromCurrent()
     {
@@ -366,6 +372,7 @@ public class AvatarWindowHandler : MonoBehaviour
 
     void UpdateCachedWindows()
     {
+#if UNITY_STANDALONE_WIN
         cachedWindows.Clear();
         EnumWindows((hWnd, lParam) =>
         {
@@ -378,6 +385,7 @@ public class AvatarWindowHandler : MonoBehaviour
             cachedWindows.Add(new WindowEntry { hwnd = hWnd, rect = r, isTaskbar = false });
             return true;
         }, IntPtr.Zero);
+#endif
     }
     void RebuildActiveOccluders()
     {
@@ -463,8 +471,10 @@ public class AvatarWindowHandler : MonoBehaviour
             _recentUnsnap = false;
             SetTopMost(true);
 
+#if UNITY_STANDALONE_WIN
             Kirurobo.WinApi.POINT cp;
             if (Kirurobo.WinApi.GetCursorPos(out cp)) _snapCursorY = cp.y;
+#endif
             _guard = Mathf.Max(1, snapGuardFrames);
             _latch = Mathf.Max(1, snapLatchFrames);
 
@@ -547,6 +557,7 @@ public class AvatarWindowHandler : MonoBehaviour
     }
     void FollowSnapped(bool dragging)
     {
+#if UNITY_STANDALONE_WIN
         if (snappedHWND == IntPtr.Zero || !GetWindowRect(snappedHWND, out RECT tr)) { ClearSnapAndHide(); return; }
         CancelSnapSmoothingIfTargetMoved(tr);
         if (dragging && ComputeSeatDesktop(out float px, out _))
@@ -555,6 +566,7 @@ public class AvatarWindowHandler : MonoBehaviour
             snapFraction = Mathf.Clamp01((px - tr.Left) / ww);
         }
         PinToTarget(tr); SetTopMost(true);
+#endif
     }
     void PinToTarget(RECT r)
     {
@@ -611,10 +623,12 @@ public class AvatarWindowHandler : MonoBehaviour
 
             if (controller.isDragging && animator.GetBool("isWindowSit"))
             {
+#if UNITY_STANDALONE_WIN
                 Kirurobo.WinApi.POINT cp;
                 if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
                 int vBand = Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
                 if (Mathf.Abs(cp.y - _snapCursorY) > vBand) return false;
+#endif
             }
             return true;
         }
@@ -622,6 +636,7 @@ public class AvatarWindowHandler : MonoBehaviour
     }
     bool IsOccludedByHigherWindowsAtPoint(IntPtr hwnd, int x, int y)
     {
+#if UNITY_STANDALONE_WIN
         IntPtr h = GetWindow(hwnd, GW_HWNDPREV);
         while (h != IntPtr.Zero)
         {
@@ -640,6 +655,7 @@ public class AvatarWindowHandler : MonoBehaviour
             }
             return true;
         }
+#endif
         return false;
     }
     Vector3 GetSeatWorldCurrent()
@@ -715,7 +731,7 @@ public class AvatarWindowHandler : MonoBehaviour
     {
         if (_occluderSharedMat == null || targetCamera == null || snappedHWND == IntPtr.Zero) { SetTargetQuadActive(false); SetOtherQuadsActive(0); return; }
         if (!_haveUnityCli && !GetUnityClientRect(out _lastUnityCli)) { SetTargetQuadActive(false); SetOtherQuadsActive(0); return; }
-
+#if UNITY_STANDALONE_WIN
         RECT uCli = _lastUnityCli;
         Rect unityClient = new Rect(uCli.Left, uCli.Top, uCli.Right - uCli.Left, uCli.Bottom - uCli.Top);
 
@@ -745,6 +761,7 @@ public class AvatarWindowHandler : MonoBehaviour
             outCount++;
         }
         SetOtherQuadsActive(outCount);
+#endif
     }
     float GetAutoTargetZ()
     {
@@ -982,9 +999,46 @@ public class AvatarWindowHandler : MonoBehaviour
     [DllImport("user32.dll")] static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
     [DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
     delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-    public struct RECT { public int Left, Top, Right, Bottom; }
-    public struct POINT { public int X, Y; }
-    struct WindowEntry { public IntPtr hwnd; public RECT rect; public bool isTaskbar; }
+    static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+    static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+    const uint GA_ROOT = 2;
+    const uint SWP_NOMOVE = 0x0002;
+    const uint SWP_NOSIZE = 0x0001;
+    const uint SWP_NOACTIVATE = 0x0010;
+#else
+    static uint GetCurrentProcessId() => 0;
+    static bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT p) => false;
+    struct WINDOWPLACEMENT { public int length, flags, showCmd; public POINT ptMinPosition, ptMaxPosition; public RECT rcNormalPosition; }
+    const int SW_MAXIMIZE = 3;
+    static bool IsIconic(IntPtr hWnd) => false;
+    static int DwmGetWindowAttribute(IntPtr hwnd, int attr, out int val, int size) { val = 0; return 0; }
+    const int DWMWA_CLOAKED = 14;
+    static IntPtr GetWindowLongPtr(IntPtr hWnd, int n) => IntPtr.Zero;
+    static bool GetLayeredWindowAttributes(IntPtr hwnd, out uint key, out byte alpha, out uint flags) { key = 0; alpha = 255; flags = 0; return false; }
+    static IntPtr GetWindow(IntPtr hWnd, uint cmd) => IntPtr.Zero;
+    const uint GW_HWNDPREV = 3;
+    const int GWL_STYLE = -16;
+    const int GWL_EXSTYLE = -20;
+    const int WS_CAPTION = 0x00C00000;
+    const int WS_EX_LAYERED = 0x00080000;
+    const int WS_EX_TRANSPARENT = 0x00000020;
+    const int WS_EX_TOOLWINDOW = 0x00000080;
+    const int WS_EX_NOACTIVATE = 0x08000000;
+    const uint LWA_COLORKEY = 0x00000001;
+    const uint LWA_ALPHA = 0x00000002;
+    static int GetClassName(IntPtr hWnd, System.Text.StringBuilder sb, int max) => 0;
+    static IntPtr GetAncestor(IntPtr hwnd, uint flags) => IntPtr.Zero;
+    static bool GetWindowRect(IntPtr hWnd, out RECT r) { r = new RECT(); return false; }
+    static bool MoveWindow(IntPtr hWnd, int x, int y, int w, int h, bool repaint) => false;
+    static bool IsWindowVisible(IntPtr hWnd) => false;
+    static uint GetWindowThreadProcessId(IntPtr hWnd, out uint pid) { pid = 0; return 0; }
+    static bool EnumWindows(EnumWindowsProc fn, IntPtr lp) => false;
+    delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+    static bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags) => false;
+    static IntPtr GetParent(IntPtr hWnd) => IntPtr.Zero;
+    static int GetWindowTextLength(IntPtr hWnd) => 0;
+    static bool GetClientRect(IntPtr hWnd, out RECT r) { r = new RECT(); return false; }
+    static bool ClientToScreen(IntPtr hWnd, ref POINT p) => false;
     static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
     static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
     const uint GA_ROOT = 2;
@@ -992,4 +1046,7 @@ public class AvatarWindowHandler : MonoBehaviour
     const uint SWP_NOSIZE = 0x0001;
     const uint SWP_NOACTIVATE = 0x0010;
 #endif
+    public struct RECT { public int Left, Top, Right, Bottom; }
+    public struct POINT { public int X, Y; }
+    struct WindowEntry { public IntPtr hwnd; public RECT rect; public bool isTaskbar; }
 }

@@ -124,63 +124,87 @@ public class UwcManager : MonoBehaviour
 
     static public bool isWindowsGraphicsCaptureSupported
     {
+#if UNITY_STANDALONE_WIN
         get { return Lib.IsWindowsGraphicsCaptureSupported(); }
+#else
+        get { return false; }
+#endif
     }
 
     static public bool isWindowsGraphicsCaptureCursorCaptureEnabledApiSupported
     {
+#if UNITY_STANDALONE_WIN
         get { return Lib.IsWindowsGraphicsCaptureCursorCaptureEnabledApiSupported(); }
+#else
+        get { return false; }
+#endif
     }
 
     void Awake()
     {
+#if UNITY_STANDALONE_WIN
         Lib.SetDebugMode(debugMode);
         Lib.Initialize();
         renderEventFunc_ = Lib.GetRenderEventFunc();
+#endif
     }
 
     void Start()
     {
+#if UNITY_STANDALONE_WIN
         StartCoroutine(Render());
+#endif
     }
 
     void OnApplicationQuit()
     {
+#if UNITY_STANDALONE_WIN
         Resources.UnloadUnusedAssets();
         Lib.Finalize();
+#endif
     }
 
     void OnEnable()
     {
+#if UNITY_STANDALONE_WIN
         Lib.SetLogFunc(onDebugLog);
         Lib.SetErrorFunc(onDebugErr);
+#endif
     }
 
     void OnDisable()
     {
+#if UNITY_STANDALONE_WIN
         Lib.SetLogFunc(null);
         Lib.SetErrorFunc(null);
+#endif
     }
 
     IEnumerator Render()
     {
         for (;;) {
             yield return new WaitForEndOfFrame();
+#if UNITY_STANDALONE_WIN
             GL.IssuePluginEvent(renderEventFunc_, 0);
+#endif
         }
     }
 
     void Update()
     {
+#if UNITY_STANDALONE_WIN
         Lib.Update(Time.deltaTime);
         UpdateWindowInfo();
         UpdateMessages();
         UpdateWindowTitles();
+#endif
     }
 
     void UpdateWindowInfo()
     {
+#if UNITY_STANDALONE_WIN
         cursorWindowId_ = Lib.GetWindowIdUnderCursor();
+#endif
     }
 
     UwcWindow AddWindow(int id)
@@ -192,6 +216,7 @@ public class UwcManager : MonoBehaviour
 
     void UpdateMessages()
     {
+#if UNITY_STANDALONE_WIN
         var messages = Lib.GetMessages();
 
         for (int i = 0; i < messages.Length; ++i) {
@@ -269,6 +294,7 @@ public class UwcManager : MonoBehaviour
                 }
             }
         }
+#endif
     }
 
     void UpdateWindowTitles()
@@ -346,12 +372,16 @@ public class UwcManager : MonoBehaviour
 
     static public UwcWindow FindParent(int id)
     {
+#if UNITY_STANDALONE_WIN
         var parentId = Lib.GetWindowParentId(id);
         if (parentId == -1) return null;
 
         UwcWindow parent;
         windows.TryGetValue(parentId, out parent);
         return parent;
+#else
+        return null;
+#endif
     }
 
     static public UwcWindow FindDesktop(int index)

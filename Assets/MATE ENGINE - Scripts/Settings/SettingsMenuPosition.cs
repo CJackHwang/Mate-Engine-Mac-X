@@ -49,9 +49,11 @@ public class SettingsMenuPosition : MonoBehaviour
 
     void Start()
     {
+#if UNITY_STANDALONE_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
         enumProc = EnumProc;
         RefreshMonitors();
+#endif
         foreach (var menu in menus)
         {
             if (!menu.settingsMenu) continue;
@@ -63,7 +65,9 @@ public class SettingsMenuPosition : MonoBehaviour
 
     void Update()
     {
-        if (unityHWND == IntPtr.Zero) return;
+#if !UNITY_STANDALONE_WIN
+        return;
+#endif
 
         monitorTimer += Time.unscaledDeltaTime;
         if (monitorTimer >= Mathf.Max(0.1f, monitorRefreshInterval))

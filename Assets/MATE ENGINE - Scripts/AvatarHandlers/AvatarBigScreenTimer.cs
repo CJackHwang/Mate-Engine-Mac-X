@@ -63,6 +63,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
     private LLMUnitySamples.Bubble alarmBubble;
     private Coroutine streamCoroutine;
 
+#if UNITY_STANDALONE_WIN
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -71,6 +72,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
 
     [StructLayout(LayoutKind.Sequential)]
     public struct POINT { public int X; public int Y; }
+#endif
 
     private readonly Queue<string> pendingEvents = new Queue<string>();
 
@@ -217,6 +219,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
     private bool lastGlobalMouseDown = false;
     private bool IsGlobalUserInput()
     {
+#if UNITY_STANDALONE_WIN
         bool mouseDown = (GetAsyncKeyState(0x01) & 0x8000) != 0;
         bool mouseClick = mouseDown && !lastGlobalMouseDown;
         lastGlobalMouseDown = mouseDown;
@@ -231,6 +234,9 @@ public class AvatarBigScreenTimer : MonoBehaviour
             }
         }
         return mouseClick || keyPressed;
+#else
+        return false;
+#endif
     }
 
     public void TriggerAlarmNow()
