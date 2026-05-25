@@ -183,16 +183,16 @@ public class SaveLoadHandler : MonoBehaviour
         public int llmMaxTokens = 1024;
 
         // GPT-SoVITS TTS settings
-        public string ttsApiUrl = "http://127.0.0.1:9880/tts";
-        public string ttsRefAudioPath = "";
-        public string ttsPromptText = "";
+        public string ttsApiUrl = "http://100.75.53.37:9880/tts";
+        public string ttsRefAudioPath = "/media/zichen/E/workspace/GPT-SoVITS/参考音频/yanami1.mp3";
+        public string ttsPromptText = "物申す必要が生じただけなの。ほら、うちのクラスのツワブキ祭の企画、準備が始まったでしょ?";
         public string ttsPromptLang = "ja";
         public string ttsTextLang = "ja";
         public int ttsTopK = 15;
         public float ttsTopP = 1f;
         public float ttsTemperature = 1f;
         public string ttsTextSplitMethod = "cut0";
-        public bool ttsEnabled = false;
+        public bool ttsEnabled = true;
 
         public int settingsVersion = 0;
         public bool alarmsEnabled = true;

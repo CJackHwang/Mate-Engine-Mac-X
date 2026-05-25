@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -7,18 +8,12 @@ using Newtonsoft.Json;
 
 /// <summary>
 /// GPT-SoVITS TTS handler. Mirrors tts.py synthesize() exactly.
-/// Plays audio via AudioSource after synthesis.
+/// AudioClips are cached in memory until application quit.
 /// </summary>
 public class SoVITSTTSHandler : MonoBehaviour
 {
     [Header("Audio")]
     public AudioSource audioSource;
-
-    void Awake()
-    {
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
-    }
 
     [Serializable]
     private class TTSPayload
@@ -36,15 +31,44 @@ public class SoVITSTTSHandler : MonoBehaviour
     }
 
     private Coroutine _currentTTS;
+    private readonly Dictionary<string, AudioClip> _clipCache = new();
 
-    public void Speak(string text, Action onComplete = null)
+    public bool IsPlaying => _currentTTS != null;
+
+    void Awake()
+    {
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+    }
+
+    void OnApplicationQuit()
+    {
+        foreach (var clip in _clipCache.Values)
+            if (clip != null) Destroy(clip);
+        _clipCache.Clear();
+    }
+
+    /// <summary>Synthesize and play. Calls onClipReady with the AudioClip for caching by caller.</summary>
+    public void Speak(string text, Action<AudioClip> onClipReady = null, Action onComplete = null)
     {
         if (_currentTTS != null)
         {
             StopCoroutine(_currentTTS);
             if (audioSource != null) audioSource.Stop();
         }
-        _currentTTS = StartCoroutine(SpeakCoroutine(text, onComplete));
+        _currentTTS = StartCoroutine(SpeakCoroutine(text, onClipReady, onComplete));
+    }
+
+    /// <summary>Play a cached AudioClip directly without re-synthesizing.</summary>
+    public void PlayClip(AudioClip clip, Action onComplete = null)
+    {
+        if (clip == null) return;
+        if (_currentTTS != null)
+        {
+            StopCoroutine(_currentTTS);
+            if (audioSource != null) audioSource.Stop();
+        }
+        _currentTTS = StartCoroutine(PlayClipCoroutine(clip, onComplete));
     }
 
     public void Stop()
@@ -57,7 +81,19 @@ public class SoVITSTTSHandler : MonoBehaviour
         if (audioSource != null) audioSource.Stop();
     }
 
-    private IEnumerator SpeakCoroutine(string text, Action onComplete)
+    private IEnumerator PlayClipCoroutine(AudioClip clip, Action onComplete)
+    {
+        if (audioSource != null)
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+            yield return new WaitWhile(() => audioSource.isPlaying);
+        }
+        _currentTTS = null;
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator SpeakCoroutine(string text, Action<AudioClip> onClipReady, Action onComplete)
     {
         var data = SaveLoadHandler.Instance?.data;
         if (data == null || !data.ttsEnabled || string.IsNullOrEmpty(data.ttsApiUrl))
@@ -98,12 +134,10 @@ public class SoVITSTTSHandler : MonoBehaviour
             yield break;
         }
 
-        // Save wav to temp file and load as AudioClip
+        // Save to temp file to load as AudioClip (temp file kept until app quit)
         string tmpPath = Path.Combine(Application.temporaryCachePath, $"tts_{DateTime.Now:yyyyMMdd_HHmmss}.wav");
         File.WriteAllBytes(tmpPath, req.downloadHandler.data);
-        Debug.Log($"[TTS] WAV saved: {tmpPath} ({req.downloadHandler.data.Length} bytes)");
 
-        // On Mac, absolute path needs file:/// (three slashes)
         string fileUrl = "file://" + tmpPath;
         using var audioReq = UnityWebRequestMultimedia.GetAudioClip(fileUrl, AudioType.WAV);
         ((DownloadHandlerAudioClip)audioReq.downloadHandler).streamAudio = false;
@@ -111,13 +145,12 @@ public class SoVITSTTSHandler : MonoBehaviour
 
         if (audioReq.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("[SoVITSTTSHandler] Failed to load audio: " + audioReq.error + " url=" + fileUrl);
+            Debug.LogError("[SoVITSTTSHandler] Failed to load audio: " + audioReq.error);
             onComplete?.Invoke();
             yield break;
         }
 
         AudioClip clip = DownloadHandlerAudioClip.GetContent(audioReq);
-        Debug.Log($"[TTS] AudioClip: {(clip == null ? "null" : $"length={clip.length}s samples={clip.samples}")}");
         if (clip == null || clip.length <= 0)
         {
             Debug.LogError("[SoVITSTTSHandler] AudioClip is null or empty");
@@ -125,21 +158,15 @@ public class SoVITSTTSHandler : MonoBehaviour
             yield break;
         }
 
-        Debug.Log($"[TTS] AudioSource: {(audioSource == null ? "null" : audioSource.gameObject.name)} volume={audioSource?.volume}");
+        // Notify caller so it can cache the clip
+        onClipReady?.Invoke(clip);
+
         if (audioSource != null)
         {
             audioSource.clip = clip;
             audioSource.Play();
-            Debug.Log("[TTS] Playing...");
             yield return new WaitWhile(() => audioSource.isPlaying);
-            Debug.Log("[TTS] Playback done.");
         }
-        else
-        {
-            Debug.LogError("[TTS] AudioSource is null, cannot play.");
-        }
-
-        try { File.Delete(tmpPath); } catch { }
 
         _currentTTS = null;
         onComplete?.Invoke();

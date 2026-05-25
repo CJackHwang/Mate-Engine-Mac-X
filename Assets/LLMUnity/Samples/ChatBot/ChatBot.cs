@@ -41,6 +41,9 @@ namespace LLMUnitySamples
         [Header("Streaming Audio")]
         public AudioSource streamAudioSource;
 
+        [Header("Click to Speak")]
+        public Camera targetCamera;
+
         [Header("Bubble Materials")]
         public Material playerMaterial;         
         public Material aiMaterial;             
@@ -72,6 +75,9 @@ namespace LLMUnitySamples
         private BubbleUI playerUI, aiUI;
         private bool warmUpDone = false;
         private int lastBubbleOutsideFOV = -1;
+
+        // AI bubble click-to-speak: maps bubble RectTransform to its text
+        private readonly List<(RectTransform rt, System.Func<string> getText)> aiBubbleClickTargets = new();
 
         private Animator avatarAnimator;
         private Animator lastAvatarAnimator;
@@ -202,6 +208,13 @@ namespace LLMUnitySamples
                 {
                     text.material = m;
                 }
+            }
+
+            // AI 气泡：注册到点击检测列表
+            if (!isPlayerMessage && ttsHandler != null)
+            {
+                var rt = bubble.GetRectTransform();
+                aiBubbleClickTargets.Add((rt, () => bubble.GetText()));
             }
 
             if (autoScrollOnNewMessage && (!respectUserScroll || IsAtBottom()))
@@ -348,9 +361,7 @@ namespace LLMUnitySamples
                 {
                     float containerHeight = chatContainer.GetComponent<RectTransform>().rect.height;
                     if (y > containerHeight && lastBubbleOutsideFOV == -1)
-                    {
                         lastBubbleOutsideFOV = i;
-                    }
                 }
 
                 y += bubble.GetSize().y + bubbleSpacing;
@@ -367,6 +378,24 @@ namespace LLMUnitySamples
             {
                 inputBubble.ActivateInputField();
                 StartCoroutine(BlockInteraction());
+            }
+
+            // AI 气泡点击检测
+            if (ttsHandler != null && Input.GetMouseButtonDown(0))
+            {
+                Vector2 mousePos = Input.mousePosition;
+                Camera cam = targetCamera != null ? targetCamera : Camera.main;
+                for (int i = aiBubbleClickTargets.Count - 1; i >= 0; i--)
+                {
+                    var (rt, getText) = aiBubbleClickTargets[i];
+                    if (rt == null) { aiBubbleClickTargets.RemoveAt(i); continue; }
+                    if (RectTransformUtility.RectangleContainsScreenPoint(rt, mousePos, cam))
+                    {
+                        if (ttsHandler.IsPlaying) ttsHandler.Stop();
+                        else ttsHandler.Speak(getText());
+                        break;
+                    }
+                }
             }
 
             if (enableOffscreenTrim && lastBubbleOutsideFOV != -1)
