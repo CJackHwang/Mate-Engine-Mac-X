@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using LLMUnity;
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
@@ -11,8 +9,8 @@ namespace LLMUnitySamples
     public class ChatBot : MonoBehaviour
     {
         [Header("Containers")]
-        public Transform chatContainer;         
-        public Transform inputContainer;        
+        public Transform chatContainer;
+        public Transform inputContainer;
 
         [Header("Colors & Font")]
         public Color playerColor = new Color32(81, 164, 81, 255);
@@ -25,14 +23,17 @@ namespace LLMUnitySamples
         public int bubbleWidth = 600;
         public float textPadding = 10f;
         public float bubbleSpacing = 10f;
-        public float bottomPadding = 10f;       
+        public float bottomPadding = 10f;
         public Sprite sprite;
         public Sprite roundedSprite16;
         public Sprite roundedSprite32;
         public Sprite roundedSprite64;
 
         [Header("LLM")]
-        public LLMCharacter llmCharacter;
+        public AnthropicChatHandler llmCharacter;
+
+        [Header("TTS")]
+        public SoVITSTTSHandler ttsHandler;
 
         [Header("Input Settings")]
         public string inputPlaceholder = "Message me";
@@ -123,9 +124,13 @@ namespace LLMUnitySamples
             inputBubble.AddValueChangedListener(onValueChanged);
             inputBubble.setInteractable(false);
 
-            ShowLoadedMessages();
-            _ = llmCharacter.Warmup(WarmUpCallback);
             FindAvatarSmart();
+
+            // Warmup: AnthropicChatHandler is always ready
+            if (llmCharacter != null)
+                llmCharacter.Warmup(WarmUpCallback);
+            else
+                WarmUpCallback();
         }
 
         void FindAvatarSmart()
@@ -236,15 +241,11 @@ namespace LLMUnitySamples
 
         void ShowLoadedMessages()
         {
-            int start = 1;
-            int total = llmCharacter.chat.Count;
-            if (maxMessages > 0)
-                start = Mathf.Max(1, total - maxMessages);
-
-            for (int i = start; i < total; i++)
-            {
-                AddBubble(llmCharacter.chat[i].content, i % 2 == 1);
-            }
+            if (llmCharacter == null) return;
+            var history = llmCharacter.chat;
+            int start = maxMessages > 0 ? Mathf.Max(0, history.Count - maxMessages) : 0;
+            for (int i = start; i < history.Count; i++)
+                AddBubble(history[i].content, history[i].role == "user");
             StartCoroutine(ScrollToBottomNextFrame());
         }
 
@@ -256,6 +257,7 @@ namespace LLMUnitySamples
                 StartCoroutine(BlockInteraction());
                 return;
             }
+            if (llmCharacter == null) return;
             blockInput = true;
 
             string message = inputBubble.GetText().Replace("\v", "\n");
@@ -263,22 +265,19 @@ namespace LLMUnitySamples
             AddBubble(message, true);
             Bubble aiBubble = AddBubble("...", false);
 
-            if (streamAudioSource != null)
-                streamAudioSource.Play();
             if (avatarAnimator != null) avatarAnimator.SetBool(isTalkingHash, true);
 
-            Task chatTask = llmCharacter.Chat(
+            llmCharacter.Chat(
                 message,
-                (partial) => { aiBubble.SetText(partial); layoutDirty = true; },
+                (reply) => { aiBubble.SetText(reply); layoutDirty = true; },
                 () =>
                 {
+                    string finalText = aiBubble.GetText();
                     if (avatarAnimator != null) avatarAnimator.SetBool(isTalkingHash, false);
-
-                    aiBubble.SetText(aiBubble.GetText());
                     layoutDirty = true;
 
-                    if (streamAudioSource != null && streamAudioSource.isPlaying)
-                        StartCoroutine(FadeOutStreamAudio());
+                    if (ttsHandler != null)
+                        ttsHandler.Speak(finalText);
 
                     AllowInput();
                 }
@@ -315,7 +314,7 @@ namespace LLMUnitySamples
 
         public void CancelRequests()
         {
-            llmCharacter.CancelRequests();
+            llmCharacter?.CancelRequests();
             AllowInput();
         }
 
@@ -402,12 +401,6 @@ namespace LLMUnitySamples
             if (cornerRadius <= 16) sprite = roundedSprite16;
             else if (cornerRadius <= 32) sprite = roundedSprite32;
             else sprite = roundedSprite64;
-
-            if (onValidateWarning && llmCharacter != null && !llmCharacter.remote && llmCharacter.llm != null && llmCharacter.llm.model == "")
-            {
-                Debug.LogWarning($"Please select a model in the {llmCharacter.llm.gameObject.name} GameObject!");
-                onValidateWarning = false;
-            }
         }
 
         void LateUpdate()

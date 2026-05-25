@@ -8,7 +8,7 @@ public class AISystemPromptBinder : MonoBehaviour
 {
     [Header("References")]
     public InputField input;
-    public LLMUnity.LLMCharacter target;
+    public AnthropicChatHandler target;
 
     [Header("Behavior")]
     public bool liveSave = true;
@@ -16,19 +16,22 @@ public class AISystemPromptBinder : MonoBehaviour
     void Reset()
     {
         if (!input) input = GetComponent<InputField>();
-        if (!target) target = FindObjectOfType<LLMUnity.LLMCharacter>();
+        if (!target) target = FindObjectOfType<AnthropicChatHandler>();
     }
 
     void Awake()
     {
         if (!input) input = GetComponent<InputField>();
 
-        string path = GetFixedPromptPath();
-        string txt = target ? target.prompt : "";
+        string txt = SaveLoadHandler.Instance != null
+            ? SaveLoadHandler.Instance.data.llmSystemPrompt
+            : "";
 
+        string path = GetFixedPromptPath();
         try
         {
-            if (File.Exists(path)) txt = File.ReadAllText(path);
+            if (File.Exists(path))
+                txt = File.ReadAllText(path);
             else
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
@@ -80,14 +83,16 @@ public class AISystemPromptBinder : MonoBehaviour
 
     void ApplyToLLM(string s)
     {
-        if (target != null) target.SetPrompt(s, true);
+        if (target != null) target.SetPrompt(s);
+        if (SaveLoadHandler.Instance != null)
+        {
+            SaveLoadHandler.Instance.data.llmSystemPrompt = s;
+            SaveLoadHandler.Instance.SaveToDisk();
+        }
     }
 
     static string GetFixedPromptPath()
     {
-        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var localLow = Path.GetFullPath(Path.Combine(localAppData, @"..\LocalLow"));
-        var dir = Path.Combine(localLow, "Shinymoon", "MateEngineX");
-        return Path.Combine(dir, "ZomeAI_prompt.txt");
+        return Path.Combine(Application.persistentDataPath, "ZomeAI_prompt.txt");
     }
 }

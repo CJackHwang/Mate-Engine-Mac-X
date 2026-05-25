@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class SettingsHandlerDropdowns : MonoBehaviour
 {
     public TMP_Dropdown graphicsDropdown;
-    public TMP_Dropdown contextLengthDropdown;
 
     [System.Serializable]
     public class ParticleThemeEntry
@@ -19,9 +18,24 @@ public class SettingsHandlerDropdowns : MonoBehaviour
     public TMP_Dropdown particleDropdown;
     public List<ParticleThemeEntry> particleThemes = new List<ParticleThemeEntry>();
 
-    public LLMUnity.LLM llm;
+    [Header("LLM Settings")]
+    public InputField llmBaseUrlInput;
+    public InputField llmAuthTokenInput;
+    public InputField llmModelInput;
+    public InputField llmMaxMessagesInput;
+    public InputField llmMaxTokensInput;
 
-    private readonly int[] contextOptions = { 2048, 4096, 8192, 16384, 32768 };
+    [Header("TTS Settings")]
+    public InputField ttsApiUrlInput;
+    public InputField ttsRefAudioPathInput;
+    public InputField ttsPromptTextInput;
+    public InputField ttsPromptLangInput;
+    public InputField ttsTextLangInput;
+    public InputField ttsTopKInput;
+    public InputField ttsTopPInput;
+    public InputField ttsTemperatureInput;
+    public InputField ttsTextSplitMethodInput;
+    public Toggle ttsEnabledToggle;
 
     void Start()
     {
@@ -32,23 +46,40 @@ public class SettingsHandlerDropdowns : MonoBehaviour
             graphicsDropdown.onValueChanged.AddListener(OnGraphicsChanged);
         }
 
-        if (contextLengthDropdown != null)
-        {
-            contextLengthDropdown.ClearOptions();
-            var labels = new List<string>();
-            foreach (int c in contextOptions) labels.Add($"{c / 1024}K");
-            contextLengthDropdown.AddOptions(labels);
-            contextLengthDropdown.onValueChanged.AddListener(OnContextChanged);
-        }
-
         if (particleDropdown != null)
         {
             BuildParticleDropdown();
             particleDropdown.onValueChanged.AddListener(OnParticleChanged);
         }
 
+        BindLLMInputs();
+        BindTTSInputs();
+
         LoadSettings();
         ApplySettings();
+    }
+
+    void BindLLMInputs()
+    {
+        if (llmBaseUrlInput) llmBaseUrlInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.llmBaseUrl = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (llmAuthTokenInput) llmAuthTokenInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.llmAuthToken = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (llmModelInput) llmModelInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.llmModel = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (llmMaxMessagesInput) llmMaxMessagesInput.onEndEdit.AddListener(v => { if (int.TryParse(v, out int n)) { SaveLoadHandler.Instance.data.llmMaxMessages = n; SaveLoadHandler.Instance.SaveToDisk(); } });
+        if (llmMaxTokensInput) llmMaxTokensInput.onEndEdit.AddListener(v => { if (int.TryParse(v, out int n)) { SaveLoadHandler.Instance.data.llmMaxTokens = n; SaveLoadHandler.Instance.SaveToDisk(); } });
+    }
+
+    void BindTTSInputs()
+    {
+        if (ttsApiUrlInput) ttsApiUrlInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsApiUrl = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsRefAudioPathInput) ttsRefAudioPathInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsRefAudioPath = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsPromptTextInput) ttsPromptTextInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsPromptText = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsPromptLangInput) ttsPromptLangInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsPromptLang = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsTextLangInput) ttsTextLangInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsTextLang = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsTopKInput) ttsTopKInput.onEndEdit.AddListener(v => { if (int.TryParse(v, out int n)) { SaveLoadHandler.Instance.data.ttsTopK = n; SaveLoadHandler.Instance.SaveToDisk(); } });
+        if (ttsTopPInput) ttsTopPInput.onEndEdit.AddListener(v => { if (float.TryParse(v, out float f)) { SaveLoadHandler.Instance.data.ttsTopP = f; SaveLoadHandler.Instance.SaveToDisk(); } });
+        if (ttsTemperatureInput) ttsTemperatureInput.onEndEdit.AddListener(v => { if (float.TryParse(v, out float f)) { SaveLoadHandler.Instance.data.ttsTemperature = f; SaveLoadHandler.Instance.SaveToDisk(); } });
+        if (ttsTextSplitMethodInput) ttsTextSplitMethodInput.onEndEdit.AddListener(v => { SaveLoadHandler.Instance.data.ttsTextSplitMethod = v; SaveLoadHandler.Instance.SaveToDisk(); });
+        if (ttsEnabledToggle) ttsEnabledToggle.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.ttsEnabled = v; SaveLoadHandler.Instance.SaveToDisk(); });
     }
 
     void BuildParticleDropdown()
@@ -89,13 +120,6 @@ public class SettingsHandlerDropdowns : MonoBehaviour
         SaveLoadHandler.Instance.SaveToDisk();
     }
 
-    void OnContextChanged(int index)
-    {
-        if (llm != null) llm.contextSize = contextOptions[index];
-        SaveLoadHandler.Instance.data.contextLength = contextOptions[index];
-        SaveLoadHandler.Instance.SaveToDisk();
-    }
-
     public void LoadSettings()
     {
         var data = SaveLoadHandler.Instance.data;
@@ -103,13 +127,26 @@ public class SettingsHandlerDropdowns : MonoBehaviour
         graphicsDropdown?.SetValueWithoutNotify(data.graphicsQualityLevel);
         QualitySettings.SetQualityLevel(data.graphicsQualityLevel, true);
 
-        int currentContext = data.contextLength > 0 ? data.contextLength : 4096;
-        int index = System.Array.IndexOf(contextOptions, currentContext);
-        if (index < 0) index = 1;
-        contextLengthDropdown?.SetValueWithoutNotify(index);
-        if (llm != null) llm.contextSize = contextOptions[index];
-
         if (particleDropdown != null) BuildParticleDropdown();
+
+        // LLM
+        if (llmBaseUrlInput) llmBaseUrlInput.SetTextWithoutNotify(data.llmBaseUrl);
+        if (llmAuthTokenInput) llmAuthTokenInput.SetTextWithoutNotify(data.llmAuthToken);
+        if (llmModelInput) llmModelInput.SetTextWithoutNotify(data.llmModel);
+        if (llmMaxMessagesInput) llmMaxMessagesInput.SetTextWithoutNotify(data.llmMaxMessages.ToString());
+        if (llmMaxTokensInput) llmMaxTokensInput.SetTextWithoutNotify(data.llmMaxTokens.ToString());
+
+        // TTS
+        if (ttsApiUrlInput) ttsApiUrlInput.SetTextWithoutNotify(data.ttsApiUrl);
+        if (ttsRefAudioPathInput) ttsRefAudioPathInput.SetTextWithoutNotify(data.ttsRefAudioPath);
+        if (ttsPromptTextInput) ttsPromptTextInput.SetTextWithoutNotify(data.ttsPromptText);
+        if (ttsPromptLangInput) ttsPromptLangInput.SetTextWithoutNotify(data.ttsPromptLang);
+        if (ttsTextLangInput) ttsTextLangInput.SetTextWithoutNotify(data.ttsTextLang);
+        if (ttsTopKInput) ttsTopKInput.SetTextWithoutNotify(data.ttsTopK.ToString());
+        if (ttsTopPInput) ttsTopPInput.SetTextWithoutNotify(data.ttsTopP.ToString());
+        if (ttsTemperatureInput) ttsTemperatureInput.SetTextWithoutNotify(data.ttsTemperature.ToString());
+        if (ttsTextSplitMethodInput) ttsTextSplitMethodInput.SetTextWithoutNotify(data.ttsTextSplitMethod);
+        if (ttsEnabledToggle) ttsEnabledToggle.SetIsOnWithoutNotify(data.ttsEnabled);
     }
 
     public void ApplySettings()
@@ -118,13 +155,6 @@ public class SettingsHandlerDropdowns : MonoBehaviour
 
         data.graphicsQualityLevel = graphicsDropdown?.value ?? data.graphicsQualityLevel;
         QualitySettings.SetQualityLevel(data.graphicsQualityLevel, true);
-
-        if (contextLengthDropdown != null)
-        {
-            int index = contextLengthDropdown.value;
-            data.contextLength = contextOptions[index];
-            if (llm != null) llm.contextSize = data.contextLength;
-        }
 
         if (particleDropdown != null)
         {
@@ -141,11 +171,6 @@ public class SettingsHandlerDropdowns : MonoBehaviour
         graphicsDropdown?.SetValueWithoutNotify(1);
         QualitySettings.SetQualityLevel(1, true);
         SaveLoadHandler.Instance.data.graphicsQualityLevel = 1;
-
-        int defaultIndex = 1;
-        contextLengthDropdown?.SetValueWithoutNotify(defaultIndex);
-        SaveLoadHandler.Instance.data.contextLength = contextOptions[defaultIndex];
-        if (llm != null) llm.contextSize = contextOptions[defaultIndex];
 
         SaveLoadHandler.Instance.data.selectedParticleTheme = "Standard";
         if (particleDropdown != null) BuildParticleDropdown();

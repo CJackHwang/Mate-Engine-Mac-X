@@ -7,45 +7,28 @@ public class DeleteAIHistory : MonoBehaviour
     [Header("UI Button to delete AI history")]
     public Button deleteButton;
 
-    [Tooltip("Base filename for AI history. Default is 'ZomeAI'.")]
-    public string fileName = "ZomeAI";
-
     void Start()
     {
         if (deleteButton != null)
-        {
             deleteButton.onClick.AddListener(DeleteHistoryFiles);
-        }
-        else
-        {
-            Debug.LogWarning("[DeleteAIHistory] Delete Button is not assigned.");
-        }
     }
 
     public void DeleteHistoryFiles()
     {
-        string jsonPath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-        string cachePath = Path.Combine(Application.persistentDataPath, fileName + ".cache");
+        // Clear AnthropicChatHandler history in memory
+        var handler = FindObjectOfType<AnthropicChatHandler>();
+        if (handler != null) handler.ClearHistory();
 
+        // Delete legacy LLMUnity files if they exist
+        string[] legacyFiles = { "ZomeAI.json", "ZomeAI.cache" };
         bool deletedSomething = false;
-
-        if (File.Exists(jsonPath))
+        foreach (var f in legacyFiles)
         {
-            File.Delete(jsonPath);
-            Debug.Log("[DeleteAIHistory] Deleted: " + jsonPath);
-            deletedSomething = true;
-        }
-
-        if (File.Exists(cachePath))
-        {
-            File.Delete(cachePath);
-            Debug.Log("[DeleteAIHistory] Deleted: " + cachePath);
-            deletedSomething = true;
+            string path = Path.Combine(Application.persistentDataPath, f);
+            if (File.Exists(path)) { File.Delete(path); deletedSomething = true; Debug.Log("[DeleteAIHistory] Deleted: " + path); }
         }
 
         if (!deletedSomething)
-        {
-            Debug.LogWarning("[DeleteAIHistory] No AI history files found at: " + jsonPath + " or " + cachePath);
-        }
+            Debug.Log("[DeleteAIHistory] History cleared (in-memory).");
     }
 }

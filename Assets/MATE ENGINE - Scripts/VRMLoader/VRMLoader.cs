@@ -53,15 +53,7 @@ public class VRMLoader : MonoBehaviour
             return;
         }
         if (!string.IsNullOrEmpty(savedPath))
-        {
-            Debug.Log("[VRMLoader] Loading saved path: " + savedPath);
             LoadVRM(savedPath);
-        }
-        else
-        {
-            Debug.Log("[VRMLoader] No saved path, showing load button.");
-            ShowLoadButton();
-        }
     }
 
     public void ShowLoadButtonPublic() => ShowLoadButton();

@@ -59,6 +59,11 @@ public class SaveLoadHandler : MonoBehaviour
             limiter.targetFPS = data.fpsLimit;
             limiter.ApplyFPSLimit();
         }
+
+#if UNITY_STANDALONE_OSX
+        // 启动时自动适配当前屏幕分辨率，避免外接显示器分辨率残留
+        Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, false);
+#endif
     }
 
     // Speichern
@@ -168,6 +173,26 @@ public class SaveLoadHandler : MonoBehaviour
         public int contextLength = 4096;
         public bool enableHusbandoMode = false;
         public bool enableAutoMemoryTrim = false;
+
+        // Anthropic LLM settings
+        public string llmBaseUrl = "";
+        public string llmAuthToken = "";
+        public string llmModel = "claude-sonnet-4-6";
+        public string llmSystemPrompt = "你是一个简洁、自然的对话助手。回答尽量直接、清楚，适合朗读。";
+        public int llmMaxMessages = 20;
+        public int llmMaxTokens = 1024;
+
+        // GPT-SoVITS TTS settings
+        public string ttsApiUrl = "http://127.0.0.1:9880/tts";
+        public string ttsRefAudioPath = "";
+        public string ttsPromptText = "";
+        public string ttsPromptLang = "ja";
+        public string ttsTextLang = "ja";
+        public int ttsTopK = 15;
+        public float ttsTopP = 1f;
+        public float ttsTemperature = 1f;
+        public string ttsTextSplitMethod = "cut0";
+        public bool ttsEnabled = false;
 
         public int settingsVersion = 0;
         public bool alarmsEnabled = true;
