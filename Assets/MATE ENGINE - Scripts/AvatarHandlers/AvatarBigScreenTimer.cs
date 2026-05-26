@@ -119,6 +119,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
 
     void Update()
     {
+        if (SaveLoadHandler.Instance == null) return;
         enableBigScreenAlarm = SaveLoadHandler.Instance.data.alarmsEnabled;
         if (!enableBigScreenAlarm)
         {

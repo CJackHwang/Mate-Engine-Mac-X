@@ -68,6 +68,7 @@ public class UniversalBlendshapes : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (states.Count == 0) return;
         float now = Time.time;
         float dt = Time.deltaTime;
 

@@ -90,6 +90,9 @@ public class SettingsHandlerDropdowns : MonoBehaviour
         if (particleThemes.Count == 0)
             particleThemes.Add(new ParticleThemeEntry { id = "Standard", display = "Standard" });
 
+        if (particleThemes.FindIndex(e => e.id == "None") < 0)
+            particleThemes.Add(new ParticleThemeEntry { id = "None", display = "No Effect" });
+
         var options = new List<string>();
         for (int i = 0; i < particleThemes.Count; i++)
         {

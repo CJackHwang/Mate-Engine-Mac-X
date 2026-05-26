@@ -36,6 +36,7 @@ public class AvatarAnimatorController : MonoBehaviour
     private float dragLockTimer;
     private bool mouseHeld;
     public bool isDragging, isDancing, isIdle;
+    private int _soundConfirmCount;
 
     [Header("Character Mode")]
     public bool enableHusbandoMode = false;
@@ -57,6 +58,11 @@ public class AvatarAnimatorController : MonoBehaviour
         animator.SetFloat(isMaleParam, enableHusbandoMode ? 1f : 0f);
 
         soundCheckCoroutine = StartCoroutine(CheckSoundContinuously());
+
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        MacAudioMonitorBinding.Start();
+        UnityEngine.Debug.Log("[AvatarAnimatorController] macOS audio monitor init. Default output device: " + MacAudioMonitorBinding.GetDefaultDeviceName());
+#endif
     }
 
     void OnDisable() => CleanupAudioResources();
@@ -76,12 +82,24 @@ public class AvatarAnimatorController : MonoBehaviour
             if (isDancing) SetDancing(false);
             return;
         }
+#if UNITY_STANDALONE_WIN
         if (defaultDevice == null) return;
+#endif
         if (!isDragging)
         {
             bool valid = IsValidAppPlaying();
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            UnityEngine.Debug.Log($"[AvatarAnimatorController] Sound check: valid={valid} confirmCount={_soundConfirmCount} isDancing={isDancing}");
+            // Require 2 consecutive confirmations to avoid single-frame audio spikes triggering state changes
+            if (valid) _soundConfirmCount++;
+            else _soundConfirmCount = 0;
+            bool confirmed = _soundConfirmCount >= 2;
+            if (confirmed && !isDancing) StartDancing();
+            else if (!valid && isDancing) SetDancing(false);
+#else
             if (valid && !isDancing) StartDancing();
             else if (!valid && isDancing) SetDancing(false);
+#endif
         }
     }
 
@@ -106,9 +124,7 @@ public class AvatarAnimatorController : MonoBehaviour
 
     bool IsValidAppPlaying()
     {
-#if !UNITY_STANDALONE_WIN
-        return false;
-#else
+#if UNITY_STANDALONE_WIN
         if (Time.time - lastSoundCheckTime < 2f) return isDancing;
         lastSoundCheckTime = Time.time;
         try
@@ -135,6 +151,10 @@ public class AvatarAnimatorController : MonoBehaviour
             }
         }
         catch { defaultDevice?.Dispose(); defaultDevice = null; }
+        return false;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        return MacAudioMonitorBinding.IsOutputActive();
+#else
         return false;
 #endif
     }
@@ -247,6 +267,8 @@ public class AvatarAnimatorController : MonoBehaviour
 #if UNITY_STANDALONE_WIN
         defaultDevice?.Dispose(); defaultDevice = null;
         enumerator?.Dispose(); enumerator = null;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        MacAudioMonitorBinding.Stop();
 #endif
     }
 }
