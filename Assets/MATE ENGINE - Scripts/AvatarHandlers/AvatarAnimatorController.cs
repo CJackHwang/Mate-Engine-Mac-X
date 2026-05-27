@@ -62,6 +62,7 @@ public class AvatarAnimatorController : MonoBehaviour
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
         MacAudioMonitorBinding.Start();
         UnityEngine.Debug.Log("[AvatarAnimatorController] macOS audio monitor init. Default output device: " + MacAudioMonitorBinding.GetDefaultDeviceName());
+        MacWindowFixBinding.Install();
 #endif
     }
 
