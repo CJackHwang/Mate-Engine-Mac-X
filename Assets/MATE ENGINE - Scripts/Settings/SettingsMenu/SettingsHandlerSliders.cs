@@ -16,6 +16,10 @@ public class SettingsHandlerSliders : MonoBehaviour
     public Slider windowSitYOffsetSlider;
     public Slider danceSwitchTimeSlider;
     public Slider danceTransitionTimeSlider;
+    // 舞蹈片段总数（1-20），对应 Animator Female blend tree 的 threshold 数量
+    public InputField danceClipCountInput;
+    // 固定舞蹈编号：-1=自动循环，0-19=固定到指定片段
+    public InputField pinnedDanceIndexInput;
 
     private void Start()
     {
@@ -100,6 +104,26 @@ public class SettingsHandlerSliders : MonoBehaviour
             SaveAll();
         });
 
+        danceClipCountInput?.onEndEdit.AddListener(v =>
+        {
+            if (int.TryParse(v, out int n))
+            {
+                SaveLoadHandler.Instance.data.danceClipCount = Mathf.Clamp(n, 1, 20);
+                danceClipCountInput.SetTextWithoutNotify(SaveLoadHandler.Instance.data.danceClipCount.ToString());
+                SaveAll();
+            }
+        });
+
+        pinnedDanceIndexInput?.onEndEdit.AddListener(v =>
+        {
+            if (int.TryParse(v, out int n))
+            {
+                SaveLoadHandler.Instance.data.pinnedDanceIndex = Mathf.Clamp(n, -1, 19);
+                pinnedDanceIndexInput.SetTextWithoutNotify(SaveLoadHandler.Instance.data.pinnedDanceIndex.ToString());
+                SaveAll();
+            }
+        });
+
 
         LoadSettings();
         ApplySettings();
@@ -127,6 +151,8 @@ public class SettingsHandlerSliders : MonoBehaviour
         windowSitYOffsetSlider?.SetValueWithoutNotify(data.windowSitYOffset);
         danceSwitchTimeSlider?.SetValueWithoutNotify(data.danceSwitchTime);
         danceTransitionTimeSlider?.SetValueWithoutNotify(data.danceTransitionTime);
+        danceClipCountInput?.SetTextWithoutNotify(data.danceClipCount.ToString());
+        pinnedDanceIndexInput?.SetTextWithoutNotify(data.pinnedDanceIndex.ToString());
     }
     public void ApplySettings()
     {
@@ -183,6 +209,10 @@ public class SettingsHandlerSliders : MonoBehaviour
         data.windowSitYOffset = 0f;
         data.danceSwitchTime = 15f;
         data.danceTransitionTime = 2f;
+        data.danceClipCount = 20;
+        data.pinnedDanceIndex = -1;
+        danceClipCountInput?.SetTextWithoutNotify("20");
+        pinnedDanceIndexInput?.SetTextWithoutNotify("-1");
         data.uiHueShift = 0f;
         data.uiSaturation = 1f;
 

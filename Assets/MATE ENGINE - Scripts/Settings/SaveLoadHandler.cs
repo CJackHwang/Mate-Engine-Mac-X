@@ -120,6 +120,15 @@ public class SaveLoadHandler : MonoBehaviour
         public bool enableDanceSwitch = false;
         public float danceSwitchTime = 15f;
         public float danceTransitionTime = 2f;
+
+        // ── 舞蹈选择 ──────────────────────────────────────────────────────────
+        // Female Animator blend tree 共有 20 个舞蹈动作（threshold 0-19）
+        // danceClipCount : 自动循环时使用的舞蹈数量上限，范围 1-20
+        // pinnedDanceIndex : -1 = 自动循环，0-19 = 固定到指定编号的舞蹈
+        // ─────────────────────────────────────────────────────────────────────
+        public int danceClipCount = 20;
+        // -1 = auto cycle, 0~(danceClipCount-1) = pin to specific dance
+        public int pinnedDanceIndex = -1;
         public float avatarSize = 1.0f;
         public bool enableDancing = true;
         public bool enableMouseTracking = true;
@@ -278,6 +287,8 @@ public class SaveLoadHandler : MonoBehaviour
             avatar.DANCE_SWITCH_TIME = data.danceSwitchTime;
             avatar.DANCE_TRANSITION_TIME = data.danceTransitionTime;
             avatar.enableDanceSwitch = data.enableDanceSwitch;
+            avatar.DANCE_CLIP_COUNT = Mathf.Clamp(data.danceClipCount, 1, 20);
+            avatar.pinnedDanceIndex = data.pinnedDanceIndex;
             avatar.enableHusbandoMode = data.enableHusbandoMode;
 
             foreach (var tracker in avatar.GetComponentsInChildren<AvatarMouseTracking>(true))

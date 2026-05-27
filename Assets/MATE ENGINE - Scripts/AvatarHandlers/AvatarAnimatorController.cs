@@ -12,13 +12,15 @@ public class AvatarAnimatorController : MonoBehaviour
     public List<string> allowedApps = new();
     public int totalIdleAnimations = 10;
     public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
-    public int DANCE_CLIP_COUNT = 5;
-
     [Header("Dancing")]
-    public bool enableDancing = true;           
+    public bool enableDancing = true;
     public bool enableDanceSwitch = true;
     public float DANCE_SWITCH_TIME = 15f;
-    public float DANCE_TRANSITION_TIME = 2f;       
+    public float DANCE_TRANSITION_TIME = 2f;
+    // Female blend tree 共 20 个动作（threshold 0-19），此值控制自动循环范围上限
+    public int DANCE_CLIP_COUNT = 20;
+    // -1 = 自动循环，0~(DANCE_CLIP_COUNT-1) = 固定到指定编号的舞蹈
+    public int pinnedDanceIndex = -1;
 
     public bool BlockDraggingOverride = false;
 
@@ -100,7 +102,9 @@ public class AvatarAnimatorController : MonoBehaviour
     {
         isDancing = true;
         danceTimer = 0f;
-        danceState = Random.Range(0, DANCE_CLIP_COUNT);
+        danceState = (pinnedDanceIndex >= 0 && pinnedDanceIndex < DANCE_CLIP_COUNT)
+            ? pinnedDanceIndex
+            : Random.Range(0, DANCE_CLIP_COUNT);
         animator.SetBool(isDancingParam, true);
         animator.SetFloat(danceIndexParam, danceState);
     }
@@ -193,7 +197,7 @@ public class AvatarAnimatorController : MonoBehaviour
         }
         UpdateIdleStatus();
 
-        if (isDancing && enableDanceSwitch)
+        if (isDancing && enableDanceSwitch && pinnedDanceIndex < 0)
         {
             danceTimer += Time.deltaTime;
             if (danceTimer > DANCE_SWITCH_TIME)
