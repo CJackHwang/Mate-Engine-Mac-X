@@ -84,23 +84,15 @@ public class AvatarAnimatorController : MonoBehaviour
         }
 #if UNITY_STANDALONE_WIN
         if (defaultDevice == null) return;
-#endif
         if (!isDragging)
         {
             bool valid = IsValidAppPlaying();
-#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-            UnityEngine.Debug.Log($"[AvatarAnimatorController] Sound check: valid={valid} confirmCount={_soundConfirmCount} isDancing={isDancing}");
-            // Require 2 consecutive confirmations to avoid single-frame audio spikes triggering state changes
-            if (valid) _soundConfirmCount++;
-            else _soundConfirmCount = 0;
-            bool confirmed = _soundConfirmCount >= 2;
-            if (confirmed && !isDancing) StartDancing();
-            else if (!valid && isDancing) SetDancing(false);
-#else
             if (valid && !isDancing) StartDancing();
             else if (!valid && isDancing) SetDancing(false);
-#endif
         }
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        if (!isDragging && !isDancing) StartDancing();
+#endif
     }
 
     void StartDancing()
