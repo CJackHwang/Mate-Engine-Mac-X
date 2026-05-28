@@ -151,6 +151,8 @@ public class SaveLoadHandler : MonoBehaviour
 
         public bool enableHandHolding = true;
         public bool enableWindowSitting = false;
+        // "auto" = snap to both edges, "up" = top edge only, "down" = bottom edge only
+        public string windowSitEdge = "auto";
         public bool ambientOcclusion = false;
 
         public float uiHueShift = 0f;
@@ -327,7 +329,10 @@ public class SaveLoadHandler : MonoBehaviour
                 food.SetFeatureEnabled(Instance.data.enableFeedSystem);
 
             foreach (var handler in Resources.FindObjectsOfTypeAll<AvatarWindowHandler>())
+            {
                 handler.windowSitYOffset = data.windowSitYOffset;
+                handler.windowSitEdge = data.windowSitEdge;
+            }
 
             foreach (var loco in Resources.FindObjectsOfTypeAll<AvatarLocomotionController>())
                 loco.EnableLocomotion = data.enableLocomotion;
