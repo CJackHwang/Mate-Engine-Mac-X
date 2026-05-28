@@ -112,6 +112,7 @@ public class AvatarWindowHandler : MonoBehaviour
     float seatNormY;
     bool _recentUnsnap;
     int _lastSnapTopY;
+    int _snappedEdgeY;  // the actual edge Y we snapped to (top or bottom)
     uint _currentPid;
     float _guardRadiusSq;
     void Start()
@@ -277,11 +278,12 @@ public class AvatarWindowHandler : MonoBehaviour
 #endif
                 if (gotRect)
                 {
-#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-                    CalibrateSeatAnchorToDesktopY(tr.Bottom + seatOffsetPx);
-#else
-                    CalibrateSeatAnchorToDesktopY(tr.Top + seatOffsetPx);
-#endif
+                    float seatTargetY2;
+                    if (boneHips != null && ComputeDesktopFromWorld(boneHips.position, out _, out float hipDY2))
+                        seatTargetY2 = hipDY2 + seatOffsetPx;
+                    else
+                        seatTargetY2 = _snappedEdgeY + seatOffsetPx;
+                    CalibrateSeatAnchorToDesktopY(seatTargetY2);
                     if (ComputeSeatDesktop(out float px2, out _))
                     {
                         float w = Mathf.Max(1, tr.Right - tr.Left);
@@ -392,6 +394,7 @@ public class AvatarWindowHandler : MonoBehaviour
         if (fromUnsnap) _unsnapCooldownUntil = Time.unscaledTime + Mathf.Max(0f, unsnapCooldownSeconds);
         snappedHWND = IntPtr.Zero;
         seatCalibrated = false;
+        _snappedEdgeY = 0;
         if (animator != null) { animator.SetBool("isWindowSit", false); animator.SetBool("isTaskbarSit", false); }
         SetTopMost(SaveLoadHandler.Instance != null ? SaveLoadHandler.Instance.data.isTopmost : true);
         SetTargetQuadActive(false); SetOtherQuadsActive(0);
@@ -488,12 +491,20 @@ public class AvatarWindowHandler : MonoBehaviour
             if (win.hwnd == unityHWND) continue;
             int left = win.rect.Left, right = win.rect.Right;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-            int top = win.rect.Bottom;  // bottom-left origin: Bottom = upper edge
+            int top    = win.rect.Bottom;  // upper edge (bottom-left origin)
+            int bottom = win.rect.Top;     // lower edge
 #else
-            int top = win.rect.Top;
+            int top    = win.rect.Top;
+            int bottom = win.rect.Bottom;
 #endif
             if (!(px >= left && px <= right)) continue;
-            if (Mathf.Abs(py - top) > sprF) continue;
+            // Check both upper and lower edge; pick the closer one
+            bool nearTop    = Mathf.Abs(py - top)    <= sprF;
+            bool nearBottom = Mathf.Abs(py - bottom) <= sprF * 2f;
+            if (!nearTop && !nearBottom) continue;
+            int snapEdge = (nearTop && nearBottom)
+                ? (Mathf.Abs(py - top) <= Mathf.Abs(py - bottom) ? top : bottom)
+                : (nearTop ? top : bottom);
             if (IsSameProcessWindow(win.hwnd)) continue;
             if (IsOccludedByHigherWindowsAtPoint(win.hwnd, Mathf.RoundToInt(px), Mathf.RoundToInt(py))) continue;
             classNameBuffer.Clear(); GetClassName(win.hwnd, classNameBuffer, classNameBuffer.Capacity);
@@ -506,7 +517,13 @@ public class AvatarWindowHandler : MonoBehaviour
             animator.SetBool("isWindowSit", true);
             animator.SetBool("isTaskbarSit", win.isTaskbar);
             animator.Update(0f);
-            CalibrateSeatAnchorToDesktopY(top + seatOffsetPx);
+            // Use actual hip bone desktop Y as seat target so scaling doesn't affect alignment
+            float seatTargetY;
+            if (boneHips != null && ComputeDesktopFromWorld(boneHips.position, out _, out float hipDY))
+                seatTargetY = hipDY + seatOffsetPx;
+            else
+                seatTargetY = snapEdge + seatOffsetPx;
+            CalibrateSeatAnchorToDesktopY(seatTargetY);
 
             _postSettleFrames = 1; _postSettleRecalib = true;
 
@@ -516,7 +533,8 @@ public class AvatarWindowHandler : MonoBehaviour
                 snapFraction = Mathf.Clamp01((px2 - left) / w);
             }
 
-            _lastSnapTopY = top;
+            _lastSnapTopY = snapEdge;
+            _snappedEdgeY = snapEdge;
             _recentUnsnap = false;
             SetTopMost(true);
 
@@ -621,6 +639,7 @@ public class AvatarWindowHandler : MonoBehaviour
             float ww = Mathf.Max(1, tr.Right - tr.Left);
             snapFraction = Mathf.Clamp01((px - tr.Left) / ww);
         }
+        RecalibrateIfScaleChanged(tr);
         PinToTarget(tr); SetTopMost(true);
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
         for (int i = 0; i < cachedWindows.Count; i++)
@@ -633,20 +652,37 @@ public class AvatarWindowHandler : MonoBehaviour
                 float ww = Mathf.Max(1, tr.Right - tr.Left);
                 snapFraction = Mathf.Clamp01((px - tr.Left) / ww);
             }
+            RecalibrateIfScaleChanged(tr);
             PinToTarget(tr);
             return;
         }
         ClearSnapAndHide();
 #endif
     }
+
+    void RecalibrateIfScaleChanged(RECT tr)
+    {
+        if ((transform.lossyScale - _prevLossyScale).sqrMagnitude < 1e-6f) return;
+        _prevLossyScale = transform.lossyScale;
+        float seatTargetY;
+        if (boneHips != null && ComputeDesktopFromWorld(boneHips.position, out _, out float hipDY))
+            seatTargetY = hipDY + seatOffsetPx;
+        else
+            seatTargetY = _snappedEdgeY + seatOffsetPx;
+        CalibrateSeatAnchorToDesktopY(seatTargetY);
+        _snapSmoothingActive = false;
+        _snapVelX = _snapVelY = 0f;
+    }
     void PinToTarget(RECT r)
     {
         if (!ComputeSeatDesktop(out float px, out float py)) return;
         int left = r.Left, right = r.Right;
+        // Use the recorded snap edge so bottom-edge snapping stays on bottom edge
+        int top = _snappedEdgeY != 0 ? _snappedEdgeY :
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-        int top = r.Bottom;  // bottom-left origin: Bottom = upper edge
+            r.Bottom;
 #else
-        int top = r.Top;
+            r.Top;
 #endif
         float desiredPX = left + snapFraction * Mathf.Max(1, right - left);
         float desiredPY = top + seatOffsetPx;
@@ -727,12 +763,15 @@ public class AvatarWindowHandler : MonoBehaviour
             if (!ComputeZoneDesktop(out float px, out float py)) return true;
             int left = win.rect.Left, right = win.rect.Right;
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-            int top = win.rect.Bottom;  // bottom-left origin: Bottom = upper edge
+            int top    = win.rect.Bottom;  // upper edge
+            int bottom = win.rect.Top;     // lower edge
 #else
-            int top = win.rect.Top;
+            int top    = win.rect.Top;
+            int bottom = win.rect.Bottom;
 #endif
             bool hitHoriz = px >= left && px <= right;
-            bool hitVert = Mathf.Abs(py - top) <= Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
+            int vBandCheck = Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
+            bool hitVert = Mathf.Abs(py - top) <= vBandCheck || Mathf.Abs(py - bottom) <= vBandCheck;
             if (!hitHoriz || !hitVert) return false;
 
             if (controller.isDragging && animator.GetBool("isWindowSit"))
