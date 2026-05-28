@@ -116,8 +116,12 @@ public class AvatarWindowHandler : MonoBehaviour
     float _guardRadiusSq;
     void Start()
     {
+#if UNITY_STANDALONE_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
         _currentPid = GetCurrentProcessId();
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        _currentPid = (uint)System.Diagnostics.Process.GetCurrentProcess().Id;
+#endif
         animator = GetComponent<Animator>();
         controller = GetComponent<AvatarAnimatorController>();
         if (targetCamera == null) targetCamera = Camera.main;
@@ -166,7 +170,7 @@ public class AvatarWindowHandler : MonoBehaviour
     }
     void Update()
     {
-#if !UNITY_STANDALONE_WIN
+#if !UNITY_STANDALONE_WIN && !(UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
         return;
 #endif
         if (snappedHWND != IntPtr.Zero)
@@ -175,7 +179,11 @@ public class AvatarWindowHandler : MonoBehaviour
             _prevLossyScale = transform.lossyScale;
         }
 
+#if UNITY_STANDALONE_WIN
         if (unityHWND == IntPtr.Zero || animator == null || controller == null) return;
+#else
+        if (animator == null || controller == null) return;
+#endif
         if (!SaveLoadHandler.Instance.data.enableWindowSitting) { ClearSnapAndHide(); return; }
         if (IsSitBlocked()) { if (snappedHWND != IntPtr.Zero) ClearSnapAndHide(); return; }
 
@@ -200,6 +208,10 @@ public class AvatarWindowHandler : MonoBehaviour
                 _dragStartCursorX = cp.x; _dragStartCursorY = cp.y;
                 if (snappedHWND != IntPtr.Zero && isWindowSitNow) _snapCursorY = cp.y;
             }
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            MacWindowListBinding.MacWin_GetCursorPos(out float dcx, out float dcy);
+            _dragStartCursorX = (int)dcx; _dragStartCursorY = (int)dcy;
+            if (snappedHWND != IntPtr.Zero && isWindowSitNow) _snapCursorY = (int)dcy;
 #endif
             _dragStartTime = Time.unscaledTime;
             _canSitHold = false;
@@ -253,9 +265,23 @@ public class AvatarWindowHandler : MonoBehaviour
             if (_postSettleFrames > 0) _postSettleFrames--;
             else
             {
-                if (GetWindowRect(snappedHWND, out RECT tr))
+#if UNITY_STANDALONE_WIN
+                bool gotRect = GetWindowRect(snappedHWND, out RECT tr);
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+                RECT tr = new RECT();
+                bool gotRect = false;
+                for (int i = 0; i < cachedWindows.Count; i++)
+                    if (cachedWindows[i].hwnd == snappedHWND) { tr = cachedWindows[i].rect; gotRect = true; break; }
+#else
+                RECT tr = new RECT(); bool gotRect = false;
+#endif
+                if (gotRect)
                 {
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+                    CalibrateSeatAnchorToDesktopY(tr.Bottom + seatOffsetPx);
+#else
                     CalibrateSeatAnchorToDesktopY(tr.Top + seatOffsetPx);
+#endif
                     if (ComputeSeatDesktop(out float px2, out _))
                     {
                         float w = Mathf.Max(1, tr.Right - tr.Left);
@@ -278,6 +304,9 @@ public class AvatarWindowHandler : MonoBehaviour
         Kirurobo.WinApi.POINT cp;
         if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
         return Mathf.Abs(cp.x - _dragStartCursorX) >= minDragPixelsToSnap || Mathf.Abs(cp.y - _dragStartCursorY) >= minDragPixelsToSnap;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        MacWindowListBinding.MacWin_GetCursorPos(out float cx, out float cy);
+        return Mathf.Abs(cx - _dragStartCursorX) >= minDragPixelsToSnap || Mathf.Abs(cy - _dragStartCursorY) >= minDragPixelsToSnap;
 #else
         return true;
 #endif
@@ -385,6 +414,21 @@ public class AvatarWindowHandler : MonoBehaviour
             cachedWindows.Add(new WindowEntry { hwnd = hWnd, rect = r, isTaskbar = false });
             return true;
         }, IntPtr.Zero);
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        cachedWindows.Clear();
+        MacWindowListBinding.MacWin_Refresh((int)_currentPid);
+        int count = MacWindowListBinding.MacWin_GetCount();
+        for (int i = 0; i < count; i++)
+        {
+            if (MacWindowListBinding.MacWin_GetWindow(i,
+                out int wx, out int wy, out int ww, out int wh,
+                out int pid, out int layer, out int isOnscreen, out int windowNumber) == 0) continue;
+            if (isOnscreen == 0 || layer < 0) continue;
+            if (ww < 200 || wh < 60) continue;
+            // wy = bottom edge, wy+wh = top edge; keep Top < Bottom: Top=bottom, Bottom=top
+            var r = new RECT { Left = wx, Top = wy, Right = wx + ww, Bottom = wy + wh };
+            cachedWindows.Add(new WindowEntry { hwnd = new IntPtr(windowNumber), rect = r, isTaskbar = false });
+        }
 #endif
     }
     void RebuildActiveOccluders()
@@ -442,7 +486,12 @@ public class AvatarWindowHandler : MonoBehaviour
         {
             var win = cachedWindows[i];
             if (win.hwnd == unityHWND) continue;
-            int left = win.rect.Left, right = win.rect.Right, top = win.rect.Top;
+            int left = win.rect.Left, right = win.rect.Right;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            int top = win.rect.Bottom;  // bottom-left origin: Bottom = upper edge
+#else
+            int top = win.rect.Top;
+#endif
             if (!(px >= left && px <= right)) continue;
             if (Mathf.Abs(py - top) > sprF) continue;
             if (IsSameProcessWindow(win.hwnd)) continue;
@@ -474,6 +523,9 @@ public class AvatarWindowHandler : MonoBehaviour
 #if UNITY_STANDALONE_WIN
             Kirurobo.WinApi.POINT cp;
             if (Kirurobo.WinApi.GetCursorPos(out cp)) _snapCursorY = cp.y;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            MacWindowListBinding.MacWin_GetCursorPos(out float scx, out float scy);
+            _snapCursorY = (int)scy;
 #endif
             _guard = Mathf.Max(1, snapGuardFrames);
             _latch = Mathf.Max(1, snapLatchFrames);
@@ -483,7 +535,11 @@ public class AvatarWindowHandler : MonoBehaviour
             _havePrevSnapRect = false;
 
             RebuildActiveOccluders(); UpdateOccluderQuadsFrameSync();
+#if UNITY_STANDALONE_WIN
             if (GetWindowRect(win.hwnd, out RECT tr)) PinToTarget(tr); else PinToTarget(win.rect);
+#else
+            PinToTarget(win.rect);
+#endif
             return;
         }
     }
@@ -566,17 +622,69 @@ public class AvatarWindowHandler : MonoBehaviour
             snapFraction = Mathf.Clamp01((px - tr.Left) / ww);
         }
         PinToTarget(tr); SetTopMost(true);
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        for (int i = 0; i < cachedWindows.Count; i++)
+        {
+            if (cachedWindows[i].hwnd != snappedHWND) continue;
+            RECT tr = cachedWindows[i].rect;
+            CancelSnapSmoothingIfTargetMoved(tr);
+            if (dragging && ComputeSeatDesktop(out float px, out _))
+            {
+                float ww = Mathf.Max(1, tr.Right - tr.Left);
+                snapFraction = Mathf.Clamp01((px - tr.Left) / ww);
+            }
+            PinToTarget(tr);
+            return;
+        }
+        ClearSnapAndHide();
 #endif
     }
     void PinToTarget(RECT r)
     {
         if (!ComputeSeatDesktop(out float px, out float py)) return;
-        int left = r.Left, right = r.Right, top = r.Top;
+        int left = r.Left, right = r.Right;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        int top = r.Bottom;  // bottom-left origin: Bottom = upper edge
+#else
+        int top = r.Top;
+#endif
         float desiredPX = left + snapFraction * Mathf.Max(1, right - left);
         float desiredPY = top + seatOffsetPx;
         int dx = Mathf.RoundToInt(desiredPX - px);
         int dy = Mathf.RoundToInt(desiredPY - py);
 
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        var uwc = Kirurobo.UniWindowController.current;
+        if (uwc == null) return;
+        var upos = uwc.windowPosition;  // bottom-left origin
+        var usize = uwc.windowSize;
+        int urLeft = (int)upos.x;
+        int urTop = (int)(upos.y + usize.y);  // top edge
+        int w = (int)usize.x, h = (int)usize.y;
+        int targetX = urLeft + dx, targetY = urTop + dy;
+        if (!_snapSmoothingActive || !enableSnapSmoothing)
+        {
+            if (dx != 0 || dy != 0) uwc.windowPosition = new Vector2(targetX, targetY - h);
+            return;
+        }
+        float dt = Time.unscaledDeltaTime;
+        float nextX = Mathf.SmoothDamp(urLeft, targetX, ref _snapVelX, snapSmoothingTime, snapSmoothingMaxSpeed, dt);
+        float nextY = Mathf.SmoothDamp(urTop, targetY, ref _snapVelY, snapSmoothingTime, snapSmoothingMaxSpeed, dt);
+        if (controller != null && controller.isDragging)
+        {
+            float predictedSeatY = py + (nextY - urTop);
+            float afterError = predictedSeatY - desiredPY;
+            if (afterError > 0f)
+            {
+                float maxStep = snapSmoothingMaxSpeed * dt;
+                float need = Mathf.Max(0f, afterError - 1f);
+                nextY -= Mathf.Min(maxStep, need);
+            }
+        }
+        int nx = Mathf.RoundToInt(nextX), ny = Mathf.RoundToInt(nextY);
+        if (Mathf.Abs(targetX - nx) <= 1 && Mathf.Abs(targetY - ny) <= 1) { nx = targetX; ny = targetY; _snapSmoothingActive = false; _snapVelX = _snapVelY = 0f; }
+        if (nx != urLeft || ny != urTop) uwc.windowPosition = new Vector2(nx, ny - h);
+#else
         GetWindowRect(unityHWND, out RECT ur);
         int w = ur.Right - ur.Left, h = ur.Bottom - ur.Top;
         int targetX = ur.Left + dx, targetY = ur.Top + dy;
@@ -605,6 +713,7 @@ public class AvatarWindowHandler : MonoBehaviour
         int nx = Mathf.RoundToInt(nextX), ny = Mathf.RoundToInt(nextY);
         if (Mathf.Abs(targetX - nx) <= 1 && Mathf.Abs(targetY - ny) <= 1) { nx = targetX; ny = targetY; _snapSmoothingActive = false; _snapVelX = _snapVelY = 0f; }
         if (nx != ur.Left || ny != ur.Top) MoveWindow(unityHWND, nx, ny, w, h, true);
+#endif
     }
     bool IsStillNearSnappedWindow()
     {
@@ -616,7 +725,12 @@ public class AvatarWindowHandler : MonoBehaviour
             var win = cachedWindows[i];
             if (win.hwnd != snappedHWND) continue;
             if (!ComputeZoneDesktop(out float px, out float py)) return true;
-            int left = win.rect.Left, right = win.rect.Right, top = win.rect.Top;
+            int left = win.rect.Left, right = win.rect.Right;
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+            int top = win.rect.Bottom;  // bottom-left origin: Bottom = upper edge
+#else
+            int top = win.rect.Top;
+#endif
             bool hitHoriz = px >= left && px <= right;
             bool hitVert = Mathf.Abs(py - top) <= Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
             if (!hitHoriz || !hitVert) return false;
@@ -628,6 +742,10 @@ public class AvatarWindowHandler : MonoBehaviour
                 if (!Kirurobo.WinApi.GetCursorPos(out cp)) return true;
                 int vBand = Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
                 if (Mathf.Abs(cp.y - _snapCursorY) > vBand) return false;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+                MacWindowListBinding.MacWin_GetCursorPos(out float scx2, out float scy2);
+                int vBand = Mathf.Max(unsnapVerticalBand, ScaledProbeRadiusI());
+                if (Mathf.Abs(scy2 - _snapCursorY) > vBand) return false;
 #endif
             }
             return true;
@@ -729,6 +847,9 @@ public class AvatarWindowHandler : MonoBehaviour
     }
     void UpdateOccluderQuadsFrameSync()
     {
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        return;
+#endif
         if (_occluderSharedMat == null || targetCamera == null || snappedHWND == IntPtr.Zero) { SetTargetQuadActive(false); SetOtherQuadsActive(0); return; }
         if (!_haveUnityCli && !GetUnityClientRect(out _lastUnityCli)) { SetTargetQuadActive(false); SetOtherQuadsActive(0); return; }
 #if UNITY_STANDALONE_WIN
@@ -889,17 +1010,47 @@ public class AvatarWindowHandler : MonoBehaviour
         if (xMax <= xMin || yMax <= yMin) return new Rect(0, 0, 0, 0);
         return new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
     }
-    Vector2 GetUnityWindowPosition() { GetWindowRect(unityHWND, out RECT r); return new Vector2(r.Left, r.Top); }
+    Vector2 GetUnityWindowPosition()
+    {
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        var uwc = Kirurobo.UniWindowController.current;
+        if (uwc == null) return Vector2.zero;
+        var pos = uwc.windowPosition;
+        var size = uwc.windowSize;
+        return new Vector2(pos.x, pos.y + size.y);  // top edge
+#else
+        GetWindowRect(unityHWND, out RECT r); return new Vector2(r.Left, r.Top);
+#endif
+    }
     bool GetUnityClientRect(out RECT r)
     {
         r = new RECT();
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        var uwc = Kirurobo.UniWindowController.current;
+        if (uwc == null) return false;
+        var pos = uwc.windowPosition;  // bottom-left origin: pos.y = bottom edge
+        var size = uwc.windowSize;
+        // Keep Top < Bottom convention: Top = bottom edge (smaller Y), Bottom = top edge (larger Y)
+        r.Left = (int)pos.x; r.Top = (int)pos.y;
+        r.Right = (int)(pos.x + size.x); r.Bottom = (int)(pos.y + size.y);
+        return true;
+#else
         if (!GetClientRect(unityHWND, out RECT client)) return false;
         POINT p = new POINT { X = 0, Y = 0 };
         if (!ClientToScreen(unityHWND, ref p)) return false;
         r.Left = p.X; r.Top = p.Y; r.Right = p.X + client.Right; r.Bottom = p.Y + client.Bottom;
         return true;
+#endif
     }
-    void SetTopMost(bool en) => SetWindowPos(unityHWND, en ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+    void SetTopMost(bool en)
+    {
+#if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        var uwc = Kirurobo.UniWindowController.current;
+        if (uwc != null) uwc.isTopmost = en;
+#else
+        SetWindowPos(unityHWND, en ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+#endif
+    }
 
     bool IsWindowMaximized(IntPtr hwnd)
     {
