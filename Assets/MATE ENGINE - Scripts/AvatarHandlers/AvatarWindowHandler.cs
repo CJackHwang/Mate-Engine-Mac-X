@@ -34,7 +34,7 @@ public class AvatarWindowHandler : MonoBehaviour
     bool wasSitting;
     [Header("Seat Alignment")]
     [Range(-256f, 256f)] public float seatOffsetPx = 0f;
-    [Range(-0.05f, 0.05f)] public float windowSitYOffset = 0f;
+    [Range(-1.0f, 1.0f)] public float windowSitYOffset = 0f;
     // "auto" = both edges, "up" = top edge only, "down" = bottom edge only
     public string windowSitEdge = "auto";
     [Header("Occluder")]
