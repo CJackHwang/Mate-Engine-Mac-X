@@ -58,6 +58,16 @@ sysinfo.txt
 # MacOS system files
 .DS_Store
 
+# Root-level debug leftovers
+/*.log
+/et --hard HEAD
+
+# Runtime/plugin generated state
+/Sync/
+Assets/Sync/dance_sync.json
+Assets/Sync/dance_sync.json.meta
+UMotionData/AutoBackups/
+
 # Windows system files
 Thumbs.db
 desktop.ini
