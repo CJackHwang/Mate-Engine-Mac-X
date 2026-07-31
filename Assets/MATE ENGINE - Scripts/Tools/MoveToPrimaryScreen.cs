@@ -49,4 +49,14 @@ public class MoveToPrimaryScreen : MonoBehaviour
         Debug.Log($"[MoveToPrimaryScreen] moved window {currentWidth}x{currentHeight} to {x},{y}");
     }
 }
+#else
+using UnityEngine;
+
+public class MoveToPrimaryScreen : MonoBehaviour
+{
+    public void MoveToPrimary()
+    {
+        Debug.Log("[MoveToPrimaryScreen] no-op on macOS");
+    }
+}
 #endif

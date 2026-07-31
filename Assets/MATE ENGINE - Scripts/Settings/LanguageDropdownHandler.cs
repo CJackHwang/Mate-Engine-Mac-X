@@ -1,7 +1,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
+using System.Collections;
 
 public class LanguageDropdownHandler : MonoBehaviour
 {
@@ -12,6 +14,21 @@ public class LanguageDropdownHandler : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(InitializeLanguageDropdowns());
+    }
+
+    private IEnumerator InitializeLanguageDropdowns()
+    {
+        var init = LocalizationSettings.InitializationOperation;
+        float timeout = Time.unscaledTime + 15f;
+        while (!init.IsDone && Time.unscaledTime < timeout)
+            yield return null;
+
+        if (init.IsDone && init.Status != AsyncOperationStatus.Succeeded)
+        {
+            Debug.LogWarning("LanguageDropdownHandler: Localization initialization failed, using available locales anyway.");
+        }
+
         var locales = LocalizationSettings.AvailableLocales.Locales;
         string savedCode = SaveLoadHandler.Instance.data.selectedLocaleCode;
         int index = locales.FindIndex(locale => locale.Identifier.Code == savedCode);

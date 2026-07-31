@@ -1,117 +1,128 @@
 #if UNITY_STANDALONE_OSX
 
 using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace SFB {
     public class StandaloneFileBrowserMac : IStandaloneFileBrowser {
-        private static Action<string[]> _openFileCb;
-        private static Action<string[]> _openFolderCb;
-        private static Action<string> _saveFileCb;
-
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void AsyncCallback(string path);
-
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void openFileCb(string result) {
-            _openFileCb.Invoke(result.Split((char)28));
+        private static string EscapeAppleScript(string value) {
+            return value.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
 
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void openFolderCb(string result) {
-            _openFolderCb.Invoke(result.Split((char)28));
+        private static string DefaultLocation(string directory) {
+            return string.IsNullOrEmpty(directory)
+                ? ""
+                : " default location (POSIX file \"" + EscapeAppleScript(directory) + "\")";
         }
 
-        [AOT.MonoPInvokeCallback(typeof(AsyncCallback))]
-        private static void saveFileCb(string result) {
-            _saveFileCb.Invoke(result);
+        private static string RunAppleScript(string script) {
+            string tempFile = Path.Combine(
+                Path.GetTempPath(),
+                "mate-engine-sfb-" + Process.GetCurrentProcess().Id + ".applescript");
+
+            try {
+                File.WriteAllText(tempFile, script, new UTF8Encoding(false));
+                var startInfo = new ProcessStartInfo {
+                    FileName = "/usr/bin/osascript",
+                    Arguments = "\"" + tempFile.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    StandardOutputEncoding = Encoding.UTF8,
+                    StandardErrorEncoding = Encoding.UTF8
+                };
+
+                using (Process process = Process.Start(startInfo)) {
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+                    if (process.ExitCode != 0) {
+                        UnityEngine.Debug.LogWarning("[StandaloneFileBrowser] " + error.Trim());
+                        return "";
+                    }
+                    return output;
+                }
+            }
+            catch (Exception ex) {
+                UnityEngine.Debug.LogWarning("[StandaloneFileBrowser] Failed to show macOS dialog: " + ex.Message);
+                return "";
+            }
+            finally {
+                try {
+                    File.Delete(tempFile);
+                }
+                catch {
+                    // Temp file cleanup is best effort.
+                }
+            }
         }
 
-        [DllImport("StandaloneFileBrowser")]
-        private static extern IntPtr DialogOpenFilePanel(string title, string directory, string extension, bool multiselect);
-        [DllImport("StandaloneFileBrowser")]
-        private static extern void DialogOpenFilePanelAsync(string title, string directory, string extension, bool multiselect, AsyncCallback callback);
-        [DllImport("StandaloneFileBrowser")]
-        private static extern IntPtr DialogOpenFolderPanel(string title, string directory, bool multiselect);
-        [DllImport("StandaloneFileBrowser")]
-        private static extern void DialogOpenFolderPanelAsync(string title, string directory, bool multiselect, AsyncCallback callback);
-        [DllImport("StandaloneFileBrowser")]
-        private static extern IntPtr DialogSaveFilePanel(string title, string directory, string defaultName, string extension);
-        [DllImport("StandaloneFileBrowser")]
-        private static extern void DialogSaveFilePanelAsync(string title, string directory, string defaultName, string extension, AsyncCallback callback);
+        private static string[] ParsePaths(string output) {
+            if (string.IsNullOrEmpty(output)) {
+                return new string[0];
+            }
+            return output.Split(new[] { (char)28 }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private static string ListScript(string choiceExpression) {
+            return "set chosen to " + choiceExpression + "\n" +
+                   "if class of chosen is list then\n" +
+                   "  set out to \"\"\n" +
+                   "  repeat with f in chosen\n" +
+                   "    set out to out & (POSIX path of f) & (ASCII character 28)\n" +
+                   "  end repeat\n" +
+                   "  return out\n" +
+                   "else\n" +
+                   "  return (POSIX path of chosen)\n" +
+                   "end if\n";
+        }
 
         public string[] OpenFilePanel(string title, string directory, ExtensionFilter[] extensions, bool multiselect) {
-            var paths = Marshal.PtrToStringAnsi(DialogOpenFilePanel(
-                title,
-                directory,
-                GetFilterFromFileExtensionList(extensions),
-                multiselect));
-            return paths.Split((char)28);
+            string script = ListScript(
+                "choose file with prompt \"" + EscapeAppleScript(title) + "\"" +
+                DefaultLocation(directory) +
+                (multiselect ? " with multiple selections allowed" : " without multiple selections allowed"));
+            return ParsePaths(RunAppleScript(script));
         }
 
         public void OpenFilePanelAsync(string title, string directory, ExtensionFilter[] extensions, bool multiselect, Action<string[]> cb) {
-            _openFileCb = cb;
-            DialogOpenFilePanelAsync(
-                title,
-                directory,
-                GetFilterFromFileExtensionList(extensions),
-                multiselect,
-                openFileCb);
+            ThreadPool.QueueUserWorkItem(_ => {
+                string[] paths = OpenFilePanel(title, directory, extensions, multiselect);
+                if (cb != null) cb(paths);
+            });
         }
 
         public string[] OpenFolderPanel(string title, string directory, bool multiselect) {
-            var paths = Marshal.PtrToStringAnsi(DialogOpenFolderPanel(
-                title,
-                directory,
-                multiselect));
-            return paths.Split((char)28);
+            string script = ListScript(
+                "choose folder with prompt \"" + EscapeAppleScript(title) + "\"" +
+                DefaultLocation(directory) +
+                (multiselect ? " with multiple selections allowed" : " without multiple selections allowed"));
+            return ParsePaths(RunAppleScript(script));
         }
 
         public void OpenFolderPanelAsync(string title, string directory, bool multiselect, Action<string[]> cb) {
-            _openFolderCb = cb;
-            DialogOpenFolderPanelAsync(
-                title,
-                directory,
-                multiselect,
-                openFolderCb);
+            ThreadPool.QueueUserWorkItem(_ => {
+                string[] paths = OpenFolderPanel(title, directory, multiselect);
+                if (cb != null) cb(paths);
+            });
         }
 
         public string SaveFilePanel(string title, string directory, string defaultName, ExtensionFilter[] extensions) {
-            return Marshal.PtrToStringAnsi(DialogSaveFilePanel(
-                title,
-                directory,
-                defaultName,
-                GetFilterFromFileExtensionList(extensions)));
+            string script = "choose file name with prompt \"" + EscapeAppleScript(title) + "\"" +
+                            (string.IsNullOrEmpty(defaultName) ? "" : " default name \"" + EscapeAppleScript(defaultName) + "\"") +
+                            DefaultLocation(directory);
+            return RunAppleScript(script + "\nreturn POSIX path of result\n").Trim();
         }
 
         public void SaveFilePanelAsync(string title, string directory, string defaultName, ExtensionFilter[] extensions, Action<string> cb) {
-            _saveFileCb = cb;
-            DialogSaveFilePanelAsync(
-                title,
-                directory,
-                defaultName,
-                GetFilterFromFileExtensionList(extensions),
-                saveFileCb);
-        }
-
-        private static string GetFilterFromFileExtensionList(ExtensionFilter[] extensions) {
-            if (extensions == null) {
-                return "";
-            }
-
-            var filterString = "";
-            foreach (var filter in extensions) {
-                filterString += filter.Name + ";";
-
-                foreach (var ext in filter.Extensions) {
-                    filterString += ext + ",";
-                }
-
-                filterString = filterString.Remove(filterString.Length - 1);
-                filterString += "|";
-            }
-            filterString = filterString.Remove(filterString.Length - 1);
-            return filterString;
+            ThreadPool.QueueUserWorkItem(_ => {
+                string path = SaveFilePanel(title, directory, defaultName, extensions);
+                if (cb != null) cb(path);
+            });
         }
     }
 }

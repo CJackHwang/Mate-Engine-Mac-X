@@ -23,17 +23,17 @@ PluginImporter:
   - first:
       Standalone: OSXIntel
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Standalone: OSXIntel64
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   - first:
       Standalone: OSXUniversal
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   userData: 
   assetBundleName: 

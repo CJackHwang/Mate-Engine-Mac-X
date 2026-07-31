@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.antigravity.ide": {
+      "version": "https://github.com/billythekidz/UnityAntigravityIDE.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3520075082911bf236ade261e544078a3f9bed65"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

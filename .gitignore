@@ -31,6 +31,7 @@ sysinfo.txt
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.svd
@@ -67,6 +68,13 @@ desktop.ini
 # Asset store tools
 Assets/AssetStoreTools*
 
+# Local generated state
+AssetBundles/
+Thry/
+Directory.Build.props
+Assets/StreamingAssets/LLMManager.json
+Assets/StreamingAssets/LLMManager.json.meta
+
 # Collaborate / Plastic SCM
 .collabignore
 .plastic/
@@ -74,4 +82,4 @@ Assets/AssetStoreTools*
 .vs
 Assets/Example Avatar - USED FOR MATE ENGINE
 ProjectSettings/Packages
-UserSettings/Layouts
+UserSettings/
