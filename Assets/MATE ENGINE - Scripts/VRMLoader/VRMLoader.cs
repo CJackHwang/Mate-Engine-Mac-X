@@ -194,7 +194,11 @@ public class VRMLoader : MonoBehaviour
             return;
         }
 
-        if (!File.Exists(path)) return;
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning("[VRMLoader] Model file not found: " + path);
+            return;
+        }
 
         try
         {
@@ -559,7 +563,9 @@ public class VRMLoader : MonoBehaviour
         if (path.EndsWith(".prefab", StringComparison.OrdinalIgnoreCase))
             return true;
 #endif
-        if (!File.Exists(path) && !path.EndsWith(".vrm") && !path.EndsWith(".me"))
+        if (!File.Exists(path) &&
+            !path.EndsWith(".vrm", StringComparison.OrdinalIgnoreCase) &&
+            !path.EndsWith(".me", StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }

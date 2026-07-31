@@ -44,7 +44,7 @@ namespace SFB {
                         UnityEngine.Debug.LogWarning("[StandaloneFileBrowser] " + error.Trim());
                         return "";
                     }
-                    return output;
+                    return output.TrimEnd('\r', '\n');
                 }
             }
             catch (Exception ex) {
