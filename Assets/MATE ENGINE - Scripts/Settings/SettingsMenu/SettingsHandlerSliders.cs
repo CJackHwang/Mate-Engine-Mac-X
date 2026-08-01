@@ -238,35 +238,35 @@ public class SettingsHandlerSliders : MonoBehaviour
 
     public void ResetToDefaults()
     {
-        soundThresholdSlider?.SetValueWithoutNotify(0.2f);
+        soundThresholdSlider?.SetValueWithoutNotify(0.1f);
         idleSwitchTimeSlider?.SetValueWithoutNotify(10f);
         idleTransitionTimeSlider?.SetValueWithoutNotify(1f);
         avatarSizeSlider?.SetValueWithoutNotify(1.0f);
-        fpsLimitSlider?.SetValueWithoutNotify(90);
+        fpsLimitSlider?.SetValueWithoutNotify(60);
         headBlendSlider?.SetValueWithoutNotify(0.7f);
         spineBlendSlider?.SetValueWithoutNotify(0.5f);
         eyeBlendSlider?.SetValueWithoutNotify(1.0f);
         hueShiftSlider?.SetValueWithoutNotify(0f);
         saturationSlider?.SetValueWithoutNotify(1f);
-        windowSitYOffsetSlider?.SetValueWithoutNotify(0f);
-        windowSitCliffOffsetSlider?.SetValueWithoutNotify(0f);
+        windowSitYOffsetSlider?.SetValueWithoutNotify(-0.02f);
+        windowSitCliffOffsetSlider?.SetValueWithoutNotify(-0.12f);
         danceSwitchTimeSlider?.SetValueWithoutNotify(15f);
         danceTransitionTimeSlider?.SetValueWithoutNotify(2f);
 
 
 
         var data = SaveLoadHandler.Instance.data;
-        data.soundThreshold = 0.2f;
+        data.soundThreshold = 0.1f;
         data.idleSwitchTime = 10f;
         data.idleTransitionTime = 1f;
         data.avatarSize = 1.0f;
-        data.fpsLimit = 90;
+        data.fpsLimit = 60;
         data.headBlend = 0.7f;
         data.spineBlend = 0.5f;
         data.eyeBlend = 1.0f;
-        data.windowSitYOffset = 0f;
-        data.windowSitCliffOffset = 0f;
-        data.windowSitCliffOffsetSet = false;
+        data.windowSitYOffset = -0.02f;
+        data.windowSitCliffOffset = -0.12f;
+        data.windowSitCliffOffsetSet = true;
         data.danceSwitchTime = 15f;
         data.danceTransitionTime = 2f;
         data.danceClipCount = 20;

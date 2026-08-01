@@ -114,10 +114,10 @@ public class SaveLoadHandler : MonoBehaviour
         public enum WindowSizeState { Normal, Big, Small }
         public WindowSizeState windowSizeState = WindowSizeState.Normal;
 
-        public float soundThreshold = 0.2f;
+        public float soundThreshold = 0.1f;
         public float idleSwitchTime = 10f;
         public float idleTransitionTime = 1f;
-        public bool enableDanceSwitch = false;
+        public bool enableDanceSwitch = true;
         public float danceSwitchTime = 15f;
         public float danceTransitionTime = 2f;
 
@@ -135,11 +135,11 @@ public class SaveLoadHandler : MonoBehaviour
         // false = manual, enableDancing on = dance immediately.
         public bool followMusic = true;
         public bool enableMouseTracking = true;
-        public int fpsLimit = 90;
+        public int fpsLimit = 60;
         public bool isTopmost = true;
 
         public List<string> allowedApps = new();
-        public bool bloom = false;
+        public bool bloom = true;
         public bool dayNight = true;
 
         public bool enableParticles = true;
@@ -153,10 +153,10 @@ public class SaveLoadHandler : MonoBehaviour
         public float spineBlend = 0.5f;
 
         public bool enableHandHolding = true;
-        public bool enableWindowSitting = false;
+        public bool enableWindowSitting = true;
         // "auto" = snap to both edges, "up" = top edge only, "down" = bottom edge only
         public string windowSitEdge = "auto";
-        public bool ambientOcclusion = false;
+        public bool ambientOcclusion = true;
 
         public float uiHueShift = 0f;
         public float uiSaturation = 1.0f;
@@ -182,7 +182,7 @@ public class SaveLoadHandler : MonoBehaviour
         public Dictionary<string, bool> groupToggles = new();
 
         public Dictionary<string, bool> modStates = new();
-        public int graphicsQualityLevel = 1;
+        public int graphicsQualityLevel = 2;
         public Dictionary<string, bool> accessoryStates = new();
 
         public bool startWithWindows = false;
