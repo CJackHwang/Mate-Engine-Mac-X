@@ -1024,13 +1024,17 @@ public class AvatarWindowHandler : MonoBehaviour
 
         if (snappedHWND != unityHWND && GetWindowRect(snappedHWND, out RECT tr))
         {
-            // Absolute barrier BELOW the seat line: full client width from the
-            // seat line down. Any character geometry deeper than the plane is
-            // never displayed, so the back / long hair can't poke out in front of
-            // the cliff from below; the upper body above the line stays fully
-            // visible.
+            // Absolute barrier BELOW the seat line. On the TOP edge it spans only
+            // the snapped window's horizontal extent (so it doesn't occlude empty
+            // wallpaper past the window's sides); on the BOTTOM edge the character
+            // dangles below the window, so the barrier keeps spanning the whole
+            // screen width to avoid a broken cliff at the window's side edges.
             int seatLineY = GetSeatLineDesktopY(tr);
-            Rect tInter = Intersect(new Rect(unityClient.xMin, seatLineY, unityClient.width, unityClient.yMax - seatLineY), unityClient);
+            Rect tInter;
+            if (IsSnappedToBottom(tr))
+                tInter = Intersect(new Rect(unityClient.xMin, seatLineY, unityClient.width, unityClient.yMax - seatLineY), unityClient);
+            else
+                tInter = Intersect(new Rect(tr.Left, seatLineY, tr.Right - tr.Left, unityClient.yMax - seatLineY), unityClient);
             if (tInter.width > 0 && tInter.height > 0)
             {
                 EnsureTargetQuad();
@@ -1064,9 +1068,14 @@ public class AvatarWindowHandler : MonoBehaviour
 
         if (TryGetCachedRect(snappedHWND, out RECT tr2))
         {
-            // Same absolute below-the-seat-line barrier as the Windows branch.
+            // Same edge-dependent barrier as Windows: top edge spans the window's
+            // width, bottom edge spans the whole screen width.
             int seatLineY2 = GetSeatLineDesktopY(tr2);
-            Rect tInter2 = Intersect(new Rect(unityClient2.xMin, seatLineY2, unityClient2.width, unityClient2.yMax - seatLineY2), unityClient2);
+            Rect tInter2;
+            if (IsSnappedToBottom(tr2))
+                tInter2 = Intersect(new Rect(unityClient2.xMin, seatLineY2, unityClient2.width, unityClient2.yMax - seatLineY2), unityClient2);
+            else
+                tInter2 = Intersect(new Rect(tr2.Left, seatLineY2, tr2.Right - tr2.Left, unityClient2.yMax - seatLineY2), unityClient2);
             if (tInter2.width > 0 && tInter2.height > 0)
             {
                 EnsureTargetQuad();
@@ -1110,16 +1119,20 @@ public class AvatarWindowHandler : MonoBehaviour
         if (sp.z < 0.01f) return GetAutoTargetZ();
         return sp.z + windowSitCliffOffset;
     }
+    // Whether the character is sitting on the window's bottom edge (true) or top
+    // edge (false), mirroring the edge choice in PinToTarget.
+    bool IsSnappedToBottom(RECT r)
+    {
+        if (windowSitEdge == "down") return true;
+        if (windowSitEdge == "up") return false;
+        return Mathf.Abs(_snappedEdgeY - r.Bottom) < Mathf.Abs(_snappedEdgeY - r.Top);
+    }
     // Desktop Y of the horizontal line the character sits on (the snapped edge
     // plus seat offset). The absolute barrier applies only BELOW this line, so
     // the upper body stays fully visible and the cliff occlusion exists below it.
     int GetSeatLineDesktopY(RECT r)
     {
-        bool snappedToBottom;
-        if (windowSitEdge == "down") snappedToBottom = true;
-        else if (windowSitEdge == "up") snappedToBottom = false;
-        else snappedToBottom = Mathf.Abs(_snappedEdgeY - r.Bottom) < Mathf.Abs(_snappedEdgeY - r.Top);
-        return (snappedToBottom ? r.Bottom : r.Top) + Mathf.RoundToInt(seatOffsetPx);
+        return (IsSnappedToBottom(r) ? r.Bottom : r.Top) + Mathf.RoundToInt(seatOffsetPx);
     }
     void EnsureOccluderRoot()
     {
