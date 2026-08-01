@@ -405,10 +405,10 @@ public class MEModHandler : MonoBehaviour
         if (title != null) title.text = mod.name;
 
         var author = FindChildByName<TMP_Text>(entry.transform, "Author");
-        if (author != null) author.text = string.IsNullOrWhiteSpace(mod.author) ? "Author: Unknown" : mod.author;
+        if (author != null) author.text = (string.IsNullOrWhiteSpace(mod.author) || mod.author == "Author: Unknown") ? LocText.T("AUTHOR_UNKNOWN", "Author: Unknown") : mod.author;
 
         var typeLbl = FindChildByName<TMP_Text>(entry.transform, "Type");
-        if (typeLbl != null) typeLbl.text = string.IsNullOrWhiteSpace(mod.typeText) ? "Type: Unknown" : mod.typeText;
+        if (typeLbl != null) typeLbl.text = (string.IsNullOrWhiteSpace(mod.typeText) || mod.typeText == "Type: Unknown") ? LocText.T("TYPE_UNKNOWN", "Type: Unknown") : mod.typeText;
 
 
         var preview = FindChildByName<UnityEngine.UI.RawImage>(entry.transform, "RawImage");
@@ -580,13 +580,16 @@ public class MEModHandler : MonoBehaviour
     }
 
     [Serializable] class ModEntry { public string name; public GameObject instance; public string localPath; public string extractedPath; public ModType type; public bool enabled; public string author; public string typeText; public AssetBundle retainedBundle; }
+#pragma warning disable CS0649 // fields populated via JsonUtility.FromJson
     [Serializable] class ModInfo { public string name; public string author; public string description; public string weblink; public string buildTarget; public string timestamp; }
     [Serializable] class ModTypeInfo { public string type; }
+#pragma warning restore CS0649
 
     enum ModType { MEObject, Unity3D, MEDance }
     [Serializable] class RefPathMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
     [Serializable] class SceneLinkMap { public List<string> keys = new List<string>(); public List<string> values = new List<string>(); }
 
+#pragma warning disable CS0649 // fields populated via JsonUtility.FromJson
     [Serializable]
     class DanceMeta
     {
@@ -596,6 +599,7 @@ public class MEModHandler : MonoBehaviour
         public float songLength;
         public string placeholderClipName;
     }
+#pragma warning restore CS0649
 
     string ReadAuthorFromModInfo(string dir)
     {

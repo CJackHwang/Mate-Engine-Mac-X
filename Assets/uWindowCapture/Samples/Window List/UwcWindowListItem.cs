@@ -8,21 +8,25 @@ namespace uWindowCapture
 public class UwcWindowListItem : MonoBehaviour 
 {
     Image image_;
-    [SerializeField] Color selected;
-    [SerializeField] Color notSelected;
+    [SerializeField] Color selected = default;
+    [SerializeField] Color notSelected = default;
 
+#pragma warning disable IDE1006 // vendored sample: public props keep upstream lowercase naming
     public UwcWindow window { get; set; }
     public UwcWindowList list { get; set; }
     public UwcWindowTexture windowTexture { get; set; }
-    
-    [SerializeField] RawImage icon;
-    [SerializeField] Text title;
-    [SerializeField] Text x;
-    [SerializeField] Text y;
-    [SerializeField] Text z;
-    [SerializeField] Text width;
-    [SerializeField] Text height;
-    [SerializeField] Text status;
+#pragma warning restore IDE1006
+
+#pragma warning disable IDE0044 // [SerializeField] fields must stay mutable for Unity serialization
+    [SerializeField] RawImage icon = null;
+    [SerializeField] Text title = null;
+    [SerializeField] Text x = null;
+    [SerializeField] Text y = null;
+    [SerializeField] Text z = null;
+    [SerializeField] Text width = null;
+    [SerializeField] Text height = null;
+    [SerializeField] Text status = null;
+#pragma warning restore IDE0044
 
     void Awake()
     {

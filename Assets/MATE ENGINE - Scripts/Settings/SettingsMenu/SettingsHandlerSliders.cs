@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Components;
 
 public class SettingsHandlerSliders : MonoBehaviour
 {
@@ -161,7 +162,15 @@ public class SettingsHandlerSliders : MonoBehaviour
                 tmp.text.IndexOf("SITTING", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
                 tmp.text.IndexOf("OFFSET", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                tmp.text = "坐下时的遮挡深度";
+                // Disable the copied LocalizeStringEvent (still bound to the source
+                // row's key) and bind our own key so the label re-localizes.
+                var lse = tmp.GetComponent<LocalizeStringEvent>();
+                if (lse != null) lse.enabled = false;
+                var binder = tmp.GetComponent<LocTextBinder>();
+                if (binder == null) binder = tmp.gameObject.AddComponent<LocTextBinder>();
+                binder.key = "WINDOW_SIT_CLIFF";
+                binder.fallback = "坐下时的遮挡深度";
+                binder.Apply();
                 break;
             }
         }
@@ -171,7 +180,13 @@ public class SettingsHandlerSliders : MonoBehaviour
                 txt.text.IndexOf("SITTING", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
                 txt.text.IndexOf("OFFSET", System.StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                txt.text = "坐下时的遮挡深度";
+                var lse = txt.GetComponent<LocalizeStringEvent>();
+                if (lse != null) lse.enabled = false;
+                var binder = txt.GetComponent<LocTextBinder>();
+                if (binder == null) binder = txt.gameObject.AddComponent<LocTextBinder>();
+                binder.key = "WINDOW_SIT_CLIFF";
+                binder.fallback = "坐下时的遮挡深度";
+                binder.Apply();
                 break;
             }
         }

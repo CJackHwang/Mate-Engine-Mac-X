@@ -67,7 +67,8 @@ public class RuntimeModelStats : MonoBehaviour
 
         polyText.text = "Polys: " + GetPolyCount(currentCustomModel);
         boneText.text = "Bones: " + (HasProperArmature(currentCustomModel) ? "Perfect" : "Failure");
-        vrmVersionText.text = "VRM: " + GetVrmVersion(currentCustomModel);
+        string vrm = GetVrmVersion(currentCustomModel);
+        vrmVersionText.text = "VRM: " + vrm;
     }
 
     int GetPolyCount(GameObject model)

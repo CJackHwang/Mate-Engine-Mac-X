@@ -6,8 +6,8 @@ namespace uWindowCapture
 
 public class UwcWindowList : MonoBehaviour 
 {
-    [SerializeField] GameObject windowListItem;
-    [SerializeField] Transform listRoot;
+    [SerializeField] GameObject windowListItem = null;
+    [SerializeField] Transform listRoot = null;
 
     public UwcWindowTextureManager windowTextureManager;
 

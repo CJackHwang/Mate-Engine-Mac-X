@@ -203,6 +203,12 @@ public class SettingsHandlerLights : MonoBehaviour
         Transform row = lightToggles[0].checkmark.transform;
         if (row == null || row.parent == null) return;
 
+        // The ambient rows' labels used a pivot trick (pivot.y=350, anchored
+        // y≈8734) that renders a 500px-wide text band ON the row, covering the
+        // row's own toggle/checkmark. Repair them before cloning so the clone
+        // copies a clean layout.
+        RepairAmbientRowLabels(row.parent);
+
         GameObject clone = Instantiate(row.gameObject, row.parent);
         clone.transform.SetSiblingIndex(row.GetSiblingIndex() + 1);
         clone.name = "AutoAmbient";
@@ -210,7 +216,12 @@ public class SettingsHandlerLights : MonoBehaviour
         RectTransform rt = clone.GetComponent<RectTransform>();
         RectTransform srcRT = row as RectTransform;
         if (rt != null && srcRT != null)
-            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 60f);
+        {
+            // Source sits at y=-220, next row (Enable Lights) at -280, so -250 is
+            // the free slot between them — a full -60 gap would land the clone on
+            // top of Enable Lights.
+            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 30f);
+        }
 
         Toggle t = clone.GetComponent<Toggle>();
         if (t != null)
@@ -219,25 +230,36 @@ public class SettingsHandlerLights : MonoBehaviour
             autoAmbientToggle = t;
         }
 
-        const string label = "自动环境光";
+        const string labelKey = "AUTO_AMBIENT";
         foreach (var tmp in clone.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
         {
+            // Disable the copied LocalizeStringEvent (still bound to the source row's
+            // key) and bind our own key instead so the label re-localizes on language
+            // changes via LocTextBinder.
             var lse = tmp.GetComponent<LocalizeStringEvent>();
             if (lse != null) lse.enabled = false;
-            tmp.text = label;
+            var binder = tmp.GetComponent<LocTextBinder>();
+            if (binder == null) binder = tmp.gameObject.AddComponent<LocTextBinder>();
+            binder.key = labelKey;
+            binder.fallback = "自动环境光";
+            binder.Apply();
             break;
         }
         foreach (var txt in clone.GetComponentsInChildren<UnityEngine.UI.Text>(true))
         {
             var lse = txt.GetComponent<LocalizeStringEvent>();
             if (lse != null) lse.enabled = false;
-            txt.text = label;
+            var binder = txt.GetComponent<LocTextBinder>();
+            if (binder == null) binder = txt.gameObject.AddComponent<LocTextBinder>();
+            binder.key = labelKey;
+            binder.fallback = "自动环境光";
+            binder.Apply();
             break;
         }
         var tooltip = clone.GetComponent<UiTooltip>();
         if (tooltip != null)
         {
-            tooltip.locKey = "";
+            tooltip.locKey = "TIP_AUTO_AMBIENT";
             tooltip.tooltipText = "开启时，环境光自动跟随桌面配色；关闭时用手动滑杆。";
         }
     }
@@ -248,6 +270,42 @@ public class SettingsHandlerLights : MonoBehaviour
         var probes = Resources.FindObjectsOfTypeAll<DesktopAmbientProbe>();
         for (int i = 0; i < probes.Length; i++) probes[i].SetEnabled(v);
         Save();
+    }
+
+    // Called by DesktopAmbientProbe when it auto-switches off (no screen-capture
+    // sample, e.g. missing screen-recording permission). Updates the toggle UI
+    // without firing its listener so we don't re-enter OnAutoAmbientChanged.
+    public void SyncAutoAmbientToggle(bool v)
+    {
+        if (autoAmbientToggle != null)
+            autoAmbientToggle.SetIsOnWithoutNotify(v);
+    }
+
+    // Some ambient rows carry a label with a pivot hack (pivot.y = 350, huge
+    // anchored y) that renders a 500px-wide text band ON the row, covering the
+    // row's own toggle/checkmark. Re-anchor every such on-row label just right
+    // of its row (labels that float above their row are left alone).
+    private void RepairAmbientRowLabels(Transform sectionRoot)
+    {
+        if (sectionRoot == null) return;
+        foreach (var lrt in sectionRoot.GetComponentsInChildren<RectTransform>(true))
+        {
+            if (lrt == null || lrt.pivot.y <= 1f) continue;
+            float h = lrt.rect.height;
+            if (h <= 0f) continue;
+            RectTransform parent = lrt.parent as RectTransform;
+            if (parent == null) continue;
+            float parentHalfH = parent.rect.height * 0.5f;
+            float bandTop = lrt.anchoredPosition.y - lrt.pivot.y * h;
+            float bandBottom = bandTop + h;
+            // Only labels whose band actually sits ON the row cover the control.
+            bool overlapsRow = bandTop < parentHalfH && bandBottom > -parentHalfH;
+            if (!overlapsRow) continue;
+            float parentHalfW = parent.rect.width * 0.5f;
+            lrt.pivot = new Vector2(0f, 0.5f);
+            lrt.anchoredPosition = new Vector2(parentHalfW + 10f, 0f);
+            lrt.sizeDelta = new Vector2(Mathf.Min(lrt.sizeDelta.x, 400f), 25f);
+        }
     }
 
     private void Save()

@@ -26,7 +26,6 @@ public class AvatarBubbleHandler : MonoBehaviour
     private Vector3 originalScale = Vector3.one;
     private float currentLerp = 0f;
     private bool wasActive = false;
-    private bool initialized = false;
     public static List<AvatarBubbleHandler> ActiveHandlers = new List<AvatarBubbleHandler>();
 
 
@@ -50,7 +49,6 @@ public class AvatarBubbleHandler : MonoBehaviour
             attachTarget.SetActive(false);
             currentLerp = 0f;
             wasActive = false;
-            initialized = true;
         }
         bone = null;
     }
@@ -70,7 +68,6 @@ public class AvatarBubbleHandler : MonoBehaviour
         bone = null;
         wasActive = false;
         currentLerp = 0f;
-        initialized = false;
     }
 
     void Update()

@@ -83,14 +83,15 @@ namespace CustomDancePlayer
         string defaultPlayTimeText = "";
         string defaultMaxPlayTimeText = "";
         string defaultAuthorText = "";
-        const string unknownAuthorLabel = "Author: Unknown";
+        // Resolved lazily at each use (not in the constructor) so localization can
+        // be ready by the time it's displayed; also avoids a sync block at startup.
+        string unknownAuthorLabel => LocText.T("AUTHOR_UNKNOWN", "Author: Unknown");
 
         float currentTotalSeconds = 0f;
         float playStartTime = 0f;
         bool isPlaying = false;
         List<int> filteredQueue = null;
         bool holdDuringTransition;
-        bool pendingStop;
 
 
         readonly HashSet<string> mmdBlendShapeNames = new HashSet<string>(new[]{
@@ -112,6 +113,7 @@ namespace CustomDancePlayer
             public string stableId;
         }
 
+#pragma warning disable CS0649 // fields populated via JSON serialization
         [Serializable]
         class DanceMeta
         {
@@ -121,6 +123,7 @@ namespace CustomDancePlayer
             public float songLength;
             public string placeholderClipName;
         }
+#pragma warning restore CS0649
 
         readonly List<DanceEntry> entries = new();
         readonly Dictionary<string, DanceEntry> byId = new(StringComparer.OrdinalIgnoreCase);
@@ -720,7 +723,6 @@ namespace CustomDancePlayer
             if (entries.Count == 0 || index < 0 || index >= entries.Count) return false;
             if (!EnsureAnimatorReady()) return false;
             if (playRoutine != null) StopCoroutine(playRoutine);
-            pendingStop = false;
             playRoutine = StartCoroutine(SmoothPlayFlow(index));
             return true;
         }
@@ -829,7 +831,6 @@ namespace CustomDancePlayer
                 return;
             }
             if (playRoutine != null) StopCoroutine(playRoutine);
-            pendingStop = true;
             playRoutine = StartCoroutine(SmoothStopFlow());
         }
         IEnumerator SmoothStopFlow()

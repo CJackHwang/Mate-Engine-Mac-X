@@ -25,6 +25,33 @@ Steam users get exclusive additional content:
 
 
 
+# 🍎 Mate Engine for macOS — this repository
+
+This is the **macOS** port/fork of Mate Engine (a free, lightweight desktop pet with custom VRM support). Built with **Unity 6000.4.8f1**.
+
+## Latest highlights
+
+- **Ambient Light (氛围光)** — follows your desktop colors in real time via screen capture. On by default; if the Screen Recording permission is missing, it automatically switches back to the regular manual lights. Intensity is brightness-aware, so it blends into the background without glare.
+- **Full localization** — 13 languages: EN, 简体中文, 繁體中文, 日本語, 한국어, DE, ES, FR, PL, RU, TR, UK, KK.
+- **Window sitting / snapping** — the avatar sits on real window edges (taskbar-aware). The screen's own top/bottom edge is intentionally **not** a snap target.
+- **Dance to music** — reacts to system audio via ScreenCaptureKit (needs Screen Recording permission).
+- **Smart settings menu** — runtime-built rows, fixed label overlaps, and a startup window that sizes to the visible screen (no more off-screen overflow).
+
+## Build & run (macOS)
+
+```bash
+./Tools/build_macos.sh        # builds Builds/macOS/MateEngineX.app
+./Tools/launch_test.sh        # launches the app and prints audio-capture diagnostics
+```
+
+Output app: `Builds/macOS/MateEngineX.app`
+
+## Notes
+
+- Needs **Screen Recording** permission (System Settings → Privacy & Security → Screen Recording) for ambient light and dance-to-music.
+
+
+
 # Note-Worthy Community Mods:
 
 Custom Dance Player

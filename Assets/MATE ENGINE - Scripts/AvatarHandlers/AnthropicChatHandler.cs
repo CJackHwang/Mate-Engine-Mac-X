@@ -28,6 +28,7 @@ public class AnthropicChatHandler : MonoBehaviour
         public List<Message> messages;
     }
 
+#pragma warning disable CS0649 // fields populated via Newtonsoft.Json
     [Serializable]
     private class ContentBlock
     {
@@ -40,6 +41,7 @@ public class AnthropicChatHandler : MonoBehaviour
     {
         public List<ContentBlock> content;
     }
+#pragma warning restore CS0649
 
     private List<Message> history = new List<Message>();
     private bool isCancelled = false;

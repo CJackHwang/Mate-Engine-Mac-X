@@ -985,6 +985,187 @@ MonoBehaviour:
     m_Key: BLEND_SHAPES
     m_Metadata:
       m_Items: []
+  - m_Id: -10000001
+    m_Key: AUTO_AMBIENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000002
+    m_Key: TIP_AUTO_AMBIENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000003
+    m_Key: FOLLOW_MUSIC
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000004
+    m_Key: TIP_FOLLOW_MUSIC
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000005
+    m_Key: WINDOW_SIT_CLIFF
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000006
+    m_Key: NO_EFFECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000007
+    m_Key: LOAD_VRM_MODEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000008
+    m_Key: CLOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000009
+    m_Key: STAT_POLYS
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000010
+    m_Key: STAT_BONES
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000011
+    m_Key: STAT_VRM
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000012
+    m_Key: STAT_UNKNOWN
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000013
+    m_Key: STAT_PERFECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000014
+    m_Key: STAT_FAILURE
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000015
+    m_Key: DELETE
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000016
+    m_Key: DELETED
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000017
+    m_Key: NOT_READY
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000018
+    m_Key: MISSING_FILE
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000019
+    m_Key: THUMBNAIL_REQUIRED
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000020
+    m_Key: UPLOADING
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000021
+    m_Key: IMAGE_TOO_BIG
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000022
+    m_Key: UNSUPPORTED_FORMAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000023
+    m_Key: COPY_FAILED
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000024
+    m_Key: UPLOADED
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000025
+    m_Key: START_AT_LOGIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000026
+    m_Key: AUTHOR_UNKNOWN
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000027
+    m_Key: TYPE_UNKNOWN
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000028
+    m_Key: TITLE_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000029
+    m_Key: TITLE_AUTHOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000030
+    m_Key: TITLE_VERSION
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000031
+    m_Key: TITLE_FORMAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000032
+    m_Key: TITLE_POLYGONS
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000033
+    m_Key: ALARM_DEFAULT
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000034
+    m_Key: TIMER
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000035
+    m_Key: TIME_30S
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000036
+    m_Key: TIME_1M
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000037
+    m_Key: TIME_5M
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000038
+    m_Key: TIME_15M
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000039
+    m_Key: TIME_30M
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000040
+    m_Key: TIME_45M
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000041
+    m_Key: TIME_1H
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000042
+    m_Key: TIME_1_5H
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000043
+    m_Key: TIME_2H
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000044
+    m_Key: TIME_2_5H
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000045
+    m_Key: TIME_3H
+    m_Metadata:
+      m_Items: []
+
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

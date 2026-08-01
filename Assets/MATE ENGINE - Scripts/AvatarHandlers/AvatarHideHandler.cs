@@ -25,7 +25,7 @@ public class AvatarHideHandler : MonoBehaviour
 
     Animator animator;
     AvatarAnimatorController controller;
-    IntPtr unityHWND;
+    IntPtr unityHWND = IntPtr.Zero;
 
     Transform leftHand;
     Transform rightHand;

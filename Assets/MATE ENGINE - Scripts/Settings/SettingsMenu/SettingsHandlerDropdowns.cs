@@ -42,7 +42,14 @@ public class SettingsHandlerDropdowns : MonoBehaviour
         if (graphicsDropdown != null)
         {
             graphicsDropdown.ClearOptions();
-            graphicsDropdown.AddOptions(new List<string> { "ULTRA", "VERY HIGH", "HIGH", "NORMAL", "LOW" });
+            graphicsDropdown.AddOptions(new List<string>
+            {
+                LocText.T("ULTRA", "ULTRA"),
+                LocText.T("VERY_HIGH", "VERY HIGH"),
+                LocText.T("HIGH", "HIGH"),
+                LocText.T("NORMAL", "NORMAL"),
+                LocText.T("LOW", "LOW"),
+            });
             graphicsDropdown.onValueChanged.AddListener(OnGraphicsChanged);
         }
 
@@ -91,7 +98,7 @@ public class SettingsHandlerDropdowns : MonoBehaviour
             particleThemes.Add(new ParticleThemeEntry { id = "Standard", display = "Standard" });
 
         if (particleThemes.FindIndex(e => e.id == "None") < 0)
-            particleThemes.Add(new ParticleThemeEntry { id = "None", display = "No Effect" });
+            particleThemes.Add(new ParticleThemeEntry { id = "None", display = LocText.T("NO_EFFECT", "No Effect") });
 
         var options = new List<string>();
         for (int i = 0; i < particleThemes.Count; i++)

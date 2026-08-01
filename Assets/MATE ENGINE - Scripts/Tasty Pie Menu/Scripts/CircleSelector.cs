@@ -13,7 +13,7 @@ namespace Xamin
         [Header("Customization")]
         public Color AccentColor = Color.red, DisabledColor = Color.gray, BackgroundColor = Color.white;
         [Space(10)] public bool UseSeparators = true;
-        [SerializeField] private GameObject separatorPrefab;
+        [SerializeField] private GameObject separatorPrefab = null;
 
         [Header("Animations")]
         [Range(0.0001f, 1)]

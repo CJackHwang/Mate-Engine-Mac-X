@@ -13,8 +13,8 @@ public class AllowedAppsManager : MonoBehaviour
     public Transform allowedAppsListContent;
     public GameObject allowedAppItemPrefab;
 
-    private MMDeviceEnumerator enumerator;
-    private MMDevice defaultDevice;
+    private MMDeviceEnumerator enumerator = null;
+    private MMDevice defaultDevice = null;
 
     private List<string> currentRunningAppNames = new List<string>();
     private List<string> allowedApps => SaveLoadHandler.Instance.data.allowedApps;

@@ -4,7 +4,7 @@ using Kirurobo;
 public class AvatarScaleController : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] private Slider avatarSizeSlider;
+    [SerializeField] private Slider avatarSizeSlider = null;
 
     [Header("Scroll Settings")]
     [SerializeField] private float scrollSensitivity = 0.1f;

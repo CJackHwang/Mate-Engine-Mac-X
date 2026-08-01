@@ -7,7 +7,7 @@ public class SettingsHandlerAudio : MonoBehaviour
     public Slider petVolumeSlider;
     public Slider effectsVolumeSlider;
     public Slider menuVolumeSlider;
-    [SerializeField] private Slider ttsVolumeSlider;
+    [SerializeField] private Slider ttsVolumeSlider = null;
 
     public List<AudioSource> petAudioSources = new List<AudioSource>();
     public List<AudioSource> effectsAudioSources = new List<AudioSource>();

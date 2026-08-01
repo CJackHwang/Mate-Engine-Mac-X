@@ -102,12 +102,12 @@ public class VRMLoader : MonoBehaviour
             btn.onClick.AddListener(onClick);
         }
 
-        CreateButton("LoadVRMButton", "Load VRM Model", new Vector2(260, 60), Vector2.zero, 22, () =>
+        CreateButton("LoadVRMButton", LocText.T("LOAD_VRM_MODEL", "Load VRM Model"), new Vector2(260, 60), Vector2.zero, 22, () =>
         {
             Destroy(canvas);
             OpenFileDialogAndLoadVRM();
         });
-        CreateButton("CloseLoadButton", "关闭", new Vector2(140, 40), new Vector2(0, -85f), 18, () =>
+        CreateButton("CloseLoadButton", LocText.T("CLOSE", "关闭"), new Vector2(140, 40), new Vector2(0, -85f), 18, () =>
         {
             Destroy(canvas);
         });

@@ -100,6 +100,7 @@ public class SettingsMenuPosition : MonoBehaviour
                 var m = menus[i];
                 if (!m.settingsMenu) continue;
                 Vector2 target = new Vector2(atRightEdge ? -m.originalX : m.originalX, m.originalY);
+                target.y = ClampMenuY(m.settingsMenu, target.y);
                 if (m.lastApplied != target)
                 {
                     m.settingsMenu.anchoredPosition = target;
@@ -107,6 +108,21 @@ public class SettingsMenuPosition : MonoBehaviour
                 }
             }
         }
+    }
+
+    // Keeps a tracked menu vertically inside its canvas so its Y can never push
+    // it off-screen (matters on short windows, or for menus whose Y is moved).
+    static float ClampMenuY(RectTransform menu, float y)
+    {
+        RectTransform parent = menu.parent as RectTransform;
+        if (parent == null || parent.rect.height <= 0f) return y;
+        float panelHalfH = menu.rect.height * menu.localScale.y * 0.5f;
+        float half = parent.rect.height * 0.5f;
+        float margin = 20f;
+        float maxY = half - panelHalfH - margin;
+        float minY = -half + panelHalfH + margin;
+        if (maxY < minY) return y; // menu taller than the canvas — leave it
+        return Mathf.Clamp(y, minY, maxY);
     }
 
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN

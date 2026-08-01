@@ -64,7 +64,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if (!CanUpload())
         {
-            SetError("Not ready");
+            SetError(LocText.T("NOT_READY", "Not ready"));
             return;
         }
 
@@ -126,13 +126,13 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
     void StartUpload()
     {
         ClearError();
-        if (modBtn == null || string.IsNullOrEmpty(modBtn.filePath)) { SetError("Missing file"); return; }
-        if (IsThumbnailMissingOrTooBig()) { SetError("Thumbnail required (≤2MB)"); return; }
+        if (modBtn == null || string.IsNullOrEmpty(modBtn.filePath)) { SetError(LocText.T("MISSING_FILE", "Missing file")); return; }
+        if (IsThumbnailMissingOrTooBig()) { SetError(LocText.T("THUMBNAIL_REQUIRED", "Thumbnail required (≤2MB)")); return; }
 
         if (modBtn.progressBar == null && progressSlider != null) modBtn.progressBar = progressSlider;
 
-        modBtn.UploadNow();   
-        SetLabel("Uploading");
+        modBtn.UploadNow();
+        SetLabel(LocText.T("UPLOADING", "Uploading"));
     }
 
 
@@ -140,7 +140,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if (labelText == null) return;
         bool isUpdate = ResolveWorkshopIdForPath(modBtn != null ? modBtn.filePath : null) != 0UL;
-        labelText.text = isUpdate ? fallbackUpdate : fallbackUpload;
+        labelText.text = isUpdate ? LocText.T("UPDATE", fallbackUpdate) : LocText.T("UPLOAD", fallbackUpload);
     }
 
     void SetLabel(string s)
@@ -192,10 +192,10 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         if (!File.Exists(src)) return false;
 
         var fi = new FileInfo(src);
-        if (fi.Length > MaxBytes) { SetError("Image too big (>2MB)"); return false; }
+        if (fi.Length > MaxBytes) { SetError(LocText.T("IMAGE_TOO_BIG", "Image too big (>2MB)")); return false; }
 
         string ext = Path.GetExtension(src).ToLowerInvariant();
-        if (ext != ".png" && ext != ".jpg" && ext != ".jpeg") { SetError("Unsupported format"); return false; }
+        if (ext != ".png" && ext != ".jpg" && ext != ".jpeg") { SetError(LocText.T("UNSUPPORTED_FORMAT", "Unsupported format")); return false; }
 
         string thumbs = Path.Combine(Application.persistentDataPath, "Thumbnails");
         Directory.CreateDirectory(thumbs);
@@ -208,7 +208,7 @@ public class ModUploadHoldHandler : MonoBehaviour, IPointerDownHandler, IPointer
         }
         catch
         {
-            SetError("Copy failed");
+            SetError(LocText.T("COPY_FAILED", "Copy failed"));
             return false;
         }
 

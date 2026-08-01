@@ -19,8 +19,8 @@ public class SystemTray : MonoBehaviour
 
     public enum TrayActionType { Toggle, Button, Method }
 
-    [SerializeField] private Texture2D icon;
-    [SerializeField] private string iconName;
+    [SerializeField] private Texture2D icon = null;
+    [SerializeField] private string iconName = null;
     [SerializeField] public List<TrayAction> actions = new();
 
 #if UNITY_STANDALONE_OSX

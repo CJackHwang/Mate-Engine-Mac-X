@@ -133,8 +133,10 @@ public class SettingsHandlerToggles : MonoBehaviour
         RectTransform srcRT = row as RectTransform;
         if (rt != null && srcRT != null)
         {
-            // Source sits at y = -140; next left-column row is at -240, so -200 is free.
-            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 60f);
+            // Source sits at y=-140; the next row (Dance Volume Threshold) is at
+            // -240 but its label floats up to ~[-222,-197], so -200 is NOT free.
+            // -180 sits between the source and that floating label.
+            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 40f);
         }
 
         Toggle t = clone.GetComponent<Toggle>();
@@ -144,27 +146,37 @@ public class SettingsHandlerToggles : MonoBehaviour
             followMusicToggle = t;
         }
 
-        const string label = "跟随音乐自动跳舞";
+        const string labelKey = "FOLLOW_MUSIC";
         foreach (var tmp in clone.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
         {
-            // Disable the cloned LocalizedStringEvent so it can't overwrite our label.
+            // Disable the copied LocalizeStringEvent (still bound to the source row's
+            // key) and bind our own key instead so the label re-localizes on language
+            // changes via LocTextBinder.
             var lse = tmp.GetComponent<LocalizeStringEvent>();
             if (lse != null) lse.enabled = false;
-            tmp.text = label;
+            var binder = tmp.GetComponent<LocTextBinder>();
+            if (binder == null) binder = tmp.gameObject.AddComponent<LocTextBinder>();
+            binder.key = labelKey;
+            binder.fallback = "跟随音乐自动跳舞";
+            binder.Apply();
             break;
         }
         foreach (var txt in clone.GetComponentsInChildren<UnityEngine.UI.Text>(true))
         {
             var lse = txt.GetComponent<LocalizeStringEvent>();
             if (lse != null) lse.enabled = false;
-            txt.text = label;
+            var binder = txt.GetComponent<LocTextBinder>();
+            if (binder == null) binder = txt.gameObject.AddComponent<LocTextBinder>();
+            binder.key = labelKey;
+            binder.fallback = "跟随音乐自动跳舞";
+            binder.Apply();
             break;
         }
 
         var tooltip = clone.GetComponent<UiTooltip>();
         if (tooltip != null)
         {
-            tooltip.locKey = "";
+            tooltip.locKey = "TIP_FOLLOW_MUSIC";
             tooltip.tooltipText = "开启时，角色随系统播放器播放的音乐自动跳舞；关闭时，打开“跳舞”开关即直接跳舞。";
         }
     }

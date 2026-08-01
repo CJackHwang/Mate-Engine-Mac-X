@@ -51,7 +51,7 @@ public class AvatarRandomMessages : MonoBehaviour
     public string[] allowedStates = { "Idle" };
     public List<GameObject> blockObjects = new();
 
-    [SerializeField] private string inspectorEvent;
+    public string inspectorEvent;
 
     private LLMUnitySamples.Bubble activeBubble;
     private Coroutine streamCoroutine;

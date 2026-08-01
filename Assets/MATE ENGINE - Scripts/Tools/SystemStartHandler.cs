@@ -3,6 +3,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using Debug = UnityEngine.Debug;
 
 public class SystemStartHandler : MonoBehaviour
@@ -34,6 +36,21 @@ public class SystemStartHandler : MonoBehaviour
 
         LoadFromSaveWithoutNotify();
         TryApplyRegistry(SaveLoadHandler.Instance.data.startWithWindows);
+    }
+
+    private void OnEnable()
+    {
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+    }
+
+    private void OnDisable()
+    {
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+    }
+
+    private void OnLocaleChanged(Locale locale)
+    {
+        UpdateCheckmarkText(GetSavedState());
     }
 
     private void OnDestroy()
@@ -95,7 +112,7 @@ public class SystemStartHandler : MonoBehaviour
     private void UpdateCheckmarkText(bool isOn)
     {
         if (checkmarkText != null)
-            checkmarkText.text = isOn ? "☑ Start at login" : "☐ Start at login";
+            checkmarkText.text = (isOn ? "☑ " : "☐ ") + LocText.T("START_AT_LOGIN", "Start at login");
     }
 
     // ---------------- Registry Handling ----------------

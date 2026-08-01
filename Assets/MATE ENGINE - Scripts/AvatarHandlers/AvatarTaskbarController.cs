@@ -27,7 +27,7 @@ public class AvatarTaskbarController : MonoBehaviour
     public Color taskbarGizmoColor = Color.green;
     public Color pinkZoneGizmoColor = Color.magenta;
 
-    private IntPtr unityHWND;
+    private IntPtr unityHWND = IntPtr.Zero;
     private Vector2 unityPos;
     private Rect taskbarRect;
     private Rect pinkZoneDesktopRect;

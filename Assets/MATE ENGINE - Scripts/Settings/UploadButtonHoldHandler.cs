@@ -225,7 +225,7 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
 
             if (SteamWorkshopHandler.Instance != null)
                 SteamWorkshopHandler.Instance.UploadToWorkshop(entry, progressSlider);
-            SetLabelImmediate("Uploaded");
+            SetLabelImmediate(LocText.T("UPLOADED", "Uploaded"));
             yield return StartCoroutine(WaitForSteamIdAndRelabel(entry.filePath, 20f));
         }
 

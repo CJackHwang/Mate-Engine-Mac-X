@@ -23,6 +23,7 @@ public class AvatarMinecraftMessages : MonoBehaviour
         public McEventType type = McEventType.Entity;
     }
 
+#pragma warning disable CS0649 // fields populated via JSON deserialization
     [Serializable]
     class ProxEvent
     {
@@ -36,6 +37,7 @@ public class AvatarMinecraftMessages : MonoBehaviour
         public string player;
         public string biome;
     }
+#pragma warning restore CS0649
 
     [Header("Toggle")]
     public bool enableMinecraftMessages = true;

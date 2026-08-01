@@ -142,7 +142,7 @@ namespace LLMUnitySamples
         void FindAvatarSmart()
         {
             Animator found = null;
-            var loader = FindFirstObjectByType<VRMLoader>();
+            var loader = FindAnyObjectByType<VRMLoader>();
             if (loader != null)
             {
                 var current = loader.GetCurrentModel();
@@ -155,7 +155,7 @@ namespace LLMUnitySamples
             }
             if (found == null)
             {
-                var all = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                var all = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include);
                 found = all.FirstOrDefault(a => a && a.isActiveAndEnabled);
             }
             if (found != avatarAnimator)
@@ -424,7 +424,6 @@ namespace LLMUnitySamples
                 scrollRect.verticalNormalizedPosition = 0f; 
         }
 
-        bool onValidateWarning = true;
         void OnValidate()
         {
             if (cornerRadius <= 16) sprite = roundedSprite16;

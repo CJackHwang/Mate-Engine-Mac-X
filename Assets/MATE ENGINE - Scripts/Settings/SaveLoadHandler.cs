@@ -61,10 +61,51 @@ public class SaveLoadHandler : MonoBehaviour
         }
 
 #if UNITY_STANDALONE_OSX
-        // 启动时自动适配当前屏幕分辨率，避免外接显示器分辨率残留
-        Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, false);
+        // 启动时不再把窗口强制设为显示器原生像素分辨率（Retina 下 Display.main.systemWidth/
+        // systemHeight 是像素、窗口却按点缩放，会导致开屏窗口高度超出屏幕）。改为延迟到首帧
+        // 把窗口调整到主显示器可见工作区大小：宽度保持全屏、高度自适应可见区域。
+        StartCoroutine(FitWindowToVisibleScreen());
 #endif
     }
+
+#if UNITY_STANDALONE_OSX
+    // Sizes the window to the primary display's visible work area (in points) so
+    // the startup window/popup never overflows past the macOS menu bar or dock.
+    // Waits up to two seconds for UniWindowController to report a real window size.
+    private System.Collections.IEnumerator FitWindowToVisibleScreen()
+    {
+        Kirurobo.UniWindowController uwc = null;
+        Vector2 size = Vector2.zero;
+        for (int i = 0; i < 120; i++)
+        {
+            uwc = Kirurobo.UniWindowController.current;
+            if (uwc != null)
+            {
+                size = uwc.windowSize;
+                if (size.x > 0f && size.y > 0f) break;
+            }
+            yield return null;
+        }
+        if (uwc == null || size.x <= 0f || size.y <= 0f) yield break;
+
+        RectInt primary = MacWindowHelper.GetPrimaryMonitorRect();
+        var monitors = MacWindowHelper.GetMonitors();
+        int idx = monitors != null ? monitors.IndexOf(primary) : -1;
+        if (idx < 0) idx = 0;
+        int vx = primary.x, vy = primary.y, vw = primary.width, vh = primary.height;
+        try { MacSystemBridge.MacSys_GetScreenVisibleRect(idx, out vx, out vy, out vw, out vh); }
+        catch (System.Exception) { }
+        if (vw <= 0 || vh <= 0) { vw = primary.width; vh = primary.height; }
+        vw = Mathf.Min(vw, primary.width);
+        vh = Mathf.Min(vh, primary.height);
+
+        uwc.windowSize = new Vector2(vw, vh);
+        float screenH = MacWindowHelper.GetGlobalScreenHeight();
+        // AppKit origin is bottom-left, Y up: place the window's top-left at the
+        // visible area's top-left.
+        uwc.windowPosition = new Vector2(vx, screenH - (vy + vh));
+    }
+#endif
 
     // Speichern
     public void SaveToDisk()

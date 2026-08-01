@@ -1390,6 +1390,187 @@ MonoBehaviour:
     m_Localized: "Blend Shapes"
     m_Metadata:
       m_Items: []
+  - m_Id: -10000001
+    m_Localized: "Automatyczne \u015bwiat\u0142o otoczenia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000002
+    m_Localized: "Gdy w\u0142\u0105czone, \u015bwiat\u0142o otoczenia automatycznie dopasowuje si\u0119 do kolor\u00f3w pulpitu; w przeciwnym razie u\u017cyj suwak\u00f3w r\u0119cznie."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000003
+    m_Localized: "Ta\u0144cz do odtwarzanej muzyki"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000004
+    m_Localized: "Gdy w\u0142\u0105czone, avatar ta\u0144czy do muzyki odtwarzanej przez Tw\u00f3j odtwarzacz; gdy wy\u0142\u0105czone, w\u0142\u0105czenie Ta\u0144ca rozpoczyna taniec natychmiast."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000005
+    m_Localized: "G\u0142\u0119boko\u015b\u0107 okluzji podczas siedzenia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000006
+    m_Localized: "Brak efektu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000007
+    m_Localized: "Wczytaj model VRM"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000008
+    m_Localized: "Zamknij"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000009
+    m_Localized: "Poligony: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000010
+    m_Localized: "Ko\u015bci: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000011
+    m_Localized: "VRM: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000012
+    m_Localized: "Nieznany"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000013
+    m_Localized: "Idealnie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000014
+    m_Localized: "B\u0142\u0105d"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000015
+    m_Localized: "Usu\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000016
+    m_Localized: "Usuni\u0119to!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000017
+    m_Localized: "Nie gotowy"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000018
+    m_Localized: "Brak pliku"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000019
+    m_Localized: "Wymagana miniatura (\u22642MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000020
+    m_Localized: "Przesy\u0142anie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000021
+    m_Localized: "Obraz zbyt du\u017cy (>2MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000022
+    m_Localized: "Nieobs\u0142ugiwany format"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000023
+    m_Localized: "B\u0142\u0105d kopiowania"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000024
+    m_Localized: "Przes\u0142ano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000025
+    m_Localized: "Uruchom przy logowaniu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000026
+    m_Localized: "Autor: Nieznany"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000027
+    m_Localized: "Typ: Nieznany"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000028
+    m_Localized: "Nazwa: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000029
+    m_Localized: "Autor: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000030
+    m_Localized: "Wersja: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000031
+    m_Localized: "Format: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000032
+    m_Localized: "Poligony: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000033
+    m_Localized: "Wstawaj! To tw\u00f3j budzik!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000034
+    m_Localized: "Stoper"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000035
+    m_Localized: "30s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000036
+    m_Localized: "1 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000037
+    m_Localized: "5 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000038
+    m_Localized: "15 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000039
+    m_Localized: "30 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000040
+    m_Localized: "45 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000041
+    m_Localized: "1 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000042
+    m_Localized: "1.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000043
+    m_Localized: "2 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000044
+    m_Localized: "2.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000045
+    m_Localized: "3 h"
+    m_Metadata:
+      m_Items: []
+
   references:
     version: 2
     RefIds: []

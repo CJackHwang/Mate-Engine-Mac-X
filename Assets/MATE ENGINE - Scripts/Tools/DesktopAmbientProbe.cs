@@ -30,9 +30,13 @@ public class DesktopAmbientProbe : MonoBehaviour
     public int excludeMarginPx = 12;
     [Range(0f, 1f)] public float smoothing = 0.85f;
     public string saveKey = "auto_ambient";
-    [Range(0f, 4f)] public float minGrayIntensity = 0.3f;
-    [Range(0f, 4f)] public float maxColorIntensity = 0.8f;
-    [Range(0.5f, 3f)] public float saturationGamma = 1.3f;
+    [Range(0f, 4f)] public float minGrayIntensity = 0.25f;
+    [Range(0f, 4f)] public float maxColorIntensity = 0.55f;
+    [Range(0.5f, 3f)] public float saturationGamma = 1.6f;
+    [Range(0f, 1f), Tooltip("Lower bound of the desktop-brightness scale: how dim the ambient glow gets on a dark wallpaper (1 = ignore brightness).")]
+    public float darkAmbientFloor = 0.6f;
+    [Range(1f, 60f), Tooltip("If no desktop sample arrives within this many seconds (e.g. missing screen-recording permission), auto ambient switches itself off and falls back to the manual lights.")]
+    public float noSampleGraceSeconds = 10f;
 
 #if UNITY_STANDALONE_WIN
     const int SM_XVIRTUALSCREEN = 76;
@@ -91,11 +95,13 @@ public class DesktopAmbientProbe : MonoBehaviour
     Vector3 hsvRightTarget = DefaultHsv;
     bool inited;
     bool hasSample;
+    float _noSampleGraceUntil;
 
     void Start()
     {
         TryLoadToggle();
         EnsureSelfConfig();
+        _noSampleGraceUntil = Time.unscaledTime + noSampleGraceSeconds;
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         if (enabledAuto) InitCapture();
 #endif
@@ -148,6 +154,7 @@ public class DesktopAmbientProbe : MonoBehaviour
 
     public void RetryCapturePermission()
     {
+        _noSampleGraceUntil = Time.unscaledTime + noSampleGraceSeconds;
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         InitCapture();
 #endif
@@ -157,6 +164,15 @@ public class DesktopAmbientProbe : MonoBehaviour
     void LateUpdate()
     {
         if (!inited) return;
+        if (enabledAuto && !hasSample && Time.unscaledTime > _noSampleGraceUntil)
+        {
+            // Couldn't capture the desktop within the grace period — usually the
+            // screen-recording permission is missing. Switch auto ambient off and
+            // fall back to the regular manual lights so the lights aren't left in
+            // a half-on state.
+            SwitchToManualLights();
+            return;
+        }
         if (!enabledAuto) return;
         if (Time.unscaledTime >= nextTick)
         {
@@ -167,6 +183,23 @@ public class DesktopAmbientProbe : MonoBehaviour
         }
         SmoothTowardsTargets(Time.unscaledDeltaTime);
         ApplyToTargets();
+    }
+
+    // Turns auto ambient off and persists it so the manual light sliders take
+    // over (and the settings toggle reflects the change).
+    void SwitchToManualLights()
+    {
+        if (!enabledAuto) return;
+        enabledAuto = false;
+        var s = SaveLoadHandler.Instance;
+        if (s != null && s.data != null)
+        {
+            s.data.groupToggles[saveKey] = false;
+            s.SaveToDisk();
+        }
+        var lights = FindAnyObjectByType<SettingsHandlerLights>();
+        if (lights != null) lights.SyncAutoAmbientToggle(false);
+        UnityEngine.Debug.Log("[DesktopAmbientProbe] No desktop sample within " + noSampleGraceSeconds + "s (screen-recording permission missing?) — switched to manual lights.");
     }
 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
@@ -437,6 +470,13 @@ public class DesktopAmbientProbe : MonoBehaviour
     void ApplyToTargets()
     {
         if (colorController == null) return;
+        // No desktop capture yet (e.g. screen-recording permission missing/pending)
+        // — do NOT overwrite the lights. Without a sample there is no real desktop
+        // color to follow, and forcing a "neutral white" fallback here would turn
+        // the user's configured ambient lights dim/white, which looks like the
+        // ambient light got switched off. Leave the ColorController targets at
+        // their current (manual) values instead.
+        if (!hasSample) return;
         for (int i = 0; i < bandTargets.Count; i++)
         {
             var bt = bandTargets[i];
@@ -473,10 +513,16 @@ public class DesktopAmbientProbe : MonoBehaviour
         target.saturation = hsv.y;
         if (driveIntensity)
         {
+            // Saturation-driven base: gray desktop → dim glow, saturated → brighter.
             float satCurve = Mathf.Pow(Mathf.Clamp01(hsv.y), saturationGamma);
             float baseI = Mathf.Lerp(minGrayIntensity, maxColorIntensity, satCurve);
+            // Scale by the sampled band's brightness (hsv.z) so dark wallpapers give
+            // a subtle glow and bright ones stay bounded — the light blends into the
+            // background instead of glaring.
+            float v = Mathf.Clamp01(hsv.z);
+            float intensity = baseI * Mathf.Lerp(darkAmbientFloor, 1f, v);
             float maxI = target.intensityOverride ? target.maxIntensity : 1f;
-            target.intensity = Mathf.Clamp(baseI * maxI, 0f, Mathf.Max(0.01f, maxI));
+            target.intensity = Mathf.Clamp(intensity * maxI, 0f, Mathf.Max(0.01f, maxI));
         }
     }
 }

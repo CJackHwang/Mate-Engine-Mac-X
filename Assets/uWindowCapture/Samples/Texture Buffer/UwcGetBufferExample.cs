@@ -8,7 +8,7 @@ namespace uWindowCapture
 public class UwcGetBufferExample : MonoBehaviour
 {
     [SerializeField]
-    UwcWindowTexture uwcTexture;
+    UwcWindowTexture uwcTexture = null;
 
     Texture2D texture_;
     Color32[] pixels_;

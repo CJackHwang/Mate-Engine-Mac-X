@@ -446,6 +446,7 @@ public class SteamWorkshopHandler : MonoBehaviour
         SteamUGC.UnsubscribeItem(fileId);
     }
 
+#pragma warning disable CS0649 // fields populated via JsonUtility.FromJson
     class DanceMeta
     {
         public string songName;
@@ -460,5 +461,6 @@ public class SteamWorkshopHandler : MonoBehaviour
         public string author;
         public string description;
     }
+#pragma warning restore CS0649
 
 }

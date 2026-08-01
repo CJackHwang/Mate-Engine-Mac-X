@@ -1340,6 +1340,187 @@ MonoBehaviour:
     m_Localized: "Blend Shapes"
     m_Metadata:
       m_Items: []
+  - m_Id: -10000001
+    m_Localized: "Auto Ambient Light"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000002
+    m_Localized: "When on, ambient light follows your desktop colors automatically; when off, use the sliders manually."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000003
+    m_Localized: "Dance to Playing Music"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000004
+    m_Localized: "When on, the avatar dances to music played by your system player; when off, toggling Dance starts dancing immediately."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000005
+    m_Localized: "Sitting Occlusion Depth"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000006
+    m_Localized: "No Effect"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000007
+    m_Localized: "Load VRM Model"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000008
+    m_Localized: "Close"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000009
+    m_Localized: "Polys: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000010
+    m_Localized: "Bones: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000011
+    m_Localized: "VRM: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000012
+    m_Localized: "Unknown"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000013
+    m_Localized: "Perfect"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000014
+    m_Localized: "Failure"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000015
+    m_Localized: "Delete"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000016
+    m_Localized: "Deleted!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000017
+    m_Localized: "Not ready"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000018
+    m_Localized: "Missing file"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000019
+    m_Localized: "Thumbnail required (\u22642MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000020
+    m_Localized: "Uploading"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000021
+    m_Localized: "Image too big (>2MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000022
+    m_Localized: "Unsupported format"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000023
+    m_Localized: "Copy failed"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000024
+    m_Localized: "Uploaded"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000025
+    m_Localized: "Start at login"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000026
+    m_Localized: "Author: Unknown"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000027
+    m_Localized: "Type: Unknown"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000028
+    m_Localized: "Name: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000029
+    m_Localized: "Author: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000030
+    m_Localized: "Version: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000031
+    m_Localized: "Format: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000032
+    m_Localized: "Polygons: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000033
+    m_Localized: "Wake up! This is your alarm!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000034
+    m_Localized: "Timer"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000035
+    m_Localized: "30s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000036
+    m_Localized: "1 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000037
+    m_Localized: "5 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000038
+    m_Localized: "15 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000039
+    m_Localized: "30 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000040
+    m_Localized: "45 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000041
+    m_Localized: "1 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000042
+    m_Localized: "1.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000043
+    m_Localized: "2 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000044
+    m_Localized: "2.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000045
+    m_Localized: "3 h"
+    m_Metadata:
+      m_Items: []
+
   references:
     version: 2
     RefIds: []

@@ -27,6 +27,7 @@ namespace Utils
         /// <param name="tooltip">The string that shows up when hovering the icon</param>
         /// <param name="iconTexture">The texture for the icon (16x16 is recommend)</param>
         /// <param name="actions">List of menu items when clicking on the icon</param>
+#pragma warning disable CS0162 // unreachable on non-Windows: the #if guard throws and the rest of Init is dead code there (intentional)
         public static void Init(string appName, string tooltip, Texture2D iconTexture, List<(string, Action)> actions = null)
         {
 #if !UNITY_STANDALONE_WIN
@@ -107,6 +108,7 @@ namespace Utils
                 return;
             }
         }
+#pragma warning restore CS0162
 
         private static bool CreateMessageWindow()
         {

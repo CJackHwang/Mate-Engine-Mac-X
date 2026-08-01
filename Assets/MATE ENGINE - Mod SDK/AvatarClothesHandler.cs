@@ -154,7 +154,7 @@ public class AvatarClothesHandler : MonoBehaviour
     private Component FindClothesComponent(out System.Type foundType)
     {
         foundType = null;
-        foreach (var comp in GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        foreach (var comp in GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude))
         {
             var type = comp.GetType();
             if (type.Name == "MEClothes" &&
@@ -181,7 +181,7 @@ public class AvatarClothesHandler : MonoBehaviour
 
     private void PlayClothesClickSound()
     {
-        var menuAudio = FindFirstObjectByType<MenuAudioHandler>();
+        var menuAudio = FindAnyObjectByType<MenuAudioHandler>();
         if (menuAudio == null || menuAudio.audioSource == null) return;
         if (menuAudio.buttonSounds == null || menuAudio.buttonSounds.Count == 0) return;
 

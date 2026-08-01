@@ -34,6 +34,10 @@ public class MenuActions : MonoBehaviour
     public HumanBodyBones targetBone = HumanBodyBones.Head;
     [Range(0f, 1f)] public float followSmoothness = 0.15f;
 
+    [Header("Popup Bounds")]
+    [Tooltip("Keeps the popup fully on screen while following the character (the menu Y would otherwise leave the screen when the character is near the top/bottom).")]
+    public float screenEdgeMargin = 170f;
+
     [Header("Perf")]
     public float avatarScanInterval = 0.25f;
 
@@ -109,7 +113,7 @@ public class MenuActions : MonoBehaviour
                 var bone = currentAnimator.GetBoneTransform(targetBone);
                 if (bone != null)
                 {
-                    Vector3 targetScreenPos = mainCam.WorldToScreenPoint(bone.position);
+                    Vector3 targetScreenPos = ClampToScreen(mainCam.WorldToScreenPoint(bone.position));
                     screenPosition = Vector3.Lerp(screenPosition, targetScreenPos, 1f - followSmoothness);
                     if (RectTransformUtility.ScreenPointToWorldPointInRectangle(radialRect.parent as RectTransform, screenPosition, mainCam, out Vector3 worldPos))
                         radialRect.position = worldPos;
@@ -146,13 +150,24 @@ public class MenuActions : MonoBehaviour
             var bone = currentAnimator.GetBoneTransform(targetBone);
             if (bone != null)
             {
-                screenPosition = mainCam.WorldToScreenPoint(bone.position);
+                screenPosition = ClampToScreen(mainCam.WorldToScreenPoint(bone.position));
                 if (RectTransformUtility.ScreenPointToWorldPointInRectangle(radialRect.parent as RectTransform, screenPosition, mainCam, out Vector3 worldPos))
                     radialRect.position = worldPos;
             }
         }
         if (radialMenu.Open())
             PlayMenuOpenSound();
+    }
+
+    // Clamps a screen-space position so the popup's center never gets closer to
+    // an edge than `screenEdgeMargin` px — the Y of a bone-following popup would
+    // otherwise leave the screen when the character is near the top or bottom.
+    Vector3 ClampToScreen(Vector3 pos)
+    {
+        float m = Mathf.Max(0f, screenEdgeMargin);
+        pos.x = Mathf.Clamp(pos.x, m, Mathf.Max(m, Screen.width - m));
+        pos.y = Mathf.Clamp(pos.y, m, Mathf.Max(m, Screen.height - m));
+        return pos;
     }
 
     void CacheBigScreen()

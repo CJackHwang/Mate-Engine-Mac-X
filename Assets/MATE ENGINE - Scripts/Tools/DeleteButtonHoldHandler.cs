@@ -39,7 +39,7 @@ public class DeleteButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
     private void UpdateButtonLabel()
     {
         if (labelText != null)
-            labelText.text = "Delete";
+            labelText.text = LocText.T("DELETE", "Delete");
     }
 
     private IEnumerator HoldToDelete()
@@ -97,12 +97,12 @@ public class DeleteButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
                     menu.SendMessage("RemoveAvatar", entry, SendMessageOptions.DontRequireReceiver);
             }
 
-            if (labelText != null) labelText.text = "Deleted!";
+            if (labelText != null) labelText.text = LocText.T("DELETED", "Deleted!");
             yield return new WaitForSeconds(1.0f);
         }
 
         if (!completed && labelText != null)
-            labelText.text = "Delete";
+            labelText.text = LocText.T("DELETE", "Delete");
 
         GetComponent<Button>().interactable = true;
         holdRoutine = null;

@@ -52,7 +52,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
 
 
     [Header("Live Status (Inspector)")]
-    [SerializeField] private string inspectorEvent;
+    public string inspectorEvent;
     [SerializeField] private string inspectorTargetTime;
     [SerializeField] private string inspectorCurrentTime;
 
@@ -133,7 +133,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
         DateTime nextTime;
         var next = GetNextAlarm(out nextTime);
         inspectorTargetTime = next != null ? nextTime.ToString("yyyy-MM-dd HH:mm") : "-";
-        if (!alarmActive && next != null) alarmText = string.IsNullOrEmpty(next.text) ? "Alarm" : next.text;
+        if (!alarmActive && next != null) alarmText = string.IsNullOrEmpty(next.text) ? LocText.T("ALARM", "Alarm") : next.text;
 
         if (useAllowedStatesWhitelist && !IsInAllowedState())
         {
@@ -369,7 +369,7 @@ public class AvatarBigScreenTimer : MonoBehaviour
     void EnqueueOrTrigger(string text)
     {
         if (alarmActive) { pendingEvents.Enqueue(string.IsNullOrEmpty(text) ? "Alarm" : text); return; }
-        alarmText = string.IsNullOrEmpty(text) ? "Alarm" : text;
+        alarmText = string.IsNullOrEmpty(text) ? LocText.T("ALARM", "Alarm") : text;
         TriggerAlarmNow();
     }
 

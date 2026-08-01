@@ -5,7 +5,7 @@ namespace uWindowCapture
 
 public class UwcGetPixelsExample : MonoBehaviour
 {
-    [SerializeField] UwcWindowTexture uwcTexture;
+    [SerializeField] UwcWindowTexture uwcTexture = null;
 
     [SerializeField] int x = 100;
     [SerializeField] int y = 100;

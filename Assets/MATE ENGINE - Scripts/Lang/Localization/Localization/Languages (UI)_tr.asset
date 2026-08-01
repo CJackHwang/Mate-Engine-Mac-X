@@ -1420,6 +1420,187 @@ MonoBehaviour:
     m_Localized: "Blend Shapes"
     m_Metadata:
       m_Items: []
+  - m_Id: -10000001
+    m_Localized: "Otomatik ortam \u0131\u015f\u0131\u011f\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000002
+    m_Localized: "A\u00e7\u0131kken ortam \u0131\u015f\u0131\u011f\u0131 masa\u00fcst\u00fc renklerini otomatik takip eder; kapal\u0131yken kayd\u0131r\u0131c\u0131lar\u0131 elle kullan\u0131n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000003
+    m_Localized: "\u00c7alan m\u00fczi\u011fe g\u00f6re dans et"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000004
+    m_Localized: "A\u00e7\u0131kken avatar, sistem oynat\u0131c\u0131n\u0131zdan \u00e7alan m\u00fczi\u011fe g\u00f6re dans eder; kapal\u0131yken Dans anahtar\u0131 hemen dans\u0131 ba\u015flat\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000005
+    m_Localized: "Oturma kapanma derinli\u011fi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000006
+    m_Localized: "Efekt yok"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000007
+    m_Localized: "VRM modeli y\u00fckle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000008
+    m_Localized: "Kapat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000009
+    m_Localized: "Poligon: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000010
+    m_Localized: "Kemik: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000011
+    m_Localized: "VRM: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000012
+    m_Localized: "Bilinmiyor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000013
+    m_Localized: "M\u00fckemmel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000014
+    m_Localized: "Hata"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000015
+    m_Localized: "Sil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000016
+    m_Localized: "Silindi!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000017
+    m_Localized: "Haz\u0131r de\u011fil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000018
+    m_Localized: "Dosya eksik"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000019
+    m_Localized: "K\u00fc\u00e7\u00fck resim gerekli (\u22642MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000020
+    m_Localized: "Y\u00fckleniyor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000021
+    m_Localized: "G\u00f6rsel \u00e7ok b\u00fcy\u00fck (>2MB)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000022
+    m_Localized: "Desteklenmeyen bi\u00e7im"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000023
+    m_Localized: "Kopyalama ba\u015far\u0131s\u0131z"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000024
+    m_Localized: "Y\u00fcklendi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000025
+    m_Localized: "Giri\u015fte ba\u015flat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000026
+    m_Localized: "Yazar: Bilinmiyor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000027
+    m_Localized: "T\u00fcr: Bilinmiyor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000028
+    m_Localized: "Ad: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000029
+    m_Localized: "Yazar: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000030
+    m_Localized: "S\u00fcr\u00fcm: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000031
+    m_Localized: "Bi\u00e7im: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000032
+    m_Localized: "Poligon: "
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000033
+    m_Localized: "Uyan! Bu senin alarm\u0131n!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000034
+    m_Localized: "Zamanlay\u0131c\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000035
+    m_Localized: "30s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000036
+    m_Localized: "1 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000037
+    m_Localized: "5 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000038
+    m_Localized: "15 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000039
+    m_Localized: "30 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000040
+    m_Localized: "45 min"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000041
+    m_Localized: "1 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000042
+    m_Localized: "1.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000043
+    m_Localized: "2 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000044
+    m_Localized: "2.5 h"
+    m_Metadata:
+      m_Items: []
+  - m_Id: -10000045
+    m_Localized: "3 h"
+    m_Metadata:
+      m_Items: []
+
   references:
     version: 2
     RefIds: []

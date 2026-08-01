@@ -39,9 +39,18 @@ public class SettingsHandlerBigScreen : MonoBehaviour
     public Button templateTimerStop;
     public Button templateTimerRemove;
 
-    private static readonly string[] TimeoutLabels = {
+    private static readonly string[] TimeoutLabelKeys = {
+        "TIME_30S", "TIME_1M", "TIME_5M", "TIME_15M", "TIME_30M", "TIME_45M",
+        "TIME_1H", "TIME_1_5H", "TIME_2H", "TIME_2_5H", "TIME_3H"
+    };
+    private static readonly string[] TimeoutLabelDefaults = {
         "30s", "1 min", "5 min", "15 min", "30 min", "45 min", "1 h", "1.5 h", "2 h", "2.5 h", "3 h"
     };
+    private static string TimeoutLabelAt(int idx)
+    {
+        if (idx < 0 || idx >= TimeoutLabelKeys.Length) return "";
+        return LocText.T(TimeoutLabelKeys[idx], TimeoutLabelDefaults[idx]);
+    }
 
     private void Start()
     {
@@ -194,7 +203,7 @@ public class SettingsHandlerBigScreen : MonoBehaviour
             presetSeconds = 300,
             running = false,
             targetUnix = 0,
-            text = "Timer"
+            text = LocText.T("TIMER", "Timer")
         };
         var d = SaveLoadHandler.Instance.data;
         if (d.timers == null) d.timers = new List<SaveLoadHandler.SettingsData.TimerEntry>();
@@ -312,7 +321,7 @@ public class SettingsHandlerBigScreen : MonoBehaviour
             hour = 7,
             minute = 0,
             daysMask = 0,
-            text = "Alarm",
+            text = LocText.T("ALARM", "Alarm"),
             lastTriggeredUnixMinute = 0
         };
         var d = SaveLoadHandler.Instance.data;
@@ -340,8 +349,8 @@ public class SettingsHandlerBigScreen : MonoBehaviour
         var data = SaveLoadHandler.Instance.data;
         bigScreenSaverEnableToggle?.SetIsOnWithoutNotify(data.bigScreenScreenSaverEnabled);
         bigScreenSaverTimeoutSlider?.SetValueWithoutNotify(data.bigScreenScreenSaverTimeoutIndex);
-        if (bigScreenSaverTimeoutLabel != null && data.bigScreenScreenSaverTimeoutIndex >= 0 && data.bigScreenScreenSaverTimeoutIndex < TimeoutLabels.Length)
-            bigScreenSaverTimeoutLabel.text = TimeoutLabels[data.bigScreenScreenSaverTimeoutIndex];
+        if (bigScreenSaverTimeoutLabel != null && data.bigScreenScreenSaverTimeoutIndex >= 0 && data.bigScreenScreenSaverTimeoutIndex < TimeoutLabelKeys.Length)
+            bigScreenSaverTimeoutLabel.text = TimeoutLabelAt(data.bigScreenScreenSaverTimeoutIndex);
     }
 
 
@@ -353,10 +362,10 @@ public class SettingsHandlerBigScreen : MonoBehaviour
 
     void OnTimeoutSliderChanged(float v)
     {
-        int idx = Mathf.Clamp(Mathf.RoundToInt(v), 0, TimeoutLabels.Length - 1);
+        int idx = Mathf.Clamp(Mathf.RoundToInt(v), 0, TimeoutLabelKeys.Length - 1);
         SaveLoadHandler.Instance.data.bigScreenScreenSaverTimeoutIndex = idx;
         if (bigScreenSaverTimeoutLabel != null)
-            bigScreenSaverTimeoutLabel.text = TimeoutLabels[idx];
+            bigScreenSaverTimeoutLabel.text = TimeoutLabelAt(idx);
         Save();
     }
 

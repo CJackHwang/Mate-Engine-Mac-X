@@ -8,13 +8,13 @@ namespace uWindowCapture
 public class UwcRayCastExample : MonoBehaviour
 {
     [SerializeField]
-    Transform from;
+    Transform from = null;
 
     [SerializeField]
-    Transform to;
+    Transform to = null;
 
     [SerializeField]
-    LayerMask layerMask;
+    LayerMask layerMask = default;
 
     [SerializeField]
     Vector2 windowCoord;
