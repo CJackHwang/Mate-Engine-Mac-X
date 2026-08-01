@@ -170,7 +170,7 @@ public class SaveLoadHandler : MonoBehaviour
 
         public int bigScreenScreenSaverTimeoutIndex = 0;
         public bool bigScreenScreenSaverEnabled = false;
-        public float windowSitYOffset = 0f;
+        public float windowSitYOffset = -0.02f;
         // Runtime-tunable cliff occluder depth (⌘+[ / ⌘+]). offsetSet distinguishes
         // "never tuned" (use the Inspector value) from an explicit saved value.
         public bool windowSitCliffOffsetSet = false;

@@ -10,6 +10,8 @@ public class AmbientOcclusionAutoHide : MonoBehaviour
 {
     private PostProcessVolume volume;
     private bool lastEnlarged;
+    private readonly System.Collections.Generic.List<AvatarAnimatorController> cachedAvatars = new();
+    private float refreshTimer;
 
     void Awake()
     {
@@ -41,14 +43,28 @@ public class AmbientOcclusionAutoHide : MonoBehaviour
     // The big-screen flag may be set on any avatar's animator (there can be more
     // than one), and AvatarBigScreenHandler also sets BlockDraggingOverride while
     // enlarged — check both signals so detection is reliable.
+    //
+    // Cached: FindObjectsOfTypeAll is expensive, so we refresh the avatar list at
+    // most every 0.5s instead of scanning the whole scene every frame (avoids GC /
+    // frame hitches that make the app feel unresponsive).
     bool IsAnyAvatarBigScreen()
     {
-        var all = Resources.FindObjectsOfTypeAll<AvatarAnimatorController>();
-        for (int i = 0; i < all.Length; i++)
+        refreshTimer -= Time.unscaledDeltaTime;
+        if (refreshTimer <= 0f)
         {
-            if (all[i] == null) continue;
-            if (all[i].BlockDraggingOverride) return true;
-            if (all[i].animator != null && all[i].animator.GetBool("isBigScreen")) return true;
+            refreshTimer = 0.5f;
+            cachedAvatars.Clear();
+            var all = Resources.FindObjectsOfTypeAll<AvatarAnimatorController>();
+            for (int i = 0; i < all.Length; i++)
+                if (all[i] != null) cachedAvatars.Add(all[i]);
+        }
+
+        for (int i = 0; i < cachedAvatars.Count; i++)
+        {
+            var a = cachedAvatars[i];
+            if (a == null) continue; // destroyed avatar; refreshed on next tick
+            if (a.BlockDraggingOverride) return true;
+            if (a.animator != null && a.animator.GetBool("isBigScreen")) return true;
         }
         return false;
     }

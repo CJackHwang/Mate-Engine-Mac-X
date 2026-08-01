@@ -351,31 +351,35 @@ float MacSys_GetMainDisplayHeight(void)
 
 int MacSys_IsWindowOccludedAtCursor(void)
 {
-    if (![NSApp isActive]) return 1;
-
-    NSWindow *window = [NSApp keyWindow];
-    if (!window) {
-        NSArray<NSWindow *> *windows = [NSApp windows];
-        if (windows.count > 0) window = windows[0];
-    }
-    if (!window) return 1;
-
     if (!MacSys_IsScreenCaptureAuthorized())
+    {
+        // Fallback without screen-recording permission: use NSWindow occlusion state.
+        NSWindow *window = [NSApp keyWindow];
+        if (!window) {
+            NSArray<NSWindow *> *windows = [NSApp windows];
+            if (windows.count > 0) window = windows[0];
+        }
+        if (!window) return 1;
         return ([window occlusionState] & NSWindowOcclusionStateVisible) == 0;
+    }
 
     CGPoint cursor = MacSys_CurrentMouseLocation();
 
+    // Use optionAll so our own always-on-top pet window (layer 101) is always in
+    // the list even if it is partially off-screen or its onscreen flag is odd.
     CFArrayRef windowList = CGWindowListCopyWindowInfo(
-        kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements,
+        kCGWindowListOptionAll | kCGWindowListExcludeDesktopElements,
         kCGNullWindowID);
     if (!windowList) return 1;
 
-    CGWindowID ownId = (CGWindowID)window.windowNumber;
-    NSInteger topWindow = -1;
+    // The pet window lives at a high window level (kCGStatusWindowLevel) so it is
+    // always on top of normal app windows. Therefore it is occluded only when the
+    // cursor is NOT over any of our own windows (i.e. it points at another app).
+    pid_t ownPid = getpid();
+    BOOL overOwn = NO;
+    NSInteger topWindowPid = -1;
+    double topLayer = -1.0;
     for (NSDictionary *info in (__bridge NSArray *)windowList) {
-        NSNumber *layerNum = info[(__bridge NSString *)kCGWindowLayer];
-        if (layerNum && layerNum.integerValue != 0) continue;
-
         NSNumber *alphaNum = info[(__bridge NSString *)kCGWindowAlpha];
         if (alphaNum && alphaNum.floatValue <= 0.01f) continue;
 
@@ -390,13 +394,20 @@ int MacSys_IsWindowOccludedAtCursor(void)
         if (!CGRectContainsPoint(bounds, cursor))
             continue;
 
-        topWindow = [info[(__bridge NSString *)kCGWindowNumber] integerValue];
-        break;
+        NSNumber *pidNum = info[(__bridge NSString *)kCGWindowOwnerPID];
+        if (pidNum && pidNum.integerValue == (NSInteger)ownPid)
+            overOwn = YES;
+        double layer = [info[(__bridge NSString *)kCGWindowLayer] doubleValue];
+        if (layer > topLayer) {
+            topLayer = layer;
+            topWindowPid = pidNum ? pidNum.integerValue : -1;
+        }
     }
     CFRelease(windowList);
 
-    if (topWindow < 0) return 1;
-    return topWindow == (NSInteger)ownId ? 0 : 1;
+    if (overOwn) return 0;      // cursor is over the pet → not occluded
+    if (topWindowPid < 0) return 1;
+    return topWindowPid == (NSInteger)ownPid ? 0 : 1;
 }
 
 #pragma mark - Running applications

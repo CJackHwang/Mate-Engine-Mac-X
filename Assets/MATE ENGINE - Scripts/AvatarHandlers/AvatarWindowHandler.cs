@@ -34,7 +34,7 @@ public class AvatarWindowHandler : MonoBehaviour
     bool wasSitting;
     [Header("Seat Alignment")]
     [Range(-256f, 256f)] public float seatOffsetPx = 0f;
-    [Range(-1.0f, 1.0f)] public float windowSitYOffset = -0.0286f;
+    [Range(-1.0f, 1.0f)] public float windowSitYOffset = -0.02f;
     // "auto" = both edges, "up" = top edge only, "down" = bottom edge only
     public string windowSitEdge = "auto";
     [Header("Occluder")]
@@ -54,7 +54,7 @@ public class AvatarWindowHandler : MonoBehaviour
     public float targetZMin = 0.05f;
     public float targetZMax = 10f;
     [Tooltip("Shifts the cliff occluder plane forward/back from the character's seat depth. Positive moves it deeper (character shows more), negative closer (more of the character's back / hair is occluded below the seat line).")]
-    [Range(-1f, 1f)] public float windowSitCliffOffset = -0.18f;
+    [Range(-1f, 1f)] public float windowSitCliffOffset = -0.12f;
     [Header("Snap Smoothing")]
     public bool enableSnapSmoothing = true;
     [Range(0.01f, 0.5f)] public float snapSmoothingTime = 0.12f;
