@@ -1,695 +1,495 @@
-# 🍎 MateEngine for macOS（非官方 macOS 移植版 / Unofficial macOS Port）
+# 🍎 Mate Engine for macOS · 伙伴引擎 macOS 版 · Mate Engine macOS 版
 
-本项目 / This repo: https://github.com/CJackHwang/Mate-Engine-Mac-X
+**Unofficial native macOS port — a desktop pet app with custom VRM avatars, ported from Mate Engine.**
 
-# Support MateEngine on Steam!
-Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
-Or use it for free here! Any Purchase on Steam will help Developement and future updates!
-
-Steam users get exclusive additional content:
-
-**Accessories**
-
-* Flower Halo
-* Sakura Halo
-* Retro Halo
-* ERROR! NSO Like Face Overlay!
-
-**Extra Features**
-
-* **Event-Based Messages**
-  Generates cute messages when you drag the avatar, make it dance, or let it sit on windows or the taskbar.
-* **Steam Workshop Support**
-  Access modifications, custom models, and dances. You can also create or download them from third-party websites.
-* **Automatic Updates**
-  Always stay up to date with the latest version.
-
-
-
-# 🍎 Mate Engine for macOS · 伙伴引擎 macOS 版
-
-**A native macOS port of Mate Engine** — a free, lightweight desktop pet that lives on your desktop with a custom VRM avatar. Built with **Unity 6000.4.8f1** and native ObjC/Swift plugins.
-
-| | |
+|  |  |
 |---|---|
-| 本项目 / This repo | [`CJackHwang/Mate-Engine-Mac-X`](https://github.com/CJackHwang/Mate-Engine-Mac-X)（macOS 移植版） |
-| 上游 / Upstream | [`shinyflvre/Mate-Engine`](https://github.com/shinyflvre/Mate-Engine)（原作者） |
-| 二级上游 / Secondary upstream | [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac)（macOS 分支接续开发） |
-| Steam | [MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) |
-| 许可 / License | GNU AGPL v3 & MateProv2（见上游仓库许可说明） |
+| **This repo** | [`CJackHwang/Mate-Engine-Mac-X`](https://github.com/CJackHwang/Mate-Engine-Mac-X) |
+| **Official upstream** (Windows) | [`shinyflvre/Mate-Engine`](https://github.com/shinyflvre/Mate-Engine) |
+| **Secondary upstream** (unfinished macOS) | [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) |
+| **Platform** | macOS 12.0+ · Universal binary (Apple Silicon + Intel) |
+| **Engine** | Unity 6000.4.8f1 + native Objective-C plugins |
+| **License** | GNU AGPL v3 & MateProv2 |
 
-> ⚠️ 本项目与上游均为**非官方**：`Marksonthegamer/Mate-Engine-Linux-Port` 是独立的 Linux 非官方移植，与 macOS 这条线无关。
+> ⚠️ **Unofficial notice** — This is a community-made, **unofficial** port. The official project targets Windows. Development continues from the unfinished [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) branch. Note that `Marksonthegamer/Mate-Engine-Linux-Port` is a separate, also-unofficial Linux port and is unrelated to this macOS port.
+>
+> 🚧 **Work in progress** — This port is still under **active development and will contain bugs**. Features may be incomplete, and not all official (Windows) features are available yet. If you hit a problem, please report it via [Issues](https://github.com/CJackHwang/Mate-Engine-Mac-X/issues).
 
 ---
 
-## ✨ 移植贡献 / Porting Contributions
+# 🌐 Language / 言語選択 / 语言选择
 
-这个仓库不只是把代码编译到 macOS，而是针对 macOS 做了**原生深度移植**，主要贡献如下：
+- [English](#english)
+- [日本語](#japanese)
+- [中文](#chinese)
 
-### 🧩 原生 macOS 插件（clang 编译的 .bundle）
+---
+
+## English
+
+### What is this?
+
+**Mate Engine** is a free, lightweight desktop-pet app — an open-source alternative to *Desktop Mate* — with custom VRM avatars and modding support. This project is a **native port to macOS**, built with **Unity 6000.4.8f1** and native Objective-C plugins, supporting both Apple Silicon and Intel.
+
+Based on the upstream `Prepare 3.4 Features` branch (after X3.3).
+
+> 🚧 **Status: work in progress** — this port is still actively developed and **will have bugs**. Some features are incomplete, and not all official Windows features are available yet. If something breaks, [open an issue](https://github.com/CJackHwang/Mate-Engine-Mac-X/issues).
+
+#### 📸 Real-Device Test Screenshots
+
+<img src="picture1.jpg" width="640" alt="Real-device test screenshot on macOS">
+
+<img src="picture.2jpg.jpg" width="400" alt="Real-device test screenshot on macOS (portrait)">
+
+#### 📚 Project Lineage
+
+| Role | Repo | Notes |
+|---|---|---|
+| Official upstream | [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) | Official Windows version by the original author |
+| Secondary upstream | [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) | Unfinished macOS port: v1 fixed WinAPI for basic macOS use → v2 replaced the LLM backend & added TTS → … → v8 dance-action selection; window-sitting basics; Unity 6000.4.8f1 |
+| This project | [CJackHwang/Mate-Engine-Mac-X](https://github.com/CJackHwang/Mate-Engine-Mac-X) | Continues BNDSer's unfinished work and **completes the macOS port**: build scripts, native plugins, ScreenCaptureKit music dancing, ambient light, full i18n and polish |
+
+#### ✨ Porting Feature Support
+
+**Native macOS plugins (clang-built `.bundle`, universal binary)**
+
+| Plugin | Purpose |
+|---|---|
+| `MacSystem.bundle` | Window management, screen-capture authorization (`CGRequestScreenCaptureAccess`), display queries |
+| `MacWindowList.bundle` | Front-to-back window enumeration (powers window-sitting) |
+| `MacAudioMonitor.bundle` | ScreenCaptureKit system-audio capture (dance to music) |
+| `MacWindowFix.bundle` | macOS-specific window interaction fixes (e.g. focus-flicker) |
+
+**Core features**
+
+| Feature | Status | Notes |
+|---|---|---|
+| Native macOS | ✅ | Universal binary (arm64 + x86_64), macOS 12.0+ |
+| Transparent borderless always-on-top window | ✅ | Via UniWindowController |
+| Window sitting | ✅ | Sits on the top/bottom edge of windows (`up` / `down` / `auto` modes); absolute occlusion below the sit-line; runtime depth/height fine-tuning |
+| Dance to music | ✅ | ScreenCaptureKit system-audio capture (requires Screen Recording permission); 20 dance clips selectable |
+| Ambient light | ✅ | Follows the desktop color scheme in real time (requires Screen Recording permission); on by default, adaptive brightness; falls back to regular manual lighting without permission |
+| 13-language i18n | ✅ | EN / zh-Hans / zh-Hant / ja / ko / de / es / fr / pl / ru / tr / uk / kk |
+| AI chat | ✅ | LLM backend replaced with the Anthropic API |
+| TTS voice | ✅ | GPT-SoVITS; independent volume control, repeat & interrupt playback |
+| Crash recovery | ✅ | Dedicated crash-recovery scene + temporary empty scene |
+| CJK & Korean font fallback | ✅ | Dynamic font fallback, no more “tofu” boxes |
+| VRM file picker | ✅ | Fixed macOS file-picker line-wrapping that misread VRM as DLC |
+| Launch-window auto-fit | ✅ | Scales to the main display's visible workspace (minus menu bar / Dock) |
+| Smart settings menu | ✅ | Runtime-generated rows, corrected text/control layout |
+| Out-of-box defaults | ✅ | Polished picture, soft ambient light, core features enabled by default |
+
+#### 🆚 Differences from the Official (Windows) Version
+
+| Aspect | Official (Windows) | This macOS port |
+|---|---|---|
+| Platform | Windows 10/11 | macOS 12.0+ (universal binary) |
+| Dance to music | Windows audio-loopback capture | ScreenCaptureKit system-audio capture, **requires Screen Recording permission** |
+| Sitting target | Window + taskbar | Window top/bottom edges (macOS has no taskbar; `up` / `down` / `auto` modes) |
+| Ambient light | None | **New**: follows desktop color scheme (requires Screen Recording permission) |
+| LLM backend | Local QWEN 2.5 1.5b | Anthropic API (cloud) |
+| TTS voice | None | **New**: GPT-SoVITS TTS |
+| System permissions | None | Screen Recording (ambient light + dancing) |
+| Code signing | Unsigned (antivirus false positives) | ad-hoc signed by default; Developer ID + notarization recommended for release |
+| Steam Workshop | ✅ | ⚠️ Windows-only; not supported / unverified on the macOS port |
+
+#### 🚀 Download & Usage
+
+**Download from Releases**
+
+1. Open the [Releases](https://github.com/CJackHwang/Mate-Engine-Mac-X/releases) page (Releases panel on the right of the repo).
+2. Download the latest **app bundle archive** (e.g. `MateEngineX-vX.X.X-macOS.zip`) — **not** the `Source code` archive.
+3. Unzip and drag `MateEngineX.app` into `/Applications/` (or anywhere).
+
+> If no release artifacts are available yet, build it yourself — see the **Build & Run** section below.
+
+**First run**
+
+1. **Bypass Gatekeeper** (unsigned/not-notarized app): right-click `MateEngineX.app` → **Open**; or allow it under System Settings → Privacy & Security.
+2. Grant **Screen Recording** permission (for ambient light and dancing): System Settings → Privacy & Security → Screen Recording → enable `MateEngineX`.
+3. Launch the app. **Right-click the pet** or press **`M`** to open the settings menu.
+4. Import your own VRM model from the menu (`.vrm` / `.me` / `.prefab` supported).
+
+#### 🔐 Permissions
+
+**Screen Recording** (System Settings → Privacy & Security → Screen Recording) is used for:
+
+- Ambient light (follows the desktop color scheme)
+- Dance to music (system-audio capture)
+
+Without permission the app **degrades gracefully**: it won't auto-dance, and ambient light falls back to regular manual lighting. Everything else works normally.
+
+⚠️ **ad-hoc signing note**: default builds are ad-hoc signed (`codesign -s -`), so macOS treats every rebuild as a *new* app and Screen Recording permission is lost after each update. Reset & re-authorize:
+
+```bash
+tccutil reset ScreenCapture com.Shinymoon.MateEngineX
+# Relaunch the app → click "Allow" in the prompt → quit fully and relaunch
+```
+
+To keep permission across updates, sign with a real certificate (optionally notarize):
+
+```bash
+SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" NOTARIZE=1 ./Tools/build_macos.sh
+```
+
+#### 🛠 Build & Run (macOS)
+
+**Prerequisites**: macOS 12.0+, [Unity 6000.4.8f1](https://unity.com/releases/editor/whats-new/6000.4.8f1), Xcode Command Line Tools (`clang`).
+
+```bash
+./Tools/build_macos.sh        # Builds Builds/macOS/MateEngineX.app (native plugins → Unity build → sign → arch check)
+./Tools/launch_test.sh        # Launches the app and prints audio-capture diagnostics
+./Tools/install_macos.sh      # Installs to /Applications/MateEngineX.app
+```
+
+The output is `Builds/macOS/MateEngineX.app` — copy it into `/Applications/` to install.
+
+**Build parameters (environment variables)**
+
+| Variable | Description |
+|---|---|
+| `UNITY_BIN` | Path to the Unity executable (auto-detects 6000.4.8f1) |
+| `SIGN_IDENTITY` | Signing identity (default: ad-hoc `-`) |
+| `NOTARIZE=1` | Notarize with Apple (requires `APPLE_ID` / `APPLE_TEAM_ID` / `APPLE_ID_PASSWORD`) |
+| `PACKAGE_DMG=1` | Also produce a `.dmg` disk image |
+
+#### ⚖️ License
+
+This project inherits the upstream license: **GNU AGPL v3 & MateProv2** — please read the license terms carefully.
+
+- The default avatar is All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/). Do not redistribute this model in your builds.
+- Scripts and native-plugin code added by this port are released under the same license.
+
+#### ❤️ Support the Official Project
+
+This is a community port — features and future updates depend on the original author, so please support them:
+
+- **Buy on Steam**: [MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) — any Steam purchase helps development and future updates; it remains free on GitHub forever.
+- **Free Hatsune Miku VRM**: [booth.pm](https://booth.pm/en/items/3226395)
+
+#### 🙏 Credits
+
+- [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) — official upstream, original author
+- [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) — secondary upstream; foundational macOS porting work (v1–v8, window-sitting basics, LLM/TTS swap)
+- [maoxig/MateEngine-CustomDancePlayer](https://github.com/maoxig/MateEngine-CustomDancePlayer) — community mod: custom dance player
+- Full upstream README (EN/JA/ZH) and the Desktop-Mate feature comparison are in the [official repo](https://github.com/shinyflvre/Mate-Engine)
+
+---------------------------------------------------------------------
+
+## Japanese
+
+# 🍎 Mate Engine macOS 版
+
+**非公式ネイティブ macOS 移植版 — カスタム VRM アバター対応のデスクトップペットアプリ。**
+
+|  |  |
+|---|---|
+| **本リポジトリ** | [`CJackHwang/Mate-Engine-Mac-X`](https://github.com/CJackHwang/Mate-Engine-Mac-X) |
+| **公式元リポジトリ**（Windows） | [`shinyflvre/Mate-Engine`](https://github.com/shinyflvre/Mate-Engine) |
+| **二次元リポジトリ**（未完成のmacOS） | [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) |
+| **対応環境** | macOS 12.0+ · ユニバーサルバイナリ（Apple Silicon + Intel） |
+| **エンジン** | Unity 6000.4.8f1 + ネイティブ Objective-C プラグイン |
+| **ライセンス** | GNU AGPL v3 & MateProv2 |
+
+> ⚠️ **非公式のお知らせ** — これはコミュニティ製の**非公式**移植です。公式版はWindows向けです。本プロジェクトは、未完成の [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) の作業を引き継いで開発を継続しています。なお、`Marksonthegamer/Mate-Engine-Linux-Port` は別系統の非公式Linux移植であり、このmacOS移植とは無関係です。
+>
+> 🚧 **開発中** — 本移植は現在も活発に開発中であり、**バグが含まれています**。一部の機能は未完成で、公式Windows版の全機能はまだ利用できません。問題が発生した場合は [Issues](https://github.com/CJackHwang/Mate-Engine-Mac-X/issues) から報告してください。
+
+### 📸 実機テストのスクリーンショット
+
+<img src="picture1.jpg" width="640" alt="macOS 実機テストのスクリーンショット">
+
+<img src="picture.2jpg.jpg" width="400" alt="macOS 実機テストのスクリーンショット（縦）">
+
+### 📚 プロジェクトの系譜
+
+| 役割 | リポジトリ | 説明 |
+|---|---|---|
+| 公式元リポジトリ | [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) | 原作者による公式Windows版 |
+| 二次元リポジトリ | [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) | 未完成のmacOS移植：v1でWinAPIを修正してmacOSで基本動作 → v2でLLMバックエンド差し替え＆TTS追加 → … → v8でダンスアクション選択；ウィンドウ座りの基礎；Unity 6000.4.8f1 へ更新 |
+| 本プロジェクト | [CJackHwang/Mate-Engine-Mac-X](https://github.com/CJackHwang/Mate-Engine-Mac-X) | BNDSerの未完成作業を引き継ぎ、**macOS移植を完成**：ビルドスクリプト、ネイティブプラグイン、ScreenCaptureKitによる音楽ダンス、アンビエントライト、完全なi18nと仕上げ |
+
+### ✨ 移植機能の対応状況
+
+**ネイティブ macOS プラグイン（clang でビルドした `.bundle`、ユニバーサルバイナリ）**
+
+| プラグイン | 用途 |
+|---|---|
+| `MacSystem.bundle` | ウィンドウ管理、画面収録の認可（`CGRequestScreenCaptureAccess`）、ディスプレイ情報の取得 |
+| `MacWindowList.bundle` | 前面から背面へのウィンドウ列挙（「ウィンドウ座り」の基盤） |
+| `MacAudioMonitor.bundle` | ScreenCaptureKit によるシステム音声キャプチャ（音楽に合わせてダンス） |
+| `MacWindowFix.bundle` | macOS 専用のウィンドウ操作修正（フォーカス時のちらつきなど） |
+
+**コア機能**
+
+| 機能 | 状態 | 説明 |
+|---|---|---|
+| ネイティブ macOS | ✅ | ユニバーサルバイナリ（arm64 + x86_64）、macOS 12.0+ |
+| 透明・枠なし・常に最前面のウィンドウ | ✅ | UniWindowController を使用 |
+| ウィンドウ座り | ✅ | ウィンドウの上/下エッジに座る（`up` / `down` / `auto` の3モード）；座線以下の完全遮蔽；実行時・深さ/高さの微調整 |
+| 音楽に合わせてダンス | ✅ | ScreenCaptureKit によるシステム音声キャプチャ（画面収録権限が必要）；ダンスは20クリップから選択可能 |
+| アンビエントライト | ✅ | デスクトップの配色にリアルタイム追従（画面収録権限が必要）；デフォルトON・明るさ自動調整；権限がない場合は通常の手動ライトにフォールバック |
+| 13言語のローカライズ | ✅ | EN / 簡中 / 繁中 / 日本語 / 韓国語 / 独語 / 西語 / 仏語 / 波語 / 露語 / トルコ語 / ウクライナ語 / カザフ語 |
+| AIチャット | ✅ | LLMバックエンドを Anthropic API に差し替え |
+| TTS音声 | ✅ | GPT-SoVITS；個別音量、繰り返し/割り込み再生に対応 |
+| クラッシュリカバリ | ✅ | 専用のクラッシュリカバリシーン＋一時的な空シーン |
+| 日中韓フォントのフォールバック | ✅ | 動的フォントフォールバックで「豆腐」表示を防止 |
+| VRMファイル選択 | ✅ | macOSのファイル選択ダイアログの改行によりVRMがDLCと誤判定される問題を修正 |
+| 起動ウィンドウの自動サイズ調整 | ✅ | メインディスプレイの可視ワークスペースに合わせて縮小（メニューバー/Dockを除く） |
+| スマート設定メニュー | ✅ | 実行時に動的生成する行、修正されたテキスト/コントロール配置 |
+| 初期設定の最適化 | ✅ | 美しい画面、柔らかいアンビエントライト、コア機能はデフォルトON |
+
+### 🆚 公式（Windows）版との違い
+
+| 項目 | 公式（Windows） | 本macOS移植 |
+|---|---|---|
+| 対応環境 | Windows 10/11 | macOS 12.0+（ユニバーサルバイナリ） |
+| 音楽ダンス | Windowsオーディオループバック | ScreenCaptureKitによるシステム音声キャプチャ、**画面収録権限が必要** |
+| 座る対象 | ウィンドウ＋タスクバー | ウィンドウの上/下エッジ（macOSにタスクバーは無し、`up`/`down`/`auto`モード） |
+| アンビエントライト | なし | **新規**：デスクトップ配色に追従（画面収録権限が必要） |
+| LLMバックエンド | ローカルQWEN 2.5 1.5b | Anthropic API（クラウド） |
+| TTS音声 | なし | **新規**：GPT-SoVITS TTS |
+| システム権限 | なし | 画面収録（アンビエントライト＋ダンス） |
+| コード署名 | 未署名（誤検知あり） | デフォルトはad-hoc署名；リリース時はDeveloper ID＋公証を推奨 |
+| Steam Workshop | ✅ | ⚠️ Windows限定；macOS移植では未対応・未検証 |
+
+### 🚀 ダウンロードと使い方
+
+**Releases からダウンロード**
+
+1. [Releases](https://github.com/CJackHwang/Mate-Engine-Mac-X/releases) ページを開く（リポジトリ右側のReleases）。
+2. 最新の**アプリバンドルアーカイブ**（例：`MateEngineX-vX.X.X-macOS.zip`）をダウンロード。`Source code`（ソースコード）は**選ばない**でください。
+3. 解凍して `MateEngineX.app` を `/Applications/` にドラッグ＆ドロップ（任意の場所でも可）。
+
+> まだリリース成果物が無い場合は、下記「ビルドと実行」を参考に自分でビルドしてください。
+
+**初回起動**
+
+1. **Gatekeeper の回避**（未署名・未公証アプリ）：`MateEngineX.app` を右クリック → **開く**；または「システム設定 → プライバシーとセキュリティ」で許可。
+2. **画面収録**権限を許可（アンビエントライトとダンス用）：システム設定 → プライバシーとセキュリティ → 画面収録 → `MateEngineX` を有効化。
+3. アプリを起動。**ペットを右クリック**、または **`M`** キーで設定メニューを開く。
+4. メニューから自分のVRMモデルを読み込む（`.vrm` / `.me` / `.prefab` 対応）。
+
+### 🔐 権限について
+
+**画面収録（Screen Recording）**（システム設定 → プライバシーとセキュリティ → 画面収録）は以下に使用します：
+
+- アンビエントライト（デスクトップ配色に追従）
+- 音楽に合わせてダンス（システム音声キャプチャ）
+
+権限がない場合は**機能が制限されます**：自動ダンスを行わず、アンビエントライトは通常の手動ライトにフォールバックします。それ以外の機能は正常に動作します。
+
+⚠️ **ad-hoc署名の注意**：デフォルトのビルドはad-hoc署名（`codesign -s -`）のため、macOSは再ビルドのたびに「新しいアプリ」とみなし、画面収録権限が毎回リセットされます。リセットと再許可：
+
+```bash
+tccutil reset ScreenCapture com.Shinymoon.MateEngineX
+# アプリを再起動 → プロンプトで「許可」→ 完全終了して再起動
+```
+
+更新をまたいで権限を維持したい場合は、正式な証明書で署名（任意で公証）してください：
+
+```bash
+SIGN_IDENTITY="Developer ID Application: あなたの名前 (TEAMID)" NOTARIZE=1 ./Tools/build_macos.sh
+```
+
+### 🛠 ビルドと実行（macOS）
+
+**前提条件**：macOS 12.0+、[Unity 6000.4.8f1](https://unity.com/releases/editor/whats-new/6000.4.8f1)、Xcode Command Line Tools（`clang`）。
+
+```bash
+./Tools/build_macos.sh        # Builds/macOS/MateEngineX.app をビルド（ネイティブプラグイン → Unityビルド → 署名 → アーキテクチャ確認）
+./Tools/launch_test.sh        # アプリを起動し、音声キャプチャの診断ログを表示
+./Tools/install_macos.sh      # /Applications/MateEngineX.app にインストール
+```
+
+出力は `Builds/macOS/MateEngineX.app`。`/Applications/` にコピーすればインストール完了です。
+
+**ビルドパラメータ（環境変数）**
+
+| 変数 | 説明 |
+|---|---|
+| `UNITY_BIN` | Unity実行ファイルのパス（6000.4.8f1を自動検出） |
+| `SIGN_IDENTITY` | 署名ID（デフォルト：ad-hoc `-`） |
+| `NOTARIZE=1` | Apple公証を実行（`APPLE_ID` / `APPLE_TEAM_ID` / `APPLE_ID_PASSWORD` が必要） |
+| `PACKAGE_DMG=1` | `.dmg` ディスクイメージも生成 |
+
+### ⚖️ ライセンス
+
+本プロジェクトは元リポジトリのライセンスを引き継ぎます：**GNU AGPL v3 & MateProv2** — ライセンス条項をよくお読みください。
+
+- デフォルトアバターは [Yorshka Shop](https://yorshkasencho.booth.pm/) が全権利を保有します。このモデルを自作ビルドで再配布しないでください。
+- 本移植で追加されたスクリプトとネイティブプラグインのコードは同じライセンスで公開されます。
+
+### ❤️ 公式プロジェクトを支援
+
+これはコミュニティ移植です。機能や今後のアップデートは原作者に依存しているため、ぜひ支援してください：
+
+- **Steamで購入**：[MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) — 購入は開発と今後のアップデートに役立ちます。GitHubでは今後も完全無料です。
+- **初音ミク無料VRM**：[booth.pm](https://booth.pm/en/items/3226395)
+
+### 🙏 クレジット
+
+- [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) — 公式元リポジトリ、原作者
+- [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) — 二次元リポジトリ；macOS移植の基盤作業（v1〜v8、ウィンドウ座りの基礎、LLM/TTSの差し替え）
+- [maoxig/MateEngine-CustomDancePlayer](https://github.com/maoxig/MateEngine-CustomDancePlayer) — コミュニティMod：カスタムダンスプレイヤー
+- 元リポジトリの完全なREADME（EN/JA/ZH）とDesktop Mateとの機能比較は [公式リポジトリ](https://github.com/shinyflvre/Mate-Engine) にあります
+
+---------------------------------------------------------------------
+
+## Chinese
+
+# 🍎 伙伴引擎 macOS 版
+
+**非官方 macOS 原生移植版 — 支持自定义 VRM 角色的桌面宠物应用。**
+
+|  |  |
+|---|---|
+| **本项目** | [`CJackHwang/Mate-Engine-Mac-X`](https://github.com/CJackHwang/Mate-Engine-Mac-X) |
+| **官方上游**（Windows） | [`shinyflvre/Mate-Engine`](https://github.com/shinyflvre/Mate-Engine) |
+| **二级上游**（未完成的 macOS 版） | [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) |
+| **平台** | macOS 12.0+ · 通用二进制（Apple Silicon + Intel） |
+| **引擎** | Unity 6000.4.8f1 + 原生 Objective-C 插件 |
+| **许可** | GNU AGPL v3 & MateProv2 |
+
+> ⚠️ **非官方声明** — 本项目为社区**非官方**移植，官方版本面向 Windows。本项目接续未完成的 [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac) 继续开发。另请注意：`Marksonthegamer/Mate-Engine-Linux-Port` 是独立的非官方 Linux 移植，与本 macOS 移植无关。
+>
+> 🚧 **仍在开发中** — 本移植项目工作仍在进行，**仍会存在很多 Bug**。部分功能可能不完整，官方 Windows 版的全部功能尚未全部支持。如遇问题，请在 [Issues](https://github.com/CJackHwang/Mate-Engine-Mac-X/issues) 中反馈。
+
+### 📸 实机测试截图
+
+<img src="picture1.jpg" width="640" alt="macOS 实机测试截图">
+
+<img src="picture.2jpg.jpg" width="400" alt="macOS 实机测试截图（竖屏）">
+
+### 📚 项目谱系
+
+| 角色 | 仓库 | 说明 |
+|---|---|---|
+| 官方上游 | [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) | 原作者编写的 Windows 官方版 |
+| 二级上游 | [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) | 未完成的 macOS 移植：v1 修复 WinAPI 使 Mac 基础可用 → v2 替换 LLM 后端、添加 TTS → … → v8 舞蹈动作选择；窗口坐基础；升级 Unity 6000.4.8f1 |
+| 本项目 | [CJackHwang/Mate-Engine-Mac-X](https://github.com/CJackHwang/Mate-Engine-Mac-X) | 接续 BNDSer 的未完成工作，**完成 macOS 原生移植**：构建脚本、原生插件、ScreenCaptureKit 音乐舞蹈、氛围光、完整 i18n 与打磨 |
+
+### ✨ 移植功能支持情况
+
+**原生 macOS 插件（clang 编译的 .bundle，通用二进制）**
+
 | 插件 | 用途 |
 |---|---|
 | `MacSystem.bundle` | 窗口管理、屏幕捕获授权（`CGRequestScreenCaptureAccess`）、显示器查询 |
-| `MacWindowList.bundle` | 前→后窗口枚举（支撑"坐在窗口边缘"） |
+| `MacWindowList.bundle` | 前→后窗口枚举（支撑“坐在窗口边缘”） |
 | `MacAudioMonitor.bundle` | ScreenCaptureKit 系统音频捕获（随音乐跳舞） |
-| `MacWindowFix.bundle` | macOS 专属窗口交互修正 |
+| `MacWindowFix.bundle` | macOS 专属窗口交互修正（失焦跳动等） |
 
-### 🚀 核心移植功能
-- **窗口坐立 / 吸附** — 角色真实地坐在窗口上/下边缘（识别任务栏），屏幕顶部/底部刻意不作为吸附目标
-- **随音乐跳舞** — 通过 ScreenCaptureKit 监听系统音频（需屏幕录制权限）
-- **氛围光（Ambient Light）** — 实时跟随桌面配色；无屏幕录制权限时自动切回常规手动灯光；亮度自适应不刺眼
-- **13 语言本地化** — EN / 简体中文 / 繁體中文 / 日本語 / 한국어 / DE / ES / FR / PL / RU / TR / UK / KK
-- **开屏窗口自适应** — 启动窗口按主显示器可见工作区缩放（扣掉菜单栏/程序坞）
-- **智能设置菜单** — 运行时动态生成的行、修正后的文字/控件布局
-- **透明无边框置顶窗口** — 通过 UniWindowController 实现
+**核心功能**
 
----
+| 功能 | 状态 | 说明 |
+|---|---|---|
+| 原生 macOS 运行 | ✅ | 通用二进制（arm64 + x86_64），macOS 12.0+ |
+| 透明无边框置顶窗口 | ✅ | 通过 UniWindowController 实现 |
+| 窗口坐立 / 吸附 | ✅ | 坐在窗口上/下边缘（`up` / `down` / `auto` 三种模式）；坐线以下绝对遮挡；运行时深度/高度微调 |
+| 随音乐跳舞 | ✅ | ScreenCaptureKit 系统音频捕获（需屏幕录制权限）；20 个舞蹈片段可选 |
+| 氛围光 / 环境光 | ✅ | 实时跟随桌面配色（需屏幕录制权限）；默认开启、亮度自适应；无权限时回退常规手动灯光 |
+| 13 语言本地化 | ✅ | EN / 简中 / 繁中 / 日 / 韩 / 德 / 西 / 法 / 波兰 / 俄 / 土耳其 / 乌克兰 / 哈萨克 |
+| AI 对话 | ✅ | LLM 后端替换为 Anthropic API |
+| 语音合成 TTS | ✅ | GPT-SoVITS；独立音量控制、可重复/打断播放 |
+| 崩溃恢复 | ✅ | 专门的崩溃恢复场景 + 临时空场景 |
+| 中/韩文等字体回退 | ✅ | 动态字体回退，避免“豆腐块” |
+| VRM 文件选择 | ✅ | 修复 macOS 文件选择器换行导致 VRM 被误判为 DLC 的问题 |
+| 开屏窗口自适应 | ✅ | 按主显示器可见工作区缩放（扣除菜单栏/程序坞） |
+| 智能设置菜单 | ✅ | 运行时动态生成的行、修正后的控件布局 |
+| 开箱即用默认参数 | ✅ | 画面精致、氛围灯柔和、核心功能默认开启 |
 
-## 🛠 构建与运行 / Build & Run (macOS)
+### 🆚 与官方（Windows）版的差异
+
+| 方面 | 官方（Windows） | 本移植（macOS） |
+|---|---|---|
+| 运行平台 | Windows 10/11 | macOS 12.0+（通用二进制） |
+| 随音乐跳舞 | Windows 音频回环捕获 | ScreenCaptureKit 系统音频捕获，**需屏幕录制权限** |
+| 坐立目标 | 窗口 + 任务栏 | 窗口上/下边缘（macOS 无任务栏，`up` / `down` / `auto` 模式） |
+| 氛围光 | 无 | **新增**：实时跟随桌面配色（需屏幕录制权限） |
+| LLM 后端 | 本地 QWEN 2.5 1.5b | Anthropic API（云端） |
+| TTS 语音 | 无 | **新增**：GPT-SoVITS TTS |
+| 系统权限 | 无特殊权限 | 屏幕录制权限（氛围光 + 随音乐跳舞） |
+| 数字签名 | 未签名（有杀软误报） | 默认 ad-hoc 签名；发布建议 Developer ID + 公证 |
+| Steam Workshop | ✅ | ⚠️ Windows 专属，macOS 移植暂不支持/未验证 |
+
+### 🚀 下载与使用
+
+**从 Release 下载**
+
+1. 打开 [Releases](https://github.com/CJackHwang/Mate-Engine-Mac-X/releases) 页面（仓库右侧 Releases 区域）。
+2. 下载最新发布的**应用压缩包**（如 `MateEngineX-vX.X.X-macOS.zip`），**不要**下载标记为 `Source code` 的源码包。
+3. 解压，将 `MateEngineX.app` 拖入 `/Applications/`（或任意位置）。
+
+> 如果 Releases 页面暂无可下载产物，请参考下方「构建与运行」自行构建。
+
+**首次启动**
+
+1. **绕过 Gatekeeper**（未签名/未公证应用）：右键点击 `MateEngineX.app` → **打开**；或在「系统设置 → 隐私与安全」中允许。
+2. 授予**屏幕录制**权限（用于氛围光与随音乐跳舞）：系统设置 → 隐私与安全 → 屏幕录制 → 开启 `MateEngineX`。
+3. 启动应用。**右键点击角色**或按 **`M`** 键打开设置菜单。
+4. 在设置菜单中导入你的 VRM 模型（支持 `.vrm` / `.me` / `.prefab`）。
+
+### 🔐 权限说明
+
+**屏幕录制（Screen Recording）**（系统设置 → 隐私与安全 → 屏幕录制）用于：
+
+- 氛围光（跟随桌面配色）
+- 随音乐跳舞（系统音频捕获）
+
+未授予权限时应用会**降级运行**：不自动跳舞、氛围光回退为常规手动灯光，其余功能不受影响。
+
+⚠️ **ad-hoc 签名提示**：默认构建为 ad-hoc 签名（`codesign -s -`），macOS 会把每次重新构建当作新应用，屏幕录制权限在每次更新后都需要重新授权。重置并重新授权：
 
 ```bash
-./Tools/build_macos.sh        # 构建 Builds/macOS/MateEngineX.app（同时重编原生插件）
+tccutil reset ScreenCapture com.Shinymoon.MateEngineX
+# 重新启动应用 → 在系统提示中点「允许」→ 完全退出后再次启动
+```
+
+如需**跨更新保持权限**，请使用正式证书签名（并可选公证）：
+
+```bash
+SIGN_IDENTITY="Developer ID Application: 你的名字 (TEAMID)" NOTARIZE=1 ./Tools/build_macos.sh
+```
+
+### 🛠 构建与运行（macOS）
+
+**前置要求**：macOS 12.0+、[Unity 6000.4.8f1](https://unity.com/releases/editor/whats-new/6000.4.8f1)、Xcode 命令行工具（`clang`）。
+
+```bash
+./Tools/build_macos.sh        # 构建 Builds/macOS/MateEngineX.app（原生插件 → Unity 打包 → 签名 → 架构校验）
 ./Tools/launch_test.sh        # 启动应用并打印音频捕获诊断
+./Tools/install_macos.sh      # 安装到 /Applications/MateEngineX.app
 ```
 
 产物输出在 `Builds/macOS/MateEngineX.app`，复制到 `/Applications/` 即可安装。
 
----
+**构建参数（环境变量）**
 
-## 🔐 权限 / Permissions
+| 变量 | 说明 |
+|---|---|
+| `UNITY_BIN` | Unity 可执行文件路径（默认自动探测 6000.4.8f1） |
+| `SIGN_IDENTITY` | 签名身份（默认 ad-hoc `-`） |
+| `NOTARIZE=1` | 进行 Apple 公证（需 `APPLE_ID` / `APPLE_TEAM_ID` / `APPLE_ID_PASSWORD`） |
+| `PACKAGE_DMG=1` | 同时生成 .dmg 安装镜像 |
 
-**屏幕录制（Screen Recording）**（系统设置 → 隐私与安全 → 屏幕录制）用于：
-- 氛围光（跟随桌面配色）
-- 随音乐跳舞（系统音频捕获）
+### ⚖️ 许可
 
-⚠️ **ad-hoc 签名提示**：目前构建是 ad-hoc 签名（`codesign -s -`），macOS 会把**每次重新构建当作新应用**，屏幕录制权限在每次更新后都需要重新授权。重置并重新授权：
+本项目沿用上游许可：**GNU AGPL v3 & MateProv2**（请仔细阅读许可条款）。
 
-```bash
-tccutil reset ScreenCapture com.Shinymoon.MateEngineX
-# 重新启动应用 → 在弹出的提示中点「允许」→ 完全退出后再次启动
-```
+- 默认角色模型版权归 [Yorshka Shop](https://yorshkasencho.booth.pm/) 所有，请勿在你的构建中再分发。
+- 本移植新增的脚本与原生插件代码按相同许可发布。
 
-如果希望**跨更新保持权限**，请用正式证书签名：
+### ❤️ 支持官方项目
 
-```bash
-SIGN_IDENTITY="Apple Development: 你的名字 (TEAMID)" ./Tools/build_macos.sh
-```
+本项目是社区移植，功能与后续更新依赖原作者持续开发，请支持他们：
 
----
+- **Steam 购买**：[MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) —— 任何 Steam 购买都将帮助开发与未来更新；GitHub 上始终免费。
+- **免费初音未来 VRM**：[booth.pm](https://booth.pm/en/items/3226395)
 
-*下方为上游 Mate Engine 的原始说明（English / 日本語 / 中文）。*
+### 🙏 致谢
 
-
-# Note-Worthy Community Mods:
-
-Custom Dance Player
-https://github.com/maoxig/MateEngine-CustomDancePlayer
-
-
-
-
-
-# 🌐 Language / 言語選択 / 语言选择
-
-- [English](#English)
-- [日本語](#Japanese)
-- [中文](#Chinese)
-
-
-
----
-
-
-## English
-
-![Mate Engine Preview](https://i.imgur.com/5cHHH8c.jpeg)
-
-# Mate Engine
-
-A free, lightweight alternative to **Desktop Mate** with custom VRM support and modding. Fewer limitations, more freedom.
-
-- **App License**: Mixed — GNU AGPL v3 & MateProv2 License
-  *Please read the license terms carefully.*
-- **Default Avatar License**: All Rights Reserved by [Yorshka Shop](https://yorshkasencho.booth.pm/)  
-  *Do not redistribute this model in your builds.*
-- **QWEN 2.5 1.5b LLM**: *Apache License Version 2.0, January 2004*
-
----
-
-## About the Project
-
-**Mate Engine** was created as a free alternative to **Desktop Mate** and others.
-
-Why? Because **Desktop Mate** charges **$10–$25 USD** for single character models—prices comparable to full games on Steam. On top of that, modding and custom models were disabled in later versions.
-
-**Mate Engine** solves both problems:
-
-- It's **completely free**
-- It supports **custom VRM avatars**
-- It’s **open-source and moddable**
-
-![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
-
----
-
-## Free Hatsune Miku Support
-
-Want to try with a free model?  
-[Download Hatsune Miku VRM](https://booth.pm/en/items/3226395)
-
----
-
-## Feature Comparison
-Comparison between "Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine"
-
-| Feature Comparisson                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (X3.0) |
-|--------------------------|--------------|-----------|------------|
-| Open Source              | ❌           | ❌        | ✅         |
-| Mod Support              | ❌           | ❌        | ✅         |
-| Custom VRM               | ❌           | ✅        | ✅         |
-| Custom Shaders           | ❌           | ❌        | ✅         |
-| .ME File Format          | ❌           | ❌        | ✅         |
-| Window Sitting           | ✅           | ✅        | ✅         |
-| Taskbar Sitting          | ✅           | ✅        | ✅         |
-| Idle Animation           | ✅           | ✅        | ✅         |
-| Dragging Animation       | ✅           | ✅        | ✅         |
-| Dance to Music           | ❌           | ❌        | ✅         |
-| Head Tracking            | ✅           | ✅        | ✅         |
-| Spine Tracking           | ❌           | ❌        | ✅         |
-| Eye Tracking             | ❌           | ❌        | ✅         |
-| Hand Movement            | ✅           | ❌        | ✅         |
-| Alarm / Timer            | ✅           | ✅        | ✅         |
-| ScreenSaver              | ❌           | ❌        | ✅         |
-| Touch Regions            | ❌           | ❌        | ✅         |
-| Avatar SFX               | ❌           | ❌        | ✅         |
-| Particle Effects         | ✅           | ❌        | ✅         |
-| FPS Control              | ❌           | ✅        | ✅         |
-| Always On Top Toggle     | ❌           | ✅        | ✅         |
-| Chibi Mode               | ❌           | ❌        | ✅         |
-| Post Processing Bloom    | ❌           | ❌        | ✅         |
-| Post Processing AO       | ❌           | ❌        | ✅         |
-| MSAA x8 Support          | ✅           | ❌        | ✅         |
-| Big Screen Mode          | ❌           | ❌        | ✅         |
-| System Icon              | ✅           | ❌        | ✅         |
-| System Icon Settings     | ❌           | ❌        | ✅         |
-| Smooth Anim Transitions  | ❌           | ❌        | ✅         |
-| Steam Workshop           | ❌           | ✅        | ✅         |
-| Built-In SDK             | ❌           | ❌        | ✅         |
-| AI Chat                  | ❌           | ✅        | ✅         |
-| Advanced AI Functions    | ❌           | ✅        | ✅         |
-| Markdown Support on AI    | ❌           | ❌        | ✅         |
-| AI API Functions         | ❌           | ✅        | ✅         |
-| Free To Use              | ✅           | ✅        | ✅         |
-| Multi Language Support   | ❌           | ✅        | ✅         |
-| AI Voices                | ❌           | ✅        | ❌         |
-| Animation Modding        | ❌           | ❌        | ✅         |
-| CPU Usage                | Moderate     | Very Good | Very Good  |
-| GPU Usage                | Moderate     | Good      | Good       |
-| RAM Usage                | Good    | Very Bad  | Very Good       |
-| Anti Cheat Safe          | ❌           | ❌        | ✅         |
-| Sleep                    | ❌           | ❌        | ✅         |
-| Compatible with Games    | ❌           | ❌        | ✅         |
-| Start with PC    | ❌           | ❌        | ✅         |
-| Blendshape Edit Support    | ❌           | ❌        | ✅         |
-| Cosmetic Items    | ❌           | ❌        | ✅         |
-| MMD Music Animation Player    | ❌           | ❌        | ✅         |
-| Expression based on Movement    | ✅           | ❌        | ✅         |
-| Discord Rich Presence    | ❌           | ❌        | ✅         |
-| Inverse Kinematics    | ❌           | ❌        | ✅         |
-| Masculine Animations    | ❌           | ❌        | ✅         |
-| Menu Customizations    | ❌           | ❌        | ✅         |
-| Debugging Menu    | ❌           | ❌        | ✅         |
-| Up to 9 Avatars at the Same Time    | ❌           | ❌        | ✅         |
-| Sync Dances between multiple Avatars   | ❌           | ❌        | ✅         |
-| Minecraft Integration   | ❌           | ❌        | ✅         |
-| Food System   | ❌           | ❌        | ✅         |
----
-
-## Steam Release Support
-
-![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
-
-**Funding Progress:** $239.34 / $100  
-**Target Date:** March 26, 2025
-
-Thanks to the amazing support of the community, **Mate Engine** will be released on Steam for **$3.99** — but it will always remain **free on GitHub**.
-
-**Top Supporters:**
-- Gra**** Ja***** – $94.00  
-- Co**** Da***** – $96.00  
-- Dym**** Sk***** – $5.59  
-- Dreezer – $45.00
-
-If you’d like to help with future updates or cover Steam fees, you can donate via **PayPal**:  
-**johnson@soultechno.de**  
-(*Please add a note: “MateEngine Donation”*)
-
----
-
-## Smoother Transitions
-
-![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
-
-Mate Engine offers smoother animation transitions than Desktop Mate, avoiding the glitchy, abrupt changes often found in commercial alternatives.
-
----
-
-## Performance
-<img width="1025" height="945" alt="image" src="https://github.com/user-attachments/assets/e09368b2-21e2-49e5-a965-774f8007c895" />
-
-
-**Mate Engine** is lightweight and efficient. RAM usage depends on the avatar’s texture size. For example, the high-quality "Alice" model uses ~190MB of texture memory, leading to ~200MB total RAM usage. Using lighter models will reduce this further.
-
----
-
-## How to Use
-
-1. Go to the **Releases** section (on the right-hand panel).  
-2. Download the ZIP file marked as a public release (not source code).  
-3. Unzip and run `MateEngineX.exe`.  
-4. Right-click the avatar or press `M` to open the settings menu.
-
----
-
-## Developer Guide
-
-Want to contribute? Setup is easy:
-
-1. Clone this repo and extract the folder.  
-2. Open **Unity Hub** → **Add Project From Disk**  
-3. Select the folder `Mate-Engine-BRANCH`  
-4. Load the project, then open the scene:  
-   `Scenes - USED FOR MATE ENGINE > Mate Engine Main`
-
-> ⚠️ Avoid scenes like *Mate Engine InDev* unless you're on the dev branch.
-
----
-
-## Antivirus Notice
-
-If **Windows Defender** flags `Trojan:Script/Wacatac.B1ml`, **don’t worry** — this is a **false positive** caused by the app not being digitally signed.
-
-You can verify safety by scanning the app on [VirusTotal](https://www.virustotal.com/).
-
----
-
-## Final Words
-
-Thanks for checking out **Mate Engine**!  
-This project is made with love and designed to stay free forever.  
-If you like it, share it or support it — but most of all, enjoy it.
-
----------------------------------------------------------------------
-
-
-## Japanese
-
-![Mate Engine Preview](https://i.imgur.com/5cHHH8c.jpeg)
-
-# Mate Engine（メイトエンジン）
-
-軽量なインターフェースとカスタムVRM対応を備えた、無料のDesktop Mate代替アプリ。制限が少なく、より自由に。
-
-- **アプリのライセンス**：混合 — GNU AGPL v3 & 著作権付きコンポーネント  
-  ※ライセンス内容をよくお読みください。
-- **デフォルトアバターのライセンス**：[Yorshka Shop](https://yorshkasencho.booth.pm/) による著作権所有  
-  ※このモデルを自作ビルドで再配布しないでください。
-
----
-
-## プロジェクトについて
-
-**Mate Engine** は、**Desktop Mate** の無料代替として開発されました。
-
-理由はシンプルです：**Desktop Mate** のキャラモデルは 1体 **$10〜$25 USD** と高額で、これはSteamなどで販売されているフルゲームと同価格帯です。  
-さらに、後期バージョンでは**Mod対応が削除**され、カスタムモデルの導入が不可能になりました。
-
-**Mate Engine** はこれらの問題を解決します：
-
-- 完全無料で利用可能  
-- カスタムVRMアバターをロード可能  
-- オープンソースかつMod対応
-
-![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
-
----
-
-## 初音ミクを無料で楽しもう
-
-無料モデルを試したい方へ：  
-[初音ミク VRMをダウンロード](https://booth.pm/en/items/3226395)
-
----
-## 機能比較
-
-「Desktop Mate」 「Phase Pal (Playtest Alpha)」 「MateEngine」の比較
-
-| 機能              | Desktop Mate | Phase Pal | MateEngine |
-| --------------- | ------------ | --------- | ---------- |
-| オープンソース         | ❌            | ❌         | ✅          |
-| Mod サポート        | ❌            | ❌         | ✅          |
-| カスタム VRM        | ❌            | ✅         | ✅          |
-| カスタムシェーダー       | ❌            | ❌         | ✅          |
-| .ME ファイル形式      | ❌            | ❌         | ✅          |
-| ウィンドウ上に座る       | ✅            | ✅         | ✅          |
-| タスクバー上に座る       | ✅            | ✅         | ✅          |
-| アイドルアニメーション     | ✅            | ✅         | ✅          |
-| ドラッグアニメーション     | ✅            | ✅         | ✅          |
-| 音楽に合わせてダンス      | ❌            | ❌         | ✅          |
-| 頭部トラッキング        | ✅            | ✅         | ✅          |
-| 背骨トラッキング        | ❌            | ❌         | ✅          |
-| 目のトラッキング        | ❌            | ❌         | ✅          |
-| 手の動き            | ❌            | ❌         | ✅          |
-| アラーム / タイマー     | ✅            | ✅         | ✅          |
-| スクリーンセーバー       | ❌            | ❌         | ✅          |
-| タッチ領域           | ❌            | ❌         | ✅          |
-| アバター効果音 (SFX)   | ❌            | ❌         | ✅          |
-| パーティクルエフェクト     | ❌            | ❌         | ✅          |
-| FPS 制御          | ❌            | ✅         | ✅          |
-| 常に最前面表示切替       | ❌            | ✅         | ✅          |
-| ちびキャラモード        | ❌            | ❌         | ✅          |
-| ポストプロセス ブルーム    | ❌            | ❌         | ✅          |
-| ポストプロセス AO      | ❌            | ❌         | ✅          |
-| MSAA x8 サポート    | ❌            | ❌         | ✅          |
-| ビッグスクリーンモード     | ❌            | ❌         | ✅          |
-| システムアイコン        | ✅            | ❌         | ✅          |
-| システムアイコン設定      | ❌            | ❌         | ✅          |
-| スムーズなアニメーション遷移  | ❌            | ❌         | ✅          |
-| Steam ワークショップ   | ❌            | ✅         | ✅          |
-| 内蔵 SDK          | ❌            | ❌         | ✅          |
-| AI チャット         | ❌            | ✅         | ✅          |
-| 高度な AI 機能       | ❌            | ✅         | ❌          |
-| AI API 機能       | ❌            | ✅         | ❌          |
-| 無料利用可能          | ✅            | ✅         | ✅          |
-| 多言語サポート         | ❌            | ✅         | ✅          |
-| AI ボイス          | ❌            | ✅         | ❌          |
-| アニメーション Modding | ❌            | ❌         | ✅          |
-| CPU 使用率         | 普通           | 非常に良い     | 非常に良い      |
-| GPU 使用率         | 普通           | 良い        | 良い         |
-| RAM 使用率         | 非常に良い        | 非常に悪い     | 良い         |
-| アンチチート安全        | ❌            | ❌         | ✅          |
-| スリープ機能          | ❌            | ❌         | ✅          |
-| ゲームとの互換性        | ❌            | ❌         | ✅          |
-
----
-
-## Steam公開のご支援をお願いします！
-
-![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
-
-**資金状況：** $239.34 / $100  
-**目標達成日：** 2025年3月26日
-
-皆様のご支援により、**Mate Engine** は **$3.99** でSteam公開されます。  
-ただし、**GitHubではこれからも完全無料です！**
-
-**支援者の皆様：**
-- Gra**** Ja***** – $94.00  
-- Co**** Da***** – $96.00  
-- Dym**** Sk***** – $5.59  
-- Dreezer – $45.00
-
-**支援はこちらから：**  
-PayPal: **johnson@soultechno.de**  
-（※「MateEngine Donation」と記載してください）
-
----
-
-## スムーズなアニメーション遷移
-
-![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
-
-Mate Engineは**非常に滑らかなアニメーション遷移**を実現しています。  
-Desktop Mateのようなカクつきや状態切り替えのバグがなく、常に自然な動きを保ちます。
-
----
-
-## パフォーマンス
-
-![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
-
-**Mate Engine** は軽量かつ省リソース設計。使用するモデルによってRAM消費は変動します。  
-例：「Alice」モデルではテクスチャが約190MBで、合計約200MBのRAMを使用します。  
-より軽量なモデルを使用すればさらに負荷は低下します。
-
----
-
-## 主な機能
-
-- **アイドルアニメーション** – デスクトップ上でループ再生  
-- **ドラッグアニメーション** – 移動時にふわっと浮遊  
-- **ダンス機能（実験的）** – SpotifyやFirefoxなどで音楽に反応  
-- **VRMインジェクト** – 任意の正しい`.VRM`モデルを使用可能  
-- **タッチリアクション** – 顔や頭のタッチに反応  
-- **カスタムMod対応** – サウンド・パーティクルなどを自由に追加  
-- **オプションメニュー** – ペットを右クリック、または`M`キーで開く  
-- **FPS設定、最前面表示、ちびモード** なども搭載
-
----
-
-## 今後のアップデート（Pre-Release 5〜10）
-
-- **Wallpaper Engine連携** – 壁紙内にMate Engineを埋め込み可能  
-- **ウィンドウ／タスクバーに座る機能** – 実装難易度高めですが検討中  
-- **メニュー色カスタマイズ** – お好みに合わせてテーマ変更可能  
-
----
-
-## 使い方
-
-1. 右の「Releases」セクションから最新版ZIPをダウンロード  
-2. `MateEngineX.exe` を展開し、実行  
-3. ペットを右クリック、または `M` を押してオプションメニューを開く
-
----
-
-## よくある質問
-
-**Q: VRMモデルが読み込めません！**  
-**A:** 多くの場合、モデルのエクスポート設定に問題があります。正しくボーンが設定されているか、互換性のあるシェーダーを使っているかご確認ください。
-
-**Q: 初音ミクは最初から入っていますか？**  
-**A:** 含まれていません。上記のBoothリンクから無料でダウンロードしてください。
-
-**VRM変換の参考ガイド：**  
-[公式VRM変換ガイド](https://vrm.dev/en/vrm/how_to_make_vrm/)
-
-※VRMファイルの作成サポートは本プロジェクトの対象外です。
-
----
-
-## 開発者向けセットアップ
-
-Mate Engineの開発に参加するのはとても簡単です：
-
-1. GitHubリポジトリをクローンし、展開  
-2. **Unity Hub** を開き、「Add Project From Disk」を選択  
-3. `Mate-Engine-BRANCH` フォルダを選択  
-4. プロジェクトを開き、以下のシーンを開く：  
-   `Scenes - USED FOR MATE ENGINE > Mate Engine Main`
-
-> ⚠️ *Mate Engine InDev* などの別ブランチ用シーンは開かないでください。
-
----
-
-## ウイルス検出に関する注意
-
-**Windows Defender** が `Trojan:Script/Wacatac.B1ml` を検出する場合がありますが、**これは誤検知**です。  
-アプリが**デジタル署名されていない**ために起こる問題です。
-
-心配な方は [VirusTotal](https://www.virustotal.com/) などでスキャンしてください。
-
----
-
-## 最後に
-
-**Mate Engine** を楽しんでいただけたら嬉しいです！  
-このプロジェクトはこれからも無料で公開していきます。  
-支援やシェアも大歓迎ですが、何よりもまずは使って楽しんでください！
-
-
-## Chinese
-
-![Mate Engine Preview](https://i.imgur.com/5cHHH8c.jpeg)
-
-# Mate Engine（伙伴引擎）
-
-一款免费、轻量级的 **Desktop Mate** 替代品，支持自定义VRM模型和模组功能。更少限制，更多自由。
-
-- **应用程序许可证**：Mixed — GNU AGPL v3 & MateProv2 License
-  *请仔细阅读许可证条款。*
-- **默认角色许可证**：由 [Yorshka Shop](https://yorshkasencho.booth.pm/) 保留所有权利
-  *请勿在您的构建中重新分发此模型。*
-- **QWEN 2.5 1.5b LLM**：*Apache许可证 版本2.0，2004年1月*
-
-# 在Steam上支持MateEngine！
-在Steam上购买：https://store.steampowered.com/app/3625270/MateEngine/
-也可以在此免费使用！在Steam上的任何购买都将有助于开发和未来的更新！
-
----
-
-## 关于项目
-
-**Mate Engine** 是作为 **Desktop Mate** 等软件的免费替代品而创建的。
-
-为什么？因为 **Desktop Mate** 对单个角色模型收取 **10–25美元** —— 这与Steam上全价游戏相当。更糟糕的是，后续版本禁用了模组功能和自定义模型。
-
-**Mate Engine** 解决了这两个问题：
-
-- 它是**完全免费**的
-- 它支持**自定义VRM角色**
-- 它是**开源且支持模组**的
-
-![Mate Engine Preview](https://i.imgur.com/nNyWA1L.png)
-
----
-
-## 免费初音未来支持
-
-想尝试免费模型吗？
-[下载初音未来VRM模型](https://booth.pm/en/items/3226395)
-
----
-
-## 功能对比
-"Desktop Mate" "Phase Pal (Playtest Alpha)" "MateEngine" 的功能对比
-
-| 功能对比                | Desktop Mate (1.6.0) | Phase Pal (Alpha) | MateEngine (1.9.8) |
-|--------------------------|--------------|-----------|------------|
-| 开源                    | ❌           | ❌        | ✅         |
-| 模组支持                | ❌           | ❌        | ✅         |
-| 自定义VRM               | ❌           | ✅        | ✅         |
-| 自定义着色器            | ❌           | ❌        | ✅         |
-| .ME文件格式             | ❌           | ❌        | ✅         |
-| 窗口坐立                | ✅           | ✅        | ✅         |
-| 任务栏坐立              | ✅           | ✅        | ✅         |
-| 待机动画                | ✅           | ✅        | ✅         |
-| 拖拽动画                | ✅           | ✅        | ✅         |
-| 随音乐起舞              | ❌           | ❌        | ✅         |
-| 头部追踪                | ✅           | ✅        | ✅         |
-| 脊柱追踪                | ❌           | ❌        | ✅         |
-| 眼部追踪                | ❌           | ❌        | ✅         |
-| 手部动作                | ❌           | ❌        | ✅         |
-| 闹钟/计时器             | ✅           | ✅        | ✅         |
-| 屏幕保护                | ❌           | ❌        | ✅         |
-| 触摸区域                | ❌           | ❌        | ✅         |
-| 角色音效                | ❌           | ❌        | ✅         |
-| 粒子效果                | ❌           | ❌        | ✅         |
-| FPS控制                 | ❌           | ✅        | ✅         |
-| 始终置顶切换            | ❌           | ✅        | ✅         |
-| 迷你模式                | ❌           | ❌        | ✅         |
-| 后处理光晕              | ❌           | ❌        | ✅         |
-| 后处理环境光遮蔽        | ❌           | ❌        | ✅         |
-| MSAA x8支持             | ❌           | ❌        | ✅         |
-| 大屏幕模式              | ❌           | ❌        | ✅         |
-| 系统图标                | ✅           | ❌        | ✅         |
-| 系统图标设置            | ❌           | ❌        | ✅         |
-| 平滑动画过渡            | ❌           | ❌        | ✅         |
-| Steam创意工坊           | ❌           | ✅        | ✅         |
-| 内置SDK                 | ❌           | ❌        | ✅         |
-| AI聊天                  | ❌           | ✅        | ✅         |
-| 高级AI功能              | ❌           | ✅        | ❌         |
-| AI API功能              | ❌           | ✅        | ❌         |
-| 免费使用                | ✅           | ✅        | ✅         |
-| 多语言支持              | ❌           | ✅        | ✅         |
-| AI语音                  | ❌           | ✅        | ❌         |
-| 动画模组                | ❌           | ❌        | ✅         |
-| CPU使用率               | 中等         | 非常好    | 非常好     |
-| GPU使用率               | 中等         | 良好      | 良好       |
-| RAM使用率               | 非常好       | 非常差    | 良好       |
-| 反作弊安全              | ❌           | ❌        | ✅         |
-| 睡眠功能                | ❌           | ❌        | ✅         |
-| 游戏兼容性              | ❌           | ❌        | ✅         |
-| 随电脑启动              | ❌           | ❌        | ✅         |
-| 表情编辑支持            | ❌           | ❌        | ✅         |
----
-
-## Steam发布支持
-
-![Mate Engine Preview](https://i.imgur.com/Efp1AfG.png)
-
-**资金进度：** $239.34 / $100  
-**目标日期：** 2025年3月26日
-
-感谢社区的大力支持，**Mate Engine** 将以 **$3.99** 的价格在Steam上发布 —— 但它在GitHub上永远是**免费**的。
-
-**顶级支持者：**
-- Gra**** Ja***** – $94.00  
-- Co**** Da***** – $96.00  
-- Dym**** Sk***** – $5.59  
-- Dreezer – $45.00
-
-如果您想帮助未来更新或支付Steam费用，可以通过**PayPal**捐赠：
-**johnson@soultechno.de**  
-(*请添加备注："MateEngine Donation"*)
-
----
-
-## 更流畅的过渡
-
-![Mate Engine Preview](https://i.imgur.com/qS894h9.gif)
-
-Mate Engine提供比Desktop Mate更流畅的动画过渡，避免了商业替代品中常见的卡顿和突然变化。
-
----
-
-## 性能
-
-![Mate Engine Preview](https://i.imgur.com/MTbnIeE.png)
-
-**Mate Engine** 轻巧高效。RAM使用量取决于角色的纹理大小。例如，高质量的"Alice"模型使用约190MB的纹理内存，导致约200MB的总RAM使用量。使用较轻的模型将进一步减少这一消耗。
-
----
-
-## 主要功能
-
-- **待机动画** – 在桌面上循环播放
-- **拖拽动画** – 移动时轻轻漂浮
-- **跳舞功能（实验性）** – 对Spotify或Firefox等中的音乐做出反应
-- **VRM导入** – 可以使用任何正确的`.VRM`模型
-- **触摸反应** – 对脸部和头部的触摸做出反应
-- **自定义模组支持** – 自由添加声音、粒子等
-- **选项菜单** – 右键点击角色或按`M`键打开
-- **FPS设置、始终置顶、迷你模式** 等功能也已搭载
-
----
-
-## 使用方法
-
-1. 前往右侧的**Releases**部分。
-2. 下载标记为公开发布的ZIP文件（非源代码）。
-3. 解压缩并运行`MateEngineX.exe`。
-4. 右键点击角色或按`M`键打开设置菜单。
-
----
-
-## 开发者指南
-
-想贡献代码？设置很简单：
-
-1. 克隆此仓库并解压文件夹。
-2. 打开**Unity Hub** → **从磁盘添加项目**
-3. 选择`Mate-Engine-BRANCH`文件夹
-4. 加载项目，然后打开场景：
-   `Scenes - USED FOR MATE ENGINE > Mate Engine Main`
-
-> ⚠️ 除非您在开发分支上，否则请避免打开*Mate Engine InDev*等场景。
-
----
-
-## 防病毒软件注意事项
-
-如果**Windows Defender**标记`Trojan:Script/Wacatac.B1ml`，**请不要担心** —— 这是由于应用程序未经过数字签名而导致的**误报**。
-
-您可以在[VirusTotal](https://www.virustotal.com/)上扫描应用程序以验证安全性。
-
----
-
-## 最后的话
-
-感谢您查看**Mate Engine**！
-这个项目是用爱制作的，并旨在永远免费提供。
-如果您喜欢它，请分享或支持它 —— 但最重要的是，享受它。
-
---------------------------------------------------------------------
-
+- [shinyflvre/Mate-Engine](https://github.com/shinyflvre/Mate-Engine) — 官方上游，原作者
+- [BNDSer/Mate-Engine-Mac](https://github.com/BNDSer/Mate-Engine-Mac) — 二级上游，macOS 移植的奠基工作（v1–v8、窗口坐基础、LLM/TTS 替换）
+- [maoxig/MateEngine-CustomDancePlayer](https://github.com/maoxig/MateEngine-CustomDancePlayer) — 社区模组：自定义舞蹈播放器
+- 上游完整的英文 / 日文 / 中文说明与功能对比请见 [官方仓库](https://github.com/shinyflvre/Mate-Engine)
