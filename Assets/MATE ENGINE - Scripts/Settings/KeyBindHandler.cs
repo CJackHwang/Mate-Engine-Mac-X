@@ -53,7 +53,7 @@ public class KeyBindHandler : MonoBehaviour
 
                     if (bind.unloadLLMOnToggleOff)
                     {
-                        // FindObjectOfType<LLM>()?.Unload(); // Update in MateEngine 1.8.0 Or Later
+                        // FindAnyObjectByType<LLM>()?.Unload(); // Update in MateEngine 1.8.0 Or Later
                     }
                 }
             }

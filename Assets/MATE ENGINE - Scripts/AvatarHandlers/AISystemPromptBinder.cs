@@ -16,7 +16,7 @@ public class AISystemPromptBinder : MonoBehaviour
     void Reset()
     {
         if (!input) input = GetComponent<InputField>();
-        if (!target) target = FindObjectOfType<AnthropicChatHandler>();
+        if (!target) target = FindAnyObjectByType<AnthropicChatHandler>();
     }
 
     void Awake()

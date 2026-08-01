@@ -448,7 +448,7 @@ namespace Mochie {
         void CacheRenderersUsingThisMaterial(Material material){
             m_RenderersUsingThisMaterial.Clear();
 
-            ParticleSystemRenderer[] renderers = UnityEngine.Object.FindObjectsOfType(typeof(ParticleSystemRenderer)) as ParticleSystemRenderer[];
+            ParticleSystemRenderer[] renderers = UnityEngine.Object.FindObjectsByType<ParticleSystemRenderer>(FindObjectsInactive.Exclude);
             foreach (ParticleSystemRenderer renderer in renderers)
             {
                 if (renderer.sharedMaterial == material)

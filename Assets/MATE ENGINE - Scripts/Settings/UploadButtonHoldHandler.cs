@@ -104,7 +104,7 @@ public class UploadButtonHoldHandler : MonoBehaviour, IPointerDownHandler, IPoin
                 }
             }
 
-            var menu = GameObject.FindFirstObjectByType<AvatarLibraryMenu>();
+            var menu = GameObject.FindAnyObjectByType<AvatarLibraryMenu>();
             if (menu != null) menu.ReloadAvatars();
 
             if (errorText != null) errorText.text = "";

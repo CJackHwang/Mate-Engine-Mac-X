@@ -54,9 +54,7 @@ void MacAudio_Stop(void)
 int MacAudio_IsOutputActive(void)
 {
     if (!gRunning) MacAudio_Start();
-    int result = gPeakLevel > 0.01f ? 1 : 0;
-    NSLog(@"[MacAudioMonitor] peak=%.4f active=%d", gPeakLevel, result);
-    return result;
+    return gPeakLevel > 0.01f ? 1 : 0;
 }
 
 // Returns the name of the default output device.

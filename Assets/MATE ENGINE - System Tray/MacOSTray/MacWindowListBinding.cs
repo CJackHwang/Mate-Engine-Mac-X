@@ -17,5 +17,13 @@ public static class MacWindowListBinding
 
     [DllImport("MacWindowList")]
     public static extern void MacWin_GetCursorPos(out float x, out float y);
+
+    [DllImport("MacWindowList")]
+    public static extern void MacWin_BringSelfToFront();
+
+    [DllImport("MacWindowList")]
+    public static extern int MacWin_GetFrontNormalWindow(
+        out int x, out int y, out int w, out int h,
+        out int pid, out int windowNumber);
 }
 #endif

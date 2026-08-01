@@ -71,7 +71,7 @@ public class AvatarHideHandler : MonoBehaviour
             rightHand = animator.GetBoneTransform(HumanBodyBones.RightHand);
         }
         cam = Camera.main;
-        if (cam == null) cam = FindObjectOfType<Camera>();
+        if (cam == null) cam = FindAnyObjectByType<Camera>();
         unsnapCooldownUntil = -1f;
         dragBaseW = 0;
         dragBaseH = 0;
@@ -92,10 +92,10 @@ public class AvatarHideHandler : MonoBehaviour
 
     void Update()
     {
-#if !UNITY_STANDALONE_WIN
-        return;
-#else
-        if (unityHWND == IntPtr.Zero || animator == null || controller == null) return;
+        if (animator == null || controller == null) return;
+#if UNITY_STANDALONE_WIN
+        if (unityHWND == IntPtr.Zero) return;
+#endif
 
         if (controller.isDragging && !wasDragging)
         {
@@ -206,7 +206,6 @@ public class AvatarHideHandler : MonoBehaviour
         }
 
         wasDragging = controller.isDragging;
-#endif
     }
 
     void SetHide(bool left, bool right)
@@ -220,10 +219,11 @@ public class AvatarHideHandler : MonoBehaviour
     {
 #if UNITY_STANDALONE_WIN
         SetWindowPos(unityHWND, on ? HWND_TOPMOST : HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+#elif UNITY_STANDALONE_OSX
+        MacWindowHelper.SetTopMost(on);
 #endif
     }
 
-#if UNITY_STANDALONE_WIN
     int GetBaseDesiredEdgeX(RECT mon, Side side)
     {
         if (side == Side.Left) return mon.Left + edgeInsetPx;
@@ -283,6 +283,7 @@ public class AvatarHideHandler : MonoBehaviour
     List<MonitorData> GetAllMonitors()
     {
         List<MonitorData> list = new List<MonitorData>();
+#if UNITY_STANDALONE_WIN
         GCHandle gch = GCHandle.Alloc(list);
         IntPtr data = GCHandle.ToIntPtr(gch);
 
@@ -304,6 +305,16 @@ public class AvatarHideHandler : MonoBehaviour
 
         EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, proc, data);
         gch.Free();
+#elif UNITY_STANDALONE_OSX
+        var rects = MacWindowHelper.GetMonitors();
+        for (int i = 0; i < rects.Count; i++)
+        {
+            MonitorData md;
+            md.hmon = new IntPtr(i + 1);
+            md.rect = ToRect(rects[i]);
+            list.Add(md);
+        }
+#endif
         return list;
     }
 
@@ -433,10 +444,20 @@ public class AvatarHideHandler : MonoBehaviour
     {
         RECT fallback = GetVirtualScreenRect();
         if (hmon == IntPtr.Zero) return fallback;
+#if UNITY_STANDALONE_WIN
         MONITORINFO mi = new MONITORINFO();
         mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
         if (!GetMonitorInfo(hmon, ref mi)) return fallback;
         return mi.rcMonitor;
+#elif UNITY_STANDALONE_OSX
+        var mons = GetAllMonitors();
+        int index = (int)hmon - 1;
+        if (index >= 0 && index < mons.Count)
+            return mons[index].rect;
+        return fallback;
+#else
+        return fallback;
+#endif
     }
 
     RECT GetMonitorFromWindow(IntPtr hwnd)
@@ -444,37 +465,61 @@ public class AvatarHideHandler : MonoBehaviour
         RECT fallback = GetVirtualScreenRect();
         IntPtr hmon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
         if (hmon == IntPtr.Zero) return fallback;
+#if UNITY_STANDALONE_WIN
         MONITORINFO mi = new MONITORINFO();
         mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
         if (!GetMonitorInfo(hmon, ref mi)) return fallback;
         return mi.rcMonitor;
+#else
+        return GetMonitorRectFromHandle(hmon);
+#endif
     }
 
     RECT GetVirtualScreenRect()
     {
+#if UNITY_STANDALONE_WIN
         RECT r;
         r.Left = GetSystemMetrics(SM_XVIRTUALSCREEN);
         r.Top = GetSystemMetrics(SM_YVIRTUALSCREEN);
         r.Right = r.Left + GetSystemMetrics(SM_CXVIRTUALSCREEN);
         r.Bottom = r.Top + GetSystemMetrics(SM_CYVIRTUALSCREEN);
         return r;
+#elif UNITY_STANDALONE_OSX
+        RectInt v = MacWindowHelper.GetVirtualScreenRect();
+        return ToRect(v);
+#else
+        return new RECT();
+#endif
     }
 
     bool GetUnityClientRect(out RECT r)
     {
         r = new RECT();
+#if UNITY_STANDALONE_WIN
         if (!GetClientRect(unityHWND, out RECT client)) return false;
         POINT p; p.x = 0; p.y = 0;
         if (!ClientToScreen(unityHWND, ref p)) return false;
         r.Left = p.x; r.Top = p.y;
         r.Right = p.x + client.Right; r.Bottom = p.y + client.Bottom;
         return true;
+#elif UNITY_STANDALONE_OSX
+        if (!MacWindowHelper.TryGetClientRect(out RectInt client))
+            return false;
+        r.Left = client.x;
+        r.Top = client.y;
+        r.Right = client.x + client.width;
+        r.Bottom = client.y + client.height;
+        return true;
+#else
+        return false;
+#endif
     }
-
-    delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
     [StructLayout(LayoutKind.Sequential)]
     struct POINT { public int x; public int y; }
+
+#if UNITY_STANDALONE_WIN
+    delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
     [StructLayout(LayoutKind.Sequential)]
     struct MONITORINFO { public int cbSize; public RECT rcMonitor; public RECT rcWork; public int dwFlags; }
@@ -488,6 +533,110 @@ public class AvatarHideHandler : MonoBehaviour
     [DllImport("user32.dll")] static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
     [DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
     [DllImport("user32.dll")] static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+#elif UNITY_STANDALONE_OSX
+    static bool GetCursorPos(out POINT lpPoint)
+    {
+        if (MacWindowHelper.TryGetCursorPosition(out Vector2Int pos))
+        {
+            lpPoint = new POINT { x = pos.x, y = pos.y };
+            return true;
+        }
+        lpPoint = default;
+        return false;
+    }
+
+    static bool GetWindowRect(IntPtr hWnd, out RECT lpRect)
+    {
+        if (MacWindowHelper.TryGetWindowRect(out RectInt rect))
+        {
+            lpRect = ToRect(rect);
+            return true;
+        }
+        lpRect = default;
+        return false;
+    }
+
+    static int GetSystemMetrics(int nIndex)
+    {
+        RectInt v = MacWindowHelper.GetVirtualScreenRect();
+        switch (nIndex)
+        {
+            case SM_XVIRTUALSCREEN: return v.x;
+            case SM_YVIRTUALSCREEN: return v.y;
+            case SM_CXVIRTUALSCREEN: return v.width;
+            case SM_CYVIRTUALSCREEN: return v.height;
+            default: return 0;
+        }
+    }
+
+    static IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags)
+    {
+        _ = dwFlags;
+        var monitors = MacWindowHelper.GetMonitors();
+        if (!MacWindowHelper.TryGetWindowRect(out RectInt window)) return IntPtr.Zero;
+        int best = -1;
+        int bestOverlap = 0;
+        for (int i = 0; i < monitors.Count; i++)
+        {
+            int overlap = OverlapArea(window, monitors[i]);
+            if (overlap > bestOverlap)
+            {
+                bestOverlap = overlap;
+                best = i;
+            }
+        }
+        return best >= 0 ? new IntPtr(best + 1) : IntPtr.Zero;
+    }
+
+    static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags)
+    {
+        _ = hWnd; _ = hWndInsertAfter; _ = uFlags;
+        if ((uFlags & SWP_NOSIZE) != 0)
+            MacWindowHelper.MoveWindowTopLeft(X, Y);
+        else if ((uFlags & SWP_NOMOVE) != 0)
+            MacWindowHelper.ResizeWindow(cx, cy);
+        return true;
+    }
+
+    static bool GetClientRect(IntPtr hWnd, out RECT lpRect)
+    {
+        _ = hWnd;
+        if (MacWindowHelper.TryGetClientRect(out RectInt client))
+        {
+            lpRect = ToRect(client);
+            return true;
+        }
+        lpRect = default;
+        return false;
+    }
+
+    static bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint)
+    {
+        _ = hWnd;
+        return true;
+    }
+#endif
+
+    static RECT ToRect(RectInt rect)
+    {
+        RECT r;
+        r.Left = rect.x;
+        r.Top = rect.y;
+        r.Right = rect.x + rect.width;
+        r.Bottom = rect.y + rect.height;
+        return r;
+    }
+
+    static int OverlapArea(RectInt a, RectInt b)
+    {
+        int x1 = Math.Max(a.x, b.x);
+        int x2 = Math.Min(a.x + a.width, b.x + b.width);
+        int y1 = Math.Max(a.y, b.y);
+        int y2 = Math.Min(a.y + a.height, b.y + b.height);
+        int w = x2 - x1;
+        int h = y2 - y1;
+        return w > 0 && h > 0 ? w * h : 0;
+    }
 
     static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
     static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
@@ -503,5 +652,4 @@ public class AvatarHideHandler : MonoBehaviour
     const int SM_CYVIRTUALSCREEN = 79;
     const int SM_XVIRTUALSCREEN = 76;
     const int SM_YVIRTUALSCREEN = 77;
-#endif
 }

@@ -18,7 +18,7 @@ namespace CustomDancePlayer
         {
             isMain = GetInstanceIndex() == 0;
             string fileName = "avatar_dance_play_bus.json";
-            var handler = FindFirstObjectByType<AvatarDanceHandler>();
+            var handler = FindAnyObjectByType<AvatarDanceHandler>();
             if (handler != null && !string.IsNullOrEmpty(handler.syncFileName))
                 fileName = handler.syncFileName;
 

@@ -191,6 +191,10 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
         POINT point;
         GetCursorPos(out point);
         return new Vector2(point.X, point.Y);
+#elif UNITY_STANDALONE_OSX
+        if (MacWindowHelper.TryGetCursorPosition(out Vector2Int pos))
+            return new Vector2(pos.x, pos.y);
+        return Input.mousePosition;
 #else
         return Input.mousePosition;
 #endif
@@ -205,6 +209,8 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
                 return true;
         }
         return false;
+#elif UNITY_STANDALONE_OSX
+        return MacSystemBridge.IsAnyKeyPressed();
 #else
         return Input.anyKey;
 #endif
@@ -221,7 +227,9 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
         return false;
     }
 
+#if UNITY_STANDALONE_WIN
     private bool lastGlobalMouseDown = false;
+#endif
     private bool IsGlobalUserInput()
     {
 #if UNITY_STANDALONE_WIN
@@ -239,6 +247,8 @@ public class AvatarBigScreenScreenSaver : MonoBehaviour
             }
         }
         return mouseClick || keyPressed;
+#elif UNITY_STANDALONE_OSX
+        return MacSystemBridge.ConsumeGlobalInputActivity();
 #else
         return false;
 #endif

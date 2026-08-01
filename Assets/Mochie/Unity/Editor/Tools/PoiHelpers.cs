@@ -148,8 +148,7 @@ namespace Mochie
         /// <param name="path"></param>
         internal static void PingAssetAtPath(string path)
         {
-            var inst = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path).GetInstanceID();
-            EditorGUIUtility.PingObject(inst);
+            EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path));
         }
 
         internal static Vector2Int DrawResolutionPicker(Vector2Int size, ref bool linked, ref bool autoDetect, int[] presets = null, string[] presetNames = null)

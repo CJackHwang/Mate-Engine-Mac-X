@@ -16,7 +16,7 @@ public class DeleteAIHistory : MonoBehaviour
     public void DeleteHistoryFiles()
     {
         // Clear AnthropicChatHandler history in memory
-        var handler = FindObjectOfType<AnthropicChatHandler>();
+        var handler = FindAnyObjectByType<AnthropicChatHandler>();
         if (handler != null) handler.ClearHistory();
 
         // Delete legacy LLMUnity files if they exist

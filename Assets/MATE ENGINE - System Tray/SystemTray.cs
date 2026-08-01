@@ -23,13 +23,62 @@ public class SystemTray : MonoBehaviour
     [SerializeField] private string iconName;
     [SerializeField] public List<TrayAction> actions = new();
 
+#if UNITY_STANDALONE_OSX
+    private readonly List<Action> macActions = new List<Action>();
+#endif
+
     void Awake()
     {
 #if UNITY_STANDALONE_WIN
         TrayIcon.OnBuildMenu = BuildMenu;
         TrayIcon.Init("App", iconName, icon, BuildMenu());
+#elif UNITY_STANDALONE_OSX
+        MacSystemBridge.MacSys_CreateStatusItem(string.IsNullOrEmpty(iconName) ? "MateEngine" : iconName);
+        if (icon != null)
+        {
+            byte[] png = icon.EncodeToPNG();
+            if (png != null && png.Length > 0)
+                MacSystemBridge.MacSys_SetStatusItemIcon(png, png.Length);
+        }
+        MacSystemBridge.SetMenuCallbacks(OnMacMenuAction, RebuildMacMenu);
+        RebuildMacMenu();
 #endif
     }
+
+    void OnDestroy()
+    {
+#if UNITY_STANDALONE_OSX
+        MacSystemBridge.MacSys_RemoveStatusItem();
+#endif
+    }
+
+#if UNITY_STANDALONE_OSX
+    private void RebuildMacMenu()
+    {
+        macActions.Clear();
+        MacSystemBridge.MacSys_ResetMenu();
+
+        var items = BuildMenu();
+        for (int i = 0; i < items.Count; i++)
+        {
+            macActions.Add(items[i].Item2);
+            MacSystemBridge.MacSys_AddMenuItem(items[i].Item1, i);
+        }
+    }
+
+    private void OnMacMenuAction(int actionId)
+    {
+        if (actionId < 0 || actionId >= macActions.Count) return;
+        try
+        {
+            macActions[actionId]();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("[SystemTray] Mac menu action failed: " + e.Message);
+        }
+    }
+#endif
 
     private List<(string, Action)> BuildMenu()
     {
@@ -47,9 +96,13 @@ public class SystemTray : MonoBehaviour
                 context.Add((action.label, () => ButtonAction(action)));
             }
         }
-        var app = FindObjectOfType<RemoveTaskbarApp>();
+        var app = FindAnyObjectByType<RemoveTaskbarApp>();
         bool hidden = app != null && app.IsHidden;
+#if UNITY_STANDALONE_OSX
+        string toggleLabel = hidden ? "✖ Show App in Dock" : "✔ Hide App from Dock";
+#else
         string toggleLabel = hidden ? "✖ Show App in Taskbar" : "✔ Hide App from Taskbar";
+#endif
         context.Add((toggleLabel, () =>
         {
             if (app != null) app.ToggleAppMode();

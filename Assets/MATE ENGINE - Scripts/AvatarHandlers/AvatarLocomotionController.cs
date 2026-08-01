@@ -62,7 +62,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     const int SM_XVIRTUALSCREEN = 76;
     const int SM_CXVIRTUALSCREEN = 78;
 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     [StructLayout(LayoutKind.Sequential)]
     struct RECT
     {
@@ -79,6 +78,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         public int Y;
     }
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     struct MONITORINFO
     {
@@ -143,9 +143,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
     void Update()
     {
-#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-        return;
-#else
         if (!EnableLocomotion)
         {
             StopWalking();
@@ -157,13 +154,14 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         if (Animator == null) return;
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         if (_hwnd == IntPtr.Zero) CacheWindowHandle();
         if (_hwnd == IntPtr.Zero) return;
+#endif
 
         if (OnlyMoveWhenFocused)
         {
-            IntPtr fg = GetForegroundWindow();
-            if (fg != _hwnd)
+            if (!IsOurWindowFocused())
             {
                 if (_walking) StopWalking();
                 return;
@@ -212,7 +210,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         }
 
         StepWalk();
-#endif
     }
 
     void OnGUI()
@@ -306,7 +303,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
             return;
         }
 
-        var controller = FindFirstObjectByType<AvatarAnimatorController>();
+        var controller = FindAnyObjectByType<AvatarAnimatorController>();
         if (controller != null && controller.animator != null && controller.animator.isActiveAndEnabled)
         {
             Animator = controller.animator;
@@ -314,7 +311,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
             return;
         }
 
-        var voice = FindFirstObjectByType<PetVoiceReactionHandler>();
+        var voice = FindAnyObjectByType<PetVoiceReactionHandler>();
         if (voice != null && voice.avatarAnimator != null && voice.avatarAnimator.isActiveAndEnabled)
         {
             Animator = voice.avatarAnimator;
@@ -322,7 +319,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
             return;
         }
 
-        var bubble = FindFirstObjectByType<AvatarBubbleHandler>();
+        var bubble = FindAnyObjectByType<AvatarBubbleHandler>();
         if (bubble != null && bubble.avatarAnimator != null && bubble.avatarAnimator.isActiveAndEnabled)
         {
             Animator = bubble.avatarAnimator;
@@ -443,11 +440,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     void StepWalk()
     {
         if (!_walking) return;
-#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-        StopWalking();
-        return;
-#else
-        if (!GetWindowRect(_hwnd, out RECT r))
+        if (!TryGetWindowRect(out RECT r))
         {
             StopWalking();
             ScheduleNextDecision(false);
@@ -458,10 +451,12 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         if (!TryGetMonitorBounds(_hwnd, out int monitorLeft, out int monitorRight))
         {
-            int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-            int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-            monitorLeft = vx;
-            monitorRight = vx + vw;
+            if (TryGetVirtualScreenBounds(out monitorLeft, out monitorRight)) { }
+            else
+            {
+                monitorLeft = 0;
+                monitorRight = Screen.currentResolution.width;
+            }
         }
 
         int minX;
@@ -499,7 +494,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         int yKeep = r.Top;
 
-        if (!SetWindowPos(_hwnd, IntPtr.Zero, clampedX, yKeep, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE))
+        if (!MoveWindowTo(clampedX, yKeep))
         {
             StopWalking();
             ScheduleNextDecision(false);
@@ -514,7 +509,6 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         if (_remainingPixels <= 0.01f)
             EndWalk();
-#endif
     }
 
     void EndWalk()
@@ -553,9 +547,7 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
     void CacheWindowHandle()
     {
-#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-        _hwnd = IntPtr.Zero;
-#else
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         uint pid = (uint)Process.GetCurrentProcess().Id;
         IntPtr best = IntPtr.Zero;
         long bestArea = -1;
@@ -584,6 +576,8 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         }, IntPtr.Zero);
 
         _hwnd = best;
+#else
+        _hwnd = new IntPtr(1);
 #endif
     }
 
@@ -603,6 +597,28 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         left = mi.rcMonitor.Left;
         right = mi.rcMonitor.Right;
+        return true;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        if (!MacWindowHelper.TryGetWindowRect(out RectInt window))
+            return false;
+        var monitors = MonitorHelper.GetMonitorRects();
+        if (monitors.Count == 0)
+            return false;
+
+        RectInt best = monitors[0];
+        int bestOverlap = 0;
+        for (int i = 0; i < monitors.Count; i++)
+        {
+            int overlap = OverlapArea(window, monitors[i]);
+            if (overlap > bestOverlap)
+            {
+                bestOverlap = overlap;
+                best = monitors[i];
+            }
+        }
+
+        left = best.x;
+        right = best.x + best.width;
         return true;
 #else
         return false;
@@ -626,25 +642,16 @@ public sealed class AvatarLocomotionController : MonoBehaviour
     bool TryGetBlockingInfo(out BlockingInfo bi)
     {
         bi = default;
-#if !(UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN)
-        return false;
-#else
         if (_hwnd == IntPtr.Zero) return false;
 
         Camera cam = BoundsCamera != null ? BoundsCamera : Camera.main;
         if (cam == null) return false;
 
-        if (!GetWindowRect(_hwnd, out RECT winRect))
+        if (!TryGetWindowRect(out RECT winRect))
             return false;
 
-        if (!GetClientRect(_hwnd, out RECT clientRect))
+        if (!TryGetClientRect(out RECT clientRect, out int clientX))
             return false;
-
-        POINT pt = new POINT { X = 0, Y = 0 };
-        if (!ClientToScreen(_hwnd, ref pt))
-            return false;
-
-        int clientX = pt.X;
 
         int clientW = clientRect.Right - clientRect.Left;
         if (clientW <= 0) return false;
@@ -654,10 +661,8 @@ public sealed class AvatarLocomotionController : MonoBehaviour
 
         if (!TryGetMonitorBounds(_hwnd, out int monitorLeft, out int monitorRight))
         {
-            int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-            int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-            monitorLeft = vx;
-            monitorRight = vx + vw;
+            if (!TryGetVirtualScreenBounds(out monitorLeft, out monitorRight))
+                return false;
         }
 
         if (!TryGetAvatarScreenBoundsUnity(cam, out float minXU, out float maxXU))
@@ -700,8 +705,127 @@ public sealed class AvatarLocomotionController : MonoBehaviour
         bi.maxWindowX = maxWindowX;
 
         return true;
-#endif
     }
+
+    static int OverlapArea(RectInt a, RectInt b)
+    {
+        int x1 = Math.Max(a.x, b.x);
+        int x2 = Math.Min(a.x + a.width, b.x + b.width);
+        int y1 = Math.Max(a.y, b.y);
+        int y2 = Math.Min(a.y + a.height, b.y + b.height);
+        int w = x2 - x1;
+        int h = y2 - y1;
+        return w > 0 && h > 0 ? w * h : 0;
+    }
+
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+    bool TryGetWindowRect(out RECT r)
+    {
+        return GetWindowRect(_hwnd, out r);
+    }
+
+    bool TryGetClientRect(out RECT client, out int clientX)
+    {
+        clientX = 0;
+        if (!GetClientRect(_hwnd, out client)) return false;
+        POINT pt = new POINT { X = 0, Y = 0 };
+        if (!ClientToScreen(_hwnd, ref pt)) return false;
+        clientX = pt.X;
+        return true;
+    }
+
+    bool MoveWindowTo(int x, int y)
+    {
+        return SetWindowPos(_hwnd, IntPtr.Zero, x, y, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+    }
+
+    bool IsOurWindowFocused()
+    {
+        return GetForegroundWindow() == _hwnd;
+    }
+
+    bool TryGetVirtualScreenBounds(out int left, out int right)
+    {
+        int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
+        int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+        left = vx;
+        right = vx + vw;
+        return true;
+    }
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+    bool TryGetWindowRect(out RECT r)
+    {
+        if (MacWindowHelper.TryGetWindowRect(out RectInt rect))
+        {
+            r = new RECT { Left = rect.x, Top = rect.y, Right = rect.x + rect.width, Bottom = rect.y + rect.height };
+            return true;
+        }
+        r = default;
+        return false;
+    }
+
+    bool TryGetClientRect(out RECT client, out int clientX)
+    {
+        clientX = 0;
+        if (!MacWindowHelper.TryGetClientRect(out RectInt rect))
+        {
+            client = default;
+            return false;
+        }
+        client = new RECT { Left = rect.x, Top = rect.y, Right = rect.x + rect.width, Bottom = rect.y + rect.height };
+        clientX = rect.x;
+        return true;
+    }
+
+    bool MoveWindowTo(int x, int y)
+    {
+        MacWindowHelper.MoveWindowTopLeft(x, y);
+        return true;
+    }
+
+    bool IsOurWindowFocused()
+    {
+        return MacWindowHelper.IsAppFocused();
+    }
+
+    bool TryGetVirtualScreenBounds(out int left, out int right)
+    {
+        RectInt v = MonitorHelper.GetVirtualScreenRect();
+        left = v.x;
+        right = v.x + v.width;
+        return v.width > 0;
+    }
+#else
+    bool TryGetWindowRect(out RECT r)
+    {
+        r = default;
+        return false;
+    }
+
+    bool TryGetClientRect(out RECT client, out int clientX)
+    {
+        client = default;
+        clientX = 0;
+        return false;
+    }
+
+    bool MoveWindowTo(int x, int y)
+    {
+        return false;
+    }
+
+    bool IsOurWindowFocused()
+    {
+        return true;
+    }
+
+    bool TryGetVirtualScreenBounds(out int left, out int right)
+    {
+        left = 0;
+        right = Screen.currentResolution.width;
+        return true;
+    }
+#endif
 
     bool TryGetAvatarScreenBoundsUnity(Camera cam, out float minX, out float maxX)
     {

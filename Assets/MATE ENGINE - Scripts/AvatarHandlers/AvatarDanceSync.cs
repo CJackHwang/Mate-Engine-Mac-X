@@ -237,7 +237,7 @@ namespace CustomDancePlayer
             {
                 var fiA = handler.GetType().GetField("animator", BindingFlags.NonPublic | BindingFlags.Instance);
                 animator = fiA != null ? fiA.GetValue(handler) as Animator : null;
-                if (animator == null) animator = FindFirstObjectByType<Animator>();
+                if (animator == null) animator = FindAnyObjectByType<Animator>();
             }
 
             if (utils == null) utils = handler.GetComponentInChildren<AvatarDancePlayerUtils>(true);

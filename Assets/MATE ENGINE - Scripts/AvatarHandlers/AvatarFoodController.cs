@@ -101,12 +101,12 @@ public class AvatarFoodController : MonoBehaviour
 
     void TrySetup()
     {
-        if (!cam) cam = Camera.main ? Camera.main : FindFirstObjectByType<Camera>();
+        if (!cam) cam = Camera.main ? Camera.main : FindAnyObjectByType<Camera>();
         if (!spawnDespawnAudio) spawnDespawnAudio = gameObject.AddComponent<AudioSource>();
         if (!spawnMainAudio) spawnMainAudio = gameObject.AddComponent<AudioSource>();
         if (!spawnLayerAudio) spawnLayerAudio = gameObject.AddComponent<AudioSource>();
         if (!interactionAudio) interactionAudio = gameObject.AddComponent<AudioSource>();
-        if (!loader) loader = FindFirstObjectByType<VRMLoader>();
+        if (!loader) loader = FindAnyObjectByType<VRMLoader>();
         UpdateDepthFromHead();
     }
 
@@ -382,12 +382,12 @@ public class AvatarFoodController : MonoBehaviour
 
     void ProbeAvatarNow()
     {
-        if (!loader) loader = FindFirstObjectByType<VRMLoader>();
+        if (!loader) loader = FindAnyObjectByType<VRMLoader>();
         GameObject root = null;
         if (loader) root = loader.GetCurrentModel() != null ? loader.GetCurrentModel() : loader.mainModel;
         if (!root)
         {
-            var any = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(a => a && a.isActiveAndEnabled);
+            var any = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include).FirstOrDefault(a => a && a.isActiveAndEnabled);
             root = any ? any.gameObject : null;
         }
         if (root != currentAvatarRoot)
@@ -407,7 +407,7 @@ public class AvatarFoodController : MonoBehaviour
     void OnDrawGizmos()
     {
         if (!showHeadGizmo) return;
-        if (!cam) cam = Camera.main ? Camera.main : FindFirstObjectByType<Camera>();
+        if (!cam) cam = Camera.main ? Camera.main : FindAnyObjectByType<Camera>();
         if (!animator) ProbeAvatarNow();
         if (!head && animator) head = animator.GetBoneTransform(HumanBodyBones.Head);
         if (!head) return;

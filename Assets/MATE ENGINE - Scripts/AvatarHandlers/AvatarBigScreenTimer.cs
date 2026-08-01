@@ -217,7 +217,9 @@ public class AvatarBigScreenTimer : MonoBehaviour
         return false;
     }
 
+#if UNITY_STANDALONE_WIN
     private bool lastGlobalMouseDown = false;
+#endif
     private bool IsGlobalUserInput()
     {
 #if UNITY_STANDALONE_WIN
@@ -235,6 +237,8 @@ public class AvatarBigScreenTimer : MonoBehaviour
             }
         }
         return mouseClick || keyPressed;
+#elif UNITY_STANDALONE_OSX
+        return MacSystemBridge.ConsumeGlobalInputActivity();
 #else
         return false;
 #endif

@@ -9,9 +9,13 @@ public static class SteamDRM
 {
     static bool initialized;
     static bool entitled;
+    static bool liveInitFailed;
+    static long lastLiveAttemptTicks;
     static int currentAppId;
     static long expUtcTicks;
     static HashSet<int> dlc = new HashSet<int>();
+
+    const long LiveRetryCooldownTicks = 30L * TimeSpan.TicksPerSecond;
 
     [Serializable]
     class TokenData
@@ -39,9 +43,17 @@ public static class SteamDRM
 
     public static bool TryInitLive(int appId, int ttlDays = 14)
     {
+        if (liveInitFailed) return false;
+        long nowTicks = DateTime.UtcNow.Ticks;
+        if (nowTicks - lastLiveAttemptTicks < LiveRetryCooldownTicks) return false;
+        lastLiveAttemptTicks = nowTicks;
         try
         {
-            if (!Steamworks.SteamAPI.Init()) return false;
+            if (!Steamworks.SteamAPI.Init())
+            {
+                liveInitFailed = true;
+                return false;
+            }
             if (!Steamworks.SteamUser.BLoggedOn()) return false;
             var owned = Steamworks.SteamApps.BIsSubscribedApp(new Steamworks.AppId_t((uint)appId));
             if (!owned) return false;
@@ -73,6 +85,7 @@ public static class SteamDRM
         }
         catch
         {
+            liveInitFailed = true;
             return false;
         }
     }
@@ -90,6 +103,8 @@ public static class SteamDRM
     public static void Invalidate()
     {
         entitled = false;
+        liveInitFailed = false;
+        lastLiveAttemptTicks = 0;
         expUtcTicks = 0;
         dlc.Clear();
     }

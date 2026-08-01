@@ -32,7 +32,7 @@ public class AvatarDanceSafetyZone : MonoBehaviour
     void OnEnable()
     {
         dancingHash = Animator.StringToHash(dancingParam);
-        danceHandler = FindFirstObjectByType<AvatarDanceHandler>();
+        danceHandler = FindAnyObjectByType<AvatarDanceHandler>();
         if (uniWindow == null) uniWindow = UniWindowController.current;
         if (activateToggle != null)
         {
@@ -150,7 +150,7 @@ public class AvatarDanceSafetyZone : MonoBehaviour
     {
         if (!enableSafety) return false;
         if (cam == null) return false;
-        if (danceHandler == null) danceHandler = FindFirstObjectByType<AvatarDanceHandler>();
+        if (danceHandler == null) danceHandler = FindAnyObjectByType<AvatarDanceHandler>();
         bool byPlayer = danceHandler != null && danceHandler.IsPlaying;
         bool byParam = false;
         if (animator != null)
@@ -175,7 +175,7 @@ public class AvatarDanceSafetyZone : MonoBehaviour
 
     Transform ResolveCurrentModelRoot()
     {
-        var loader = FindFirstObjectByType<VRMLoader>();
+        var loader = FindAnyObjectByType<VRMLoader>();
         if (loader != null)
         {
             var current = loader.GetCurrentModel();
@@ -193,7 +193,7 @@ public class AvatarDanceSafetyZone : MonoBehaviour
             var found = root.GetComponentsInChildren<Animator>(true).FirstOrDefault(a => a && a.gameObject.activeInHierarchy);
             if (found != null) return found;
         }
-        var any = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var any = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include);
         return any.FirstOrDefault(a => a && a.isActiveAndEnabled);
     }
 

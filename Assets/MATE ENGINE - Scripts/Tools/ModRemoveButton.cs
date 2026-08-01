@@ -32,9 +32,9 @@ public class ModRemoveButton : MonoBehaviour
             try { if (File.Exists(filePath)) File.Delete(filePath); } catch { }
         }
 
-        var modHandler = FindFirstObjectByType<MEModHandler>();
+        var modHandler = FindAnyObjectByType<MEModHandler>();
         if (modHandler != null) modHandler.SendMessage("LoadAllModsInFolder", SendMessageOptions.DontRequireReceiver);
-        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
         if (dance != null) dance.RescanMods();
     }
 

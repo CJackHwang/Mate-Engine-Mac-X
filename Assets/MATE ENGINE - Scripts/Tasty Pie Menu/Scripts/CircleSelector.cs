@@ -310,7 +310,7 @@ namespace Xamin
                 if (btn.unlocked)
                 {
                     btn.ExecuteAction();
-                    var audio = FindFirstObjectByType<MenuAudioHandler>();
+                    var audio = FindAnyObjectByType<MenuAudioHandler>();
                     if (audio != null) audio.PlayButtonSound();
                 }
                 Close();
@@ -321,7 +321,7 @@ namespace Xamin
         {
             RefreshAllButtonColorsDelayed();
             animatorReceiver = null;
-            foreach (var recv in Object.FindObjectsByType<AvatarAnimatorReceiver>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            foreach (var recv in Object.FindObjectsByType<AvatarAnimatorReceiver>(FindObjectsInactive.Exclude))
             {
                 if (recv != null && recv.isActiveAndEnabled && recv.gameObject.activeInHierarchy
                     && recv.avatarAnimator != null && recv.avatarAnimator.isActiveAndEnabled

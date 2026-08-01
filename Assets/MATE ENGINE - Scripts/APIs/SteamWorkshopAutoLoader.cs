@@ -37,7 +37,7 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
     private void Start()
     {
         if (!SteamManager.Initialized) return;
-        library = FindFirstObjectByType<AvatarLibraryMenu>();
+        library = FindAnyObjectByType<AvatarLibraryMenu>();
         Directory.CreateDirectory(workshopFolderPath);
         Directory.CreateDirectory(modsFolderPath);
         RefreshWorkshopItems();
@@ -494,13 +494,13 @@ public class SteamWorkshopAutoLoader : MonoBehaviour
     private IEnumerator NotifyModsNextFrame()
     {
         yield return null;
-        var modHandler = FindFirstObjectByType<MEModHandler>();
+        var modHandler = FindAnyObjectByType<MEModHandler>();
         if (modHandler != null)
         {
             var mi = typeof(MEModHandler).GetMethod("LoadAllModsInFolder", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (mi != null) mi.Invoke(modHandler, null);
         }
-        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
         if (dance != null) dance.RescanMods();
     }
 

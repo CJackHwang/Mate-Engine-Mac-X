@@ -60,6 +60,8 @@ public class AllowedAppsManager : MonoBehaviour
 #if UNITY_STANDALONE_WIN
         UpdateDefaultDevice();
         currentRunningAppNames = GetRunningAudioAppNames();
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        currentRunningAppNames = GetRunningAudioAppNames();
 #endif
 
         var filteredAppNames = currentRunningAppNames
@@ -132,6 +134,9 @@ public class AllowedAppsManager : MonoBehaviour
             }
         }
         catch { }
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        foreach (var name in MacSystemBridge.GetRunningAppNames())
+            appNames.Add(name.ToLowerInvariant());
 #endif
         return appNames.OrderBy(n => n).ToList();
     }

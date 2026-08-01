@@ -44,12 +44,12 @@ public class AvatarBigScreenHandler : MonoBehaviour
     private bool isFading = false;
     private bool isInDesktopTransition = false;
 
-#if UNITY_STANDALONE_WIN
     private RECT originalWindowRect;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT { public int left, top, right, bottom; }
 
+#if UNITY_STANDALONE_WIN
     [DllImport("user32.dll")]
     private static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
     [DllImport("user32.dll")]
@@ -83,6 +83,8 @@ public class AvatarBigScreenHandler : MonoBehaviour
     {
 #if UNITY_STANDALONE_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
+#elif UNITY_STANDALONE_OSX
+        unityHWND = new IntPtr(1);
 #endif
         if (MainCamera == null) MainCamera = Camera.main;
         if (avatarAnimator == null) avatarAnimator = GetComponent<Animator>();
@@ -93,8 +95,8 @@ public class AvatarBigScreenHandler : MonoBehaviour
             originalFOV = MainCamera.fieldOfView;
             originalOrthoSize = MainCamera.orthographicSize;
         }
-#if UNITY_STANDALONE_WIN
-        if (unityHWND != IntPtr.Zero && GetWindowRect(unityHWND, out RECT r))
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        if (TryGetWindowRect(out RECT r))
         {
             originalWindowRect = r;
             originalRectSet = true;
@@ -262,14 +264,7 @@ public class AvatarBigScreenHandler : MonoBehaviour
             if (avatarAnimator != null) avatarAnimator.SetBool("isBigScreen", false);
             if (avatarAnimatorController != null) avatarAnimatorController.BlockDraggingOverride = false;
             if (moveCanvas != null && moveCanvasWasActive) moveCanvas.SetActive(true);
-#if UNITY_STANDALONE_WIN
-            if (unityHWND != IntPtr.Zero && originalRectSet)
-            {
-                int w = originalWindowRect.right - originalWindowRect.left;
-                int h = originalWindowRect.bottom - originalWindowRect.top;
-                MoveWindow(unityHWND, originalWindowRect.left, originalWindowRect.top, w, h, true);
-            }
-#endif
+            RestoreOriginalWindowRect();
             if (MainCamera != null)
             {
                 MainCamera.transform.position = originalCamPos;
@@ -280,20 +275,28 @@ public class AvatarBigScreenHandler : MonoBehaviour
         }
     }
 
-#if UNITY_STANDALONE_WIN
     RECT FindBestMonitorRect(RECT windowRect)
     {
         List<RECT> monitorRects = new List<RECT>();
+#if UNITY_STANDALONE_WIN
         EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdc, ref RECT lprcMonitor, IntPtr data) =>
         { monitorRects.Add(lprcMonitor); return true; }, IntPtr.Zero);
+#elif UNITY_STANDALONE_OSX
+        var macRects = MonitorHelper.GetMonitorRects();
+        for (int i = 0; i < macRects.Count; i++)
+            monitorRects.Add(new RECT { left = macRects[i].x, top = macRects[i].y, right = macRects[i].x + macRects[i].width, bottom = macRects[i].y + macRects[i].height });
+#endif
         int idx = 0, maxArea = 0;
         for (int i = 0; i < monitorRects.Count; i++)
         {
             int overlap = OverlapArea(windowRect, monitorRects[i]);
             if (overlap > maxArea) { idx = i; maxArea = overlap; }
         }
-        return monitorRects.Count > 0 ? monitorRects[idx] : new RECT { left = 0, top = 0, right = Screen.currentResolution.width, bottom = Screen.currentResolution.height };
+        return monitorRects.Count > 0
+            ? monitorRects[idx]
+            : new RECT { left = 0, top = 0, right = Screen.currentResolution.width, bottom = Screen.currentResolution.height };
     }
+
     int OverlapArea(RECT a, RECT b)
     {
         int x1 = Math.Max(a.left, b.left), x2 = Math.Min(a.right, b.right);
@@ -301,7 +304,41 @@ public class AvatarBigScreenHandler : MonoBehaviour
         int w = x2 - x1, h = y2 - y1;
         return (w > 0 && h > 0) ? w * h : 0;
     }
+
+    bool TryGetWindowRect(out RECT r)
+    {
+#if UNITY_STANDALONE_WIN
+        return GetWindowRect(unityHWND, out r);
+#elif UNITY_STANDALONE_OSX
+        if (MacWindowHelper.TryGetWindowRect(out RectInt rect))
+        {
+            r = new RECT { left = rect.x, top = rect.y, right = rect.x + rect.width, bottom = rect.y + rect.height };
+            return true;
+        }
+        r = default;
+        return false;
+#else
+        r = default;
+        return false;
 #endif
+    }
+
+    void MoveWindowToRect(RECT r)
+    {
+        int w = Math.Max(1, r.right - r.left);
+        int h = Math.Max(1, r.bottom - r.top);
+#if UNITY_STANDALONE_WIN
+        MoveWindow(unityHWND, r.left, r.top, w, h, true);
+#elif UNITY_STANDALONE_OSX
+        MacWindowHelper.MoveAndResize(new RectInt(r.left, r.top, w, h));
+#endif
+    }
+
+    void RestoreOriginalWindowRect()
+    {
+        if (originalRectSet)
+            MoveWindowToRect(originalWindowRect);
+    }
 
     IEnumerator GlideAvatarDesktop(float duration, bool toFadeY)
     {
@@ -329,17 +366,12 @@ public class AvatarBigScreenHandler : MonoBehaviour
         camPos.y = toY;
         MainCamera.transform.position = camPos;
 
-        if (toFadeY && unityHWND != IntPtr.Zero)
+        if (toFadeY && TryGetWindowRect(out RECT windowRect))
         {
-#if UNITY_STANDALONE_WIN
-            if (GetWindowRect(unityHWND, out RECT windowRect))
-            {
-                RECT targetScreen = FindBestMonitorRect(windowRect);
-                int sw = targetScreen.right - targetScreen.left, sh = targetScreen.bottom - targetScreen.top;
-                MoveWindow(unityHWND, targetScreen.left, targetScreen.top, sw, sh, true);
-                originalWindowRect = windowRect; originalRectSet = true;
-            }
-#endif
+            RECT targetScreen = FindBestMonitorRect(windowRect);
+            MoveWindowToRect(targetScreen);
+            originalWindowRect = windowRect;
+            originalRectSet = true;
         }
         if (!toFadeY && MainCamera != null)
         {

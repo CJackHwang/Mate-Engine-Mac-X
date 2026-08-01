@@ -4,7 +4,7 @@ public static class SettingsHandlerUtility
 {
     public static void ReloadAllSettingsHandlers()
     {
-        foreach (var handler in GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var handler in GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include))
         {
             if (!handler.isActiveAndEnabled) continue; 
             var type = handler.GetType();
@@ -23,7 +23,7 @@ public static class SettingsHandlerUtility
 {
     public static void ReloadAllSettingsHandlers()
     {
-        var handlers = GameObject.FindObjectsOfType<MonoBehaviour>(true);
+        var handlers = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include);
         foreach (var handler in handlers)
         {
             var type = handler.GetType();

@@ -66,9 +66,8 @@ void MacWin_Refresh(int selfPid)
 
         MacWinEntry e;
         e.x = (int)bounds.origin.x;
-        CGFloat screenH = CGDisplayBounds(CGMainDisplayID()).size.height;
-        // Store as bottom-left origin: y = bottom edge, Top in RECT = y + h = upper edge
-        e.y = (int)(screenH - bounds.origin.y - bounds.size.height);
+        // CGWindowBounds already use the top-left-of-main Y-down convention.
+        e.y = (int)bounds.origin.y;
         e.w = (int)bounds.size.width;
         e.h = (int)bounds.size.height;
         e.pid = pid;
@@ -100,8 +99,92 @@ int MacWin_GetWindow(int index, int* x, int* y, int* w, int* h,
 
 void MacWin_GetCursorPos(float* x, float* y)
 {
-    NSPoint loc = [NSEvent mouseLocation];
-    CGFloat screenH = CGDisplayBounds(CGMainDisplayID()).size.height;
-    *x = (float)loc.x;
-    *y = (float)(screenH - loc.y);
+    CGEventRef event = CGEventCreate(NULL);
+    if (event) {
+        CGPoint loc = CGEventGetLocation(event);
+        CFRelease(event);
+        *x = (float)loc.x;
+        *y = (float)loc.y;
+        return;
+    }
+    NSPoint ns = [NSEvent mouseLocation];
+    CGFloat mainH = CGDisplayBounds(CGMainDisplayID()).size.height;
+    *x = (float)ns.x;
+    *y = (float)(mainH - ns.y);
+}
+
+// Brings the app's key/visible window in front of the current window level.
+// orderFrontRegardless works even when the app is inactive, which is what a
+// desk-pet window needs when the user switches to another application.
+void MacWin_BringSelfToFront(void)
+{
+    NSWindow *window = [NSApp keyWindow];
+    if (!window) {
+        NSArray<NSWindow *> *windows = [NSApp windows];
+        for (NSWindow *w in windows) {
+            if (w.isVisible) {
+                window = w;
+                break;
+            }
+        }
+    }
+    if (!window) return;
+    [window orderFrontRegardless];
+}
+
+// Returns the frontmost normal (layer 0) window with its top-left Y-down bounds.
+int MacWin_GetFrontNormalWindow(int* x, int* y, int* w, int* h,
+                                int* pid, int* windowNumber)
+{
+    if (!x || !y || !w || !h || !pid || !windowNumber) return 0;
+    *x = *y = *w = *h = *pid = *windowNumber = 0;
+
+    CFArrayRef list = CGWindowListCopyWindowInfo(
+        kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements,
+        kCGNullWindowID);
+    if (!list) return 0;
+
+    int found = 0;
+    for (CFIndex i = 0; i < CFArrayGetCount(list); i++) {
+        CFDictionaryRef info = (CFDictionaryRef)CFArrayGetValueAtIndex(list, i);
+        if (!info) continue;
+
+        CFNumberRef layerRef = (CFNumberRef)CFDictionaryGetValue(info, kCGWindowLayer);
+        int layer = 0;
+        if (layerRef) CFNumberGetValue(layerRef, kCFNumberIntType, &layer);
+        if (layer != 0) continue;
+
+        CFNumberRef alphaRef = (CFNumberRef)CFDictionaryGetValue(info, kCGWindowAlpha);
+        if (alphaRef) {
+            float alpha = 1.0f;
+            CFNumberGetValue(alphaRef, kCFNumberFloatType, &alpha);
+            if (alpha <= 0.01f) continue;
+        }
+
+        CFDictionaryRef boundsRef = (CFDictionaryRef)CFDictionaryGetValue(info, kCGWindowBounds);
+        if (!boundsRef) continue;
+        CGRect bounds;
+        if (!CGRectMakeWithDictionaryRepresentation(boundsRef, &bounds)) continue;
+        if (bounds.size.width <= 0.0 || bounds.size.height <= 0.0) continue;
+
+        CFNumberRef pidRef = (CFNumberRef)CFDictionaryGetValue(info, kCGWindowOwnerPID);
+        int ownerPid = 0;
+        if (pidRef) CFNumberGetValue(pidRef, kCFNumberIntType, &ownerPid);
+
+        CFNumberRef numRef = (CFNumberRef)CFDictionaryGetValue(info, kCGWindowNumber);
+        int number = 0;
+        if (numRef) CFNumberGetValue(numRef, kCFNumberIntType, &number);
+
+        *x = (int)bounds.origin.x;
+        *y = (int)bounds.origin.y;
+        *w = (int)bounds.size.width;
+        *h = (int)bounds.size.height;
+        *pid = ownerPid;
+        *windowNumber = number;
+        found = 1;
+        break;
+    }
+
+    CFRelease(list);
+    return found;
 }

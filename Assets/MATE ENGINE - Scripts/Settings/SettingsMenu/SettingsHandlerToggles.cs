@@ -39,7 +39,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         if (uniWindowControllerObject != null)
             uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
         else
-            uniWindowController = FindFirstObjectByType<UniWindowController>();
+            uniWindowController = FindAnyObjectByType<UniWindowController>();
         enableDancingToggle?.onValueChanged.AddListener(OnEnableDancingChanged);
         enableMouseTrackingToggle?.onValueChanged.AddListener(OnEnableMouseTrackingChanged);
         isTopmostToggle?.onValueChanged.AddListener(OnIsTopmostChanged);
@@ -71,7 +71,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     private void OnEnableParticlesChanged(bool v) { SaveLoadHandler.Instance.data.enableParticles = v; ApplySettings(); Save(); }
     private void OnBloomChanged(bool v) { SaveLoadHandler.Instance.data.bloom = v; ApplySettings(); Save(); }
     private void OnDayNightChanged(bool v) { SaveLoadHandler.Instance.data.dayNight = v; ApplySettings(); Save(); }
-    private void OnEnableWindowSittingChanged(bool v) { SaveLoadHandler.Instance.data.enableWindowSitting = v; ApplySettings(); if (!v) { var handlers = FindObjectsByType<AvatarWindowHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None); foreach (var handler in handlers) handler.ForceExitWindowSitting(); } Save(); }
+    private void OnEnableWindowSittingChanged(bool v) { SaveLoadHandler.Instance.data.enableWindowSitting = v; ApplySettings(); if (!v) { var handlers = FindObjectsByType<AvatarWindowHandler>(FindObjectsInactive.Include); foreach (var handler in handlers) handler.ForceExitWindowSitting(); } Save(); }
     private void OnEnableDiscordRPCChanged(bool v) { SaveLoadHandler.Instance.data.enableDiscordRPC = v; ApplySettings(); Save(); }
     private void OnEnableHandHoldingChanged(bool v) { SaveLoadHandler.Instance.data.enableHandHolding = v; ApplySettings(); Save(); }
     private void OnAmbientOcclusionChanged(bool v) { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); Save(); }
@@ -162,7 +162,7 @@ public class SettingsHandlerToggles : MonoBehaviour
 
         // Window
         if (uniWindowController == null)
-            uniWindowController = FindFirstObjectByType<UniWindowController>();
+            uniWindowController = FindAnyObjectByType<UniWindowController>();
         if (uniWindowController != null)
             uniWindowController.isTopmost = data.isTopmost;
 
@@ -174,7 +174,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         // Particles
         if (currentParticleHandler == null)
         {
-            var handlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var handlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include);
             currentParticleHandler = handlers.Length > 0 ? handlers[0] : null;
         }
         if (currentParticleHandler != null)

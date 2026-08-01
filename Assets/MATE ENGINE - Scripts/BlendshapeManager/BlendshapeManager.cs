@@ -83,7 +83,7 @@ public class BlendshapeManager : MonoBehaviour
 
         var smrs = (onlyUnderActiveAvatar && root != null)
             ? root.GetComponentsInChildren<SkinnedMeshRenderer>(true)
-            : FindObjectsOfType<SkinnedMeshRenderer>(true);
+            : FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include);
 
         var newRefs = new List<BlendRef>();
 
@@ -282,7 +282,7 @@ public class BlendshapeManager : MonoBehaviour
     {
         avatarName = null;
 
-        var loader = FindFirstObjectByType<VRMLoader>();
+        var loader = FindAnyObjectByType<VRMLoader>();
         if (loader != null)
         {
             string key = "SavedPathModel";
@@ -323,7 +323,7 @@ public class BlendshapeManager : MonoBehaviour
             return root;
         }
 
-        var allSmrs = FindObjectsOfType<SkinnedMeshRenderer>(true)
+        var allSmrs = FindObjectsByType<SkinnedMeshRenderer>(FindObjectsInactive.Include)
                       .Where(s => s != null && s.gameObject.activeInHierarchy && s.enabled && s.sharedMesh != null && s.sharedMesh.blendShapeCount > 0)
                       .ToList();
         if (allSmrs.Count > 0)

@@ -62,33 +62,37 @@ public class DesktopAmbientProbe : MonoBehaviour
     IntPtr dibBits;
     IntPtr oldObj;
     int virtX, virtY, virtW, virtH;
-    byte[] pixelBytes;
 #endif
 
+    byte[] pixelBytes;
+
     float nextTick;
-    Vector3 hsvTop;
-    Vector3 hsvBot;
-    Vector3 hsvLeft;
-    Vector3 hsvRight;
-    Vector3 hsvTopTarget;
-    Vector3 hsvBotTarget;
-    Vector3 hsvLeftTarget;
-    Vector3 hsvRightTarget;
+    // Neutral white fallback keeps lights at a usable brightness before the
+    // first capture succeeds (for example while screen recording is pending).
+    static readonly Vector3 DefaultHsv = new Vector3(0f, 0f, 1f);
+    Vector3 hsvTop = DefaultHsv;
+    Vector3 hsvBot = DefaultHsv;
+    Vector3 hsvLeft = DefaultHsv;
+    Vector3 hsvRight = DefaultHsv;
+    Vector3 hsvTopTarget = DefaultHsv;
+    Vector3 hsvBotTarget = DefaultHsv;
+    Vector3 hsvLeftTarget = DefaultHsv;
+    Vector3 hsvRightTarget = DefaultHsv;
     bool inited;
     bool hasSample;
 
     void Start()
     {
         TryLoadToggle();
-#if UNITY_STANDALONE_WIN
-        InitCapture();
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        if (enabledAuto) InitCapture();
 #endif
         inited = true;
     }
 
     void OnDestroy()
     {
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
         ReleaseCapture();
 #endif
     }
@@ -111,6 +115,15 @@ public class DesktopAmbientProbe : MonoBehaviour
             s.data.groupToggles[saveKey] = v;
             s.SaveToDisk();
         }
+        if (v) RetryCapturePermission();
+    }
+
+    public void RetryCapturePermission()
+    {
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+        InitCapture();
+#endif
+        nextTick = Time.unscaledTime;
     }
 
     void LateUpdate()
@@ -120,7 +133,7 @@ public class DesktopAmbientProbe : MonoBehaviour
         if (Time.unscaledTime >= nextTick)
         {
             nextTick = Time.unscaledTime + 1f / Mathf.Max(1f, captureHz);
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
             if (EnsureCaptureValid()) CaptureAndAnalyze();
 #endif
         }
@@ -128,9 +141,10 @@ public class DesktopAmbientProbe : MonoBehaviour
         ApplyToLights();
     }
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
     bool EnsureCaptureValid()
     {
+#if UNITY_STANDALONE_WIN
         int vx = GetSystemMetrics(SM_XVIRTUALSCREEN);
         int vy = GetSystemMetrics(SM_YVIRTUALSCREEN);
         int vw = GetSystemMetrics(SM_CXVIRTUALSCREEN);
@@ -138,11 +152,17 @@ public class DesktopAmbientProbe : MonoBehaviour
         if (vw <= 0 || vh <= 0) return false;
         if (vw != virtW || vh != virtH || vx != virtX || vy != virtY) InitCapture();
         return memDC != IntPtr.Zero && dib != IntPtr.Zero && dibBits != IntPtr.Zero;
+#else
+        if (pixelBytes == null || pixelBytes.Length != captureWidth * captureHeight * 4)
+            InitCapture();
+        return MacSystemBridge.IsScreenCaptureAuthorized() && pixelBytes != null;
+#endif
     }
 
     void InitCapture()
     {
         ReleaseCapture();
+#if UNITY_STANDALONE_WIN
         virtX = GetSystemMetrics(SM_XVIRTUALSCREEN);
         virtY = GetSystemMetrics(SM_YVIRTUALSCREEN);
         virtW = GetSystemMetrics(SM_CXVIRTUALSCREEN);
@@ -159,17 +179,27 @@ public class DesktopAmbientProbe : MonoBehaviour
         dib = CreateDIBSection(memDC, ref bmi, 0, out dibBits, IntPtr.Zero, 0);
         oldObj = SelectObject(memDC, dib);
         pixelBytes = new byte[captureWidth * captureHeight * 4];
+#else
+        pixelBytes = new byte[captureWidth * captureHeight * 4];
+        if (!MacSystemBridge.IsScreenCaptureAuthorized())
+            MacSystemBridge.RequestScreenCaptureAuthorization();
+#endif
     }
 
     void ReleaseCapture()
     {
+#if UNITY_STANDALONE_WIN
         if (memDC != IntPtr.Zero && oldObj != IntPtr.Zero) SelectObject(memDC, oldObj);
         if (dib != IntPtr.Zero) { DeleteObject(dib); dib = IntPtr.Zero; }
         if (memDC != IntPtr.Zero) { DeleteDC(memDC); memDC = IntPtr.Zero; }
         if (deskDC != IntPtr.Zero) { ReleaseDC(IntPtr.Zero, deskDC); deskDC = IntPtr.Zero; }
         dibBits = IntPtr.Zero;
+#else
+        pixelBytes = null;
+#endif
     }
 
+#if UNITY_STANDALONE_WIN
     IntPtr GetUnityHwnd()
     {
         IntPtr h = GetActiveWindow();
@@ -183,25 +213,64 @@ public class DesktopAmbientProbe : MonoBehaviour
         }
         return IntPtr.Zero;
     }
+#endif
+
+    bool CapturePixels()
+    {
+#if UNITY_STANDALONE_WIN
+        StretchBlt(memDC, 0, 0, captureWidth, captureHeight, deskDC, virtX, virtY, virtW, virtH, SRCCOPY);
+        Marshal.Copy(dibBits, pixelBytes, 0, pixelBytes.Length);
+        return true;
+#else
+        return MacSystemBridge.CaptureDesktop(captureWidth, captureHeight, pixelBytes);
+#endif
+    }
+
+    bool TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh)
+    {
+        vx = 0; vy = 0; vw = 0; vh = 0;
+#if UNITY_STANDALONE_WIN
+        vx = virtX; vy = virtY; vw = virtW; vh = virtH;
+        return vw > 0 && vh > 0;
+#else
+        RectInt v = MacWindowHelper.GetVirtualScreenRect();
+        vx = v.x; vy = v.y; vw = v.width; vh = v.height;
+        return vw > 0 && vh > 0;
+#endif
+    }
+
+    bool TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, int vx, int vy, int vw, int vh)
+    {
+        wx0 = 0; wy0 = 0; wx1 = 0; wy1 = 0;
+        int winLeft, winTop, winRight, winBottom;
+#if UNITY_STANDALONE_WIN
+        IntPtr hwnd = GetUnityHwnd();
+        if (hwnd == IntPtr.Zero || !GetWindowRect(hwnd, out RECT wr))
+            return false;
+        winLeft = wr.left; winTop = wr.top; winRight = wr.right; winBottom = wr.bottom;
+#else
+        if (!MacWindowHelper.TryGetWindowRect(out RectInt wr))
+            return false;
+        winLeft = wr.x; winTop = wr.y; winRight = wr.x + wr.width; winBottom = wr.y + wr.height;
+#endif
+        wx0 = Mathf.RoundToInt(((winLeft - vx) / (float)vw) * captureWidth);
+        wy0 = Mathf.RoundToInt(((winTop - vy) / (float)vh) * captureHeight);
+        wx1 = Mathf.RoundToInt(((winRight - vx) / (float)vw) * captureWidth);
+        wy1 = Mathf.RoundToInt(((winBottom - vy) / (float)vh) * captureHeight);
+        return true;
+    }
 
     void CaptureAndAnalyze()
     {
-        StretchBlt(memDC, 0, 0, captureWidth, captureHeight, deskDC, virtX, virtY, virtW, virtH, SRCCOPY);
-        Marshal.Copy(dibBits, pixelBytes, 0, pixelBytes.Length);
+        if (!CapturePixels())
+            return;
 
-        RECT wr = new RECT();
-        var hwnd = GetUnityHwnd();
-        bool haveWnd = hwnd != IntPtr.Zero && GetWindowRect(hwnd, out wr);
-        int wx0 = 0, wy0 = 0, wx1 = 0, wy1 = 0;
-        if (haveWnd)
-        {
-            wx0 = Mathf.RoundToInt(((wr.left - virtX) / (float)virtW) * captureWidth);
-            wy0 = Mathf.RoundToInt(((wr.top - virtY) / (float)virtH) * captureHeight);
-            wx1 = Mathf.RoundToInt(((wr.right - virtX) / (float)virtW) * captureWidth);
-            wy1 = Mathf.RoundToInt(((wr.bottom - virtY) / (float)virtH) * captureHeight);
-        }
-        int band = Mathf.Max(1, Mathf.RoundToInt(bandThicknessPx * (captureHeight / (float)Mathf.Max(1, virtH))));
-        int margin = Mathf.Max(0, Mathf.RoundToInt(excludeMarginPx * (captureHeight / (float)Mathf.Max(1, virtH))));
+        if (!TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh))
+            return;
+
+        bool haveWnd = TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, vx, vy, vw, vh);
+        int band = Mathf.Max(1, Mathf.RoundToInt(bandThicknessPx * (captureHeight / (float)Mathf.Max(1, vh))));
+        int margin = Mathf.Max(0, Mathf.RoundToInt(excludeMarginPx * (captureHeight / (float)Mathf.Max(1, vh))));
 
         RectInt topRect = new RectInt(0, Mathf.Max(0, wy0 - band), captureWidth, Mathf.Clamp(band, 1, captureHeight));
         RectInt botRect = new RectInt(0, Mathf.Min(captureHeight - band, wy1 + 0), captureWidth, Mathf.Clamp(band, 1, captureHeight));

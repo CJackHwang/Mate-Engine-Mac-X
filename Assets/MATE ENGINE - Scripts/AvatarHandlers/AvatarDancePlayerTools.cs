@@ -31,7 +31,7 @@ namespace CustomDancePlayer
 
         void Awake()
         {
-            if (!handler) handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (!handler) handler = FindAnyObjectByType<AvatarDanceHandler>();
             if (!contentRoot && handler) contentRoot = handler.contentObject;
             LoadFavorites();
         }
@@ -84,13 +84,13 @@ namespace CustomDancePlayer
         }
         void OnLoopChanged(bool v)
         {
-            if (!handler) handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (!handler) handler = FindAnyObjectByType<AvatarDanceHandler>();
             if (handler) handler.loopOn = v;
         }
 
         void OnShuffleChanged(bool v)
         {
-            if (!handler) handler = FindFirstObjectByType<AvatarDanceHandler>();
+            if (!handler) handler = FindAnyObjectByType<AvatarDanceHandler>();
             if (handler) handler.shuffleOn = v;
         }
 

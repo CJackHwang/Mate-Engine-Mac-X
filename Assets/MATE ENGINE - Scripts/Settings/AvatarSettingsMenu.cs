@@ -76,7 +76,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
     private void Update()
     {
-        var receiver = FindFirstObjectByType<AvatarAnimatorReceiver>();
+        var receiver = FindAnyObjectByType<AvatarAnimatorReceiver>();
         if (menuPanel != null && menuPanel.activeSelf && receiver != null && receiver.avatarAnimator != null)
         {
             if (ShouldHideMenu(receiver.avatarAnimator))
@@ -166,11 +166,11 @@ public class AvatarSettingsMenu : MonoBehaviour
         windowSizeButton?.onClick.AddListener(CycleWindowSize);
 
         if (uniWindowControllerObject != null) uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
-        else uniWindowController = FindFirstObjectByType<UniWindowController>();
+        else uniWindowController = FindAnyObjectByType<UniWindowController>();
 
         refreshAppsListButton?.onClick.AddListener(() =>
         {
-            var appManager = FindFirstObjectByType<AllowedAppsManager>();
+            var appManager = FindAnyObjectByType<AllowedAppsManager>();
             if (appManager != null) appManager.RefreshUI();
         });
         if (bigScreenAlarmHourDropdown != null)
@@ -207,7 +207,7 @@ public class AvatarSettingsMenu : MonoBehaviour
             bigScreenAlarmTextInput.SetTextWithoutNotify(SaveLoadHandler.Instance.data.bigScreenAlarmText);
             bigScreenAlarmTextInput.onEndEdit.AddListener(text => { SaveLoadHandler.Instance.data.bigScreenAlarmText = text; SaveLoadHandler.Instance.SaveToDisk(); });
         }
-        var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include);
         currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
         applyButton?.onClick.AddListener(ApplySettings);
         resetButton?.onClick.AddListener(ResetToDefaults);
@@ -233,8 +233,8 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableHandHoldingToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.enableHandHolding = v; SaveAll(); });
         bigScreenSaverTimeoutSlider?.onValueChanged.AddListener(OnBigScreenSaverTimeoutSliderChanged);
         bigScreenSaverEnableToggle?.onValueChanged.AddListener(OnBigScreenSaverEnableToggleChanged);
-        hueShiftSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiHueShift = v; var shifter = FindFirstObjectByType<MenuHueShift>(); if (shifter != null) shifter.hueShift = v; SaveAll(); });
-        saturationSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiSaturation = v; var shifter = FindFirstObjectByType<MenuHueShift>(); if (shifter != null) shifter.saturation = v; SaveAll(); });
+        hueShiftSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiHueShift = v; var shifter = FindAnyObjectByType<MenuHueShift>(); if (shifter != null) shifter.hueShift = v; SaveAll(); });
+        saturationSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.uiSaturation = v; var shifter = FindAnyObjectByType<MenuHueShift>(); if (shifter != null) shifter.saturation = v; SaveAll(); });
         ambientOcclusionToggle?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); SaveAll(); });
         graphicsDropdown?.onValueChanged.AddListener(i => { SaveLoadHandler.Instance.data.graphicsQualityLevel = i; QualitySettings.SetQualityLevel(i, true); SaveAll(); });
         eyeBlendSlider?.onValueChanged.AddListener(v => { SaveLoadHandler.Instance.data.eyeBlend = v; SaveAll(); });
@@ -272,7 +272,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         LoadSettings(); ApplySettings(); RestoreWindowSize();
 
-        var shifter = FindFirstObjectByType<MenuHueShift>();
+        var shifter = FindAnyObjectByType<MenuHueShift>();
         if (shifter != null)
         {
             shifter.hueShift = SaveLoadHandler.Instance.data.uiHueShift; shifter.saturation = SaveLoadHandler.Instance.data.uiSaturation;
@@ -510,7 +510,7 @@ public class AvatarSettingsMenu : MonoBehaviour
 
         if (currentParticleHandler == null)
         {
-            var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var particleHandlers = FindObjectsByType<AvatarParticleHandler>(FindObjectsInactive.Include);
             currentParticleHandler = particleHandlers.Length > 0 ? particleHandlers[0] : null;
         }
 
@@ -522,7 +522,7 @@ public class AvatarSettingsMenu : MonoBehaviour
         PetVoiceReactionHandler.GlobalHoverObjectsEnabled = data.enableParticles;
         if (uniWindowController != null) uniWindowController.isTopmost = data.isTopmost;
 
-        foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None)) limiter.SetFPSLimit(data.fpsLimit);
+        foreach (var limiter in FindObjectsByType<FPSLimiter>()) limiter.SetFPSLimit(data.fpsLimit);
 
         UpdateAllCategoryVolumes();
         SaveLoadHandler.Instance.SaveToDisk();
@@ -603,10 +603,10 @@ public class AvatarSettingsMenu : MonoBehaviour
         enableHandHoldingToggle?.SetIsOnWithoutNotify(true);
         newData.enableIK = true;
         enableIKToggle?.SetIsOnWithoutNotify(true);
-        FindFirstObjectByType<AvatarScaleController>()?.SyncWithSlider();
+        FindAnyObjectByType<AvatarScaleController>()?.SyncWithSlider();
         ApplySettings();
 
-        var shifter = FindFirstObjectByType<MenuHueShift>();
+        var shifter = FindAnyObjectByType<MenuHueShift>();
         if (shifter != null)
         {
             shifter.hueShift = 0f; shifter.saturation = 0.5f;

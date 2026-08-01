@@ -85,7 +85,7 @@ public class AvatarSwayController : MonoBehaviour
     Quaternion lastLegLAddWorld = Quaternion.identity;
     Quaternion lastLegRAddWorld = Quaternion.identity;
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
     IntPtr hwnd;
     Vector2Int prevWinPos;
 #endif
@@ -97,7 +97,9 @@ public class AvatarSwayController : MonoBehaviour
         prevMousePos = Input.mousePosition;
 #if UNITY_STANDALONE_WIN
         hwnd = Process.GetCurrentProcess().MainWindowHandle;
-        if (hwnd != IntPtr.Zero) prevWinPos = GetWindowPosition(hwnd);
+        TryGetWindowPosition(out prevWinPos);
+#elif UNITY_STANDALONE_OSX
+        TryGetWindowPosition(out prevWinPos);
 #endif
     }
 
@@ -121,15 +123,12 @@ public class AvatarSwayController : MonoBehaviour
         float dt = Time.deltaTime;
         Vector2 delta = Vector2.zero;
 
-#if UNITY_STANDALONE_WIN
-        if (useWindowVelocity && hwnd != IntPtr.Zero && active)
+        if (useWindowVelocity && active && TryGetWindowPosition(out Vector2Int wp))
         {
-            Vector2Int wp = GetWindowPosition(hwnd);
             Vector2Int d = wp - prevWinPos;
             prevWinPos = wp;
             delta = new Vector2(d.x, d.y);
         }
-#endif
         if (delta == Vector2.zero && fallbackToMouse && dragging)
         {
             Vector2 m = Input.mousePosition;
@@ -336,10 +335,22 @@ public class AvatarSwayController : MonoBehaviour
 
     [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
-    static Vector2Int GetWindowPosition(IntPtr hWnd)
+    static bool TryGetWindowPosition(out Vector2Int pos)
     {
-        GetWindowRect(hWnd, out RECT r);
-        return new Vector2Int(r.left, r.top);
+        GetWindowRect(hwnd, out RECT r);
+        pos = new Vector2Int(r.left, r.top);
+        return true;
+    }
+#elif UNITY_STANDALONE_OSX
+    static bool TryGetWindowPosition(out Vector2Int pos)
+    {
+        if (!MacWindowHelper.TryGetWindowRect(out RectInt rect))
+        {
+            pos = default;
+            return false;
+        }
+        pos = new Vector2Int(rect.x, rect.y);
+        return true;
     }
 #endif
 }

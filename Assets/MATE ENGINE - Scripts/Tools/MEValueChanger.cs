@@ -129,7 +129,7 @@ public class MEValueChanger : MonoBehaviour
 
     void TryAttachCustomVRM()
     {
-        var loader = FindFirstObjectByType<VRMLoader>();
+        var loader = FindAnyObjectByType<VRMLoader>();
         if (loader != null)
         {
             var clone = loader.GetCurrentModel();
@@ -155,7 +155,7 @@ public class MEValueChanger : MonoBehaviour
     {
         if (!Application.isPlaying) return;
         if (!showUI) return;
-        windowRect = GUI.Window(GetInstanceID(), windowRect, DrawWindow, "ME Value Changer (Runtime)");
+        windowRect = GUI.Window(GetHashCode(), windowRect, DrawWindow, "ME Value Changer (Runtime)");
     }
 
     void DrawWindow(int id)

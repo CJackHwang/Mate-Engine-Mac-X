@@ -67,39 +67,49 @@ public class VRMLoader : MonoBehaviour
         canvas.AddComponent<UnityEngine.UI.CanvasScaler>();
         canvas.AddComponent<UnityEngine.UI.GraphicRaycaster>();
 
-        var btnGO = new GameObject("LoadVRMButton");
-        btnGO.transform.SetParent(canvas.transform, false);
+        void CreateButton(string objectName, string label, Vector2 size, Vector2 anchoredPosition, int fontSize,
+                          UnityEngine.Events.UnityAction onClick)
+        {
+            var btnGO = new GameObject(objectName);
+            btnGO.transform.SetParent(canvas.transform, false);
 
-        var img = btnGO.AddComponent<UnityEngine.UI.Image>();
-        img.color = new Color(0.15f, 0.15f, 0.15f, 0.95f);
+            var img = btnGO.AddComponent<UnityEngine.UI.Image>();
+            img.color = new Color(0.15f, 0.15f, 0.15f, 0.95f);
 
-        var rect = btnGO.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(260, 60);
-        rect.anchoredPosition = Vector2.zero;
+            var rect = btnGO.GetComponent<RectTransform>();
+            rect.sizeDelta = size;
+            rect.anchoredPosition = anchoredPosition;
 
-        var btn = btnGO.AddComponent<UnityEngine.UI.Button>();
-        btn.targetGraphic = img;
-        var colors = btn.colors;
-        colors.highlightedColor = new Color(0.3f, 0.3f, 0.3f, 1f);
-        btn.colors = colors;
+            var btn = btnGO.AddComponent<UnityEngine.UI.Button>();
+            btn.targetGraphic = img;
+            var colors = btn.colors;
+            colors.highlightedColor = new Color(0.3f, 0.3f, 0.3f, 1f);
+            btn.colors = colors;
 
-        var textGO = new GameObject("Text");
-        textGO.transform.SetParent(btnGO.transform, false);
-        var text = textGO.AddComponent<UnityEngine.UI.Text>();
-        text.text = "Load VRM Model";
-        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        text.fontSize = 22;
-        text.alignment = TextAnchor.MiddleCenter;
-        text.color = Color.white;
-        var textRect = textGO.GetComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.sizeDelta = Vector2.zero;
+            var textGO = new GameObject("Text");
+            textGO.transform.SetParent(btnGO.transform, false);
+            var text = textGO.AddComponent<UnityEngine.UI.Text>();
+            text.text = label;
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.fontSize = fontSize;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+            var textRect = textGO.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.sizeDelta = Vector2.zero;
 
-        btn.onClick.AddListener(() =>
+            btn.onClick.AddListener(onClick);
+        }
+
+        CreateButton("LoadVRMButton", "Load VRM Model", new Vector2(260, 60), Vector2.zero, 22, () =>
         {
             Destroy(canvas);
             OpenFileDialogAndLoadVRM();
+        });
+        CreateButton("CloseLoadButton", "关闭", new Vector2(140, 40), new Vector2(0, -85f), 18, () =>
+        {
+            Destroy(canvas);
         });
     }
     private void TryLoadRandomAvatar()
@@ -107,7 +117,7 @@ public class VRMLoader : MonoBehaviour
         var options = new System.Collections.Generic.List<string>();
         if (mainModel != null) options.Add("__DEFAULT__");
 
-        var lib = FindFirstObjectByType<AvatarLibraryMenu>();
+        var lib = FindAnyObjectByType<AvatarLibraryMenu>();
         if (lib != null && lib.dlcAvatars != null)
         {
             for (int i = 0; i < lib.dlcAvatars.Count; i++)
@@ -305,7 +315,7 @@ public class VRMLoader : MonoBehaviour
         AssignAnimatorController(currentModel);
         InjectComponentsFromPrefab(componentTemplatePrefab, currentModel);
 
-        var changer = FindFirstObjectByType<MEValueChanger>();
+        var changer = FindAnyObjectByType<MEValueChanger>();
         if (changer != null)
             changer.SendMessage("TryAttachCustomVRM", SendMessageOptions.DontRequireReceiver);
 
@@ -347,7 +357,7 @@ public class VRMLoader : MonoBehaviour
 
         if (safeThumbnail != null) Destroy(safeThumbnail);
 
-        var libraryMenu = FindFirstObjectByType<AvatarLibraryMenu>();
+        var libraryMenu = FindAnyObjectByType<AvatarLibraryMenu>();
         if (libraryMenu != null)
             libraryMenu.ReloadAvatars();
 
@@ -492,7 +502,7 @@ public class VRMLoader : MonoBehaviour
     private System.Collections.IEnumerator DelayedRefreshStats()
     {
         yield return null;
-        var stats = FindFirstObjectByType<RuntimeModelStats>();
+        var stats = FindAnyObjectByType<RuntimeModelStats>();
         if (stats != null)
             stats.RefreshNow();
     }
@@ -552,7 +562,7 @@ public class VRMLoader : MonoBehaviour
 
     private void CleanupAllRawImagesInScene()
     {
-        var rawImages = GameObject.FindObjectsByType<RawImage>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var rawImages = GameObject.FindObjectsByType<RawImage>(FindObjectsInactive.Include);
         foreach (var rawImage in rawImages)
             rawImage.texture = null;
     }
@@ -572,7 +582,7 @@ public class VRMLoader : MonoBehaviour
 
     private GameObject FindDLCByName(string name)
     {
-        var library = FindFirstObjectByType<AvatarLibraryMenu>();
+        var library = FindAnyObjectByType<AvatarLibraryMenu>();
         if (library == null) return null;
         foreach (var dlc in library.dlcAvatars)
         {

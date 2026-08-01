@@ -16,7 +16,7 @@ public class InstanceEntry
 public class LaunchMateEngineInstances : MonoBehaviour
 {
     [Header("Executable")]
-    public string executableName = "MateEngineX.exe";
+    public string executableName = "MateEngineX";
 
     [Header("Texts")]
     public string notRunningText = "Open Avatar {0}";
@@ -133,7 +133,7 @@ public class LaunchMateEngineInstances : MonoBehaviour
             return;
         }
 
-        string exePath = Path.GetFullPath(Path.Combine(Application.dataPath, $"../{executableName}"));
+        string exePath = GetExecutablePath();
         if (!File.Exists(exePath))
         {
             UnityEngine.Debug.LogError("[Launcher] Executable not found: " + exePath);
@@ -208,6 +208,23 @@ public class LaunchMateEngineInstances : MonoBehaviour
 
         try { File.Delete(pidFile); } catch { }
         return false;
+    }
+
+    private string GetExecutablePath()
+    {
+#if UNITY_STANDALONE_WIN
+        string exeName = executableName;
+        if (string.IsNullOrEmpty(Path.GetExtension(exeName)))
+            exeName += ".exe";
+        return Path.GetFullPath(Path.Combine(Application.dataPath, $"../{exeName}"));
+#elif UNITY_STANDALONE_OSX
+        string appBundle = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+        string exeName = Path.GetFileNameWithoutExtension(executableName);
+        if (string.IsNullOrEmpty(exeName)) exeName = "MateEngineX";
+        return Path.Combine(appBundle, "Contents", "MacOS", exeName);
+#else
+        return Path.GetFullPath(Path.Combine(Application.dataPath, $"../{executableName}"));
+#endif
     }
 
     void UpdateButtonText(int index, bool running)

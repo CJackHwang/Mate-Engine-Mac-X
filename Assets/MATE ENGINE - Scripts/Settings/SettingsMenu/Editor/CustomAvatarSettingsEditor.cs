@@ -56,7 +56,7 @@ public class CustomAvatarSettingsEditor : Editor
                 );
                 y += lineHeight + spacing;
 
-                string[] componentTypes = GameObject.FindObjectsOfType<MonoBehaviour>(true)
+                string[] componentTypes = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
                     .Select(c => c.GetType().Name).Distinct().OrderBy(x => x).ToArray();
 
                 SerializedProperty componentType = paramProp.FindPropertyRelative("componentType");
@@ -70,7 +70,7 @@ public class CustomAvatarSettingsEditor : Editor
                     (CustomAvatarSettings.ParamType)type.enumValueIndex == CustomAvatarSettings.ParamType.Toggle ||
                     (CustomAvatarSettings.ParamType)type.enumValueIndex == CustomAvatarSettings.ParamType.Dropdown)
                 {
-                    var comps = GameObject.FindObjectsOfType<MonoBehaviour>(true)
+                    var comps = GameObject.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include)
                         .Where(c => c.GetType().Name == componentType.stringValue);
                     var fields = comps.SelectMany(c => c.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
                         .Where(f =>

@@ -73,6 +73,8 @@ public class MemoryTrim : MonoBehaviour
     {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         EmptyWorkingSet(Process.GetCurrentProcess().Handle);
+#elif UNITY_STANDALONE_OSX
+        MacSystemBridge.MacSys_RelieveMemory();
 #endif
     }
 

@@ -157,7 +157,7 @@ public class MenuActions : MonoBehaviour
 
     void CacheBigScreen()
     {
-        bigScreen = FindFirstObjectByType<AvatarBigScreenHandler>();
+        bigScreen = FindAnyObjectByType<AvatarBigScreenHandler>();
         if (bigScreen != null)
             bigScreenActiveField = typeof(AvatarBigScreenHandler).GetField("isBigScreenActive", BindingFlags.NonPublic | BindingFlags.Instance);
     }
@@ -293,6 +293,6 @@ public class MenuActions : MonoBehaviour
         return false;
     }
 
-    void PlayMenuOpenSound() => FindFirstObjectByType<MenuAudioHandler>()?.PlayOpenSound();
-    void PlayMenuCloseSound() => FindFirstObjectByType<MenuAudioHandler>()?.PlayCloseSound();
+    void PlayMenuOpenSound() => FindAnyObjectByType<MenuAudioHandler>()?.PlayOpenSound();
+    void PlayMenuCloseSound() => FindAnyObjectByType<MenuAudioHandler>()?.PlayCloseSound();
 }

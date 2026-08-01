@@ -61,7 +61,7 @@ public class MEModHandler : MonoBehaviour
                 LoadUnity3D(path, true, true);
         }
 
-        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
         if (dance != null) dance.RescanMods();
     }
 
@@ -84,7 +84,7 @@ public class MEModHandler : MonoBehaviour
             LoadUnity3D(dest, true, false);
         }
 
-        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
         if (dance != null) dance.RescanMods();
     }
 
@@ -432,7 +432,7 @@ public class MEModHandler : MonoBehaviour
                 tog.onValueChanged.AddListener(a =>
                 {
                     PersistState(mod.name, a);
-                    var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+                    var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
                     if (dance != null) dance.RescanMods();
                 });
             }
@@ -462,7 +462,7 @@ public class MEModHandler : MonoBehaviour
             {
                 uploadBtn.onClick.AddListener(() =>
                 {
-                    var handler = FindFirstObjectByType<SteamWorkshopHandler>();
+                    var handler = FindAnyObjectByType<SteamWorkshopHandler>();
                     if (handler != null) handler.BeginUploadMod(mod.localPath, progress);
                 });
             }
@@ -552,7 +552,7 @@ public class MEModHandler : MonoBehaviour
         loadedMods.Remove(mod);
         Destroy(ui);
 
-        var dance = FindFirstObjectByType<CustomDancePlayer.AvatarDanceHandler>();
+        var dance = FindAnyObjectByType<CustomDancePlayer.AvatarDanceHandler>();
         if (dance != null) dance.RescanMods();
 
         LoadAllModsInFolder();

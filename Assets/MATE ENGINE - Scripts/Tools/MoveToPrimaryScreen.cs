@@ -1,4 +1,3 @@
-﻿#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
 using UnityEngine;
 using System;
 using System.Diagnostics;
@@ -26,11 +25,14 @@ public class MoveToPrimaryScreen : MonoBehaviour
 
     void Start()
     {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
+#endif
     }
 
     public void MoveToPrimary()
     {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         if (unityHWND == IntPtr.Zero) return;
 
         if (!GetWindowRect(unityHWND, out RECT rect)) return;
@@ -47,16 +49,21 @@ public class MoveToPrimaryScreen : MonoBehaviour
         MoveWindow(unityHWND, x, y, currentWidth, currentHeight, true);
 
         Debug.Log($"[MoveToPrimaryScreen] moved window {currentWidth}x{currentHeight} to {x},{y}");
-    }
-}
-#else
-using UnityEngine;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        var uwc = Kirurobo.UniWindowController.current;
+        if (uwc == null) return;
 
-public class MoveToPrimaryScreen : MonoBehaviour
-{
-    public void MoveToPrimary()
-    {
-        Debug.Log("[MoveToPrimaryScreen] no-op on macOS");
+        Vector2 size = uwc.windowSize;
+        if (size.x <= 0f || size.y <= 0f) return;
+
+        RectInt primary = MacWindowHelper.GetPrimaryMonitorRect();
+        float x = primary.x + (primary.width - size.x) * 0.5f;
+        float y = primary.y + (primary.height - size.y) * 0.5f;
+        MacWindowHelper.MoveWindowTopLeft(Mathf.RoundToInt(x), Mathf.RoundToInt(y));
+
+        Debug.Log($"[MoveToPrimaryScreen] moved window {(int)size.x}x{(int)size.y} to {x:F0},{y:F0}");
+#else
+        Debug.Log("[MoveToPrimaryScreen] no-op on this platform.");
+#endif
     }
 }
-#endif

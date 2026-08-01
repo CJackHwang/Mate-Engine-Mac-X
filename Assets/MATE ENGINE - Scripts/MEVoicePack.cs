@@ -55,14 +55,14 @@ public class MEVoicePack : MonoBehaviour
     private readonly List<(AvatarBigScreenTimer t, List<AudioClip> alarm)> _bigAlarmOriginals = new();
     private readonly List<(MenuAudioHandler h, List<AudioClip> startup, List<AudioClip> open, List<AudioClip> close, List<AudioClip> button, List<AudioClip> toggle, List<AudioClip> slider, List<AudioClip> dropdown)> _menuOriginals = new();
 
-    private readonly HashSet<int> _processedDrag = new();
-    private readonly HashSet<int> _processedPet = new();
-    private readonly HashSet<int> _processedBubble = new();
-    private readonly HashSet<int> _processedRandMsg = new();
-    private readonly HashSet<int> _processedBigTimer = new();
-    private readonly HashSet<int> _processedChatBot = new();
-    private readonly HashSet<int> _processedMenu = new();
-    private readonly HashSet<int> _processedMinecraft = new();
+    private readonly HashSet<Object> _processedDrag = new();
+    private readonly HashSet<Object> _processedPet = new();
+    private readonly HashSet<Object> _processedBubble = new();
+    private readonly HashSet<Object> _processedRandMsg = new();
+    private readonly HashSet<Object> _processedBigTimer = new();
+    private readonly HashSet<Object> _processedChatBot = new();
+    private readonly HashSet<Object> _processedMenu = new();
+    private readonly HashSet<Object> _processedMinecraft = new();
 
     private bool _applied;
     private Coroutine _watcher;
@@ -114,14 +114,14 @@ public class MEVoicePack : MonoBehaviour
     public void Apply()
     {
 #if UNITY_2023_1_OR_NEWER
-        var dragHandlers = FindObjectsByType<AvatarDragSoundHandler>(FindObjectsSortMode.None);
-        var petHandlers = FindObjectsByType<PetVoiceReactionHandler>(FindObjectsSortMode.None);
-        var bubbleHandlers = FindObjectsByType<AvatarBubbleHandler>(FindObjectsSortMode.None);
-        var randMsgHandlers = FindObjectsByType<AvatarRandomMessages>(FindObjectsSortMode.None);
-        var bigTimers = FindObjectsByType<AvatarBigScreenTimer>(FindObjectsSortMode.None);
-        var chatBots = FindObjectsByType<ChatBot>(FindObjectsSortMode.None);
-        var menuHandlers = FindObjectsByType<MenuAudioHandler>(FindObjectsSortMode.None);
-        var mcHandlers = FindObjectsByType<AvatarMinecraftMessages>(FindObjectsSortMode.None);
+        var dragHandlers = FindObjectsByType<AvatarDragSoundHandler>();
+        var petHandlers = FindObjectsByType<PetVoiceReactionHandler>();
+        var bubbleHandlers = FindObjectsByType<AvatarBubbleHandler>();
+        var randMsgHandlers = FindObjectsByType<AvatarRandomMessages>();
+        var bigTimers = FindObjectsByType<AvatarBigScreenTimer>();
+        var chatBots = FindObjectsByType<ChatBot>();
+        var menuHandlers = FindObjectsByType<MenuAudioHandler>();
+        var mcHandlers = FindObjectsByType<AvatarMinecraftMessages>();
 #else
         var dragHandlers = FindObjectsOfType<AvatarDragSoundHandler>(true);
         var petHandlers = FindObjectsOfType<PetVoiceReactionHandler>(true);
@@ -200,14 +200,14 @@ public class MEVoicePack : MonoBehaviour
         while (enabled)
         {
 #if UNITY_2023_1_OR_NEWER
-            var drags = FindObjectsByType<AvatarDragSoundHandler>(FindObjectsSortMode.None);
-            var pets = FindObjectsByType<PetVoiceReactionHandler>(FindObjectsSortMode.None);
-            var bubbles = FindObjectsByType<AvatarBubbleHandler>(FindObjectsSortMode.None);
-            var randMsgs = FindObjectsByType<AvatarRandomMessages>(FindObjectsSortMode.None);
-            var bigs = FindObjectsByType<AvatarBigScreenTimer>(FindObjectsSortMode.None);
-            var bots = FindObjectsByType<ChatBot>(FindObjectsSortMode.None);
-            var menus = FindObjectsByType<MenuAudioHandler>(FindObjectsSortMode.None);
-            var mcs = FindObjectsByType<AvatarMinecraftMessages>(FindObjectsSortMode.None);
+            var drags = FindObjectsByType<AvatarDragSoundHandler>();
+            var pets = FindObjectsByType<PetVoiceReactionHandler>();
+            var bubbles = FindObjectsByType<AvatarBubbleHandler>();
+            var randMsgs = FindObjectsByType<AvatarRandomMessages>();
+            var bigs = FindObjectsByType<AvatarBigScreenTimer>();
+            var bots = FindObjectsByType<ChatBot>();
+            var menus = FindObjectsByType<MenuAudioHandler>();
+            var mcs = FindObjectsByType<AvatarMinecraftMessages>();
 #else
             var drags = FindObjectsOfType<AvatarDragSoundHandler>(true);
             var pets = FindObjectsOfType<PetVoiceReactionHandler>(true);
@@ -220,16 +220,14 @@ public class MEVoicePack : MonoBehaviour
 #endif
             foreach (var d in drags)
             {
-                int id = d.GetInstanceID();
-                if (_processedDrag.Contains(id)) continue;
+                if (_processedDrag.Contains(d)) continue;
                 ApplyDragOverridesTo(new[] { d });
-                _processedDrag.Add(id);
+                _processedDrag.Add(d);
             }
 
             foreach (var p in pets)
             {
-                int id = p.GetInstanceID();
-                if (_processedPet.Contains(id)) continue;
+                if (_processedPet.Contains(p)) continue;
                 if (autoBindAnimator && p.avatarAnimator == null)
                 {
                     var anim = p.GetComponentInParent<Animator>();
@@ -237,54 +235,48 @@ public class MEVoicePack : MonoBehaviour
                 }
                 if (fixEmptyStateWhitelist) EnsureStateWhitelistNotEmpty(p);
                 ApplyPetOverridesTo(new[] { p });
-                _processedPet.Add(id);
+                _processedPet.Add(p);
             }
 
             foreach (var b in bubbles)
             {
-                int id = b.GetInstanceID();
-                if (_processedBubble.Contains(id)) continue;
+                if (_processedBubble.Contains(b)) continue;
                 ApplyBubbleOverridesTo(new[] { b });
-                _processedBubble.Add(id);
+                _processedBubble.Add(b);
             }
 
             foreach (var r in randMsgs)
             {
-                int id = r.GetInstanceID();
-                if (_processedRandMsg.Contains(id)) continue;
+                if (_processedRandMsg.Contains(r)) continue;
                 ApplyRandomMessagesOverridesTo(new[] { r });
-                _processedRandMsg.Add(id);
+                _processedRandMsg.Add(r);
             }
 
             foreach (var t in bigs)
             {
-                int id = t.GetInstanceID();
-                if (_processedBigTimer.Contains(id)) continue;
+                if (_processedBigTimer.Contains(t)) continue;
                 ApplyBigScreenTimerOverridesTo(new[] { t });
-                _processedBigTimer.Add(id);
+                _processedBigTimer.Add(t);
             }
 
             foreach (var cb in bots)
             {
-                int id = cb.GetInstanceID();
-                if (_processedChatBot.Contains(id)) continue;
+                if (_processedChatBot.Contains(cb)) continue;
                 ApplyChatBotOverridesTo(new[] { cb });
-                _processedChatBot.Add(id);
+                _processedChatBot.Add(cb);
             }
 
             foreach (var m in menus)
             {
-                int id = m.GetInstanceID();
-                if (_processedMenu.Contains(id)) continue;
+                if (_processedMenu.Contains(m)) continue;
                 ApplyMenuAudioOverridesTo(new[] { m });
-                _processedMenu.Add(id);
+                _processedMenu.Add(m);
             }
             foreach (var mc in mcs)
             {
-                int id = mc.GetInstanceID();
-                if (_processedMinecraft.Contains(id)) continue;
+                if (_processedMinecraft.Contains(mc)) continue;
                 ApplyMinecraftOverridesTo(new[] { mc });
-                _processedMinecraft.Add(id);
+                _processedMinecraft.Add(mc);
             }
             yield return wait;
         }

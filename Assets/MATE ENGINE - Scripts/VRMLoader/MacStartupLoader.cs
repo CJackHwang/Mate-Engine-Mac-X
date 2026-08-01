@@ -33,7 +33,7 @@ public class MacStartupLoader : MonoBehaviour
             yield break;
         }
 
-        var loader = Object.FindFirstObjectByType<VRMLoader>();
+        var loader = Object.FindAnyObjectByType<VRMLoader>();
         if (loader != null)
         {
             Debug.Log("[MacStartupLoader] No saved model, showing load button.");

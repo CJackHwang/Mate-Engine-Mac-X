@@ -50,7 +50,7 @@ public class ToggleBulkStylerWindow : EditorWindow
 
     void ApplyToAllToggles()
     {
-        var toggles = FindObjectsOfType<Toggle>(true);
+        var toggles = FindObjectsByType<Toggle>(FindObjectsInactive.Include);
         int count = 0;
         foreach (var t in toggles)
         {

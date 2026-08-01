@@ -31,8 +31,8 @@ namespace CustomDancePlayer
 
         void Awake()
         {
-            dancePlayer = FindFirstObjectByType<AvatarDanceHandler>();
-            vrmLoader = FindFirstObjectByType<VRMLoader>();
+            dancePlayer = FindAnyObjectByType<AvatarDanceHandler>();
+            vrmLoader = FindAnyObjectByType<VRMLoader>();
         }
 
         void OnEnable()
@@ -56,8 +56,8 @@ namespace CustomDancePlayer
 
         void Update()
         {
-            if (dancePlayer == null) dancePlayer = FindFirstObjectByType<AvatarDanceHandler>();
-            if (vrmLoader == null) vrmLoader = FindFirstObjectByType<VRMLoader>();
+            if (dancePlayer == null) dancePlayer = FindAnyObjectByType<AvatarDanceHandler>();
+            if (vrmLoader == null) vrmLoader = FindAnyObjectByType<VRMLoader>();
             FindAndBindAnimator(false);
         }
 
@@ -126,7 +126,7 @@ namespace CustomDancePlayer
             }
             if (model == null)
             {
-                var a = FindFirstObjectByType<Animator>();
+                var a = FindAnyObjectByType<Animator>();
                 if (a != null) model = a.transform.root.gameObject;
             }
             if (model == null) return;

@@ -38,6 +38,9 @@ public class RemoveTaskbarApp : MonoBehaviour
             SetWindowLong(unityHWND, GWL_EXSTYLE, exStyle | WS_EX_TOOLWINDOW);
             _isHidden = true;
         }
+#elif UNITY_STANDALONE_OSX && !UNITY_EDITOR
+        _isHidden = false;
+        ApplyDockMode();
 #endif
     }
 
@@ -62,8 +65,18 @@ public class RemoveTaskbarApp : MonoBehaviour
             SetWindowLong(unityHWND, GWL_EXSTYLE, exStyle | WS_EX_TOOLWINDOW);
             _isHidden = true;
         }
+#elif UNITY_STANDALONE_OSX && !UNITY_EDITOR
+        _isHidden = !_isHidden;
+        ApplyDockMode();
 #endif
     }
+
+#if UNITY_STANDALONE_OSX && !UNITY_EDITOR
+    private void ApplyDockMode()
+    {
+        MacSystemBridge.MacSys_SetDockIconVisible(_isHidden ? 0 : 1);
+    }
+#endif
 
     private IntPtr GetUnityWindow()
     {

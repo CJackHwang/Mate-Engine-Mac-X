@@ -36,7 +36,7 @@ public class UISetOnOff : MonoBehaviour
     }
     public void UnsnapAllAvatars()
     {
-        foreach (var h in FindObjectsByType<AvatarWindowHandler>(FindObjectsSortMode.None))
+        foreach (var h in FindObjectsByType<AvatarWindowHandler>())
             h.ForceExitWindowSitting();
     }
 
@@ -63,7 +63,7 @@ public class UISetOnOff : MonoBehaviour
 
     public void ToggleChibiMode()
     {
-        foreach (var chibi in GameObject.FindObjectsByType<ChibiToggle>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        foreach (var chibi in GameObject.FindObjectsByType<ChibiToggle>(FindObjectsInactive.Exclude))
             chibi.ToggleChibiMode();
     }
 

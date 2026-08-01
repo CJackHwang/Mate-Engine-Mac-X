@@ -395,7 +395,7 @@ namespace CustomDancePlayer
         void FindAvatarSmart()
         {
             Animator found = null;
-            var loader = FindFirstObjectByType<VRMLoader>();
+            var loader = FindAnyObjectByType<VRMLoader>();
             if (loader != null)
             {
                 var current = loader.GetCurrentModel();
@@ -408,7 +408,7 @@ namespace CustomDancePlayer
             }
             if (found == null)
             {
-                var all = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                var all = GameObject.FindObjectsByType<Animator>(FindObjectsInactive.Include);
                 found = all.FirstOrDefault(a => a && a.isActiveAndEnabled);
             }
             if (found != animator)

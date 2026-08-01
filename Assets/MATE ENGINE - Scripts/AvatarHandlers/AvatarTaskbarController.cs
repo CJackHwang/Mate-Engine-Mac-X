@@ -48,10 +48,9 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void Start()
     {
-#if !UNITY_STANDALONE_WIN
-        return;
-#endif
+#if UNITY_STANDALONE_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
+#endif
         animator = avatarAnimator ?? GetComponent<Animator>();
 
         if (attachTarget != null)
@@ -71,10 +70,10 @@ public class AvatarTaskbarController : MonoBehaviour
 
     void Update()
     {
-#if !UNITY_STANDALONE_WIN
-        return;
+        if (animator == null) return;
+#if UNITY_STANDALONE_WIN
+        if (unityHWND == IntPtr.Zero) return;
 #endif
-        if (unityHWND == IntPtr.Zero || animator == null) return;
 
         UpdateUnityWindowPosition();
         UpdateTaskbarRect();
@@ -154,6 +153,13 @@ public class AvatarTaskbarController : MonoBehaviour
         float bottomY = unityPos.y + unityHeight + snapZoneOffset.y;
 
         pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2f, bottomY, snapZoneSize.x, snapZoneSize.y);
+#elif UNITY_STANDALONE_OSX
+        if (!MacWindowHelper.TryGetWindowRect(out RectInt rect))
+            return;
+
+        float centerX = unityPos.x + rect.width / 2f + snapZoneOffset.x;
+        float bottomY = unityPos.y + rect.height + snapZoneOffset.y;
+        pinkZoneDesktopRect = new Rect(centerX - snapZoneSize.x / 2f, bottomY, snapZoneSize.x, snapZoneSize.y);
 #endif
     }
 
@@ -162,6 +168,9 @@ public class AvatarTaskbarController : MonoBehaviour
 #if UNITY_STANDALONE_WIN
         GetWindowRect(unityHWND, out RECT rect);
         unityPos = new Vector2(rect.Left, rect.Top);
+#elif UNITY_STANDALONE_OSX
+        if (MacWindowHelper.TryGetWindowRect(out RectInt rect))
+            unityPos = new Vector2(rect.x, rect.y);
 #endif
     }
 

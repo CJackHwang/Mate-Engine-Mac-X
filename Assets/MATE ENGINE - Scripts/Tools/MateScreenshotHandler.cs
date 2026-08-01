@@ -9,7 +9,7 @@ public class MateScreenshotHandler : MonoBehaviour
 
     public void TakeScreenshot()
     {
-        Camera cam = targetCamera != null ? targetCamera : (Camera.main != null ? Camera.main : FindObjectOfType<Camera>());
+        Camera cam = targetCamera != null ? targetCamera : (Camera.main != null ? Camera.main : FindAnyObjectByType<Camera>());
         if (cam == null) return;
 
         string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);

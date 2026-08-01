@@ -81,7 +81,7 @@ public class AvatarLibraryMenu : MonoBehaviour
     {
         libraryPanel.SetActive(true);
 
-        var auto = FindFirstObjectByType<SteamWorkshopAutoLoader>();
+        var auto = FindAnyObjectByType<SteamWorkshopAutoLoader>();
         if (auto != null)
         {
             auto.RefreshWorkshopAvatars();
@@ -99,7 +99,7 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     private IEnumerator LiveUpdateWhileOpen()
     {
-        var auto = FindFirstObjectByType<SteamWorkshopAutoLoader>();
+        var auto = FindAnyObjectByType<SteamWorkshopAutoLoader>();
         while (libraryPanel != null && libraryPanel.activeInHierarchy)
         {
             if (auto != null)
@@ -217,7 +217,7 @@ public class AvatarLibraryMenu : MonoBehaviour
         }
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() => {
-            var loader = FindFirstObjectByType<VRMLoader>();
+            var loader = FindAnyObjectByType<VRMLoader>();
             if (loader != null)
                 loader.ActivateDefaultModel();
         });
@@ -357,7 +357,7 @@ public class AvatarLibraryMenu : MonoBehaviour
 
     private void LoadAvatar(string path)
     {
-        var loader = FindFirstObjectByType<VRMLoader>();
+        var loader = FindAnyObjectByType<VRMLoader>();
         if (loader != null)
         {
             loader.LoadVRM(path);

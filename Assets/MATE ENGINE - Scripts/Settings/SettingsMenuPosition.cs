@@ -29,6 +29,7 @@ public class SettingsMenuPosition : MonoBehaviour
 
     private IntPtr unityHWND;
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT { public int left, top, right, bottom; }
 
@@ -39,9 +40,12 @@ public class SettingsMenuPosition : MonoBehaviour
 
     [DllImport("user32.dll")]
     private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+#endif
 
-    private readonly List<RECT> monitorRects = new List<RECT>();
+    private readonly List<RectInt> monitorRects = new List<RectInt>();
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     private MonitorEnumProc enumProc;
+#endif
     private float checkTimer;
     private float monitorTimer;
     private bool lastAtRightEdge;
@@ -52,6 +56,8 @@ public class SettingsMenuPosition : MonoBehaviour
 #if UNITY_STANDALONE_WIN
         unityHWND = Process.GetCurrentProcess().MainWindowHandle;
         enumProc = EnumProc;
+        RefreshMonitors();
+#elif UNITY_STANDALONE_OSX
         RefreshMonitors();
 #endif
         foreach (var menu in menus)
@@ -65,10 +71,6 @@ public class SettingsMenuPosition : MonoBehaviour
 
     void Update()
     {
-#if !UNITY_STANDALONE_WIN
-        return;
-#endif
-
         monitorTimer += Time.unscaledDeltaTime;
         if (monitorTimer >= Mathf.Max(0.1f, monitorRefreshInterval))
         {
@@ -81,12 +83,13 @@ public class SettingsMenuPosition : MonoBehaviour
         if (checkTimer < step) return;
         checkTimer = 0f;
 
-        RECT winRect;
-        if (!GetWindowRect(unityHWND, out winRect)) return;
+        if (!TryGetWindowRect(out RectInt winRect)) return;
 
-        RECT screen = monitorRects.Count > 0 ? GetBestMonitor(winRect) : new RECT { left = 0, top = 0, right = Screen.currentResolution.width, bottom = Screen.currentResolution.height };
+        RectInt screen = monitorRects.Count > 0
+            ? GetBestMonitor(winRect)
+            : new RectInt(0, 0, Screen.currentResolution.width, Screen.currentResolution.height);
 
-        bool atRightEdge = winRect.right >= (screen.right - edgeMargin);
+        bool atRightEdge = winRect.x + winRect.width >= screen.x + screen.width - edgeMargin;
         if (!initedEdge) { lastAtRightEdge = atRightEdge; initedEdge = true; }
 
         if (atRightEdge != lastAtRightEdge)
@@ -106,9 +109,10 @@ public class SettingsMenuPosition : MonoBehaviour
         }
     }
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
     bool EnumProc(IntPtr hMonitor, IntPtr hdc, ref RECT lprc, IntPtr data)
     {
-        monitorRects.Add(lprc);
+        monitorRects.Add(new RectInt(lprc.left, lprc.top, lprc.right - lprc.left, lprc.bottom - lprc.top));
         return true;
     }
 
@@ -117,8 +121,33 @@ public class SettingsMenuPosition : MonoBehaviour
         monitorRects.Clear();
         EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, enumProc, IntPtr.Zero);
     }
+#elif UNITY_STANDALONE_OSX
+    void RefreshMonitors()
+    {
+        monitorRects.Clear();
+        monitorRects.AddRange(MonitorHelper.GetMonitorRects());
+    }
+#endif
 
-    RECT GetBestMonitor(RECT win)
+    bool TryGetWindowRect(out RectInt rect)
+    {
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
+        if (GetWindowRect(unityHWND, out RECT r))
+        {
+            rect = new RectInt(r.left, r.top, r.right - r.left, r.bottom - r.top);
+            return true;
+        }
+        rect = default;
+        return false;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        return MacWindowHelper.TryGetWindowRect(out rect);
+#else
+        rect = default;
+        return false;
+#endif
+    }
+
+    RectInt GetBestMonitor(RectInt win)
     {
         int idx = 0, maxArea = 0;
         for (int i = 0; i < monitorRects.Count; i++)
@@ -129,12 +158,12 @@ public class SettingsMenuPosition : MonoBehaviour
         return monitorRects[idx];
     }
 
-    int OverlapArea(RECT a, RECT b)
+    int OverlapArea(RectInt a, RectInt b)
     {
-        int x1 = Math.Max(a.left, b.left);
-        int x2 = Math.Min(a.right, b.right);
-        int y1 = Math.Max(a.top, b.top);
-        int y2 = Math.Min(a.bottom, b.bottom);
+        int x1 = Math.Max(a.x, b.x);
+        int x2 = Math.Min(a.x + a.width, b.x + b.width);
+        int y1 = Math.Max(a.y, b.y);
+        int y2 = Math.Min(a.y + a.height, b.y + b.height);
         int w = x2 - x1;
         int h = y2 - y1;
         return (w > 0 && h > 0) ? w * h : 0;

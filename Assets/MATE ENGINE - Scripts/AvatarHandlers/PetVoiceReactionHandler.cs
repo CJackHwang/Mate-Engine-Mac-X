@@ -158,7 +158,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         }
 
         if (cachedBigScreen == null)
-            cachedBigScreen = FindFirstObjectByType<AvatarBigScreenHandler>();
+            cachedBigScreen = FindAnyObjectByType<AvatarBigScreenHandler>();
         if (cachedBigScreen != null && bigScreenFlag == null)
             bigScreenFlag = cachedBigScreen.GetType().GetField("isBigScreenActive", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -174,7 +174,7 @@ public class PetVoiceReactionHandler : MonoBehaviour
         {
             if (cachedBigScreen == null && bigScreenFlag == null)
             {
-                cachedBigScreen = FindFirstObjectByType<AvatarBigScreenHandler>();
+                cachedBigScreen = FindAnyObjectByType<AvatarBigScreenHandler>();
                 if (cachedBigScreen != null)
                     bigScreenFlag = cachedBigScreen.GetType().GetField("isBigScreenActive", BindingFlags.NonPublic | BindingFlags.Instance);
             }
@@ -436,6 +436,8 @@ public class PetVoiceReactionHandler : MonoBehaviour
         var top = GetAncestor(WindowFromPoint(p), GA_ROOT);
         if (top == System.IntPtr.Zero) return true;
         return top != _unityHwnd;
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        return MacWindowHelper.IsWindowOccludedAtCursor();
 #else
         return false;
 #endif

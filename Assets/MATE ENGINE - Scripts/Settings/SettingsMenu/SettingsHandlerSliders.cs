@@ -14,6 +14,7 @@ public class SettingsHandlerSliders : MonoBehaviour
     public Slider hueShiftSlider;
     public Slider saturationSlider;
     public Slider windowSitYOffsetSlider;
+    public Slider windowSitCliffOffsetSlider;
     public Slider danceSwitchTimeSlider;
     public Slider danceTransitionTimeSlider;
     // 舞蹈片段总数（1-20），对应 Animator Female blend tree 的 threshold 数量
@@ -23,6 +24,7 @@ public class SettingsHandlerSliders : MonoBehaviour
 
     private void Start()
     {
+        EnsureCliffOffsetSlider();
         soundThresholdSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.soundThreshold = v;
@@ -49,7 +51,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         fpsLimitSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.fpsLimit = (int)v;
-            foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
+            foreach (var limiter in FindObjectsByType<FPSLimiter>())
                 limiter.SetFPSLimit((int)v);
             SaveAll();
         });
@@ -75,7 +77,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.uiHueShift = v;
-            var theme = FindFirstObjectByType<ThemeManager>();
+            var theme = FindAnyObjectByType<ThemeManager>();
             if (theme != null) theme.SetHue(v);
             SaveAll();
         });
@@ -83,13 +85,19 @@ public class SettingsHandlerSliders : MonoBehaviour
         saturationSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.uiSaturation = v;
-            var theme = FindFirstObjectByType<ThemeManager>();
+            var theme = FindAnyObjectByType<ThemeManager>();
             if (theme != null) theme.SetSaturation(v);
             SaveAll();
         });
         windowSitYOffsetSlider?.onValueChanged.AddListener(v =>
         {
             SaveLoadHandler.Instance.data.windowSitYOffset = v;
+            SaveAll();
+        });
+        windowSitCliffOffsetSlider?.onValueChanged.AddListener(v =>
+        {
+            SaveLoadHandler.Instance.data.windowSitCliffOffset = v;
+            SaveLoadHandler.Instance.data.windowSitCliffOffsetSet = true;
             SaveAll();
         });
         danceSwitchTimeSlider?.onValueChanged.AddListener(v =>
@@ -129,6 +137,53 @@ public class SettingsHandlerSliders : MonoBehaviour
         ApplySettings();
     }
 
+    // The settings rows are hand-positioned in the scene, so instead of editing
+    // scene YAML (fragile) the cliff-depth slider is cloned at runtime from the
+    // existing seat-height slider row and placed right below it.
+    private void EnsureCliffOffsetSlider()
+    {
+        if (windowSitCliffOffsetSlider != null || windowSitYOffsetSlider == null) return;
+        Transform row = windowSitYOffsetSlider.transform;
+        if (row == null || row.parent == null) return;
+        GameObject clone = Instantiate(row.gameObject, row.parent);
+        clone.transform.SetSiblingIndex(row.GetSiblingIndex() + 1);
+        clone.name = "WindowSitCliffDepth";
+        RectTransform rt = clone.GetComponent<RectTransform>();
+        RectTransform srcRT = row as RectTransform;
+        if (rt != null && srcRT != null)
+        {
+            Vector2 pos = srcRT.anchoredPosition;
+            rt.anchoredPosition = new Vector2(pos.x, pos.y - 60f);
+        }
+        foreach (var tmp in clone.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+        {
+            if (tmp.text.Contains("坐下") || tmp.text.Contains("高度") ||
+                tmp.text.IndexOf("SITTING", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                tmp.text.IndexOf("OFFSET", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                tmp.text = "坐下时的遮挡深度";
+                break;
+            }
+        }
+        foreach (var txt in clone.GetComponentsInChildren<UnityEngine.UI.Text>(true))
+        {
+            if (txt.text.Contains("坐下") || txt.text.Contains("高度") ||
+                txt.text.IndexOf("SITTING", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                txt.text.IndexOf("OFFSET", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                txt.text = "坐下时的遮挡深度";
+                break;
+            }
+        }
+        Slider s = clone.GetComponentInChildren<Slider>(true);
+        if (s != null)
+        {
+            s.minValue = -1f;
+            s.maxValue = 1f;
+        }
+        windowSitCliffOffsetSlider = s;
+    }
+
     private void SaveAll()
     {
         SaveLoadHandler.Instance.SaveToDisk();
@@ -149,6 +204,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.SetValueWithoutNotify(data.uiHueShift);
         saturationSlider?.SetValueWithoutNotify(data.uiSaturation);
         windowSitYOffsetSlider?.SetValueWithoutNotify(data.windowSitYOffset);
+        windowSitCliffOffsetSlider?.SetValueWithoutNotify(data.windowSitCliffOffset);
         danceSwitchTimeSlider?.SetValueWithoutNotify(data.danceSwitchTime);
         danceTransitionTimeSlider?.SetValueWithoutNotify(data.danceTransitionTime);
         danceClipCountInput?.SetTextWithoutNotify(data.danceClipCount.ToString());
@@ -158,23 +214,24 @@ public class SettingsHandlerSliders : MonoBehaviour
     {
         var data = SaveLoadHandler.Instance.data;
 
-        foreach (var limiter in FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None))
+        foreach (var limiter in FindObjectsByType<FPSLimiter>())
             limiter.SetFPSLimit(data.fpsLimit);
 
-        var scaleController = FindFirstObjectByType<AvatarScaleController>();
+        var scaleController = FindAnyObjectByType<AvatarScaleController>();
         if (scaleController != null)
             scaleController.SyncWithSlider();
 
-        var theme = FindFirstObjectByType<ThemeManager>();
+        var theme = FindAnyObjectByType<ThemeManager>();
         if (theme != null)
         {
             theme.SetHue(data.uiHueShift);
             theme.SetSaturation(data.uiSaturation);
         }
 
-        foreach (var handler in FindObjectsByType<AvatarWindowHandler>(FindObjectsSortMode.None))
+        foreach (var handler in FindObjectsByType<AvatarWindowHandler>())
         {
             handler.windowSitYOffset = SaveLoadHandler.Instance.data.windowSitYOffset;
+            handler.windowSitCliffOffset = SaveLoadHandler.Instance.data.windowSitCliffOffset;
         }
         SaveLoadHandler.ApplyAllSettingsToAllAvatars();
     }
@@ -192,6 +249,7 @@ public class SettingsHandlerSliders : MonoBehaviour
         hueShiftSlider?.SetValueWithoutNotify(0f);
         saturationSlider?.SetValueWithoutNotify(1f);
         windowSitYOffsetSlider?.SetValueWithoutNotify(0f);
+        windowSitCliffOffsetSlider?.SetValueWithoutNotify(0f);
         danceSwitchTimeSlider?.SetValueWithoutNotify(15f);
         danceTransitionTimeSlider?.SetValueWithoutNotify(2f);
 
@@ -207,6 +265,8 @@ public class SettingsHandlerSliders : MonoBehaviour
         data.spineBlend = 0.5f;
         data.eyeBlend = 1.0f;
         data.windowSitYOffset = 0f;
+        data.windowSitCliffOffset = 0f;
+        data.windowSitCliffOffsetSet = false;
         data.danceSwitchTime = 15f;
         data.danceTransitionTime = 2f;
         data.danceClipCount = 20;

@@ -45,7 +45,7 @@ public class SaveLoadHandler : MonoBehaviour
         LoadFromDisk();
         ApplyAllSettingsToAllAvatars();
 
-        var theme = FindFirstObjectByType<ThemeManager>();
+        var theme = FindAnyObjectByType<ThemeManager>();
         if (theme != null)
         {
             theme.SetHue(data.uiHueShift);
@@ -53,7 +53,7 @@ public class SaveLoadHandler : MonoBehaviour
         }
 
 
-        var limiters = FindObjectsByType<FPSLimiter>(FindObjectsSortMode.None);
+        var limiters = FindObjectsByType<FPSLimiter>();
         foreach (var limiter in limiters)
         {
             limiter.targetFPS = data.fpsLimit;
@@ -168,6 +168,10 @@ public class SaveLoadHandler : MonoBehaviour
         public int bigScreenScreenSaverTimeoutIndex = 0;
         public bool bigScreenScreenSaverEnabled = false;
         public float windowSitYOffset = 0f;
+        // Runtime-tunable cliff occluder depth (⌘+[ / ⌘+]). offsetSet distinguishes
+        // "never tuned" (use the Inspector value) from an explicit saved value.
+        public bool windowSitCliffOffsetSet = false;
+        public float windowSitCliffOffset = 0f;
 
         public Dictionary<string, float> lightIntensities = new();
         public Dictionary<string, float> lightSaturations = new();

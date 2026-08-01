@@ -31,7 +31,7 @@ public class SettingsHandlerButtons : MonoBehaviour
         if (uniWindowControllerObject != null)
             uniWindowController = uniWindowControllerObject.GetComponent<UniWindowController>();
         else
-            uniWindowController = FindFirstObjectByType<UniWindowController>();
+            uniWindowController = FindAnyObjectByType<UniWindowController>();
     }
 
     private void OnApplyClicked()
@@ -81,7 +81,7 @@ public class SettingsHandlerButtons : MonoBehaviour
     }
     private void OnRefreshAppsClicked()
     {
-        var appManager = FindFirstObjectByType<AllowedAppsManager>();
+        var appManager = FindAnyObjectByType<AllowedAppsManager>();
         if (appManager != null) appManager.RefreshUI();
     }
 }

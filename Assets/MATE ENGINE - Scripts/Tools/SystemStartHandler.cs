@@ -95,7 +95,7 @@ public class SystemStartHandler : MonoBehaviour
     private void UpdateCheckmarkText(bool isOn)
     {
         if (checkmarkText != null)
-            checkmarkText.text = isOn ? "☑ Start with Windows" : "☐ Start with Windows";
+            checkmarkText.text = isOn ? "☑ Start at login" : "☐ Start at login";
     }
 
     // ---------------- Registry Handling ----------------
@@ -148,8 +148,20 @@ public class SystemStartHandler : MonoBehaviour
         {
             Debug.LogError("[SystemStartHandler] Registry write failed: " + ex.Message);
         }
+#elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
+        try
+        {
+            if (MacSystemBridge.SetLoginItemEnabled(enable))
+                Debug.Log($"[SystemStartHandler] {(enable ? "Enabled" : "Disabled")} start at login (SMAppService/LaunchAgent).");
+            else
+                Debug.LogWarning("[SystemStartHandler] Failed to update macOS login item.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("[SystemStartHandler] macOS login item update failed: " + ex.Message);
+        }
 #else
-        Debug.Log("[SystemStartHandler] Registry disabled on this platform.");
+        Debug.Log("[SystemStartHandler] Autostart is not supported on this platform.");
 #endif
     }
 

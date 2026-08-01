@@ -94,7 +94,12 @@ public class AvatarAnimatorController : MonoBehaviour
             else if (!valid && isDancing) SetDancing(false);
         }
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-        if (!isDragging && !isDancing) StartDancing();
+        if (!isDragging)
+        {
+            bool valid = IsValidAppPlaying();
+            if (valid && !isDancing) StartDancing();
+            else if (!valid && isDancing) SetDancing(false);
+        }
 #endif
     }
 
@@ -150,7 +155,18 @@ public class AvatarAnimatorController : MonoBehaviour
         catch { defaultDevice?.Dispose(); defaultDevice = null; }
         return false;
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-        return MacAudioMonitorBinding.IsOutputActive();
+        if (!MacAudioMonitorBinding.IsOutputActive()) return false;
+        if (allowedApps == null || allowedApps.Count == 0) return true;
+
+        var running = MacSystemBridge.GetRunningAppNames();
+        for (int i = 0; i < running.Count; i++)
+        {
+            string appName = running[i];
+            for (int j = 0; j < allowedApps.Count; j++)
+                if (appName.StartsWith(allowedApps[j], System.StringComparison.OrdinalIgnoreCase))
+                    return true;
+        }
+        return false;
 #else
         return false;
 #endif

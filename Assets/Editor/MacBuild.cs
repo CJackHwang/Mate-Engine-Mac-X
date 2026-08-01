@@ -92,7 +92,7 @@ public static class MacBuild
             return null;
         }
 
-        BuildPlayerOptions playerOptions = new BuildPlayerOptions
+        BuildPlayerOptions playerOptions = new()
         {
             scenes = scenes,
             locationPathName = fullOutput,
