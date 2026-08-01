@@ -25,31 +25,75 @@ Steam users get exclusive additional content:
 
 
 
-# 🍎 Mate Engine for macOS — this repository
+# 🍎 Mate Engine for macOS · 伙伴引擎 macOS 版
 
-This is the **macOS** port/fork of Mate Engine (a free, lightweight desktop pet with custom VRM support). Built with **Unity 6000.4.8f1**.
+**A native macOS port of Mate Engine** — a free, lightweight desktop pet that lives on your desktop with a custom VRM avatar. Built with **Unity 6000.4.8f1** and native ObjC/Swift plugins.
 
-## Latest highlights
+| | |
+|---|---|
+| 项目 / Repo | `Mate-Engine-Mac-X`（macOS 原生移植版） |
+| 上游 / Upstream | [Mate Engine](https://github.com/Marksonthegamer/Mate-Engine-Linux-Port) |
+| Steam | [MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) |
+| 许可 / License | GNU AGPL v3 & MateProv2（见上游仓库许可说明） |
 
-- **Ambient Light (氛围光)** — follows your desktop colors in real time via screen capture. On by default; if the Screen Recording permission is missing, it automatically switches back to the regular manual lights. Intensity is brightness-aware, so it blends into the background without glare.
-- **Full localization** — 13 languages: EN, 简体中文, 繁體中文, 日本語, 한국어, DE, ES, FR, PL, RU, TR, UK, KK.
-- **Window sitting / snapping** — the avatar sits on real window edges (taskbar-aware). The screen's own top/bottom edge is intentionally **not** a snap target.
-- **Dance to music** — reacts to system audio via ScreenCaptureKit (needs Screen Recording permission).
-- **Smart settings menu** — runtime-built rows, fixed label overlaps, and a startup window that sizes to the visible screen (no more off-screen overflow).
+---
 
-## Build & run (macOS)
+## ✨ 移植贡献 / Porting Contributions
+
+这个仓库不只是把代码编译到 macOS，而是针对 macOS 做了**原生深度移植**，主要贡献如下：
+
+### 🧩 原生 macOS 插件（clang 编译的 .bundle）
+| 插件 | 用途 |
+|---|---|
+| `MacSystem.bundle` | 窗口管理、屏幕捕获授权（`CGRequestScreenCaptureAccess`）、显示器查询 |
+| `MacWindowList.bundle` | 前→后窗口枚举（支撑"坐在窗口边缘"） |
+| `MacAudioMonitor.bundle` | ScreenCaptureKit 系统音频捕获（随音乐跳舞） |
+| `MacWindowFix.bundle` | macOS 专属窗口交互修正 |
+
+### 🚀 核心移植功能
+- **窗口坐立 / 吸附** — 角色真实地坐在窗口上/下边缘（识别任务栏），屏幕顶部/底部刻意不作为吸附目标
+- **随音乐跳舞** — 通过 ScreenCaptureKit 监听系统音频（需屏幕录制权限）
+- **氛围光（Ambient Light）** — 实时跟随桌面配色；无屏幕录制权限时自动切回常规手动灯光；亮度自适应不刺眼
+- **13 语言本地化** — EN / 简体中文 / 繁體中文 / 日本語 / 한국어 / DE / ES / FR / PL / RU / TR / UK / KK
+- **开屏窗口自适应** — 启动窗口按主显示器可见工作区缩放（扣掉菜单栏/程序坞）
+- **智能设置菜单** — 运行时动态生成的行、修正后的文字/控件布局
+- **透明无边框置顶窗口** — 通过 UniWindowController 实现
+
+---
+
+## 🛠 构建与运行 / Build & Run (macOS)
 
 ```bash
-./Tools/build_macos.sh        # builds Builds/macOS/MateEngineX.app
-./Tools/launch_test.sh        # launches the app and prints audio-capture diagnostics
+./Tools/build_macos.sh        # 构建 Builds/macOS/MateEngineX.app（同时重编原生插件）
+./Tools/launch_test.sh        # 启动应用并打印音频捕获诊断
 ```
 
-Output app: `Builds/macOS/MateEngineX.app`
+产物输出在 `Builds/macOS/MateEngineX.app`，复制到 `/Applications/` 即可安装。
 
-## Notes
+---
 
-- Needs **Screen Recording** permission (System Settings → Privacy & Security → Screen Recording) for ambient light and dance-to-music.
+## 🔐 权限 / Permissions
 
+**屏幕录制（Screen Recording）**（系统设置 → 隐私与安全 → 屏幕录制）用于：
+- 氛围光（跟随桌面配色）
+- 随音乐跳舞（系统音频捕获）
+
+⚠️ **ad-hoc 签名提示**：目前构建是 ad-hoc 签名（`codesign -s -`），macOS 会把**每次重新构建当作新应用**，屏幕录制权限在每次更新后都需要重新授权。重置并重新授权：
+
+```bash
+tccutil reset ScreenCapture com.Shinymoon.MateEngineX
+# 重新启动应用 → 在弹出的提示中点「允许」→ 完全退出后再次启动
+```
+
+如果希望**跨更新保持权限**，请用正式证书签名：
+
+```bash
+SIGN_IDENTITY="Apple Development: 你的名字 (TEAMID)" ./Tools/build_macos.sh
+```
+
+---
+
+*下方为上游 Mate Engine 的原始说明（English / 日本語 / 中文）。*
 
 
 # Note-Worthy Community Mods:
