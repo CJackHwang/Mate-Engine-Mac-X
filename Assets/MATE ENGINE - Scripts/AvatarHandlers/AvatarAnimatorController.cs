@@ -15,7 +15,7 @@ public class AvatarAnimatorController : MonoBehaviour
     [Header("Dancing")]
     public bool enableDancing = true;
     // true = dance only while a system player is actually outputting audio
-    //        (ScreenCaptureKit capture; falls back to manual if unavailable);
+    //        (ScreenCaptureKit capture; no permission / macOS<13 = stays idle);
     // false = manual: enableDancing on = dance immediately.
     public bool followMusic = true;
     public bool enableDanceSwitch = true;
@@ -100,16 +100,19 @@ public class AvatarAnimatorController : MonoBehaviour
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
         if (!isDragging)
         {
-            if (followMusic && MacAudioMonitorBinding.IsSystemCaptureAvailable())
+            if (followMusic)
             {
+                // Music-reactive: dance only while a system player is actually
+                // outputting audio. If the capture isn't available (no Screen
+                // Recording permission, macOS < 13) it's treated as no music,
+                // so the avatar stays idle instead of dancing unconditionally.
                 bool valid = IsValidAppPlaying();
                 if (valid && !isDancing) StartDancing();
                 else if (!valid && isDancing) SetDancing(false);
             }
             else if (!isDancing)
             {
-                // Manual fallback: toggle on = dance immediately (macOS 12,
-                // screen-recording permission missing, or followMusic off).
+                // Manual mode: toggle on = dance immediately.
                 StartDancing();
             }
         }
