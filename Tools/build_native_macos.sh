@@ -86,7 +86,10 @@ build_bundle MacWindowList com.shinymoon.mateengine.macwindowlist 1.0 "$SRC_DIR/
 
 build_bundle MacAudioMonitor com.shinymoon.mateengine.macaudiomonitor 1 "$SRC_DIR/MacAudioMonitor.m" \
   -framework AVFoundation \
-  -framework CoreAudio
+  -framework CoreAudio \
+  -framework CoreMedia \
+  -framework CoreGraphics \
+  -framework ScreenCaptureKit
 
 build_bundle MacWindowFix com.shinymoon.mateengine.macwindowfix 1.0 "$SRC_DIR/MacWindowFix.m" \
   -framework Cocoa

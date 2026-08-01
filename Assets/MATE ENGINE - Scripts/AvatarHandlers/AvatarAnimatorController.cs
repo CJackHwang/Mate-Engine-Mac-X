@@ -14,6 +14,10 @@ public class AvatarAnimatorController : MonoBehaviour
     public float IDLE_SWITCH_TIME = 12f, IDLE_TRANSITION_TIME = 3f;
     [Header("Dancing")]
     public bool enableDancing = true;
+    // true = dance only while a system player is actually outputting audio
+    //        (ScreenCaptureKit capture; falls back to manual if unavailable);
+    // false = manual: enableDancing on = dance immediately.
+    public bool followMusic = true;
     public bool enableDanceSwitch = true;
     public float DANCE_SWITCH_TIME = 15f;
     public float DANCE_TRANSITION_TIME = 2f;
@@ -96,9 +100,18 @@ public class AvatarAnimatorController : MonoBehaviour
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
         if (!isDragging)
         {
-            bool valid = IsValidAppPlaying();
-            if (valid && !isDancing) StartDancing();
-            else if (!valid && isDancing) SetDancing(false);
+            if (followMusic && MacAudioMonitorBinding.IsSystemCaptureAvailable())
+            {
+                bool valid = IsValidAppPlaying();
+                if (valid && !isDancing) StartDancing();
+                else if (!valid && isDancing) SetDancing(false);
+            }
+            else if (!isDancing)
+            {
+                // Manual fallback: toggle on = dance immediately (macOS 12,
+                // screen-recording permission missing, or followMusic off).
+                StartDancing();
+            }
         }
 #endif
     }
@@ -155,7 +168,7 @@ public class AvatarAnimatorController : MonoBehaviour
         catch { defaultDevice?.Dispose(); defaultDevice = null; }
         return false;
 #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
-        if (!MacAudioMonitorBinding.IsOutputActive()) return false;
+        if (MacAudioMonitorBinding.OutputActivity() <= 0) return false;
         if (allowedApps == null || allowedApps.Count == 0) return true;
 
         var running = MacSystemBridge.GetRunningAppNames();

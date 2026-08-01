@@ -1,6 +1,7 @@
 using Kirurobo;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Components;
 
 public class SettingsHandlerToggles : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     public Toggle ambientOcclusionToggle;
     public Toggle enableIKToggle;
     public Toggle enableDanceSwitchToggle;
+    public Toggle followMusicToggle;
     public Toggle enableRandomMessagesToggle;
     public Toggle enableHusbandoModeToggle;
     public Toggle enableAutoMemoryTrimToggle;
@@ -52,6 +54,8 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.onValueChanged.AddListener(OnAmbientOcclusionChanged);
         enableIKToggle?.onValueChanged.AddListener(OnEnableIKChanged);
         enableDanceSwitchToggle?.onValueChanged.AddListener(OnEnableDanceSwitchChanged);
+        EnsureFollowMusicToggle();
+        followMusicToggle?.onValueChanged.AddListener(OnFollowMusicChanged);
         enableRandomMessagesToggle?.onValueChanged.AddListener(OnEnableRandomMessagesChanged);
         enableHusbandoModeToggle?.onValueChanged.AddListener(OnEnableHusbandoModeChanged);
         enableAutoMemoryTrimToggle?.onValueChanged.AddListener(OnEnableAutoMemoryTrimChanged);
@@ -77,6 +81,11 @@ public class SettingsHandlerToggles : MonoBehaviour
     private void OnAmbientOcclusionChanged(bool v) { SaveLoadHandler.Instance.data.ambientOcclusion = v; ApplySettings(); Save(); }
     private void OnEnableIKChanged(bool v) { SaveLoadHandler.Instance.data.enableIK = v; ApplySettings(); Save(); }
     private void OnEnableDanceSwitchChanged(bool v) { SaveLoadHandler.Instance.data.enableDanceSwitch = v; Save(); }
+    private void OnFollowMusicChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.followMusic = v;
+        Save(); // pushes avatar.followMusic via ApplyAllSettingsToAllAvatars
+    }
     private void OnEnableAutoMemoryTrimChanged(bool v) { SaveLoadHandler.Instance.data.enableAutoMemoryTrim = v; ApplySettings(); Save(); }
     private void OnEnableRandomMessagesChanged(bool v)
     {
@@ -107,6 +116,59 @@ public class SettingsHandlerToggles : MonoBehaviour
 
     #endregion
 
+    // The dance "follow music" row is cloned at runtime from the existing
+    // "EnableDanceTransitions" toggle row — same approach as EnsureCliffOffsetSlider
+    // in SettingsHandlerSliders — to avoid hand-editing the fragile scene YAML.
+    private void EnsureFollowMusicToggle()
+    {
+        if (followMusicToggle != null || enableDanceSwitchToggle == null) return;
+        Transform row = enableDanceSwitchToggle.transform;
+        if (row == null || row.parent == null) return;
+
+        GameObject clone = Instantiate(row.gameObject, row.parent);
+        clone.transform.SetSiblingIndex(row.GetSiblingIndex() + 1);
+        clone.name = "FollowMusic";
+
+        RectTransform rt = clone.GetComponent<RectTransform>();
+        RectTransform srcRT = row as RectTransform;
+        if (rt != null && srcRT != null)
+        {
+            // Source sits at y = -140; next left-column row is at -240, so -200 is free.
+            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 60f);
+        }
+
+        Toggle t = clone.GetComponent<Toggle>();
+        if (t != null)
+        {
+            t.onValueChanged.RemoveAllListeners(); // drop the cloned handlers
+            followMusicToggle = t;
+        }
+
+        const string label = "跟随音乐自动跳舞";
+        foreach (var tmp in clone.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+        {
+            // Disable the cloned LocalizedStringEvent so it can't overwrite our label.
+            var lse = tmp.GetComponent<LocalizeStringEvent>();
+            if (lse != null) lse.enabled = false;
+            tmp.text = label;
+            break;
+        }
+        foreach (var txt in clone.GetComponentsInChildren<UnityEngine.UI.Text>(true))
+        {
+            var lse = txt.GetComponent<LocalizeStringEvent>();
+            if (lse != null) lse.enabled = false;
+            txt.text = label;
+            break;
+        }
+
+        var tooltip = clone.GetComponent<UiTooltip>();
+        if (tooltip != null)
+        {
+            tooltip.locKey = "";
+            tooltip.tooltipText = "开启时，角色随系统播放器播放的音乐自动跳舞；关闭时，打开“跳舞”开关即直接跳舞。";
+        }
+    }
+
     public void LoadSettings()
     {
         var data = SaveLoadHandler.Instance.data;
@@ -122,6 +184,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.SetIsOnWithoutNotify(data.ambientOcclusion);
         enableIKToggle?.SetIsOnWithoutNotify(data.enableIK);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(data.enableDanceSwitch);
+        followMusicToggle?.SetIsOnWithoutNotify(data.followMusic);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(data.enableRandomMessages);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(data.enableHusbandoMode);
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(data.enableAutoMemoryTrim);
@@ -206,6 +269,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         ambientOcclusionToggle?.SetIsOnWithoutNotify(false);
         enableIKToggle?.SetIsOnWithoutNotify(true);
         enableDanceSwitchToggle?.SetIsOnWithoutNotify(false);
+        followMusicToggle?.SetIsOnWithoutNotify(true);
         enableRandomMessagesToggle?.SetIsOnWithoutNotify(false);
         enableHusbandoModeToggle?.SetIsOnWithoutNotify(false);
         enableAutoMemoryTrimToggle?.SetIsOnWithoutNotify(false);
@@ -229,6 +293,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         data.ambientOcclusion = false;
         data.enableIK = true;
         data.enableDanceSwitch = false;
+        data.followMusic = true;
         data.enableRandomMessages = false;
         data.enableHusbandoMode = false;
         data.enableAutoMemoryTrim = false;

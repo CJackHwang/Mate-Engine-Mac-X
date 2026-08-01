@@ -131,6 +131,9 @@ public class SaveLoadHandler : MonoBehaviour
         public int pinnedDanceIndex = -1;
         public float avatarSize = 1.0f;
         public bool enableDancing = true;
+        // true = dance while a system player outputs audio (macOS SCK capture);
+        // false = manual, enableDancing on = dance immediately.
+        public bool followMusic = true;
         public bool enableMouseTracking = true;
         public int fpsLimit = 90;
         public bool isTopmost = true;
@@ -288,6 +291,7 @@ public class SaveLoadHandler : MonoBehaviour
             avatar.IDLE_SWITCH_TIME = data.idleSwitchTime;
             avatar.IDLE_TRANSITION_TIME = data.idleTransitionTime;
             avatar.enableDancing = data.enableDancing;
+            avatar.followMusic = data.followMusic;
             avatar.allowedApps = new List<string>(data.allowedApps);
             avatar.transform.localScale = Vector3.one * data.avatarSize;
             avatar.DANCE_SWITCH_TIME = data.danceSwitchTime;

@@ -7,6 +7,8 @@ public static class MacAudioMonitorBinding
     [DllImport("MacAudioMonitor")] private static extern void MacAudio_Start();
     [DllImport("MacAudioMonitor")] private static extern void MacAudio_Stop();
     [DllImport("MacAudioMonitor")] private static extern int MacAudio_IsOutputActive();
+    [DllImport("MacAudioMonitor")] private static extern int MacAudio_SystemCaptureAvailable();
+    [DllImport("MacAudioMonitor")] private static extern int MacAudio_HasCapturePermission();
     [DllImport("MacAudioMonitor")] private static extern int MacAudio_GetDefaultDeviceName(byte[] buf, int bufLen);
 
     public static void Start()
@@ -21,10 +23,25 @@ public static class MacAudioMonitorBinding
         catch (System.Exception e) { Debug.LogError("[MacAudioMonitor] Stop exception: " + e.Message); }
     }
 
-    public static bool IsOutputActive()
+    // 1 = system audio above threshold, 0 = capture running but silent, -1 = capture unavailable.
+    public static int OutputActivity()
     {
-        try { return MacAudio_IsOutputActive() != 0; }
-        catch (System.Exception e) { Debug.LogError("[MacAudioMonitor] IsOutputActive exception: " + e.Message); return false; }
+        try { return MacAudio_IsOutputActive(); }
+        catch (System.Exception e) { Debug.LogError("[MacAudioMonitor] IsOutputActive exception: " + e.Message); return -1; }
+    }
+
+    // Whether the ScreenCaptureKit system-audio stream is actually running.
+    public static bool IsSystemCaptureAvailable()
+    {
+        try { return MacAudio_SystemCaptureAvailable() != 0; }
+        catch (System.Exception e) { Debug.LogError("[MacAudioMonitor] SystemCaptureAvailable exception: " + e.Message); return false; }
+    }
+
+    // Whether Screen Recording permission is granted (required for system-audio capture).
+    public static bool HasCapturePermission()
+    {
+        try { return MacAudio_HasCapturePermission() != 0; }
+        catch (System.Exception e) { Debug.LogError("[MacAudioMonitor] HasCapturePermission exception: " + e.Message); return false; }
     }
 
     public static string GetDefaultDeviceName()
