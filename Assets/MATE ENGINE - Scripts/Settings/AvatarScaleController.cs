@@ -68,7 +68,7 @@ public class AvatarScaleController : MonoBehaviour
             }
         }
 
-        if (controller != null && controller.isDragging)
+        if (controller != null && (controller.isDragging || controller.BlockDraggingOverride))
             return;
 
 

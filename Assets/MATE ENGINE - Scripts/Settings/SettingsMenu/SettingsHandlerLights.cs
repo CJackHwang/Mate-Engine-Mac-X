@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Localization.Components;
 
 public class SettingsHandlerLights : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class SettingsHandlerLights : MonoBehaviour
     public List<LightControlEntry> lights = new List<LightControlEntry>();
     public List<LightToggleEntry> lightToggles = new List<LightToggleEntry>();
     public ColorController colorController;
+    public Toggle autoAmbientToggle; // unbound in scene; cloned at runtime next to the ambient-light master toggle
 
     private void Start()
     {
@@ -70,6 +72,9 @@ public class SettingsHandlerLights : MonoBehaviour
             }
         }
 
+        EnsureAutoAmbientToggle();
+        autoAmbientToggle?.onValueChanged.AddListener(OnAutoAmbientChanged);
+
         LoadSettings();
         ApplySettings();
     }
@@ -100,6 +105,13 @@ public class SettingsHandlerLights : MonoBehaviour
                 entry.checkmark.SetIsOnWithoutNotify(toggleState);
                 OnLightToggleChanged(i, toggleState);
             }
+        }
+
+        if (autoAmbientToggle != null)
+        {
+            bool st = true; // default on
+            if (data.groupToggles.TryGetValue("auto_ambient", out bool sv)) st = sv;
+            autoAmbientToggle.SetIsOnWithoutNotify(st);
         }
     }
 
@@ -178,6 +190,63 @@ public class SettingsHandlerLights : MonoBehaviour
         if (colorController == null) return;
         colorController.SetGroupEnabled(entry.activeID, state);
         colorController.SetGroupEnabled(entry.nonActiveID, !state);
+    }
+
+    // Clone the ambient-light master toggle row at runtime and wire a new
+    // "auto ambient" toggle right below it (same approach as EnsureCliffOffsetSlider
+    // in SettingsHandlerSliders) to avoid hand-editing the fragile scene YAML.
+    private void EnsureAutoAmbientToggle()
+    {
+        if (autoAmbientToggle != null) return;
+        if (lightToggles == null || lightToggles.Count == 0 || lightToggles[0].checkmark == null) return;
+        Transform row = lightToggles[0].checkmark.transform;
+        if (row == null || row.parent == null) return;
+
+        GameObject clone = Instantiate(row.gameObject, row.parent);
+        clone.transform.SetSiblingIndex(row.GetSiblingIndex() + 1);
+        clone.name = "AutoAmbient";
+
+        RectTransform rt = clone.GetComponent<RectTransform>();
+        RectTransform srcRT = row as RectTransform;
+        if (rt != null && srcRT != null)
+            rt.anchoredPosition = new Vector2(srcRT.anchoredPosition.x, srcRT.anchoredPosition.y - 60f);
+
+        Toggle t = clone.GetComponent<Toggle>();
+        if (t != null)
+        {
+            t.onValueChanged.RemoveAllListeners();
+            autoAmbientToggle = t;
+        }
+
+        const string label = "自动环境光";
+        foreach (var tmp in clone.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true))
+        {
+            var lse = tmp.GetComponent<LocalizeStringEvent>();
+            if (lse != null) lse.enabled = false;
+            tmp.text = label;
+            break;
+        }
+        foreach (var txt in clone.GetComponentsInChildren<UnityEngine.UI.Text>(true))
+        {
+            var lse = txt.GetComponent<LocalizeStringEvent>();
+            if (lse != null) lse.enabled = false;
+            txt.text = label;
+            break;
+        }
+        var tooltip = clone.GetComponent<UiTooltip>();
+        if (tooltip != null)
+        {
+            tooltip.locKey = "";
+            tooltip.tooltipText = "开启时，环境光自动跟随桌面配色；关闭时用手动滑杆。";
+        }
+    }
+
+    private void OnAutoAmbientChanged(bool v)
+    {
+        SaveLoadHandler.Instance.data.groupToggles["auto_ambient"] = v;
+        var probes = Resources.FindObjectsOfTypeAll<DesktopAmbientProbe>();
+        for (int i = 0; i < probes.Length; i++) probes[i].SetEnabled(v);
+        Save();
     }
 
     private void Save()
