@@ -100,7 +100,7 @@ public class SettingsHandlerLights : MonoBehaviour
             var entry = lightToggles[i];
             if (!string.IsNullOrEmpty(entry.activeID) && entry.checkmark != null)
             {
-                bool toggleState = false;
+                bool toggleState = entry.activeID == "ambi_lights"; // 环境光默认开启
                 if (data.groupToggles.TryGetValue(entry.activeID, out bool state)) toggleState = state;
                 entry.checkmark.SetIsOnWithoutNotify(toggleState);
                 OnLightToggleChanged(i, toggleState);
@@ -159,13 +159,14 @@ public class SettingsHandlerLights : MonoBehaviour
         for (int i = 0; i < lightToggles.Count; i++)
         {
             var entry = lightToggles[i];
+            bool def = entry.activeID == "ambi_lights"; // 环境光默认开启
             if (entry.checkmark != null)
             {
-                entry.checkmark.SetIsOnWithoutNotify(false);
-                OnLightToggleChanged(i, false);
+                entry.checkmark.SetIsOnWithoutNotify(def);
+                OnLightToggleChanged(i, def);
             }
             if (!string.IsNullOrEmpty(entry.activeID))
-                SaveLoadHandler.Instance.data.groupToggles[entry.activeID] = false;
+                SaveLoadHandler.Instance.data.groupToggles[entry.activeID] = def;
         }
         SaveLoadHandler.Instance.SaveToDisk();
     }
