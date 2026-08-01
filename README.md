@@ -1,5 +1,6 @@
-# MateEngine for Linux (Unoffical)
-Github: https://github.com/Marksonthegamer/Mate-Engine-Linux-Port
+# 🍎 MateEngine for macOS（非官方 macOS 移植版 / Unofficial macOS Port）
+
+本项目 / This repo: https://github.com/CJackHwang/Mate-Engine-Mac-X
 
 # Support MateEngine on Steam!
 Buy on Steam: https://store.steampowered.com/app/3625270/MateEngine/
@@ -31,10 +32,13 @@ Steam users get exclusive additional content:
 
 | | |
 |---|---|
-| 项目 / Repo | `Mate-Engine-Mac-X`（macOS 原生移植版） |
-| 上游 / Upstream | [Mate Engine](https://github.com/Marksonthegamer/Mate-Engine-Linux-Port) |
+| 本项目 / This repo | [`CJackHwang/Mate-Engine-Mac-X`](https://github.com/CJackHwang/Mate-Engine-Mac-X)（macOS 移植版） |
+| 上游 / Upstream | [`shinyflvre/Mate-Engine`](https://github.com/shinyflvre/Mate-Engine)（原作者） |
+| 二级上游 / Secondary upstream | [`BNDSer/Mate-Engine-Mac`](https://github.com/BNDSer/Mate-Engine-Mac)（macOS 分支接续开发） |
 | Steam | [MateEngine](https://store.steampowered.com/app/3625270/MateEngine/) |
 | 许可 / License | GNU AGPL v3 & MateProv2（见上游仓库许可说明） |
+
+> ⚠️ 本项目与上游均为**非官方**：`Marksonthegamer/Mate-Engine-Linux-Port` 是独立的 Linux 非官方移植，与 macOS 这条线无关。
 
 ---
 
