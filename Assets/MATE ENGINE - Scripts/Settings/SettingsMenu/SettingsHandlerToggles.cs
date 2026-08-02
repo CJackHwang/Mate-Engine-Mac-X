@@ -271,7 +271,7 @@ public class SettingsHandlerToggles : MonoBehaviour
     {
         enableDancingToggle?.SetIsOnWithoutNotify(true);
         enableMouseTrackingToggle?.SetIsOnWithoutNotify(true);
-        isTopmostToggle?.SetIsOnWithoutNotify(true);
+        isTopmostToggle?.SetIsOnWithoutNotify(false);
         enableParticlesToggle?.SetIsOnWithoutNotify(true);
         bloomToggle?.SetIsOnWithoutNotify(true);
         dayNightToggle?.SetIsOnWithoutNotify(true);
@@ -295,7 +295,7 @@ public class SettingsHandlerToggles : MonoBehaviour
         var data = SaveLoadHandler.Instance.data;
         data.enableDancing = true;
         data.enableMouseTracking = true;
-        data.isTopmost = true;
+        data.isTopmost = false;
         data.enableParticles = true;
         data.bloom = true;
         data.dayNight = true;

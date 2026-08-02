@@ -372,9 +372,6 @@ int MacSys_IsWindowOccludedAtCursor(void)
         kCGNullWindowID);
     if (!windowList) return 1;
 
-    // The pet window lives at a high window level (kCGStatusWindowLevel) so it is
-    // always on top of normal app windows. Therefore it is occluded only when the
-    // cursor is NOT over any of our own windows (i.e. it points at another app).
     pid_t ownPid = getpid();
     BOOL overOwn = NO;
     NSInteger topWindowPid = -1;
@@ -560,6 +557,10 @@ static CGImageRef MacSys_CreateImageFromIOSurface(IOSurfaceRef surface)
     return image;
 }
 
+// CGDisplayStream was obsoleted in macOS 15 (use ScreenCaptureKit instead) and
+// is compile-unavailable when targeting 15+. Keep it only for deployments < 15
+// where it is still available as a fallback.
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 static CGImageRef MacSys_DisplayStreamCaptureImage(CGDirectDisplayID displayID)
@@ -605,6 +606,7 @@ static CGImageRef MacSys_DisplayStreamCaptureImage(CGDirectDisplayID displayID)
     return image;
 }
 #pragma clang diagnostic pop
+#endif // __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
 
 int MacSys_CaptureDesktop(int targetW, int targetH, uint8_t *buffer)
 {
@@ -635,8 +637,10 @@ int MacSys_CaptureDesktop(int targetW, int targetH, uint8_t *buffer)
     BOOL capturedAny = NO;
     for (uint32_t i = 0; i < displayCount; i++) {
         CGImageRef image = MacSys_SCKCaptureDisplayImage(displays[i]);
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
         if (!image) image = MacSys_DisplayStreamCaptureImage(displays[i]);
         if (!image) image = CGDisplayCreateImage(displays[i]);
+#endif
         if (!image) continue;
 
         CGRect db = CGDisplayBounds(displays[i]);

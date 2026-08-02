@@ -30,11 +30,11 @@ public class DesktopAmbientProbe : MonoBehaviour
     public int excludeMarginPx = 12;
     [Range(0f, 1f)] public float smoothing = 0.85f;
     public string saveKey = "auto_ambient";
-    [Range(0f, 4f)] public float minGrayIntensity = 0.25f;
-    [Range(0f, 4f)] public float maxColorIntensity = 0.55f;
-    [Range(0.5f, 3f)] public float saturationGamma = 1.6f;
-    [Range(0f, 1f), Tooltip("Lower bound of the desktop-brightness scale: how dim the ambient glow gets on a dark wallpaper (1 = ignore brightness).")]
-    public float darkAmbientFloor = 0.6f;
+    [Range(0f, 4f)] public float minGrayIntensity = 0.35f;
+    [Range(0f, 4f)] public float maxColorIntensity = 0.7f;
+    [Range(0.5f, 3f)] public float saturationGamma = 1.4f;
+    [Range(0f, 1f), Tooltip("Lower bound of the desktop-brightness scale: how dim the ambient glow gets on a dark wallpaper (1 = ignore brightness). Lower = stronger dark/bright contrast.")]
+    public float darkAmbientFloor = 0.35f;
     [Range(1f, 60f), Tooltip("If no desktop sample arrives within this many seconds (e.g. missing screen-recording permission), auto ambient switches itself off and falls back to the manual lights.")]
     public float noSampleGraceSeconds = 10f;
 
@@ -185,21 +185,17 @@ public class DesktopAmbientProbe : MonoBehaviour
         ApplyToTargets();
     }
 
-    // Turns auto ambient off and persists it so the manual light sliders take
-    // over (and the settings toggle reflects the change).
+    // Turns auto ambient off for THIS session (screen capture unavailable) so the
+    // manual light sliders take over. The off state is intentionally NOT persisted
+    // — auto ambient is on by default, so a later launch that has screen-recording
+    // permission resumes desktop-following automatically.
     void SwitchToManualLights()
     {
         if (!enabledAuto) return;
         enabledAuto = false;
-        var s = SaveLoadHandler.Instance;
-        if (s != null && s.data != null)
-        {
-            s.data.groupToggles[saveKey] = false;
-            s.SaveToDisk();
-        }
         var lights = FindAnyObjectByType<SettingsHandlerLights>();
         if (lights != null) lights.SyncAutoAmbientToggle(false);
-        UnityEngine.Debug.Log("[DesktopAmbientProbe] No desktop sample within " + noSampleGraceSeconds + "s (screen-recording permission missing?) — switched to manual lights.");
+        UnityEngine.Debug.Log("[DesktopAmbientProbe] No desktop sample within " + noSampleGraceSeconds + "s (screen-recording permission missing?) — switched to manual lights for this session.");
     }
 
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX

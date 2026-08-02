@@ -177,7 +177,7 @@ public class SaveLoadHandler : MonoBehaviour
         public bool followMusic = true;
         public bool enableMouseTracking = true;
         public int fpsLimit = 60;
-        public bool isTopmost = true;
+        public bool isTopmost = false;
 
         public List<string> allowedApps = new();
         public bool bloom = true;
