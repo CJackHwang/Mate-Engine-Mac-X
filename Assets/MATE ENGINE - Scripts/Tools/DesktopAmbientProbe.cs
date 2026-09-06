@@ -161,6 +161,8 @@ public class DesktopAmbientProbe : MonoBehaviour
         nextTick = Time.unscaledTime;
     }
 
+    bool _isCapturing = false;
+
     void LateUpdate()
     {
         if (!inited) return;
@@ -178,7 +180,19 @@ public class DesktopAmbientProbe : MonoBehaviour
         {
             nextTick = Time.unscaledTime + 1f / Mathf.Max(1f, captureHz);
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
-            if (EnsureCaptureValid()) CaptureAndAnalyze();
+            if (EnsureCaptureValid() && !_isCapturing) {
+                if (TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh)) {
+                    bool haveWnd = TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, vx, vy, vw, vh);
+                    _isCapturing = true;
+                    System.Threading.Tasks.Task.Run(() => {
+                        try {
+                            CaptureAndAnalyze(haveWnd, wx0, wy0, wx1, wy1, vx, vy, vw, vh);
+                        } finally {
+                            _isCapturing = false;
+                        }
+                    });
+                }
+            }
 #endif
         }
         SmoothTowardsTargets(Time.unscaledDeltaTime);
@@ -317,15 +331,11 @@ public class DesktopAmbientProbe : MonoBehaviour
         return true;
     }
 
-    void CaptureAndAnalyze()
+    void CaptureAndAnalyze(bool haveWnd, int wx0, int wy0, int wx1, int wy1, int vx, int vy, int vw, int vh)
     {
         if (!CapturePixels())
             return;
 
-        if (!TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh))
-            return;
-
-        bool haveWnd = TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, vx, vy, vw, vh);
         int band = Mathf.Max(1, Mathf.RoundToInt(bandThicknessPx * (captureHeight / (float)Mathf.Max(1, vh))));
         int margin = Mathf.Max(0, Mathf.RoundToInt(excludeMarginPx * (captureHeight / (float)Mathf.Max(1, vh))));
 

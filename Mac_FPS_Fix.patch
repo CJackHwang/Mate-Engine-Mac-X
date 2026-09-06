@@ -1,0 +1,198 @@
+diff --git a/Assets/MATE ENGINE - Scripts/Tools/DesktopAmbientProbe.cs b/Assets/MATE ENGINE - Scripts/Tools/DesktopAmbientProbe.cs
+index 5049e9eb..591831d2 100644
+--- a/Assets/MATE ENGINE - Scripts/Tools/DesktopAmbientProbe.cs	
++++ b/Assets/MATE ENGINE - Scripts/Tools/DesktopAmbientProbe.cs	
+@@ -161,6 +161,8 @@ public class DesktopAmbientProbe : MonoBehaviour
+         nextTick = Time.unscaledTime;
+     }
+ 
++    bool _isCapturing = false;
++
+     void LateUpdate()
+     {
+         if (!inited) return;
+@@ -178,7 +180,19 @@ public class DesktopAmbientProbe : MonoBehaviour
+         {
+             nextTick = Time.unscaledTime + 1f / Mathf.Max(1f, captureHz);
+ #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX
+-            if (EnsureCaptureValid()) CaptureAndAnalyze();
++            if (EnsureCaptureValid() && !_isCapturing) {
++                if (TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh)) {
++                    bool haveWnd = TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, vx, vy, vw, vh);
++                    _isCapturing = true;
++                    System.Threading.Tasks.Task.Run(() => {
++                        try {
++                            CaptureAndAnalyze(haveWnd, wx0, wy0, wx1, wy1, vx, vy, vw, vh);
++                        } finally {
++                            _isCapturing = false;
++                        }
++                    });
++                }
++            }
+ #endif
+         }
+         SmoothTowardsTargets(Time.unscaledDeltaTime);
+@@ -317,15 +331,11 @@ public class DesktopAmbientProbe : MonoBehaviour
+         return true;
+     }
+ 
+-    void CaptureAndAnalyze()
++    void CaptureAndAnalyze(bool haveWnd, int wx0, int wy0, int wx1, int wy1, int vx, int vy, int vw, int vh)
+     {
+         if (!CapturePixels())
+             return;
+ 
+-        if (!TryGetVirtualScreen(out int vx, out int vy, out int vw, out int vh))
+-            return;
+-
+-        bool haveWnd = TryGetUnityWindowRects(out int wx0, out int wy0, out int wx1, out int wy1, vx, vy, vw, vh);
+         int band = Mathf.Max(1, Mathf.RoundToInt(bandThicknessPx * (captureHeight / (float)Mathf.Max(1, vh))));
+         int margin = Mathf.Max(0, Mathf.RoundToInt(excludeMarginPx * (captureHeight / (float)Mathf.Max(1, vh))));
+ 
+diff --git a/Assets/MATE ENGINE - System Tray/MacOSTray/MacSystem.m b/Assets/MATE ENGINE - System Tray/MacOSTray/MacSystem.m
+index 3ab4de11..0f0c93d5 100644
+--- a/Assets/MATE ENGINE - System Tray/MacOSTray/MacSystem.m	
++++ b/Assets/MATE ENGINE - System Tray/MacOSTray/MacSystem.m	
+@@ -608,54 +608,78 @@ static CGImageRef MacSys_DisplayStreamCaptureImage(CGDirectDisplayID displayID)
+ #pragma clang diagnostic pop
+ #endif // __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
+ 
++static dispatch_queue_t gCaptureQueue = nil;
++static uint8_t *gCachedBuffer = NULL;
++static int gCachedW = 0, gCachedH = 0;
++static BOOL gIsCapturing = NO;
++
+ int MacSys_CaptureDesktop(int targetW, int targetH, uint8_t *buffer)
+ {
+     if (!buffer || targetW <= 0 || targetH <= 0) return 0;
+     if (!MacSys_IsScreenCaptureAuthorized()) return 0;
+ 
+-    CGDirectDisplayID displays[16];
+-    uint32_t displayCount = 0;
+-    CGError err = CGGetActiveDisplayList(16, displays, &displayCount);
+-    if (err != kCGErrorSuccess || displayCount == 0) return 0;
+-
+-    CGRect unionRect = CGRectZero;
+-    BOOL haveUnion = NO;
+-    for (uint32_t i = 0; i < displayCount; i++) {
+-        CGRect b = CGDisplayBounds(displays[i]);
+-        if (!haveUnion) {
+-            unionRect = b;
+-            haveUnion = YES;
+-        } else {
+-            unionRect = CGRectUnion(unionRect, b);
+-        }
++    static dispatch_once_t onceToken;
++    dispatch_once(&onceToken, ^{
++        gCaptureQueue = dispatch_queue_create("com.shinymoon.mateengine.capture", DISPATCH_QUEUE_SERIAL);
++    });
++
++    if (gCachedBuffer && gCachedW == targetW && gCachedH == targetH) {
++        memcpy(buffer, gCachedBuffer, targetW * targetH * 4);
++    } else {
++        memset(buffer, 0, targetW * targetH * 4);
+     }
+-    if (!haveUnion || unionRect.size.width <= 0 || unionRect.size.height <= 0) return 0;
+ 
+-    CGContextRef ctx = MacSys_CreateTargetContext(targetW, targetH, buffer);
+-    if (!ctx) return 0;
++    if (!gIsCapturing) {
++        gIsCapturing = YES;
++        dispatch_async(gCaptureQueue, ^{
++            if (!gCachedBuffer || gCachedW != targetW || gCachedH != targetH) {
++                if (gCachedBuffer) free(gCachedBuffer);
++                gCachedBuffer = (uint8_t *)malloc(targetW * targetH * 4);
++                gCachedW = targetW;
++                gCachedH = targetH;
++            }
++
++            CGDirectDisplayID displays[16];
++            uint32_t displayCount = 0;
++            CGError err = CGGetActiveDisplayList(16, displays, &displayCount);
++            if (err == kCGErrorSuccess && displayCount > 0) {
++                CGRect unionRect = CGRectZero;
++                BOOL haveUnion = NO;
++                for (uint32_t i = 0; i < displayCount; i++) {
++                    CGRect b = CGDisplayBounds(displays[i]);
++                    if (!haveUnion) { unionRect = b; haveUnion = YES; }
++                    else { unionRect = CGRectUnion(unionRect, b); }
++                }
+ 
+-    BOOL capturedAny = NO;
+-    for (uint32_t i = 0; i < displayCount; i++) {
+-        CGImageRef image = MacSys_SCKCaptureDisplayImage(displays[i]);
++                if (haveUnion && unionRect.size.width > 0 && unionRect.size.height > 0) {
++                    CGContextRef ctx = MacSys_CreateTargetContext(targetW, targetH, gCachedBuffer);
++                    if (ctx) {
++                        for (uint32_t i = 0; i < displayCount; i++) {
++                            CGImageRef image = MacSys_SCKCaptureDisplayImage(displays[i]);
+ #if __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
+-        if (!image) image = MacSys_DisplayStreamCaptureImage(displays[i]);
+-        if (!image) image = CGDisplayCreateImage(displays[i]);
++                            if (!image) image = MacSys_DisplayStreamCaptureImage(displays[i]);
++                            if (!image) image = CGDisplayCreateImage(displays[i]);
+ #endif
+-        if (!image) continue;
+-
+-        CGRect db = CGDisplayBounds(displays[i]);
+-        CGRect dest = CGRectMake(
+-            (db.origin.x - unionRect.origin.x) / unionRect.size.width * targetW,
+-            (db.origin.y - unionRect.origin.y) / unionRect.size.height * targetH,
+-            db.size.width / unionRect.size.width * targetW,
+-            db.size.height / unionRect.size.height * targetH);
+-        CGContextDrawImage(ctx, dest, image);
+-        CGImageRelease(image);
+-        capturedAny = YES;
++                            if (image) {
++                                CGRect db = CGDisplayBounds(displays[i]);
++                                CGRect dest = CGRectMake(
++                                    (db.origin.x - unionRect.origin.x) / unionRect.size.width * targetW,
++                                    (db.origin.y - unionRect.origin.y) / unionRect.size.height * targetH,
++                                    db.size.width / unionRect.size.width * targetW,
++                                    db.size.height / unionRect.size.height * targetH);
++                                CGContextDrawImage(ctx, dest, image);
++                                CGImageRelease(image);
++                            }
++                        }
++                        CGContextRelease(ctx);
++                    }
++                }
++            }
++            gIsCapturing = NO;
++        });
+     }
+ 
+-    CGContextRelease(ctx);
+-    return capturedAny ? 1 : 0;
++    return 1;
+ }
+ 
+ #pragma mark - Login item
+diff --git a/Assets/MATE ENGINE - System Tray/MacOSTray/MacWindowFix.m b/Assets/MATE ENGINE - System Tray/MacOSTray/MacWindowFix.m
+index 5f7deced..c6386b11 100644
+--- a/Assets/MATE ENGINE - System Tray/MacOSTray/MacWindowFix.m	
++++ b/Assets/MATE ENGINE - System Tray/MacOSTray/MacWindowFix.m	
+@@ -8,6 +8,8 @@ static NSRect swizzled_constrainFrameRect(id self, SEL _cmd, NSRect frameRect, N
+     return frameRect;
+ }
+ 
++static id gActivity = nil;
++
+ void MacWindowFix_Install(void)
+ {
+     static dispatch_once_t once;
+@@ -18,5 +20,8 @@ void MacWindowFix_Install(void)
+             method_setImplementation(original,
+                 (IMP)swizzled_constrainFrameRect);
+         }
++        
++        NSActivityOptions options = NSActivityUserInitiatedAllowingIdleSystemSleep | NSActivityLatencyCritical;
++        gActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:options reason:@"High FPS requirement"];
+     });
+ }
+diff --git a/Assets/Plugins/MacOS/MacSystem.bundle/Contents/MacOS/MacSystem b/Assets/Plugins/MacOS/MacSystem.bundle/Contents/MacOS/MacSystem
+index 8fe70f60..4b1d8169 100755
+Binary files a/Assets/Plugins/MacOS/MacSystem.bundle/Contents/MacOS/MacSystem and b/Assets/Plugins/MacOS/MacSystem.bundle/Contents/MacOS/MacSystem differ
+diff --git a/Assets/Plugins/MacOS/MacWindowFix.bundle/Contents/MacOS/MacWindowFix b/Assets/Plugins/MacOS/MacWindowFix.bundle/Contents/MacOS/MacWindowFix
+index 924d2088..fba146d9 100755
+Binary files a/Assets/Plugins/MacOS/MacWindowFix.bundle/Contents/MacOS/MacWindowFix and b/Assets/Plugins/MacOS/MacWindowFix.bundle/Contents/MacOS/MacWindowFix differ

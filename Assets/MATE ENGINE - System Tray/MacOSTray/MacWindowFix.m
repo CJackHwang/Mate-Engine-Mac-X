@@ -8,6 +8,8 @@ static NSRect swizzled_constrainFrameRect(id self, SEL _cmd, NSRect frameRect, N
     return frameRect;
 }
 
+static id gActivity = nil;
+
 void MacWindowFix_Install(void)
 {
     static dispatch_once_t once;
@@ -18,5 +20,8 @@ void MacWindowFix_Install(void)
             method_setImplementation(original,
                 (IMP)swizzled_constrainFrameRect);
         }
+        
+        NSActivityOptions options = NSActivityUserInitiatedAllowingIdleSystemSleep | NSActivityLatencyCritical;
+        gActivity = [[NSProcessInfo processInfo] beginActivityWithOptions:options reason:@"High FPS requirement"];
     });
 }

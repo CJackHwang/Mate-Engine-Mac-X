@@ -608,54 +608,78 @@ static CGImageRef MacSys_DisplayStreamCaptureImage(CGDirectDisplayID displayID)
 #pragma clang diagnostic pop
 #endif // __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
 
+static dispatch_queue_t gCaptureQueue = nil;
+static uint8_t *gCachedBuffer = NULL;
+static int gCachedW = 0, gCachedH = 0;
+static BOOL gIsCapturing = NO;
+
 int MacSys_CaptureDesktop(int targetW, int targetH, uint8_t *buffer)
 {
     if (!buffer || targetW <= 0 || targetH <= 0) return 0;
     if (!MacSys_IsScreenCaptureAuthorized()) return 0;
 
-    CGDirectDisplayID displays[16];
-    uint32_t displayCount = 0;
-    CGError err = CGGetActiveDisplayList(16, displays, &displayCount);
-    if (err != kCGErrorSuccess || displayCount == 0) return 0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        gCaptureQueue = dispatch_queue_create("com.shinymoon.mateengine.capture", DISPATCH_QUEUE_SERIAL);
+    });
 
-    CGRect unionRect = CGRectZero;
-    BOOL haveUnion = NO;
-    for (uint32_t i = 0; i < displayCount; i++) {
-        CGRect b = CGDisplayBounds(displays[i]);
-        if (!haveUnion) {
-            unionRect = b;
-            haveUnion = YES;
-        } else {
-            unionRect = CGRectUnion(unionRect, b);
-        }
+    if (gCachedBuffer && gCachedW == targetW && gCachedH == targetH) {
+        memcpy(buffer, gCachedBuffer, targetW * targetH * 4);
+    } else {
+        memset(buffer, 0, targetW * targetH * 4);
     }
-    if (!haveUnion || unionRect.size.width <= 0 || unionRect.size.height <= 0) return 0;
 
-    CGContextRef ctx = MacSys_CreateTargetContext(targetW, targetH, buffer);
-    if (!ctx) return 0;
+    if (!gIsCapturing) {
+        gIsCapturing = YES;
+        dispatch_async(gCaptureQueue, ^{
+            if (!gCachedBuffer || gCachedW != targetW || gCachedH != targetH) {
+                if (gCachedBuffer) free(gCachedBuffer);
+                gCachedBuffer = (uint8_t *)malloc(targetW * targetH * 4);
+                gCachedW = targetW;
+                gCachedH = targetH;
+            }
 
-    BOOL capturedAny = NO;
-    for (uint32_t i = 0; i < displayCount; i++) {
-        CGImageRef image = MacSys_SCKCaptureDisplayImage(displays[i]);
+            CGDirectDisplayID displays[16];
+            uint32_t displayCount = 0;
+            CGError err = CGGetActiveDisplayList(16, displays, &displayCount);
+            if (err == kCGErrorSuccess && displayCount > 0) {
+                CGRect unionRect = CGRectZero;
+                BOOL haveUnion = NO;
+                for (uint32_t i = 0; i < displayCount; i++) {
+                    CGRect b = CGDisplayBounds(displays[i]);
+                    if (!haveUnion) { unionRect = b; haveUnion = YES; }
+                    else { unionRect = CGRectUnion(unionRect, b); }
+                }
+
+                if (haveUnion && unionRect.size.width > 0 && unionRect.size.height > 0) {
+                    CGContextRef ctx = MacSys_CreateTargetContext(targetW, targetH, gCachedBuffer);
+                    if (ctx) {
+                        for (uint32_t i = 0; i < displayCount; i++) {
+                            CGImageRef image = MacSys_SCKCaptureDisplayImage(displays[i]);
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < 150000
-        if (!image) image = MacSys_DisplayStreamCaptureImage(displays[i]);
-        if (!image) image = CGDisplayCreateImage(displays[i]);
+                            if (!image) image = MacSys_DisplayStreamCaptureImage(displays[i]);
+                            if (!image) image = CGDisplayCreateImage(displays[i]);
 #endif
-        if (!image) continue;
-
-        CGRect db = CGDisplayBounds(displays[i]);
-        CGRect dest = CGRectMake(
-            (db.origin.x - unionRect.origin.x) / unionRect.size.width * targetW,
-            (db.origin.y - unionRect.origin.y) / unionRect.size.height * targetH,
-            db.size.width / unionRect.size.width * targetW,
-            db.size.height / unionRect.size.height * targetH);
-        CGContextDrawImage(ctx, dest, image);
-        CGImageRelease(image);
-        capturedAny = YES;
+                            if (image) {
+                                CGRect db = CGDisplayBounds(displays[i]);
+                                CGRect dest = CGRectMake(
+                                    (db.origin.x - unionRect.origin.x) / unionRect.size.width * targetW,
+                                    (db.origin.y - unionRect.origin.y) / unionRect.size.height * targetH,
+                                    db.size.width / unionRect.size.width * targetW,
+                                    db.size.height / unionRect.size.height * targetH);
+                                CGContextDrawImage(ctx, dest, image);
+                                CGImageRelease(image);
+                            }
+                        }
+                        CGContextRelease(ctx);
+                    }
+                }
+            }
+            gIsCapturing = NO;
+        });
     }
 
-    CGContextRelease(ctx);
-    return capturedAny ? 1 : 0;
+    return 1;
 }
 
 #pragma mark - Login item
