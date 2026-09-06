@@ -110,6 +110,9 @@ public class SaveLoadHandler : MonoBehaviour
     // Speichern
     public void SaveToDisk()
     {
+        if (data == null)
+            return;
+
         try
         {
             string dir = Path.GetDirectoryName(FilePath);
@@ -117,7 +120,13 @@ public class SaveLoadHandler : MonoBehaviour
                 Directory.CreateDirectory(dir);
 
             string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText(FilePath, json);
+            string tmpPath = FilePath + ".tmp";
+            File.WriteAllText(tmpPath, json);
+            if (File.Exists(FilePath))
+                File.Replace(tmpPath, FilePath, null);
+            else
+                File.Move(tmpPath, FilePath);
+
             Debug.Log("[SaveLoadHandler] Saved settings to: " + FilePath);
         }
         catch (Exception e)
@@ -145,6 +154,10 @@ public class SaveLoadHandler : MonoBehaviour
         {
             data = new SettingsData();
         }
+
+        if (data == null)
+            data = new SettingsData();
+
         MigrateAfterLoad();
     }
 
@@ -301,9 +314,9 @@ public class SaveLoadHandler : MonoBehaviour
     //ALARM
     void MigrateAfterLoad()
     {
+        if (data == null) data = new SettingsData();
         if (data.timers == null) data.timers = new List<SettingsData.TimerEntry>();
         if (string.IsNullOrEmpty(data.selectedParticleTheme)) data.selectedParticleTheme = "Standard";
-        if (data == null) data = new SettingsData();
         if (data.alarms == null) data.alarms = new List<SettingsData.AlarmEntry>();
         if (data.settingsVersion < 1)
         {

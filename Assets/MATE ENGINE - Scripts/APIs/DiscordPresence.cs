@@ -60,16 +60,29 @@ public class DiscordPresence : MonoBehaviour
         wasRPCEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
         if (wasRPCEnabled)
         {
-            InitGameStartTimestamp();
-            client = new DiscordRpcClient(appId);
-            client.Initialize();
-            ResolveAnimator();
-            UpdatePresence(force: true);
+            try
+            {
+                InitGameStartTimestamp();
+                client = new DiscordRpcClient(appId);
+                client.Initialize();
+                ResolveAnimator();
+                UpdatePresence(force: true);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning("[DiscordPresence] Failed to initialize Discord RPC: " + ex.Message);
+                client = null;
+                wasRPCEnabled = false;
+            }
         }
     }
+
     void Update()
     {
-        bool isEnabled = SaveLoadHandler.Instance?.data.enableDiscordRPC == true;
+        if (SaveLoadHandler.Instance?.data == null)
+            return;
+
+        bool isEnabled = SaveLoadHandler.Instance.data.enableDiscordRPC;
 
         if (isEnabled != wasRPCEnabled)
         {
@@ -77,20 +90,36 @@ public class DiscordPresence : MonoBehaviour
 
             if (isEnabled)
             {
-                InitGameStartTimestamp();
-                client = new DiscordRpcClient(appId);
-                client.Initialize();
-                ResolveAnimator();
-                UpdatePresence(force: true);
-                Debug.Log("[DiscordPresence] Enabled and client initialized at runtime.");
+                try
+                {
+                    InitGameStartTimestamp();
+                    client = new DiscordRpcClient(appId);
+                    client.Initialize();
+                    ResolveAnimator();
+                    UpdatePresence(force: true);
+                    Debug.Log("[DiscordPresence] Enabled and client initialized at runtime.");
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning("[DiscordPresence] Failed to initialize Discord RPC at runtime: " + ex.Message);
+                    client = null;
+                    wasRPCEnabled = false;
+                }
             }
             else
             {
                 if (client != null)
                 {
-                    client.ClearPresence();
-                    client.Dispose();
-                    client = null;
+                    try
+                    {
+                        client.ClearPresence();
+                        client.Dispose();
+                    }
+                    catch (System.Exception) { }
+                    finally
+                    {
+                        client = null;
+                    }
                     Debug.Log("[DiscordPresence] Disabled and client disposed at runtime.");
                 }
             }
@@ -103,7 +132,11 @@ public class DiscordPresence : MonoBehaviour
                 if (cachedAnimator == null) return;
             }
 
-            UpdatePresence();
+            try
+            {
+                UpdatePresence();
+            }
+            catch (System.Exception) { }
         }
     }
     void InitGameStartTimestamp()
