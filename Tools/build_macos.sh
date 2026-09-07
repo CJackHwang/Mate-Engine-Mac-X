@@ -65,12 +65,16 @@ if [ -d "$ROOT/$OUTPUT" ] || [ -d "$OUTPUT" ]; then
   if [ "$PACKAGE_DMG" = "1" ]; then
     DMG="$LOG_DIR/MateEngineX.dmg"
     rm -f "$DMG"
+    DMG_STAGING="$(mktemp -d)"
+    ditto "$APP_BUNDLE" "$DMG_STAGING/$(basename "$APP_BUNDLE")"
+    ln -s /Applications "$DMG_STAGING/Applications"
     hdiutil create \
       -volname "MateEngineX" \
-      -srcfolder "$APP_BUNDLE" \
+      -srcfolder "$DMG_STAGING" \
       -ov \
       -format UDZO \
       "$DMG"
+    rm -rf "$DMG_STAGING"
     echo "[build_macos] DMG: $DMG"
   fi
 
