@@ -1,16 +1,18 @@
 {
   "dependencies": {
-    "com.unity.2d.sprite": "1.0.0",
     "com.antigravity.ide": "https://github.com/billythekidz/UnityAntigravityIDE.git",
+    "com.unity.2d.sprite": "1.0.0",
+    "com.unity.ai.assistant": "2.19.0-pre.2",
+    "com.unity.ai.inference": "2.6.1",
     "com.unity.collab-proxy": "2.12.4",
     "com.unity.feature.development": "1.0.2",
-    "com.unity.localization": "1.5.8",
+    "com.unity.localization": "1.5.13",
     "com.unity.memoryprofiler": "1.1.12",
     "com.unity.multiplayer.center": "1.0.1",
     "com.unity.postprocessing": "3.5.4",
-    "com.unity.timeline": "1.8.12",
+    "com.unity.timeline": "1.8.13",
     "com.unity.ugui": "2.0.0",
-    "com.unity.visualscripting": "1.9.11",
+    "com.unity.visualscripting": "1.9.12",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
@@ -44,6 +46,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "file:com.unity.pipeline"
   }
 }

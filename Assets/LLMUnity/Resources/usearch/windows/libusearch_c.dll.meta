@@ -46,13 +46,13 @@ PluginImporter:
   - first:
       Standalone: Linux64
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
       Standalone: OSXUniversal
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
@@ -83,6 +83,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 273604
   packageName: LLM for Unity
-  packageVersion: 2.5.1
+  packageVersion: 3.0.3
   assetPath: Assets/LLMUnity/Resources/usearch/windows/libusearch_c.dll
-  uploadId: 754381
+  uploadId: 876676

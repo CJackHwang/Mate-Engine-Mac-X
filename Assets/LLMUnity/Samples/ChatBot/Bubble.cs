@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System;
 using LLMUnity;
@@ -22,9 +22,9 @@ namespace LLMUnitySamples
 
     public class RectTransformResizeHandler : MonoBehaviour
     {
-        EmptyCallback callback;
+        Action callback;
 
-        public void SetCallBack(EmptyCallback callback)
+        public void SetCallBack(Action callback)
         {
             this.callback = callback;
         }
@@ -125,7 +125,7 @@ namespace LLMUnitySamples
             imageCanvas.sortingOrder = 1;
         }
 
-        public void OnResize(EmptyCallback callback)
+        public void OnResize(Action callback)
         {
             RectTransformResizeHandler resizeHandler = bubbleObject.AddComponent<RectTransformResizeHandler>();
             resizeHandler.SetCallBack(callback);
@@ -177,21 +177,7 @@ namespace LLMUnitySamples
             placeholderObject = CreatePlaceholderObject(bubbleObject.transform, bubbleRectTransform, textObjext.text);
             inputFieldObject = CreateInputFieldObject(bubbleObject.transform, textObjext, placeholderObject.GetComponent<Text>());
             inputField = inputFieldObject.GetComponent<InputField>();
-
-            // <<< Hier Orders fixen NUR für InputBubble >>>
-            Canvas textCanvas = bubbleObject.GetComponent<Canvas>();
-            if (textCanvas != null)
-            {
-                textCanvas.sortingOrder = 2;
-            }
-
-            Canvas imgCanvas = imageObject.GetComponent<Canvas>();
-            if (imgCanvas != null)
-            {
-                imgCanvas.sortingOrder = 2;
-            }
         }
-
 
         static string emptyLines(string message, int lineHeight)
         {
@@ -303,5 +289,4 @@ namespace LLMUnitySamples
             inputField.ActivateInputField();
         }
     }
-
 }

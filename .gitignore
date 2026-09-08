@@ -1,19 +1,28 @@
 # Unity generated folders
-[Ll]ibrary/
-[Tt]emp/
+/[Ll]ibrary/
+/[Tt]emp/
 [Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Mm]emoryCaptures/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/ProfilerCaptures/
 
-# AI Source
-Assets/StreamingAssets/undreamai-v1.2.4-llamacpp/
-Assets/StreamingAssets/qwen2.5-1.5b-instruct-q4_k_m.gguf
-Assets/StreamingAssets/Qwen3-1.7B-Q4_K_M.gguf
-Assets/StreamingAssets/Qwen3-4B-Q2_K.gguf
-Assets/StreamingAssets/Qwen3-4B-Q4_K_M.gguf
-Assets/StreamingAssets/undreamai-v1.2.5-llamacpp
+# AI Source & Models (auto-downloaded runtime binaries and large weights)
+Assets/StreamingAssets/undreamai-*
+Assets/StreamingAssets/LlamaLib*
+Assets/StreamingAssets/LlamaLib*.meta
+Assets/StreamingAssets/*.gguf
+Assets/StreamingAssets/*.gguf.meta
+Assets/StreamingAssets/*.bin
+Assets/StreamingAssets/*.bin.meta
+Assets/StreamingAssets/*.zip
+Assets/StreamingAssets/*.zip.meta
+Assets/StreamingAssets/*.tar.gz
+Assets/StreamingAssets/*.tar.gz.meta
+Assets/StreamingAssets/*.onnx
+Assets/StreamingAssets/*.onnx.meta
 
 # Test Models
 Assets/MATE ENGINE - Test Station
@@ -57,6 +66,10 @@ sysinfo.txt
 
 # MacOS system files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 
 # Root-level debug leftovers
 /*.log

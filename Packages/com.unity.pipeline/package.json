@@ -1,0 +1,39 @@
+{
+  "name": "com.unity.pipeline",
+  "displayName": "Unity Pipeline",
+  "version": "0.6.0-exp.1",
+  "unity": "6000.0",
+  "category": "Pipeline",
+  "description": "This package allows application (cli, agent or other) to connect to the editor or a running game and execute commands (build, run_tests, play/pause, hotreload)",
+  "keywords": [
+    "pipeline",
+    "connected",
+    "authoring",
+    "hotreload"
+  ],
+  "dependencies": {
+    "com.unity.test-framework": "1.1.33",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "com.unity.nuget.mono-cecil": "1.11.6",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0"
+  },
+  "samples": [
+    {
+      "displayName": "Hot Reload Examples",
+      "description": "In-place [HotReload] editing and override-file ([HotReloadOverrideMethod]) hot reload examples.",
+      "path": "Samples~/HotReload"
+    }
+  ],
+  "repository": {
+    "revision": "27af91a943315a5702ac7679241399b649d6a20d",
+    "type": "git",
+    "url": "https://github.cds.internal.unity3d.com/unity/com.unity.pipeline.git"
+  },
+  "documentationUrl": "https://docs.unity3d.com/Packages/com.unity.pipeline@0.6/manual/index.html",
+  "_upm": {
+    "changelog": "### Fixed\n- [UUM-149991] AutoStaticsCleanup: Fixed usage-analysis findings.\n- [UUM-149991] Fixed `CommandRegistry` staying on reflection-based command discovery after exiting Play Mode without a domain reload; `PipelineServerStartup` now restores TypeCache discovery on `EnteredEditMode`.\n- [UUM-149977] Removed the \"Editor is not in automated mode\" console warning. Now surfaced as `info` on the instance descriptor instead.\n- [AUTHAPI-36] Fixed `TestResultCollector.RunFinished` throwing `InvalidOperationException` (double-complete) when a run had already been completed by `SetError`/`Cancel` (e.g. a timed-out or errored run): a late `RunFinished` is now a no-op and the original error/cancellation is preserved.\n\n### Added\n- [AUTHAPI-68] `POST /api/exec` accepts an unparsed command line as `commandLine` (a string the server tokenizes) or `argv` (pre-split tokens), binding positional and `--flag` arguments against the command's declared parameters server-side. Exactly one of `command`, `commandLine` or `argv` may be present, and `parameters` cannot accompany the raw forms. Argument failures return `400` with `errorCode: \"INVALID_COMMAND_ARGS\"`, a machine-readable `argProblems` array, and the command's `commandSchema`; successful raw-form replies echo the bound `parameters`. Servers advertise `exec.argv` / `exec.commandLine` in `capabilities` on `/api/status` and in the port descriptor. `command` is no longer a JSON-required property, so a body carrying none of the three forms is now rejected by request validation as `400 {\"error\":\"Invalid Request\",\"errorDetails\":\"Command name is required\"}` instead of by deserialization as `400 {\"error\":\"Invalid JSON\"}`.\n- [AUTHAPI-64] Added a new endpoint reporting currently-open modal dialogs, and command execution now reports any dialogs shown while it ran. Main-thread commands are rejected with a busy status while a dialog is open, and status polling reports that a dialog is blocking it. Requires a recent enough trunk build.\n- [AUTHAPI-29] Instrument `eval`/`eval_file` usage: each call logs a JSONL record (timing, success, statement/expression shape, and an API fingerprint of top-level member accesses) to `<project>/Library/Pipeline/eval-usage.jsonl`, editor-only and local-first — raw source isn't stored unless `Store Eval Source` is enabled. Toggle via `Eval Telemetry Enabled`.\n- [AUTHAPI-29] New `report_evals` command: ranks logged eval fingerprints by frequency and cross-references the command catalog to surface patterns not yet covered by an existing command.\n- [AUTHAPI-49] Editor analytics: `Pipeline_SessionStarted` on the first command a client executes, `Pipeline_CommandExecuted` per command executed, and `Pipeline_SessionStopped` when the Editor quits. `isEvalWithExistingCommandAvailable` reuses the AUTHAPI-29 eval fingerprints and coverage map, so it agrees with `report_evals` by construction. Only commands shipped in the package report their name and tags; a project-declared command reports `<customUserCommand>` and no tags. See `Documentation~/analytics.md`.\n- [UUM-149580] `runtime_status` now reports `pipelineDriver` (isServerRunning, actualPort, and the enableInBuilds/requestTimeoutMs/enableAuditLogging/autoStart/maxWorkItemsPerFrame values actually governing the running driver, not just what Project Settings currently shows) — `null` if no driver was ever bootstrapped.\n- [UUM-149580] New `get_runtime_pipeline_settings`/`set_runtime_pipeline_settings` commands: structured, `confirm`/`dry_run`-gated read/write access to Pipeline Runtime settings (Project Settings > Pipeline > Runtime), matching the existing Audio/Graphics/Input/Physics/Player/Quality/Time settings command family. Refused while in Play Mode.\n- [AUTHAPI-27] New `batch` command: run up to 200 ordered operations in one request, with later ops referencing earlier results. Transactional by default (single Undo step, rolled back on failure); supports `on_error`, `dry_run`, `time_budget_ms`, and detached `job` execution. See `Documentation~/commands/batch.md` for details.\n- [AUTHAPI-26] New `run_script` command: compi"
+  },
+  "_fingerprint": "9bb4172c603cda2626bacac4d4c64bdb8270a3e0"
+}
